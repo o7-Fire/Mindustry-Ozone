@@ -14,12 +14,13 @@ public class Main {
 
     public static void init(){
         Log.infoTag("Ozone", "Hail o7");
-        Events.on(EventType.ClientLoadEvent.class, s->initUI());
+        patch();
+        initUI();
     }
 
 
     public static void loadContent() {
-        patch();
+
     }
 
     public static void registerClientCommands(CommandHandler handler) {
@@ -27,15 +28,13 @@ public class Main {
     }
 
     private static void patch(){
+        Log.infoTag("Ozone","Patching");
         if(Vars.control != null && Vars.control.input != null) {
             Vars.control.input = new DesktopInput();
-        } else{
-            Log.warn("Can't patch control.input right now, we get em next time");
-            Events.on(EventType.ClientLoadEvent.class, s -> {
-                Vars.control.input = new DesktopInput();
-                Log.infoTag("Ozone", "control.input patched");
-            });
+            Log.infoTag("Ozone", "control.input patched");
         }
+
+
     }
     public static void initUI(){
         Manifest.menu = new OzoneMenu("Ozone Menu", Core.scene.getStyle(Dialog.DialogStyle.class));

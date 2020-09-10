@@ -9,18 +9,14 @@ buildscript{
     }
     dependencies {
         classpath 'com.guardsquare:proguard-gradle:7.0.0'
-        classpath 'gradle.plugin.chrisney:enigma:1.0.0.8'
+
     }
 }
 
 plugins {
     id 'java'
 }
-apply plugin: 'com.chrisney.enigma'
 
-// Set Enigma options:
-enigma.enabled = true
-enigma.injectFakeKeys = true
 
 ext {
 
@@ -52,6 +48,7 @@ dependencies {
     compileOnly atom("Atomic")
     compileOnly "com.github.Anuken:Mindustry:$MindustryHash"
 }
+
 jar{
     archiveFileName = "${project.archivesBaseName}.jar"
     from{
@@ -72,6 +69,7 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     libraryjars files(configurations.compile.collect())
     libraryjars "libs"
     libraryjars "E:\\App\\.gradle\\caches\\modules-2\\files-2.1", jarfilter: '!**.jar'
+
     injars "build/libs/${project.archivesBaseName}.jar"
     outjars "build/libs/${project.archivesBaseName}.out.jar"
 }
