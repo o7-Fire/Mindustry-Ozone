@@ -23,7 +23,7 @@ public class DesktopInput extends mindustry.input.DesktopInput {
 
         table.button(Icon.settings, Styles.clearPartiali, () -> {
             Manifest.menu.show();
-        }).tooltip("Ozone Menu");
+        }).tooltip("@ozoneMenu");
 
         table.button(Icon.tree, Styles.clearPartiali, () -> {
             ui.research.show();
