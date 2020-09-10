@@ -1,0 +1,77 @@
+buildscript{
+    repositories {
+        mavenLocal()
+        jcenter()
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'com.guardsquare:proguard-gradle:7.0.0'
+        classpath 'gradle.plugin.chrisney:enigma:1.0.0.8'
+    }
+}
+
+plugins {
+    id 'java'
+}
+apply plugin: 'com.chrisney.enigma'
+
+// Set Enigma options:
+enigma.enabled = true
+enigma.injectFakeKeys = true
+
+ext {
+
+    MindustryHash = "3b5d6860d6"
+    atomHash = "0a119f6708"
+
+
+    localAtom = {
+        return new File('../Atom').exists()
+    }
+
+    atom = { String name ->
+        if (localAtom()) {
+            return project(":Atom:$name")
+        } else {
+            if (name.contains(':')) name = name.split(':').last()
+            return "com.github.o7-Fire.Atomic-Library:$name:${getAtomHash()}"
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven{ url 'https://www.jitpack.io' }
+
+}
+
+dependencies {
+    compileOnly atom("Atomic")
+    compileOnly "com.github.Anuken:Mindustry:$MindustryHash"
+}
+jar{
+    archiveFileName = "${project.archivesBaseName}.jar"
+    from{
+        configurations.runtimeClasspath.collect{it.isDirectory() ? it : zipTree(it)}
+    }
+}
+task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
+    configuration 'proguard.txt'
+    // Automatically handle the Java version of this build.
+    if (System.getProperty('java.version').startsWith('1.')) {
+        // Before Java 9, the runtime classes were packaged in a single jar file.
+        libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
+    } else {
+        // As of Java 9, the runtime classes are packaged in modular jmod files.
+        libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+        //libraryjars "${System.getProperty('java.home')}/jmods/....."
+    }
+    libraryjars files(configurations.compile.collect())
+    libraryjars "libs"
+    libraryjars "E:\\App\\.gradle\\caches\\modules-2\\files-2.1", jarfilter: '!**.jar'
+    injars "build/libs/${project.archivesBaseName}.jar"
+    outjars "build/libs/${project.archivesBaseName}.out.jar"
+}

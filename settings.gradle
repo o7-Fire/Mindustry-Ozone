@@ -1,0 +1,15 @@
+rootProject.name = 'Ozone-Mods'
+def use = { ... names ->
+    for(String name : names){
+        include(name)
+        project(name).projectDir = new File(settingsDir, "../${name.substring(1).replace(":", "/")}")
+    }
+}
+
+if(new File(settingsDir, '../Atom').exists()) {
+    use(
+            ":Atom",
+            ":Atom:Log",
+            ":Atom:Atomic"
+    )
+}
