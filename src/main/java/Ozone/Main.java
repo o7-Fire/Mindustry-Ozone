@@ -61,6 +61,7 @@ public class Main {
             });
         } catch (Throwable t) {
             Log.infoTag("Ozone", "Patch failed");
+            Log.err(t);
         }
     }
 

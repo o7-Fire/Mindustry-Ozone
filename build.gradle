@@ -21,7 +21,7 @@ plugins {
 ext {
 
     MindustryHash = "3b5d6860d6"
-    atomHash = "0a119f6708"
+    atomHash = "1a4aaf52fc"
 
 
     localAtom = {
@@ -46,7 +46,7 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
-    compileOnly atom(":Atomic")
+    compileOnly atom(":Aindustry")
     compileOnly "com.github.Anuken:Mindustry:$MindustryHash"
 }
 
