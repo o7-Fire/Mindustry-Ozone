@@ -45,6 +45,7 @@ repositories {
 }
 
 dependencies {
+    testImplementation 'junit:junit:4.12'
     compileOnly atom("Atomic")
     compileOnly "com.github.Anuken:Mindustry:$MindustryHash"
 }

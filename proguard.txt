@@ -1,2 +1,3 @@
 -keep class !Ozone.** { *; }
 -keep class Ozone.OzoneMain { *; }
+-dontwarn
