@@ -18,7 +18,7 @@ public class Commands {
     }
     public static void task(String[] arg){
         if(arg.length == 0){
-            tellUser("Task not specified");
+            tellUser("Task commands is not specified");
             help(new ArrayList<>());
             return;
         }
@@ -67,6 +67,6 @@ public class Commands {
     }
 
     public static void tellUser(String s){
-        Vars.ui.chatfrag.addMessage(s, "[white][[royal]Ozone[white]]");
+        Vars.ui.chatfrag.addMessage(s, "[white]#[royal]Ozone[white]]");
     }
 }

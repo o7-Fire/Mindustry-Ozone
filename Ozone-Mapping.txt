@@ -23,6 +23,7 @@ Ozone.Commands.PlayerInterface -> b.a.b:
     arc.struct.Queue taskQueue -> b
     void init() -> a
     void update() -> b
+    void reset() -> c
     void <clinit>() -> <clinit>
 Ozone.Commands.Task.Task -> b.a.a.a:
     java.util.ArrayList onTaskCompleted -> a

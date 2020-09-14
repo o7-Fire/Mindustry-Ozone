@@ -16,6 +16,7 @@ public class PlayerInterface {
         if(init)return;
         init = true;
         Events.run(EventType.Trigger.update, PlayerInterface::update);
+        Events.run(EventType.WorldLoadEvent.class, PlayerInterface::reset);
     }
 
     public static void moveTo(int x, int y, Consumer<Void> onDone){
@@ -28,6 +29,10 @@ public class PlayerInterface {
         if(taskQueue.isEmpty())return;
         if(!taskQueue.first().isCompleted()) taskQueue.first().update();
         else taskQueue.removeFirst().taskCompleted();
+    }
+
+    private static void reset(){
+        taskQueue.clear();
     }
 
 
