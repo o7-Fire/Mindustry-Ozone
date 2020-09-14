@@ -1,2 +1,3 @@
 -keep class !Ozone.**, !Atom.** { *; }
 -dontwarn
+-printmapping Ozone-Mapping.txt

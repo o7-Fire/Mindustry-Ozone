@@ -110,3 +110,5 @@ gradle-app.setting
 Thumbs.db
 android/libs/
 annotations/src/main/resources/revisions/EffectState/6.json
+Ozone-Mapping.txt
+copy.bat
