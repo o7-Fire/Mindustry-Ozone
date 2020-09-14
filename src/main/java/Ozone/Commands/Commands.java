@@ -2,6 +2,7 @@ package Ozone.Commands;
 
 import Atom.Reflect.Reflect;
 import arc.util.CommandHandler;
+import arc.util.Log;
 import mindustry.Vars;
 
 import java.lang.reflect.InvocationTargetException;
@@ -13,6 +14,7 @@ public class Commands {
 
     public static void init(CommandHandler c){
         c.register("task", "AI task", Commands::task);
+        Log.infoTag("Ozone", "Commands Center Initialized");
     }
     public static void task(String[] arg){
         if(arg.length == 0){
