@@ -20,8 +20,8 @@ plugins {
 
 ext {
 
-    MindustryHash = "3b5d6860d6"
-    atomHash = "1a4aaf52fc"
+    MindustryHash = "bab43859f5"
+    atomHash = "019e4b7a05"
 
 
     localAtom = {
@@ -33,7 +33,7 @@ ext {
             return project(":Atom:$name")
         } else {
             if (name.contains(':')) name = name.split(':').last()
-            return "com.github.o7-Fire.Atomic-Library:$name:${getAtomHash()}"
+            return "com.github.o7-Fire.Atomic-Library:$name:$atomHash"
         }
     }
 }
@@ -46,10 +46,16 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
-    compileOnly atom(":Aindustry")
+    implementation atom(":Atomic")
+    //compileOnly atom(":Aindustry")
     compileOnly "com.github.Anuken:Mindustry:$MindustryHash"
 }
+tasks.withType(JavaCompile) {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.encoding = "UTF-8"
 
+}
 jar{
     archiveFileName = "${project.archivesBaseName}.jar"
     from{

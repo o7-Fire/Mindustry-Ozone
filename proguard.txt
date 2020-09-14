@@ -1,3 +1,2 @@
--keep class !Ozone.** { *; }
--keep class Ozone.OzoneMain { *; }
+-keep class !Ozone.**, !Atom.** { *; }
 -dontwarn

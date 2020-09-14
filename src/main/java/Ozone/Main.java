@@ -5,6 +5,7 @@ import Ozone.Center.Commands;
 import Ozone.Center.PlayerInterface;
 import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
+import Ozone.Patch.Translation;
 import Ozone.UI.OzoneMenu;
 import arc.Core;
 import arc.Events;
@@ -42,10 +43,9 @@ public class Main {
     private static void patch() {
         try {
             Log.infoTag("Ozone", "Patching");
+            Translation.patch();
             Vars.control.input = new DesktopInput();
-            Log.infoTag("Ozone", "Vars.control.input patched");
             Vars.ui.settings = new SettingsDialog();
-
             Events.on(EventType.ClientLoadEvent.class, c -> {
                 Time.mark();
                 ObjectMap<String, String> modified = Core.bundle.getProperties();
@@ -59,6 +59,7 @@ public class Main {
                 Core.bundle.setProperties(modified);
                 Log.infoTag("Ozone", "Patching translation done: " + Time.elapsed());
             });
+            Log.infoTag("Ozone", "No error, patching complete");
         } catch (Throwable t) {
             Log.infoTag("Ozone", "Patch failed");
             Log.err(t);
