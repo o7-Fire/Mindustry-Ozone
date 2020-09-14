@@ -1,21 +1,19 @@
 package Ozone;
 
 import Atom.Random;
-import Ozone.Center.Commands;
-import Ozone.Center.PlayerInterface;
+import Ozone.Commands.Commands;
+import Ozone.Commands.PlayerInterface;
 import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
 import Ozone.UI.OzoneMenu;
 import arc.Core;
-import arc.Events;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
 import arc.util.CommandHandler;
 import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
-import mindustry.game.EventType;
 
 public class Main {
 
@@ -44,22 +42,21 @@ public class Main {
         try {
             Log.infoTag("Ozone", "Patching");
             Translation.patch();
+            Time.mark();
+            ObjectMap<String, String> modified = Core.bundle.getProperties();
+            for (ObjectMap.Entry<String, String> s : Interface.bundle) {
+                modified.put(s.key, s.value);
+            }
+            if (Manifest.colorPatch)
+                for (String s : Core.bundle.getKeys()) {
+                    modified.put(s, getRandomHexColor() + modified.get(s));
+                }
+            Core.bundle.setProperties(modified);
+            Log.infoTag("Ozone", "Patching translation done: " + Time.elapsed());
             Vars.control.input = new DesktopInput();
             Vars.ui.settings = new SettingsDialog();
-            Events.on(EventType.ClientLoadEvent.class, c -> {
-                Time.mark();
-                ObjectMap<String, String> modified = Core.bundle.getProperties();
-                for (ObjectMap.Entry<String, String> s : Interface.bundle) {
-                    modified.put(s.key, s.value);
-                }
-                if (Manifest.colorPatch)
-                    for (String s : Core.bundle.getKeys()) {
-                        modified.put(s, getRandomHexColor() + modified.get(s));
-                    }
-                Core.bundle.setProperties(modified);
-                Log.infoTag("Ozone", "Patching translation done: " + Time.elapsed());
-            });
-            Log.infoTag("Ozone", "No error, patching complete");
+
+            Log.infoTag("Ozone", "Patching Complete");
         } catch (Throwable t) {
             Log.infoTag("Ozone", "Patch failed");
             Log.err(t);

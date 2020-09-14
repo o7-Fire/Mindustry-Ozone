@@ -1,4 +1,4 @@
-package Ozone.Center;
+package Ozone.Commands;
 
 import Atom.Reflect.Reflect;
 import arc.util.CommandHandler;

@@ -1,7 +1,7 @@
-package Ozone.Center;
+package Ozone.Commands;
 
-import Ozone.Center.Task.Move;
-import Ozone.Center.Task.Task;
+import Ozone.Commands.Task.Move;
+import Ozone.Commands.Task.Task;
 import arc.Events;
 import arc.struct.Queue;
 import mindustry.game.EventType;

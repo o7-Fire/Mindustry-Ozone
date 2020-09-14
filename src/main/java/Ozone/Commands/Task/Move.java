@@ -1,4 +1,4 @@
-package Ozone.Center.Task;
+package Ozone.Commands.Task;
 
 import arc.math.geom.Vec2;
 import mindustry.Vars;

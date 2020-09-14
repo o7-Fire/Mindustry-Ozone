@@ -1,4 +1,4 @@
-package Ozone.Center.Task;
+package Ozone.Commands.Task;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;

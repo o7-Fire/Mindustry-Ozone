@@ -10,7 +10,7 @@ Main.Ozone -> Main.Ozone:
     void init() -> init
     void loadContent() -> loadContent
     void registerClientCommands(arc.util.CommandHandler) -> registerClientCommands
-Ozone.Center.Commands -> b.a.a:
+Ozone.Commands.Commands -> b.a.a:
     void <init>() -> <init>
     void init(arc.util.CommandHandler) -> a
     void task(java.lang.String[]) -> a
@@ -18,13 +18,13 @@ Ozone.Center.Commands -> b.a.a:
     void tellUser(java.lang.String) -> a
     boolean lambda$help$1(java.lang.reflect.Method) -> a
     boolean lambda$task$0(java.lang.String[],java.lang.reflect.Method) -> a
-Ozone.Center.PlayerInterface -> b.a.b:
+Ozone.Commands.PlayerInterface -> b.a.b:
     boolean init -> a
     arc.struct.Queue taskQueue -> b
     void init() -> a
     void update() -> b
     void <clinit>() -> <clinit>
-Ozone.Center.Task.Task -> b.a.a.a:
+Ozone.Commands.Task.Task -> b.a.a.a:
     java.util.ArrayList onTaskCompleted -> a
     void <init>() -> <init>
     boolean isCompleted() -> a
@@ -34,7 +34,6 @@ Ozone.Interface -> b.a:
     void <clinit>() -> <clinit>
 Ozone.Main -> b.b:
     void init() -> a
-    void lambda$patch$0(mindustry.game.EventType$ClientLoadEvent) -> a
 Ozone.Manifest -> b.c:
     Ozone.UI.OzoneMenu menu -> a
     boolean colorPatch -> b
