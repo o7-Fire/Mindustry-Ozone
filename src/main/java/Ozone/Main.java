@@ -2,7 +2,6 @@ package Ozone;
 
 import Atom.Random;
 import Ozone.Commands.PlayerInterface;
-import Ozone.Patch.ChatFragment;
 import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
@@ -13,6 +12,10 @@ import arc.struct.ObjectMap;
 import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
+import mindustry.gen.Tex;
+import mindustry.graphics.Pal;
+import mindustry.ui.Fonts;
+import mindustry.ui.Styles;
 
 import java.lang.reflect.Field;
 
@@ -85,7 +88,16 @@ public class Main {
     }
 
     public static void initUI() {
-        Manifest.menu = new OzoneMenu("Ozone Menu", Core.scene.getStyle(Dialog.DialogStyle.class));
+        Dialog.DialogStyle ozoneStyle = new Dialog.DialogStyle() {
+            {
+                stageBackground = Styles.none;
+                titleFont = Fonts.def;
+                background = Tex.windowEmpty;
+                titleFontColor = Pal.accent;
+            }
+        };
+        ozoneStyle.stageBackground = Styles.none;
+        Manifest.menu = new OzoneMenu("Ozone HUD", ozoneStyle);
 
     }
 

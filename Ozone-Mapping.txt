@@ -3,43 +3,8 @@ Atom.Reflect.Reflect -> a.a.a:
     java.lang.Object getField(java.lang.Class,java.lang.String,java.lang.Object) -> a
     java.util.ArrayList findDeclaredField(java.lang.Class,Atom.Struct.Filter) -> a
     boolean lambda$getField$0(java.lang.String,java.lang.reflect.Field) -> a
-    java.lang.String shrinkString(java.lang.String) -> a
 Atom.Struct.Filter -> a.b.a:
     boolean accept(java.lang.Object) -> accept
-Atom.Struct.Queue -> a.b.b:
-    int size -> a
-    java.lang.Object[] values -> b
-    int head -> c
-    int tail -> d
-    Atom.Struct.Queue$QueueIterable iterable -> e
-    void <init>() -> <init>
-    void <init>(int) -> <init>
-    java.lang.Object removeIndex(int) -> a
-    java.lang.Object get(int) -> b
-    java.util.Iterator iterator() -> iterator
-    java.lang.String toString() -> toString
-    int hashCode() -> hashCode
-    boolean equals(java.lang.Object) -> equals
-Atom.Struct.Queue$QueueIterable -> a.b.c:
-    Atom.Struct.Queue queue -> a
-    boolean allowRemove -> b
-    Atom.Struct.Queue$QueueIterable$QueueIterator iterator1 -> c
-    Atom.Struct.Queue$QueueIterable$QueueIterator iterator2 -> d
-    void <init>(Atom.Struct.Queue) -> <init>
-    void <init>(Atom.Struct.Queue,boolean) -> <init>
-    java.util.Iterator iterator() -> iterator
-Atom.Struct.Queue$QueueIterable$QueueIterator -> a.b.d:
-    int index -> a
-    boolean done -> b
-    Atom.Struct.Queue$QueueIterable this$0 -> c
-    void <init>(Atom.Struct.Queue$QueueIterable) -> <init>
-    boolean hasNext() -> hasNext
-    java.lang.Object next() -> next
-    void remove() -> remove
-    java.util.Iterator iterator() -> iterator
-Atom.Time.Countdown -> a.c.a:
-    java.lang.String result(long) -> a
-    void <clinit>() -> <clinit>
 Main.Ozone -> Main.Ozone:
     void <init>() -> <init>
     void init() -> init
@@ -69,99 +34,52 @@ Ozone.Interface -> b.a:
 Ozone.Main -> b.b:
     void init() -> a
     void patch() -> b
-Ozone.Patch.ChatFragment -> b.b.a:
-    arc.struct.Seq messages -> a
-    float fadetime -> b
-    boolean shown -> c
-    arc.scene.ui.TextField chatfield -> d
-    arc.scene.ui.Label fieldlabel -> e
-    arc.graphics.g2d.Font font -> f
-    arc.graphics.g2d.GlyphLayout layout -> g
-    float offsetx -> h
-    float offsety -> i
-    float fontoffsetx -> j
-    float chatspace -> k
-    arc.graphics.Color shadowColor -> l
-    float textspacing -> m
-    arc.struct.Seq history -> n
-    int historyPos -> o
-    int scrollPos -> p
-    mindustry.ui.fragments.Fragment container -> q
-    java.util.HashMap antiSpam -> r
+Ozone.Main$1 -> b.c:
     void <init>() -> <init>
-    mindustry.ui.fragments.Fragment container() -> container
-    void clearMessages() -> clearMessages
-    void draw() -> draw
-    void sendMessage() -> a
-    void toggle() -> toggle
-    void hide() -> hide
-    void updateChat() -> updateChat
-    void clearChatInput() -> clearChatInput
-    boolean shown() -> shown
-    void addMessage(java.lang.String,java.lang.String) -> addMessage
-    void lambda$toggle$2(java.lang.String) -> a
-    void lambda$new$1() -> b
-    boolean lambda$new$0() -> c
-Ozone.Patch.ChatFragment$1 -> b.b.b:
-    Ozone.Patch.ChatFragment this$0 -> a
-    void <init>(Ozone.Patch.ChatFragment) -> <init>
-    void build(arc.scene.Group) -> build
-Ozone.Patch.ChatFragment$AntiSpam -> b.b.c:
-    int maxRepeatingChar -> c
-    long rateLimit -> d
-    java.lang.String lastMessage -> a
-    int lastMessageTimes -> e
-    java.lang.String reasons -> b
-    long lastMessageSent -> f
-    void <init>(java.lang.String) -> <init>
-    void setLastMessage(java.lang.String) -> a
-    java.lang.String filter(java.lang.String) -> b
-    void <clinit>() -> <clinit>
-Ozone.Patch.ChatFragment$ChatMessage -> b.b.d:
-    java.lang.String message -> a
-    java.lang.String formattedMessage -> b
-    void <init>(java.lang.String,java.lang.String) -> <init>
-    void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
-Ozone.Patch.DesktopInput -> b.b.e:
+Ozone.Patch.DesktopInput -> b.b.a:
     void <init>() -> <init>
     void buildPlacementUI(arc.scene.ui.layout.Table) -> buildPlacementUI
     void lambda$buildPlacementUI$0() -> a
-Ozone.Patch.SettingsDialog -> b.b.f:
+Ozone.Patch.SettingsDialog -> b.b.b:
     void <init>() -> <init>
     void lambda$new$0(java.lang.reflect.Field,boolean) -> a
-Ozone.Patch.SettingsDialog$1 -> b.b.g:
+Ozone.Patch.SettingsDialog$1 -> b.b.c:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Patch.SettingsDialog$2 -> b.b.h:
+Ozone.Patch.SettingsDialog$2 -> b.b.d:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Patch.SettingsDialog$3 -> b.b.i:
+Ozone.Patch.SettingsDialog$3 -> b.b.e:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Patch.SettingsDialog$4 -> b.b.j:
+Ozone.Patch.SettingsDialog$4 -> b.b.f:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Settings -> b.c:
+Ozone.Settings -> b.d:
     boolean colorPatch -> a
-    boolean antiSpam -> b
-    java.lang.String commandsPrefix -> c
+    java.lang.String commandsPrefix -> b
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 Ozone.UI.OzoneMenu -> b.c.a:
+    java.lang.String commands -> a
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
     void setup() -> a
+    void lambda$setup$3(arc.scene.ui.layout.Table) -> a
+    void lambda$setup$2() -> b
+    void lambda$setup$1(java.lang.String) -> a
+    java.lang.CharSequence lambda$setup$0() -> c
 javassist.ByteArrayClassPath -> javassist.ByteArrayClassPath:
     java.lang.String classname -> classname
     byte[] classfile -> classfile

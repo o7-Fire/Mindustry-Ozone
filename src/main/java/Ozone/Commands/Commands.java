@@ -76,7 +76,8 @@ public class Commands {
     }
 
     public static void tellUser(String s) {
-        Vars.ui.chatfrag.addMessage(s, "[white]#[royal]Ozone[white]]");
+        s = "[white]#[royal]Ozone[white]]: " + s;
+        Vars.ui.chatfrag.addMessage(s, null);
     }
 
     public static class Command {
