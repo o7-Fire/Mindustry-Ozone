@@ -31,6 +31,7 @@ public class Main {
 
     private static void loadSettings() {
         Manifest.colorPatch = Core.settings.getBool("ozone.colorPatch", Manifest.colorPatch);
+        Manifest.antiSpam = Core.settings.getBool("ozone.antiSpam", Manifest.antiSpam);
     }
 
     private static void patch() {

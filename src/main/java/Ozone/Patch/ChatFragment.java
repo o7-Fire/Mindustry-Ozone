@@ -1,6 +1,9 @@
 package Ozone.Patch;
 
 
+import Atom.Time.Countdown;
+import Ozone.Commands.Commands;
+import Ozone.Manifest;
 import arc.Core;
 import arc.Input;
 import arc.graphics.Color;
@@ -22,9 +25,10 @@ import mindustry.input.Binding;
 import mindustry.ui.Fonts;
 import mindustry.ui.fragments.Fragment;
 
+import java.util.HashMap;
+
 public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
 
-    private static final int messagesShown = 10;
     private Seq<ChatMessage> messages = new Seq();
     private float fadetime;
     private boolean shown = false;
@@ -46,7 +50,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
             Core.scene.add(ChatFragment.this);
         }
     };
-
+    private HashMap<String, AntiSpam> antiSpam = new HashMap<>();
     public ChatFragment() {
         this.setFillParent(true);
         this.font = Fonts.def;
@@ -169,7 +173,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
         String message = this.chatfield.getText();
         this.clearChatInput();
         if (!message.replace(" ", "").isEmpty()) {
-            if
+            if (Commands.call(message)) return;
             this.history.insert(1, message);
             Call.sendChatMessage(message);
         }
@@ -230,12 +234,69 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
 
     @Override
     public void addMessage(String message, String sender) {
-        this.messages.insert(0, new ChatMessage(message, sender));
+        ChatMessage cm = new ChatMessage(message, sender);
+        if (Manifest.antiSpam) {
+            if (antiSpam.containsKey(sender)) {
+                AntiSpam victim = antiSpam.get(sender);
+                ChatMessage message1 = messages.get(0);
+                String filter = victim.filter(cm.formattedMessage);
+                if (!filter.isEmpty()) {
+                    if (message1.formattedMessage.equals(victim.lastMessage)) messages.remove(0);
+                    messages.insert(0, new ChatMessage(filter, sender, victim.reasons));
+                }
+                this.messages.insert(0, cm);
+            } else {
+                antiSpam.put(sender, new AntiSpam(sender));
+                this.messages.insert(0, cm);
+                ++this.fadetime;
+                this.fadetime = Math.min(this.fadetime, 10.0F) + 1.0F;
+                if (this.scrollPos > 0) {
+                    ++this.scrollPos;
+                }
+            }
+            antiSpam.get(sender).setLastMessage(cm.formattedMessage);
+            return;
+        }
+        this.messages.insert(0, cm);
         ++this.fadetime;
         this.fadetime = Math.min(this.fadetime, 10.0F) + 1.0F;
         if (this.scrollPos > 0) {
             ++this.scrollPos;
         }
+
+    }
+
+    private static class AntiSpam {
+        public static long rateLimit = 300;
+        public final String sender;
+        public String lastMessage = "";
+        public int lastMessageTimes = 1;
+        public String reasons = "";
+        private long lastMessageSended = 0;
+
+        public AntiSpam(String name) {
+            sender = name;
+        }
+
+        public void setLastMessage(String message) {
+            if (message.equalsIgnoreCase(lastMessage)) lastMessageTimes++;
+            else {
+                lastMessageTimes = 1;
+                lastMessage = message;
+            }
+            lastMessageSended = System.currentTimeMillis();
+        }
+
+        public String filter(String message) {
+            if (message.equalsIgnoreCase(lastMessage)) {
+                reasons = "Duplicate: " + lastMessageTimes;
+            } else if ((System.currentTimeMillis() - lastMessageSended) > rateLimit) {
+                reasons = "Too Fast: " + Countdown.result(lastMessageSended);
+            } else reasons = "";
+
+            return message;
+        }
+
 
     }
 
@@ -251,6 +312,17 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
                 this.formattedMessage = message;
             } else {
                 this.formattedMessage = "[coral][[" + sender + "[coral]]:[white] " + message;
+            }
+
+        }
+
+        public ChatMessage(String message, String sender, String antiSpam) {
+            this.message = message;
+            this.sender = sender;
+            if (sender == null) {
+                this.formattedMessage = message;
+            } else {
+                this.formattedMessage = "[royal][" + antiSpam + "][coral][[" + sender + "[coral]]:[white] " + message;
             }
 
         }
