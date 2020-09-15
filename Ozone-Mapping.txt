@@ -49,11 +49,14 @@ Main.Ozone -> Main.Ozone:
 Ozone.Commands.Commands -> b.a.a:
     java.util.HashMap commandsList -> a
     boolean init -> b
+    boolean falseVote -> c
     void init() -> a
     boolean call(java.lang.String) -> a
     void help(java.util.ArrayList) -> a
     void move(java.util.ArrayList) -> b
+    void DeceptionKick(java.util.ArrayList) -> c
     void tellUser(java.lang.String) -> b
+    void lambda$DeceptionKick$1() -> b
     void lambda$move$0(long,java.lang.Void) -> a
     void <clinit>() -> <clinit>
 Ozone.Commands.Commands$Command -> b.a.b:
@@ -73,11 +76,13 @@ Ozone.Commands.Task.Move -> b.a.a.a:
     void <init>(int,int) -> <init>
     void <init>(arc.math.geom.Vec2) -> <init>
     boolean isCompleted() -> a
+    void update() -> b
 Ozone.Commands.Task.Task -> b.a.a.b:
     java.util.ArrayList onTaskCompleted -> a
     void <init>() -> <init>
     void onTaskCompleted(java.util.function.Consumer) -> a
     boolean isCompleted() -> a
+    void update() -> b
 Ozone.Interface -> b.a:
     arc.struct.ObjectMap bundle -> a
     void registerWords(java.lang.String,java.lang.String) -> a
@@ -120,7 +125,6 @@ Ozone.Patch.SettingsDialog$4 -> b.b.f:
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
 Ozone.Settings -> b.d:
     boolean colorPatch -> a
-    java.lang.String commandsPrefix -> b
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 Ozone.UI.OzoneMenu -> b.c.a:

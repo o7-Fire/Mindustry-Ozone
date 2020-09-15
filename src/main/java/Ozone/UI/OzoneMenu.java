@@ -39,7 +39,8 @@ public class OzoneMenu extends BaseDialog {
             s.label(() -> "Commands: ");
             commandsField = s.field(commands, (res) -> commands = res).fillX().growX().get();
             s.button(Icon.zoom, () -> {
-                Commands.call(Settings.commandsPrefix + commands);
+                //Commands.call(Settings.commandsPrefix + commands);
+                Commands.call(commands);
                 commands = "";
                 commandsField.clearText();
             });

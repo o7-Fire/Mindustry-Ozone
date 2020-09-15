@@ -19,6 +19,13 @@ public class Move extends Task {
         return distanceTo(getPlayerPos(), destPost) < 2;
     }
 
+    @Override
+    public void update() {
+        if(Vars.player.unit() != Nulls.unit){
+            Vars.player.unit().moveAt(destPost);
+        }
+    }
+
     public Vec2 getPlayerPos(){
         if(Vars.player.unit() != Nulls.unit){
             return new Vec2(Vars.player.unit().x, Vars.player.unit().y);
