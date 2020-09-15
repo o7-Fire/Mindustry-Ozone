@@ -3,6 +3,7 @@ Atom.Reflect.Reflect -> a.a.a:
     java.lang.Object getField(java.lang.Class,java.lang.String,java.lang.Object) -> a
     java.util.ArrayList findDeclaredField(java.lang.Class,Atom.Struct.Filter) -> a
     boolean lambda$getField$0(java.lang.String,java.lang.reflect.Field) -> a
+    java.lang.String shrinkString(java.lang.String) -> a
 Atom.Struct.Filter -> a.b.a:
     boolean accept(java.lang.Object) -> accept
 Atom.Struct.Queue -> a.b.b:
@@ -37,6 +38,7 @@ Atom.Struct.Queue$QueueIterable$QueueIterator -> a.b.d:
     void remove() -> remove
     java.util.Iterator iterator() -> iterator
 Atom.Time.Countdown -> a.c.a:
+    java.lang.String result(long) -> a
     void <clinit>() -> <clinit>
 Main.Ozone -> Main.Ozone:
     void <init>() -> <init>
@@ -6068,7 +6070,6 @@ javassist.util.proxy.SerializedProxy$1 -> javassist.util.proxy.SerializedProxy$1
     void <init>(javassist.util.proxy.SerializedProxy,java.lang.String) -> <init>
     java.lang.Class run() -> run
     java.lang.Object run() -> run
-module-info -> module-info:
 org.reflections.Configuration -> org.reflections.Configuration:
     java.util.Set getScanners() -> getScanners
     java.util.Set getUrls() -> getUrls

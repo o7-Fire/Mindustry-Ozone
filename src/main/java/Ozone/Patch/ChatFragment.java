@@ -30,7 +30,7 @@ import java.util.HashMap;
 
 public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
 
-    private Seq<ChatMessage> messages = new Seq();
+    private Seq<ChatMessage> messages = new Seq<>();
     private float fadetime;
     private boolean shown = false;
     private TextField chatfield;
@@ -43,7 +43,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
     private float chatspace = Scl.scl(50.0F);
     private Color shadowColor = new Color(0.0F, 0.0F, 0.0F, 0.4F);
     private float textspacing = Scl.scl(10.0F);
-    private Seq<String> history = new Seq();
+    private Seq<String> history = new Seq<>();
     private int historyPos = 0;
     private int scrollPos = 0;
     private Fragment container = new Fragment() {
