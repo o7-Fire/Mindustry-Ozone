@@ -77,7 +77,7 @@ public class Commands {
     }
 
     private boolean didBypass = false;
-    public void KickBypass(CommandContext ctx) {
+    public void KickBypass() {
         if (!didBypass) {
             didBypass = true;
             Thread s1 = new Thread(this::BypassVoid);
