@@ -25,7 +25,7 @@ ext {
 
 
     localAtom = {
-        return new File('../Atom').exists()
+        return new File('../Atoms').exists()
     }
 
     atom = { String name ->
