@@ -1,7 +1,10 @@
 Atom.Reflect.Reflect -> a.a.a:
     Ozone.UI.OzoneMenu menu -> a
     java.lang.Object getField(java.lang.Class,java.lang.String,java.lang.Object) -> a
-    java.util.ArrayList findDeclaredField(java.lang.Class,Atom.Struct.Filter) -> a
+    java.lang.reflect.Method getMethod(java.lang.Class,java.lang.String,java.lang.Object) -> b
+    java.util.ArrayList findMethod(java.lang.Class,Atom.Struct.Filter,java.lang.Object) -> a
+    java.util.ArrayList findDeclaredField(java.lang.Class,Atom.Struct.Filter,java.lang.Object) -> b
+    boolean lambda$getMethod$1(java.lang.String,java.lang.reflect.Method) -> a
     boolean lambda$getField$0(java.lang.String,java.lang.reflect.Field) -> a
 Atom.Struct.Filter -> a.b.a:
     boolean accept(java.lang.Object) -> accept
@@ -76,10 +79,11 @@ Ozone.UI.OzoneMenu -> b.c.a:
     java.lang.String commands -> a
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
     void setup() -> a
-    void lambda$setup$3(arc.scene.ui.layout.Table) -> a
-    void lambda$setup$2() -> b
-    void lambda$setup$1(java.lang.String) -> a
-    java.lang.CharSequence lambda$setup$0() -> c
+    void lambda$setup$4(arc.scene.ui.layout.Table) -> a
+    void lambda$setup$3() -> b
+    void lambda$setup$2(java.lang.String) -> a
+    java.lang.CharSequence lambda$setup$1() -> c
+    void lambda$new$0(arc.input.KeyCode) -> a
 javassist.ByteArrayClassPath -> javassist.ByteArrayClassPath:
     java.lang.String classname -> classname
     byte[] classfile -> classfile

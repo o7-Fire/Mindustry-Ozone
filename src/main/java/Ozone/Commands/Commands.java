@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 public class Commands {
 
-    public static HashMap<String, Command> commandsList = new HashMap<>();
+    public static final HashMap<String, Command> commandsList = new HashMap<>();
     private static boolean init = false;
 
     public static void init() {

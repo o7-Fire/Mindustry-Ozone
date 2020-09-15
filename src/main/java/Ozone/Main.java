@@ -1,6 +1,7 @@
 package Ozone;
 
 import Atom.Random;
+import Ozone.Commands.Commands;
 import Ozone.Commands.PlayerInterface;
 import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
@@ -27,6 +28,7 @@ public class Main {
         patch();
         initUI();
         PlayerInterface.init();
+        Commands.init();
     }
 
 

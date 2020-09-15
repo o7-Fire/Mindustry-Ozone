@@ -21,7 +21,7 @@ apply plugin: 'java-library'
 ext {
 
     MindustryHash = "bab43859f5"
-    atomHash = "6c4ccedf75"
+    atomHash = "c29e4994cb"
 
 
     localAtom = {
