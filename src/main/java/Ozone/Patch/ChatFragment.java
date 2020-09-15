@@ -100,6 +100,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
 
     @Override
     public void clearMessages() {
+        antiSpam.clear();
         this.messages.clear();
         this.history.clear();
         this.history.insert(0, "");
@@ -210,14 +211,14 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
 
     @Override
     public void hide() {
-        Core.scene.setKeyboardFocus((Element) null);
+        Core.scene.setKeyboardFocus(null);
         this.shown = false;
         this.clearChatInput();
     }
 
     @Override
     public void updateChat() {
-        this.chatfield.setText((String) this.history.get(this.historyPos));
+        this.chatfield.setText(this.history.get(this.historyPos));
         this.chatfield.setCursorPosition(this.chatfield.getText().length());
     }
 
@@ -255,13 +256,13 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
                 }
             }
             antiSpam.get(sender).setLastMessage(cm.message);
-            return;
-        }
-        this.messages.insert(0, cm);
-        ++this.fadetime;
-        this.fadetime = Math.min(this.fadetime, 10.0F) + 1.0F;
-        if (this.scrollPos > 0) {
-            ++this.scrollPos;
+        }else {
+            this.messages.insert(0, cm);
+            ++this.fadetime;
+            this.fadetime = Math.min(this.fadetime, 10.0F) + 1.0F;
+            if (this.scrollPos > 0) {
+                ++this.scrollPos;
+            }
         }
 
     }
