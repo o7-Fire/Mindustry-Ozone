@@ -77,11 +77,10 @@ public class Commands {
     }
 
     public static void tellUser(String s) {
-        s = "[white][[royal]Ozone[white]]: " + s;
         if(Manifest.menu.isShown())
-            Vars.ui.scriptfrag.addMessage(s);
+            Log.infoTag("[Ozone]", s);
         else
-            Vars.ui.chatfrag.addMessage(s, null);
+            Vars.ui.chatfrag.addMessage("[white][[royal]Ozone[white]]: " + s, null);
     }
 
     public static class Command {
