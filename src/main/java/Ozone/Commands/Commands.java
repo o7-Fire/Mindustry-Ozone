@@ -76,6 +76,49 @@ public class Commands {
 
     }
 
+    private boolean didBypass = false;
+    public void KickBypass(CommandContext ctx) {
+        if (!didBypass) {
+            didBypass = true;
+            Thread s1 = new Thread(this::BypassVoid);
+            s1.start();
+            tellUser("kicking started");
+        } else {
+            didBypass = false;
+            tellUser("kicking ended");
+        }
+    }
+    
+    private void BypassVoid() {
+        while (true) {
+            if (didBypass) {
+                for (Player target : playerGroup.all()) {
+					if (target.name != player.name) {
+						Call.sendChatMessage("/votekick " + target.name);
+						try {
+							Thread.sleep(200);
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					}
+                }
+            } else {
+			break;
+			}
+        }
+    }
+	
+    private void hackusate() {
+	    while (true) {
+	  	  for (Player target : playerGroup.all()) {
+			    if (target.name != player.name) {
+				    Call.sendChatMessage(target.name + "is griefing");
+				    break;
+		   	 }
+	    	}
+	    }
+    }
+
     public static void tellUser(String s) {
         if(Vars.ui.scriptfrag.shown())
             Log.infoTag("Ozone", s);
