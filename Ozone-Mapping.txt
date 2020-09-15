@@ -8,27 +8,75 @@ Atom.Reflect.Reflect -> a.a.a:
     boolean lambda$getField$0(java.lang.String,java.lang.reflect.Field) -> a
 Atom.Struct.Filter -> a.b.a:
     boolean accept(java.lang.Object) -> accept
+Atom.Struct.Queue -> a.b.b:
+    int size -> a
+    java.lang.Object[] values -> b
+    int head -> c
+    int tail -> d
+    Atom.Struct.Queue$QueueIterable iterable -> e
+    void <init>() -> <init>
+    void <init>(int) -> <init>
+    java.lang.Object removeIndex(int) -> a
+    java.lang.Object get(int) -> b
+    java.util.Iterator iterator() -> iterator
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+Atom.Struct.Queue$QueueIterable -> a.b.c:
+    Atom.Struct.Queue queue -> a
+    boolean allowRemove -> b
+    Atom.Struct.Queue$QueueIterable$QueueIterator iterator1 -> c
+    Atom.Struct.Queue$QueueIterable$QueueIterator iterator2 -> d
+    void <init>(Atom.Struct.Queue) -> <init>
+    void <init>(Atom.Struct.Queue,boolean) -> <init>
+    java.util.Iterator iterator() -> iterator
+Atom.Struct.Queue$QueueIterable$QueueIterator -> a.b.d:
+    int index -> a
+    boolean done -> b
+    Atom.Struct.Queue$QueueIterable this$0 -> c
+    void <init>(Atom.Struct.Queue$QueueIterable) -> <init>
+    boolean hasNext() -> hasNext
+    java.lang.Object next() -> next
+    void remove() -> remove
+    java.util.Iterator iterator() -> iterator
+Atom.Time.Countdown -> a.c.a:
+    java.lang.String result(long,java.util.concurrent.TimeUnit) -> a
+    void <clinit>() -> <clinit>
 Main.Ozone -> Main.Ozone:
     void <init>() -> <init>
     void init() -> init
     void loadContent() -> loadContent
 Ozone.Commands.Commands -> b.a.a:
     java.util.HashMap commandsList -> a
+    boolean init -> b
+    void init() -> a
     boolean call(java.lang.String) -> a
-    void help$6ba92955() -> a
+    void help(java.util.ArrayList) -> a
+    void move(java.util.ArrayList) -> b
     void tellUser(java.lang.String) -> b
+    void lambda$move$0(long,java.lang.Void) -> a
     void <clinit>() -> <clinit>
 Ozone.Commands.Commands$Command -> b.a.b:
+    java.util.function.Consumer method -> a
+    java.lang.String description -> b
+    void <init>(java.util.function.Consumer,java.lang.String) -> <init>
 Ozone.Commands.PlayerInterface -> b.a.c:
     boolean init -> a
     arc.struct.Queue taskQueue -> b
     void init() -> a
+    void moveTo(int,int,java.util.function.Consumer) -> a
     void update() -> b
     void reset() -> c
     void <clinit>() -> <clinit>
-Ozone.Commands.Task.Task -> b.a.a.a:
+Ozone.Commands.Task.Move -> b.a.a.a:
+    arc.math.geom.Vec2 destPost -> a
+    void <init>(int,int) -> <init>
+    void <init>(arc.math.geom.Vec2) -> <init>
+    boolean isCompleted() -> a
+Ozone.Commands.Task.Task -> b.a.a.b:
     java.util.ArrayList onTaskCompleted -> a
     void <init>() -> <init>
+    void onTaskCompleted(java.util.function.Consumer) -> a
     boolean isCompleted() -> a
 Ozone.Interface -> b.a:
     arc.struct.ObjectMap bundle -> a
