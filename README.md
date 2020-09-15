@@ -3,10 +3,18 @@
 
 
 # Requirement
-* Java 14 (JDK preferable)
+* Java 14/8 (JDK 14 preferable)
 * Multi-Core CPU
 * 8 GB of RAM for bots operation
 
+# Installation
+* 1.Download the zip
+* 2.Unzip
+* 3.Open terminal
+* 4.CD to the folder where gradlew located
+* 5.gradlew build
+* 6.Copy .jar from build/lib to Mindustry/mods
+* 7.Run mindustry
 
 # Feature
 > Inerts
