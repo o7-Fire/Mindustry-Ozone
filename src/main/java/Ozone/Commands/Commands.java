@@ -5,6 +5,9 @@ import Ozone.Manifest;
 import Ozone.Settings;
 import arc.util.Log;
 import mindustry.Vars;
+import mindustry.gen.Call;
+import mindustry.gen.Groups;
+import mindustry.gen.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,11 +79,24 @@ public class Commands {
 
     }
 
-    private boolean didBypass = false;
-    public void KickBypass() {
+    private static boolean didBypass = false;
+    public static void DeceptionKick() {
         if (!didBypass) {
             didBypass = true;
-            Thread s1 = new Thread(this::BypassVoid);
+            Thread s1 = new Thread(() -> {
+                while (Vars.net.active())
+                    if (didBypass) {
+                        for (Player target : Groups.player) {
+                            if (!target.name.equals(Vars.player.name)) {
+                                Call.sendChatMessage("/votekick " + target.name);
+                                try {
+                                    Thread.sleep(200);
+                                } catch (Throwable ignored) {
+
+                                }
+                            }
+                        }
+                    } else return; });
             s1.start();
             tellUser("kicking started");
         } else {
@@ -88,36 +104,9 @@ public class Commands {
             tellUser("kicking ended");
         }
     }
-    
-    private void BypassVoid() {
-        while (true) {
-            if (didBypass) {
-                for (Player target : playerGroup.all()) {
-					if (target.name != player.name) {
-						Call.sendChatMessage("/votekick " + target.name);
-						try {
-							Thread.sleep(200);
-						} catch (Throwable e) {
-							e.printStackTrace();
-						}
-					}
-                }
-            } else {
-			break;
-			}
-        }
-    }
-	
-    private void hackusate() {
-	    while (true) {
-	  	  for (Player target : playerGroup.all()) {
-			    if (target.name != player.name) {
-				    Call.sendChatMessage(target.name + "is griefing");
-				    break;
-		   	 }
-	    	}
-	    }
-    }
+
+
+
 
     public static void tellUser(String s) {
         if(Vars.ui.scriptfrag.shown())
