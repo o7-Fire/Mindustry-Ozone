@@ -1,6 +1,7 @@
 package Ozone.Commands;
 
 import Atom.Time.Countdown;
+import Ozone.Settings;
 import arc.util.Log;
 import mindustry.Vars;
 
@@ -15,7 +16,6 @@ public class Commands {
 
     public static HashMap<String, Command> commandsList = new HashMap<>();
     private static boolean init = false;
-    private static String prefix = ",";
 
     public static void init() {
         if (init) return;
@@ -26,7 +26,7 @@ public class Commands {
     }
 
     public static boolean call(String message) {
-        if (!message.startsWith(prefix)) return false;
+        if (!message.startsWith(Settings.commandsPrefix)) return false;
         String[] arg = message.replaceFirst(",", "").split(" ");
         if (!commandsList.containsKey(arg[0])) {
             tellUser("Commands not found");
@@ -48,7 +48,7 @@ public class Commands {
 
     public static void help(ArrayList<String> a) {
         StringBuilder sb = new StringBuilder();
-        sb.append("\n").append("Prefix: ").append(prefix).append("\n");
+        sb.append("\n").append("Prefix: ").append(Settings.commandsPrefix).append("\n");
         sb.append("Available Commands:").append("\n");
         for (Map.Entry<String, Command> s : commandsList.entrySet()) {
             sb.append(s.getKey()).append(": ").append(s.getValue().description).append("\n");
