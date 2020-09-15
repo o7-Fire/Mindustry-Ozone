@@ -79,6 +79,7 @@ public class Commands {
 
     }
 
+    //Nexity shitcode revised by Itzbenz
     private volatile static boolean falseVote = false;
     public static void DeceptionKick(ArrayList<String > unused) {
         falseVote = !falseVote;
