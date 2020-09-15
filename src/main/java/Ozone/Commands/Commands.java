@@ -1,7 +1,6 @@
 package Ozone.Commands;
 
 import Atom.Time.Countdown;
-import Ozone.Manifest;
 import Ozone.Settings;
 import arc.util.Log;
 import mindustry.Vars;
@@ -25,6 +24,7 @@ public class Commands {
         if (init) return;
         init = true;
         commandsList.put("help", new Command(Commands::help, "Help desk"));
+        commandsList.put("chaos-kick", new Command(Commands::DeceptionKick, "make hell lose with votekick"));
         commandsList.put("task-move", new Command(Commands::move, "Move like an AI"));
         Log.infoTag("Ozone", "Commands Center Initialized");
     }
@@ -79,33 +79,25 @@ public class Commands {
 
     }
 
-    private static boolean didBypass = false;
-    public static void DeceptionKick() {
-        if (!didBypass) {
-            didBypass = true;
+    private volatile static boolean falseVote = false;
+    public static void DeceptionKick(ArrayList<String > unused) {
+        falseVote = !falseVote;
+        if (falseVote) {
             Thread s1 = new Thread(() -> {
-                while (Vars.net.active())
-                    if (didBypass) {
-                        for (Player target : Groups.player) {
-                            if (!target.name.equals(Vars.player.name)) {
-                                Call.sendChatMessage("/votekick " + target.name);
-                                try {
-                                    Thread.sleep(200);
-                                } catch (Throwable ignored) {
-
-                                }
-                            }
+                while (Vars.net.active() && falseVote)
+                    for (Player target : Groups.player) {
+                        if (!target.name.equals(Vars.player.name)) {
+                            Call.sendChatMessage("/votekick " + target.name);
+                            try { Thread.sleep(200); } catch (Throwable ignored) {}
                         }
-                    } else return; });
+                    }
+            });
             s1.start();
             tellUser("kicking started");
         } else {
-            didBypass = false;
             tellUser("kicking ended");
         }
     }
-
-
 
 
     public static void tellUser(String s) {
