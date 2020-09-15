@@ -2,8 +2,9 @@ package Ozone.Patch;
 
 
 import Atom.Time.Countdown;
+import Atom.Utility.Utility;
 import Ozone.Commands.Commands;
-import Ozone.Manifest;
+import Ozone.Settings;
 import arc.Core;
 import arc.Input;
 import arc.graphics.Color;
@@ -235,16 +236,15 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
     @Override
     public void addMessage(String message, String sender) {
         ChatMessage cm = new ChatMessage(message, sender);
-        if (Manifest.antiSpam) {
+        if (Settings.antiSpam) {
             if (antiSpam.containsKey(sender)) {
                 AntiSpam victim = antiSpam.get(sender);
                 ChatMessage message1 = messages.get(0);
-                String filter = victim.filter(cm.formattedMessage);
+                String filter = victim.filter(message);
                 if (!filter.isEmpty()) {
-                    if (message1.formattedMessage.equals(victim.lastMessage)) messages.remove(0);
+                    if (message1.message.equals(victim.lastMessage)) messages.remove(0);
                     messages.insert(0, new ChatMessage(filter, sender, victim.reasons));
-                }
-                this.messages.insert(0, cm);
+                } else this.messages.insert(0, cm);
             } else {
                 antiSpam.put(sender, new AntiSpam(sender));
                 this.messages.insert(0, cm);
@@ -254,7 +254,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
                     ++this.scrollPos;
                 }
             }
-            antiSpam.get(sender).setLastMessage(cm.formattedMessage);
+            antiSpam.get(sender).setLastMessage(cm.message);
             return;
         }
         this.messages.insert(0, cm);
@@ -267,12 +267,13 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
     }
 
     private static class AntiSpam {
+        public static int maxRepeatingChar = 100;
         public static long rateLimit = 300;
         public final String sender;
         public String lastMessage = "";
         public int lastMessageTimes = 1;
         public String reasons = "";
-        private long lastMessageSended = 0;
+        private long lastMessageSent = 0;
 
         public AntiSpam(String name) {
             sender = name;
@@ -284,14 +285,17 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
                 lastMessageTimes = 1;
                 lastMessage = message;
             }
-            lastMessageSended = System.currentTimeMillis();
+            lastMessageSent = System.currentTimeMillis();
         }
 
         public String filter(String message) {
+            if ((message.length() - Utility.shrinkString(message).length()) > maxRepeatingChar) {
+                reasons = "Duplicate String from: " + message.length() + " to " + Utility.shrinkString(message).length();
+            }
             if (message.equalsIgnoreCase(lastMessage)) {
-                reasons = "Duplicate: " + lastMessageTimes;
-            } else if ((System.currentTimeMillis() - lastMessageSended) > rateLimit) {
-                reasons = "Too Fast: " + Countdown.result(lastMessageSended);
+                reasons = "Spam Last Message: " + lastMessageTimes;
+            } else if ((System.currentTimeMillis() - lastMessageSent) > rateLimit) {
+                reasons = "Too Fast: " + Countdown.result(lastMessageSent);
             } else reasons = "";
 
             return message;
@@ -322,7 +326,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
             if (sender == null) {
                 this.formattedMessage = message;
             } else {
-                this.formattedMessage = "[royal][" + antiSpam + "][coral][[" + sender + "[coral]]:[white] " + message;
+                this.formattedMessage = "[royal][AntiSpam][white]" + antiSpam + "\n[coral][[" + sender + "[coral]]:[white] " + message;
             }
 
         }
