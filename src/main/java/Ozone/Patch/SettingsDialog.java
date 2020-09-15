@@ -31,8 +31,7 @@ public class SettingsDialog extends SettingsMenuDialog {
                     });
                     table.row();
                 } else if (String.class.equals(f.getType())) {
-                    table.label(() -> "String ");
-                    table.labelWrap("@settings." + f.getName());
+                    table.label(() -> Core.bundle.get("String") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name"));
                     table.field(Core.settings.getString("ozone." + f.getName(), (String) f.get(null)), s -> {
                         try {
                             f.set(null, s);
@@ -43,8 +42,7 @@ public class SettingsDialog extends SettingsMenuDialog {
                     });
                     table.row();
                 } else if (int.class.equals(f.getType())) {
-                    table.label(() -> "Integer ");
-                    table.labelWrap("@settings." + f.getName());
+                    table.label(() -> Core.bundle.get("Integer") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name"));
                     table.field(String.valueOf(Core.settings.getInt("ozone." + f.getName(), f.getInt(null))), s -> {
                         try {
                             f.setInt(null, Integer.parseInt(s));
@@ -55,8 +53,7 @@ public class SettingsDialog extends SettingsMenuDialog {
                     });
                     table.row();
                 } else if (long.class.equals(f.getType())) {
-                    table.label(() -> "Long ");
-                    table.labelWrap("@settings." + f.getName());
+                    table.label(() -> Core.bundle.get("Long") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name"));
                     table.field(String.valueOf(Core.settings.getLong("ozone." + f.getName(), f.getLong(null))), s -> {
                         try {
                             f.setLong(null, Long.parseLong(s));
@@ -67,8 +64,7 @@ public class SettingsDialog extends SettingsMenuDialog {
                     });
                     table.row();
                 } else if (float.class.equals(f.getType())) {
-                    table.label(() -> "Float ");
-                    table.label(() -> "@settings." + f.getName());
+                    table.label(() -> Core.bundle.get("Float") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name"));
                     table.field(String.valueOf(Core.settings.getFloat("ozone." + f.getName(), f.getFloat(null))), s -> {
                         try {
                             f.setFloat(null, Float.parseFloat(s));

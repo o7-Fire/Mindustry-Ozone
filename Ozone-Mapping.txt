@@ -63,6 +63,7 @@ Ozone.Commands.Task.Task -> b.a.a.a:
 Ozone.Interface -> b.a:
     arc.struct.ObjectMap bundle -> a
     void registerWords(java.lang.String,java.lang.String) -> a
+    void registerWords(java.lang.String) -> a
     void <clinit>() -> <clinit>
 Ozone.Main -> b.b:
     void init() -> a
@@ -126,15 +127,14 @@ Ozone.Patch.DesktopInput -> b.b.e:
     void lambda$buildPlacementUI$0() -> a
 Ozone.Patch.SettingsDialog -> b.b.f:
     void <init>() -> <init>
-    void lambda$new$9(java.lang.reflect.Field,java.lang.String) -> a
-    java.lang.CharSequence lambda$new$8(java.lang.reflect.Field) -> a
-    java.lang.CharSequence lambda$new$7() -> a
+    void lambda$new$8(java.lang.reflect.Field,java.lang.String) -> a
+    java.lang.CharSequence lambda$new$7(java.lang.reflect.Field) -> a
     void lambda$new$6(java.lang.reflect.Field,java.lang.String) -> b
-    java.lang.CharSequence lambda$new$5() -> b
+    java.lang.CharSequence lambda$new$5(java.lang.reflect.Field) -> b
     void lambda$new$4(java.lang.reflect.Field,java.lang.String) -> c
-    java.lang.CharSequence lambda$new$3() -> c
+    java.lang.CharSequence lambda$new$3(java.lang.reflect.Field) -> c
     void lambda$new$2(java.lang.reflect.Field,java.lang.String) -> d
-    java.lang.CharSequence lambda$new$1() -> d
+    java.lang.CharSequence lambda$new$1(java.lang.reflect.Field) -> d
     void lambda$new$0(java.lang.reflect.Field,boolean) -> a
 Ozone.Settings -> b.c:
     boolean colorPatch -> a

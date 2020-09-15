@@ -19,6 +19,10 @@ public class Interface {
     public synchronized static void registerWords(String key, String value) {
         bundle.put(key, value);
     }
+
+    public synchronized static void registerWords(String key) {
+        bundle.put(key, key);
+    }
 }
 
 
