@@ -63,7 +63,6 @@ Ozone.Commands.Task.Task -> b.a.a.a:
 Ozone.Interface -> b.a:
     arc.struct.ObjectMap bundle -> a
     void registerWords(java.lang.String,java.lang.String) -> a
-    void registerWords(java.lang.String) -> a
     void <clinit>() -> <clinit>
 Ozone.Main -> b.b:
     void init() -> a
@@ -127,15 +126,31 @@ Ozone.Patch.DesktopInput -> b.b.e:
     void lambda$buildPlacementUI$0() -> a
 Ozone.Patch.SettingsDialog -> b.b.f:
     void <init>() -> <init>
-    void lambda$new$8(java.lang.reflect.Field,java.lang.String) -> a
-    java.lang.CharSequence lambda$new$7(java.lang.reflect.Field) -> a
-    void lambda$new$6(java.lang.reflect.Field,java.lang.String) -> b
-    java.lang.CharSequence lambda$new$5(java.lang.reflect.Field) -> b
-    void lambda$new$4(java.lang.reflect.Field,java.lang.String) -> c
-    java.lang.CharSequence lambda$new$3(java.lang.reflect.Field) -> c
-    void lambda$new$2(java.lang.reflect.Field,java.lang.String) -> d
-    java.lang.CharSequence lambda$new$1(java.lang.reflect.Field) -> d
     void lambda$new$0(java.lang.reflect.Field,boolean) -> a
+Ozone.Patch.SettingsDialog$1 -> b.b.g:
+    java.lang.reflect.Field val$f -> a
+    void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
+    void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
+    void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
+    java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
+Ozone.Patch.SettingsDialog$2 -> b.b.h:
+    java.lang.reflect.Field val$f -> a
+    void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
+    void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
+    void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
+    java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
+Ozone.Patch.SettingsDialog$3 -> b.b.i:
+    java.lang.reflect.Field val$f -> a
+    void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
+    void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
+    void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
+    java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
+Ozone.Patch.SettingsDialog$4 -> b.b.j:
+    java.lang.reflect.Field val$f -> a
+    void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
+    void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
+    void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
+    java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
 Ozone.Settings -> b.c:
     boolean colorPatch -> a
     boolean antiSpam -> b

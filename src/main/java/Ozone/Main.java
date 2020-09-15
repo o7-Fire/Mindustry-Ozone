@@ -33,6 +33,7 @@ public class Main {
 
 
     private static void loadSettings() {
+        Core.settings.put("crashreport", false);
         Field[] set = Settings.class.getDeclaredFields();
         for (Field f : set) {
             try {
@@ -52,8 +53,7 @@ public class Main {
                 Log.err(t);
             }
         }
-        Settings.colorPatch = Core.settings.getBool("ozone.colorPatch", Settings.colorPatch);
-        Settings.antiSpam = Core.settings.getBool("ozone.antiSpam", Settings.antiSpam);
+
     }
 
     private static void patch() {

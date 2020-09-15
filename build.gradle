@@ -16,7 +16,7 @@ buildscript{
 plugins {
     id 'java'
 }
-
+apply plugin: 'java-library'
 
 ext {
 
@@ -46,7 +46,7 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
-    implementation atom(":Atomic")
+    api atom(":Atomic")
     //compileOnly atom(":Aindustry")
     compileOnly "com.github.Anuken:Mindustry:$MindustryHash"
 }

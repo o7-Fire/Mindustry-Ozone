@@ -12,8 +12,8 @@ import java.lang.reflect.Field;
 public class SettingsDialog extends SettingsMenuDialog {
     public SettingsDialog() {
         super();
-        SettingsTable table = Reflect.getField(SettingsMenuDialog.class, "game", this);
-        if (table == null) {
+        SettingsTable gameTable = Reflect.getField(SettingsMenuDialog.class, "game", this);
+        if (gameTable == null) {
             Log.errTag("Ozone", "Can't patch settings");
             return;
         }
@@ -21,7 +21,7 @@ public class SettingsDialog extends SettingsMenuDialog {
         for (Field f : set) {
             try {
                 if (boolean.class.equals(f.getType())) {
-                    table.checkPref("ozone." + f.getName(), f.getBoolean(null), s -> {
+                    gameTable.checkPref("ozone." + f.getName(), f.getBoolean(null), s -> {
                         try {
                             f.set(null, s);
                             Core.settings.put("ozone." + f.getName(), s);
@@ -29,51 +29,88 @@ public class SettingsDialog extends SettingsMenuDialog {
                             Vars.ui.showException(e);
                         }
                     });
-                    table.row();
+                    gameTable.row();
                 } else if (String.class.equals(f.getType())) {
-                    table.label(() -> Core.bundle.get("String") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name"));
-                    table.field(Core.settings.getString("ozone." + f.getName(), (String) f.get(null)), s -> {
-                        try {
-                            f.set(null, s);
-                            Core.settings.put("ozone." + f.getName(), s);
-                        } catch (IllegalAccessException e) {
-                            Vars.ui.showException(e);
+                    gameTable.pref(new SettingsTable.Setting() {
+                        @Override
+                        public void add(SettingsTable settingsTable) {
+                            try {
+                                settingsTable.label(() -> Core.bundle.get("String") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name")).pad(6.0F).left();
+                                settingsTable.field(Core.settings.getString("ozone." + f.getName(), (String) f.get(null)), s -> {
+                                    try {
+                                        f.set(null, s);
+                                        Core.settings.put("ozone." + f.getName(), s);
+                                    } catch (Throwable e) {
+                                        Vars.ui.showException(e);
+                                    }
+                                }).pad(6.0F).left();
+                                settingsTable.row();
+                            } catch (Throwable e) {
+                                Vars.ui.showException(e);
+                            }
                         }
                     });
-                    table.row();
+
                 } else if (int.class.equals(f.getType())) {
-                    table.label(() -> Core.bundle.get("Integer") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name"));
-                    table.field(String.valueOf(Core.settings.getInt("ozone." + f.getName(), f.getInt(null))), s -> {
-                        try {
-                            f.setInt(null, Integer.parseInt(s));
-                            Core.settings.put("ozone." + f.getName(), s);
-                        } catch (IllegalAccessException e) {
-                            Vars.ui.showException(e);
+                    gameTable.pref(new SettingsTable.Setting() {
+                        @Override
+                        public void add(SettingsTable settingsTable) {
+                            try {
+                                settingsTable.label(() -> Core.bundle.get("Integer") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name")).pad(6.0F).left();
+                                settingsTable.field(String.valueOf(Core.settings.getInt("ozone." + f.getName(), f.getInt(null))), s -> {
+                                    try {
+                                        f.setInt(null, Integer.parseInt(s));
+                                        Core.settings.put("ozone." + f.getName(), s);
+                                    } catch (Throwable e) {
+                                        Vars.ui.showException(e);
+                                    }
+                                }).pad(6.0F).left();
+                                settingsTable.row();
+                            } catch (Throwable e) {
+                                Vars.ui.showException(e);
+                            }
                         }
                     });
-                    table.row();
                 } else if (long.class.equals(f.getType())) {
-                    table.label(() -> Core.bundle.get("Long") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name"));
-                    table.field(String.valueOf(Core.settings.getLong("ozone." + f.getName(), f.getLong(null))), s -> {
-                        try {
-                            f.setLong(null, Long.parseLong(s));
-                            Core.settings.put("ozone." + f.getName(), s);
-                        } catch (IllegalAccessException e) {
-                            Vars.ui.showException(e);
+                    gameTable.pref(new SettingsTable.Setting() {
+                        @Override
+                        public void add(SettingsTable settingsTable) {
+                            try {
+                                settingsTable.label(() -> Core.bundle.get("Long") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name")).pad(6.0F).left();
+                                settingsTable.field(String.valueOf(Core.settings.getLong("ozone." + f.getName(), f.getLong(null))), s -> {
+                                    try {
+                                        f.setLong(null, Long.parseLong(s));
+                                        Core.settings.put("ozone." + f.getName(), s);
+                                    } catch (Throwable e) {
+                                        Vars.ui.showException(e);
+                                    }
+                                }).pad(6.0F).left();
+                                settingsTable.row();
+                            } catch (Throwable e) {
+                                Vars.ui.showException(e);
+                            }
                         }
                     });
-                    table.row();
                 } else if (float.class.equals(f.getType())) {
-                    table.label(() -> Core.bundle.get("Float") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name"));
-                    table.field(String.valueOf(Core.settings.getFloat("ozone." + f.getName(), f.getFloat(null))), s -> {
-                        try {
-                            f.setFloat(null, Float.parseFloat(s));
-                            Core.settings.put("ozone." + f.getName(), s);
-                        } catch (IllegalAccessException e) {
-                            Vars.ui.showException(e);
+                    gameTable.pref(new SettingsTable.Setting() {
+                        @Override
+                        public void add(SettingsTable settingsTable) {
+                            try {
+                                settingsTable.label(() -> Core.bundle.get("Float") + " " + Core.bundle.get("setting.ozone." + f.getName() + ".name")).pad(6.0F).left();
+                                settingsTable.field(String.valueOf(Core.settings.getFloat("ozone." + f.getName(), f.getFloat(null))), s -> {
+                                    try {
+                                        f.setFloat(null, Float.parseFloat(s));
+                                        Core.settings.put("ozone." + f.getName(), s);
+                                    } catch (Throwable e) {
+                                        Vars.ui.showException(e);
+                                    }
+                                }).pad(6.0F).left();
+                                settingsTable.row();
+                            } catch (Throwable e) {
+                                Vars.ui.showException(e);
+                            }
                         }
                     });
-                    table.row();
                 }
             } catch (Throwable t) {
                 Log.errTag("Ozone-Settings", "Couldn't create settings for: ozone." + f.getName());
