@@ -1,72 +1,91 @@
 package Ozone.Commands;
 
-import Atom.Reflect.Reflect;
-import arc.util.CommandHandler;
+import Atom.Time.Countdown;
 import arc.util.Log;
 import mindustry.Vars;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class Commands {
 
-    public static void init(CommandHandler c){
-        c.register("task", "AI task", Commands::task);
+    public static HashMap<String, Command> commandsList = new HashMap<>();
+    private static boolean init = false;
+    private static String prefix = ",";
+
+    public static void init() {
+        if (init) return;
+        init = true;
+        commandsList.put("help", new Command(Commands::help, "Help desk"));
+        commandsList.put("task-move", new Command(Commands::move, "Move like an AI"));
         Log.infoTag("Ozone", "Commands Center Initialized");
     }
-    public static void task(String[] arg){
-        if(arg.length == 0){
-            tellUser("Task commands is not specified");
+
+    public static boolean call(String message) {
+        if (!message.startsWith(prefix)) return false;
+        String[] arg = message.replaceFirst(",", "").split(" ");
+        if (!commandsList.containsKey(arg[0])) {
+            tellUser("Commands not found");
             help(new ArrayList<>());
+            return false;
+        }
+        Command comm = commandsList.get(arg[0]);
+        ArrayList<String> args;
+        if (message.contains(" ")) {
+            message = message.replaceFirst(arg[0], "").replaceFirst(" ", "");
+            arg = message.split(" ");
+            args = new ArrayList<>(Arrays.asList(arg));
+        } else {
+            args = new ArrayList<>();
+        }
+        comm.method.accept(args);
+        return true;
+    }
+
+    public static void help(ArrayList<String> a) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n").append("Prefix: ").append(prefix).append("\n");
+        sb.append("Available Commands:").append("\n");
+        for (Map.Entry<String, Command> s : commandsList.entrySet()) {
+            sb.append(s.getKey()).append(": ").append(s.getValue().description).append("\n");
+        }
+        tellUser(sb.toString());
+    }
+
+    public static void move(ArrayList<String> s) {
+        if (s.size() < 2) {
+            tellUser("Not enough arguments");
+            tellUser("usage: " + "task-move x(coordinate) y(coordinate)");
             return;
         }
-       ArrayList<Method> methods = Reflect.findDeclaredMethods(Commands.class, s -> s.getName().startsWith(arg[0]));
-        if(methods.isEmpty()){
-            tellUser("Task not found");
-            help(new ArrayList<>());
-
-        }else {
-            try {
-                ArrayList<String> a = new ArrayList<>();
-                for(String s : arg){
-                    if(s.equals(arg[0]))continue;
-                    a.add(s);
-                }
-                for (Method m : methods) {
-                    if(m.getTypeParameters().length != 1) continue;
-                    if(!m.getTypeParameters()[0].getTypeName().equals(ArrayList.class.getTypeName()))continue;
-                    m.invoke(Commands.class, a);
-                    return;
-                }
-                tellUser("Task not found");
-                tellUser("Possible task: " + methods.toString());
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                tellUser(e.toString());
-            }
+        try {
+            int x = Integer.parseInt(s.get(0));
+            int y = Integer.parseInt(s.get(1));
+            long start = System.currentTimeMillis();
+            PlayerInterface.moveTo(x, y, a -> {
+                tellUser("Reached in " + Countdown.result(start, TimeUnit.SECONDS));
+            });
+        } catch (NumberFormatException f) {
+            tellUser("Failed to parse integer, are you sure that argument was integer ?");
         }
-    }
-
-    public static void help(ArrayList<String> a){
-        ArrayList<Method> methods = Reflect.findDeclaredMethods(Commands.class, s ->{
-            TypeVariable<Method>[] h =  s.getTypeParameters();
-            if(h.length == 0)return false;
-            else if(h.length == 1){
-              return h[0].getTypeName().equals(ArrayList.class.getTypeName());
-            }
-            return false;
-        });
-        tellUser("Available commands");
-        for(Method m : methods)
-            tellUser("task " + m.getName());
-    }
-
-    public static void move(ArrayList<String> s){
 
     }
 
-    public static void tellUser(String s){
+    public static void tellUser(String s) {
         Vars.ui.chatfrag.addMessage(s, "[white]#[royal]Ozone[white]]");
+    }
+
+    public static class Command {
+        public final Consumer<ArrayList<String>> method;
+        public final String description;
+
+        public Command(Consumer<ArrayList<String>> method, String description) {
+            this.method = method;
+            this.description = description;
+        }
     }
 }

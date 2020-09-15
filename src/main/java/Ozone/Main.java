@@ -1,7 +1,6 @@
 package Ozone;
 
 import Atom.Random;
-import Ozone.Commands.Commands;
 import Ozone.Commands.PlayerInterface;
 import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
@@ -10,7 +9,6 @@ import Ozone.UI.OzoneMenu;
 import arc.Core;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
-import arc.util.CommandHandler;
 import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
@@ -30,9 +28,6 @@ public class Main {
 
     }
 
-    public static void registerClientCommands(CommandHandler handler) {
-        Commands.init(handler);
-    }
 
     private static void loadSettings() {
         Manifest.colorPatch = Core.settings.getBool("ozone.colorPatch", Manifest.colorPatch);
