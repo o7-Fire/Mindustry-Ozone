@@ -77,8 +77,8 @@ public class Commands {
     }
 
     public static void tellUser(String s) {
-        if(Manifest.menu.isShown())
-            Log.infoTag("[Ozone]", s);
+        if(Vars.ui.scriptfrag.shown())
+            Log.infoTag("Ozone", s);
         else
             Vars.ui.chatfrag.addMessage("[white][[royal]Ozone[white]]: " + s, null);
     }
