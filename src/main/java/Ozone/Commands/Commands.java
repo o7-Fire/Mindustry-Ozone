@@ -107,6 +107,17 @@ public class Commands {
 			}
         }
     }
+	
+    private void hackusate() {
+	    while (true) {
+	  	  for (Player target : playerGroup.all()) {
+			    if (target.name != player.name) {
+				    Call.sendChatMessage(target.name + "is griefing");
+				    break;
+		   	 }
+	    	}
+	    }
+    }
 
     public static void tellUser(String s) {
         if(Manifest.menu.isShown())
