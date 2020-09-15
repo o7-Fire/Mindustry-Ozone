@@ -300,8 +300,6 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
 
             return message;
         }
-
-
     }
 
     private static class ChatMessage {
