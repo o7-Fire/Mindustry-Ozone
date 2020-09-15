@@ -71,9 +71,12 @@ public class Main {
                 }
             Core.bundle.setProperties(modified);
             Log.infoTag("Ozone", "Patching translation done: " + Time.elapsed());
+            Log.infoTag("Ozone", "Patching DesktopInput");
             Vars.control.input = new DesktopInput();
+            Log.infoTag("Ozone", "Patching Settings");
             Vars.ui.settings = new SettingsDialog();
-            Vars.ui.chatfrag = new ChatFragment();
+            Log.infoTag("Ozone", "Patching ChatFragment");
+            //Vars.ui.chatfrag = new ChatFragment();
             Log.infoTag("Ozone", "Patching Complete");
         } catch (Throwable t) {
             Log.infoTag("Ozone", "Patch failed");
