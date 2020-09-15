@@ -124,7 +124,8 @@ Ozone.Settings -> b.d:
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 Ozone.UI.OzoneMenu -> b.c.a:
-    java.lang.String commands -> a
+    arc.scene.ui.TextField commandsField -> a
+    java.lang.String commands -> b
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
     void setup() -> a
     void lambda$setup$4(arc.scene.ui.layout.Table) -> a

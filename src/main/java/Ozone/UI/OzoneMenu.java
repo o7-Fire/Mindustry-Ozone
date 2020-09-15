@@ -23,6 +23,8 @@ public class OzoneMenu extends BaseDialog {
                 try {
                     if (!Vars.ui.hudfrag.shown())
                         Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
+                    if(Vars.ui.scriptfrag.shown())
+                        Vars.ui.scriptfrag.toggle();
                 } catch (Throwable ignored) {
                 }
             }
@@ -47,6 +49,8 @@ public class OzoneMenu extends BaseDialog {
         try {
             if (Vars.ui.hudfrag.shown())
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
+            if(!Vars.ui.scriptfrag.shown())
+                Vars.ui.scriptfrag.toggle();
         } catch (Throwable ignored) {
         }
     }

@@ -1,6 +1,7 @@
 package Ozone.Commands;
 
 import Atom.Time.Countdown;
+import Ozone.Manifest;
 import Ozone.Settings;
 import arc.util.Log;
 import mindustry.Vars;
@@ -76,8 +77,11 @@ public class Commands {
     }
 
     public static void tellUser(String s) {
-        s = "[white]#[royal]Ozone[white]]: " + s;
-        Vars.ui.chatfrag.addMessage(s, null);
+        s = "[white][[royal]Ozone[white]]: " + s;
+        if(Manifest.menu.isShown())
+            Vars.ui.scriptfrag.addMessage(s);
+        else
+            Vars.ui.chatfrag.addMessage(s, null);
     }
 
     public static class Command {
