@@ -75,6 +75,7 @@ public class Commands {
             });
         } catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");
+            Vars.ui.showException(f);
         }
 
     }
