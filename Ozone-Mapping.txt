@@ -1,7 +1,7 @@
 Atom.Reflect.Reflect -> a.a.a:
+    Ozone.UI.OzoneMenu menu -> a
     java.lang.Object getField(java.lang.Class,java.lang.String,java.lang.Object) -> a
-    java.util.ArrayList findDeclaredField(java.lang.Class,Atom.Struct.Filter) -> b
-    java.util.ArrayList findDeclaredMethods(java.lang.Class,Atom.Struct.Filter) -> a
+    java.util.ArrayList findDeclaredField(java.lang.Class,Atom.Struct.Filter) -> a
     boolean lambda$getField$0(java.lang.String,java.lang.reflect.Field) -> a
 Atom.Struct.Filter -> a.b.a:
     boolean accept(java.lang.Object) -> accept
@@ -9,16 +9,7 @@ Main.Ozone -> Main.Ozone:
     void <init>() -> <init>
     void init() -> init
     void loadContent() -> loadContent
-    void registerClientCommands(arc.util.CommandHandler) -> registerClientCommands
-Ozone.Commands.Commands -> b.a.a:
-    void <init>() -> <init>
-    void init(arc.util.CommandHandler) -> a
-    void task(java.lang.String[]) -> a
-    void help$6ba92955() -> a
-    void tellUser(java.lang.String) -> a
-    boolean lambda$help$1(java.lang.reflect.Method) -> a
-    boolean lambda$task$0(java.lang.String[],java.lang.reflect.Method) -> a
-Ozone.Commands.PlayerInterface -> b.a.b:
+Ozone.Commands.PlayerInterface -> b.a.a:
     boolean init -> a
     arc.struct.Queue taskQueue -> b
     void init() -> a
@@ -35,18 +26,31 @@ Ozone.Interface -> b.a:
     void <clinit>() -> <clinit>
 Ozone.Main -> b.b:
     void init() -> a
-Ozone.Manifest -> b.c:
-    Ozone.UI.OzoneMenu menu -> a
-    boolean colorPatch -> b
-    void <clinit>() -> <clinit>
+    void patch() -> b
 Ozone.Patch.DesktopInput -> b.b.a:
     void <init>() -> <init>
     void buildPlacementUI(arc.scene.ui.layout.Table) -> buildPlacementUI
     void lambda$buildPlacementUI$0() -> a
 Ozone.Patch.SettingsDialog -> b.b.b:
     void <init>() -> <init>
+    void lambda$new$9(java.lang.reflect.Field,java.lang.String) -> a
+    java.lang.CharSequence lambda$new$8(java.lang.reflect.Field) -> a
+    java.lang.CharSequence lambda$new$7() -> a
+    void lambda$new$6(java.lang.reflect.Field,java.lang.String) -> b
+    java.lang.CharSequence lambda$new$5() -> b
+    void lambda$new$4(java.lang.reflect.Field,java.lang.String) -> c
+    java.lang.CharSequence lambda$new$3() -> c
+    void lambda$new$2(java.lang.reflect.Field,java.lang.String) -> d
+    java.lang.CharSequence lambda$new$1() -> d
+    void lambda$new$0(java.lang.reflect.Field,boolean) -> a
+Ozone.Settings -> b.c:
+    boolean colorPatch -> a
+    boolean antiSpam -> b
+    void <init>() -> <init>
+    void <clinit>() -> <clinit>
 Ozone.UI.OzoneMenu -> b.c.a:
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
+    void setup() -> a
 javassist.ByteArrayClassPath -> javassist.ByteArrayClassPath:
     java.lang.String classname -> classname
     byte[] classfile -> classfile

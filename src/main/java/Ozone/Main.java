@@ -2,6 +2,7 @@ package Ozone;
 
 import Atom.Random;
 import Ozone.Commands.PlayerInterface;
+import Ozone.Patch.ChatFragment;
 import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
@@ -72,7 +73,7 @@ public class Main {
             Log.infoTag("Ozone", "Patching translation done: " + Time.elapsed());
             Vars.control.input = new DesktopInput();
             Vars.ui.settings = new SettingsDialog();
-
+            Vars.ui.chatfrag = new ChatFragment();
             Log.infoTag("Ozone", "Patching Complete");
         } catch (Throwable t) {
             Log.infoTag("Ozone", "Patch failed");
