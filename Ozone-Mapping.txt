@@ -1,4 +1,7 @@
 Atom.Reflect.Reflect -> a.a.a:
+    java.lang.Object claszObject -> b
+    java.lang.Class loadC -> c
+    java.net.URLClassLoader classLoader -> d
     Ozone.UI.JavaEditor javaEditor -> a
     java.lang.Object getField(java.lang.Class,java.lang.String,java.lang.Object) -> a
     java.lang.reflect.Method getMethod(java.lang.Class,java.lang.String,java.lang.Object) -> b
@@ -7,11 +10,14 @@ Atom.Reflect.Reflect -> a.a.a:
     boolean lambda$getMethod$1(java.lang.String,java.lang.reflect.Method) -> a
     boolean lambda$getField$0(java.lang.String,java.lang.reflect.Field) -> a
     void <init>(java.io.File) -> <init>
+    void load(java.lang.String) -> a
+    void invokeMethod(java.lang.String) -> b
+    java.lang.reflect.Method getMethod(java.lang.String) -> c
 Atom.Runtime.RuntimeSource -> a.b.a:
-    java.io.File workingDir -> a
-    java.util.ArrayList imports -> b
-    java.lang.String packages -> c
-    java.lang.String name -> d
+    java.io.File workingDir -> c
+    java.util.ArrayList imports -> d
+    java.lang.String packages -> a
+    java.lang.String name -> b
     java.lang.String code -> e
     java.io.File sourceFile -> f
     void <init>(java.io.File) -> <init>
