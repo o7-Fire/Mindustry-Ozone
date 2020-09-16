@@ -23,8 +23,7 @@ public class OzoneMenu extends BaseDialog {
                 try {
                     if (!Vars.ui.hudfrag.shown())
                         Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
-                } catch (Throwable ignored) {
-                }
+                } catch (Throwable ignored) { }
             }
         });
         this.shown(this::setup);
@@ -36,7 +35,7 @@ public class OzoneMenu extends BaseDialog {
         cont.clear();
         cont.table((s) -> {
             s.left();
-            s.label(() -> "Commands: ");
+            s.label(() -> Core.bundle.get("Commands")+": ");
             commandsField = s.field(commands, (res) -> commands = res).fillX().growX().get();
             s.button(Icon.zoom, () -> {
                 //Commands.call(Settings.commandsPrefix + commands);
@@ -45,6 +44,15 @@ public class OzoneMenu extends BaseDialog {
                 commandsField.clearText();
             });
         }).fillX().padBottom(6.0F);
+        cont.top();
+        cont.button(Core.bundle.get("ozone.javaEditor"), Icon.pencil, () ->{
+            Core.app.post(this::hide);
+            try {
+                if (!Vars.ui.hudfrag.shown())
+                    Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
+            } catch (Throwable ignored) { }
+
+        });
         try {
             if (Vars.ui.hudfrag.shown())
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);

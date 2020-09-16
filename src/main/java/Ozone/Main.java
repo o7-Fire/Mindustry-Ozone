@@ -6,6 +6,7 @@ import Ozone.Commands.PlayerInterface;
 import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
+import Ozone.UI.JavaEditor;
 import Ozone.UI.OzoneMenu;
 import arc.Core;
 import arc.scene.ui.Dialog;
@@ -99,7 +100,8 @@ public class Main {
             }
         };
         ozoneStyle.stageBackground = Styles.none;
-        Manifest.menu = new OzoneMenu("Ozone HUD", ozoneStyle);
+        Manifest.menu = new OzoneMenu(Core.bundle.get("ozone.hud"), ozoneStyle);
+        Manifest.javaEditor = new JavaEditor(Core.bundle.get("ozone.javaEditor"), ozoneStyle);
 
     }
 

@@ -7,7 +7,9 @@ public class Translation {
         registerWords("setting.ozone.colorPatch.name", "Enable Colorized Text");
         registerWords("setting.ozone.commandsPrefix.name", "Commands Prefix");
         registerWords("ozone.menu", "Ozone Menu");
-        String[] singlet1 = {"String", "Integer", "Float", "Long", "Boolean"};
+        registerWords("ozone.hud", "Ozone HUD");
+        registerWords("ozone.javaEditor", "Java Executor");
+        String[] singlet1 = {"String", "Integer", "Float", "Long", "Boolean", "Commands"};
         for (String s : singlet1)
             registerWords(s, "[" + s + "]");
     }
