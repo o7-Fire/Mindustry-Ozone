@@ -74,9 +74,15 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
         //libraryjars "${System.getProperty('java.home')}/jmods/....."
     }
     libraryjars files(configurations.compile.collect())
-    libraryjars "libs"
+    libraryjars "libs/dependenciesLibrary"
     libraryjars "E:\\App\\.gradle\\caches\\modules-2\\files-2.1", jarfilter: '!**.jar'
 
     injars "build/libs/${project.archivesBaseName}.jar"
     outjars "build/libs/${project.archivesBaseName}.out.jar"
 }
+task copyRuntimeLibs(type: Copy) {
+    println 'copying dependency'
+    from project.configurations.runtimeClasspath
+    into "libs/dependenciesLibrary"
+}
+build.dependsOn(copyRuntimeLibs)

@@ -3,6 +3,7 @@ package Ozone.UI;
 
 import Atom.Reflect.Reflect;
 import Ozone.Commands.Commands;
+import Ozone.Manifest;
 import Ozone.Settings;
 import arc.Core;
 import arc.input.KeyCode;
@@ -44,13 +45,13 @@ public class OzoneMenu extends BaseDialog {
                 commandsField.clearText();
             });
         }).fillX().padBottom(6.0F);
-        cont.top();
         cont.button(Core.bundle.get("ozone.javaEditor"), Icon.pencil, () ->{
             Core.app.post(this::hide);
             try {
                 if (!Vars.ui.hudfrag.shown())
                     Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
             } catch (Throwable ignored) { }
+            Manifest.javaEditor.show();
 
         });
         try {
