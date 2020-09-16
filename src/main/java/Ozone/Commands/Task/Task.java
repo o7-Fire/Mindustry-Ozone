@@ -1,28 +1,51 @@
 package Ozone.Commands.Task;
 
+import Ozone.Commands.Commands;
+
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public abstract class Task {
-    private ArrayList<Consumer<Void>> onTaskCompleted = new ArrayList<>();
+    protected ArrayList<Consumer<Object>> onTaskCompleted = new ArrayList<>();
+    protected int tick = 1;
+    protected int currentTick = 0;
 
-    public String getName(){
-       return this.getClass().getSimpleName();
+    public String getName() {
+        return this.getClass().getSimpleName();
     }
 
-    public void onTaskCompleted(Consumer<Void> v){
+    public void onTaskCompleted(Consumer<Object> v) {
         onTaskCompleted.add(v);
     }
 
-    public void taskCompleted(){
-
+    public void tellUser(String s) {
+        Commands.tellUser(s);
     }
 
-    public boolean isCompleted(){
-        return onTaskCompleted == null;
+    public void taskCompleted() {
+        for (Consumer<Object> s : onTaskCompleted)
+            s.accept(new Object());
     }
 
-    public void update(){
+    protected void setTick(int tick1) {
+        tick = tick1;
+    }
+
+    protected boolean tick() {
+        if (currentTick < tick) {
+            currentTick++;
+            return true;
+        } else {
+            currentTick = 0;
+            return false;
+        }
+    }
+
+    public boolean isCompleted() {
+        return true;
+    }
+
+    public void update() {
 
     }
 }

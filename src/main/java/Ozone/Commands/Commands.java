@@ -1,8 +1,6 @@
 package Ozone.Commands;
 
 import Atom.Time.Countdown;
-import Atom.Utility.Utility;
-import Ozone.Settings;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.gen.Call;
@@ -27,6 +25,7 @@ public class Commands {
         commandsList.put("help", new Command(Commands::help, "Help desk"));
         commandsList.put("chaos-kick", new Command(Commands::DeceptionKick, "make hell lose with votekick"));
         commandsList.put("task-move", new Command(Commands::move, "Move like an AI"));
+        commandsList.put("info-pos", new Command(Commands::pos, "Get current pos"));
         Log.infoTag("Ozone", "Commands Center Initialized");
     }
 
@@ -49,6 +48,11 @@ public class Commands {
         }
         comm.method.accept(args);
         return true;
+    }
+
+    public static void pos(ArrayList<String> a) {
+        tellUser("Player x,y: " + Vars.player.x + ", " + Vars.player.y);
+        tellUser("Player tile x,y: " + Vars.player.tileX() + ", " + Vars.player.tileY());
     }
 
     public static void help(ArrayList<String> a) {
@@ -107,7 +111,7 @@ public class Commands {
         if(Vars.ui.scriptfrag.shown())
             Log.infoTag("Ozone", s);
         else
-            Vars.ui.chatfrag.addMessage("[white][Ozone[white]]: " + s, null);
+            Vars.ui.chatfrag.addMessage("[white][[royal]Ozone[white]]: " + s, null);
     }
 
     public static class Command {
