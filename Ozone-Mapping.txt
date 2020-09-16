@@ -1,4 +1,5 @@
 Atom.Reflect.Reflect -> a.a.a:
+    Ozone.UI.JavaEditor javaEditor -> a
     java.lang.Object getField(java.lang.Class,java.lang.String,java.lang.Object) -> a
     java.lang.reflect.Method getMethod(java.lang.Class,java.lang.String,java.lang.Object) -> b
     java.util.ArrayList findMethod(java.lang.Class,Atom.Struct.Filter,java.lang.Object) -> a

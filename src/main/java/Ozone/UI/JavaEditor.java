@@ -62,7 +62,7 @@ public class JavaEditor extends BaseDialog {
     void setup() {
         cont.clear();
         label = null;
-        if (rc == null) {
+        if (rs == null) {
             AtomicReference<String> name = new AtomicReference<>();
             AtomicReference<String> packages = new AtomicReference<>();
             Pattern pattern = Pattern.compile(" [~#@*+%{}<>\\[\\]|\"\\_^]");
@@ -70,10 +70,11 @@ public class JavaEditor extends BaseDialog {
             name.set("Test");
             Table table = new Table();
             table.add("Class Name: ");
-            table.field(name.get(), name::set);
+            table.field(name.get(), name::set).growX();
             table.row();
             table.add("Package: ");
-            table.field(packages.get(), packages::set);
+            table.field(packages.get(), packages::set).growX();
+            table.row();
             table.button("save", Styles.clearPartialt, () -> {
                 if (name.get().isEmpty())
                     Vars.ui.showInfo("Class name must not empty");
@@ -88,7 +89,7 @@ public class JavaEditor extends BaseDialog {
                     table.clear();
                     setup();
                 }
-            });
+            }).size(Core.graphics.getWidth() / 8, Core.graphics.getHeight() / 12);
             cont.row();
             cont.add(table);
         } else {
