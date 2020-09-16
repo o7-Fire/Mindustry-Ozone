@@ -12,13 +12,15 @@ Atom.Runtime.RuntimeSource -> a.b.a:
     java.util.ArrayList imports -> b
     java.lang.String packages -> c
     java.lang.String name -> d
-    java.io.File sourceFile -> e
+    java.lang.String code -> e
+    java.io.File sourceFile -> f
     void <init>(java.io.File) -> <init>
     void <init>(java.lang.String,java.lang.String) -> <init>
     void <init>() -> <init>
     void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
     void AssignSourceCode(java.lang.String) -> a
     Atom.Reflect.Reflect compile$761218c3(java.io.OutputStream) -> a
+    java.lang.String getString() -> a
     void <clinit>() -> <clinit>
 Atom.Struct.Filter -> a.c.a:
     boolean accept(java.lang.Object) -> accept
@@ -154,18 +156,20 @@ Ozone.UI.JavaEditor -> b.c.a:
     void lambda$setup$1(arc.files.Fi) -> b
     void lambda$setup$0(java.util.concurrent.atomic.AtomicReference,java.util.concurrent.atomic.AtomicReference,java.util.regex.Pattern,arc.scene.ui.layout.Table) -> a
 Ozone.UI.JavaEditor$1 -> b.c.b:
-    void <init>(Ozone.UI.JavaEditor) -> <init>
+    java.lang.StringBuilder val$sb -> a
+    void <init>(Ozone.UI.JavaEditor,java.lang.StringBuilder) -> <init>
     void write(int) -> write
 Ozone.UI.OzoneMenu -> b.c.c:
     arc.scene.ui.TextField commandsField -> a
     java.lang.String commands -> b
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
-    void setup() -> a
-    void lambda$setup$5() -> b
+    void hide() -> a
+    void setup() -> b
+    void lambda$setup$5() -> c
     void lambda$setup$4(arc.scene.ui.layout.Table) -> a
-    void lambda$setup$3() -> c
+    void lambda$setup$3() -> d
     void lambda$setup$2(java.lang.String) -> a
-    java.lang.CharSequence lambda$setup$1() -> d
+    java.lang.CharSequence lambda$setup$1() -> e
     void lambda$new$0(arc.input.KeyCode) -> a
 com.google.common.annotations.Beta -> com.google.common.annotations.Beta:
 com.google.common.annotations.GwtCompatible -> com.google.common.annotations.GwtCompatible:

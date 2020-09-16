@@ -21,6 +21,7 @@ import mindustry.ui.dialogs.BaseDialog;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,17 +55,27 @@ public class JavaEditor extends BaseDialog {
     }
 
     void Run() {
+        StringBuilder sb = new StringBuilder();
         try {
         rs.AssignSourceCode(a.getText().replace("\r", "\n"));
-        rs.compile(new OutputStream() {
+        rc = rs.compile(new OutputStream() {
                 @Override
                 public void write(int b) {
-
+                    sb.append((char) b);
                 }
         });
         setup();
         } catch (Throwable t) {
+            messages.add(sb.toString());
            Vars.ui.showException("Compiler Error", t);
+        }
+        try{
+            rc.load(rs.packages + "." + rs.name);
+            rc.invokeMethod("run");
+        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+            Vars.ui.showException("Error", e);
+        } catch (NoSuchMethodException | ClassNotFoundException  e) {
+           Vars.ui.showErrorMessage("\"run\" method not found in class: " + rs.packages + "." + rs.name);
         }
     }
 
@@ -124,8 +135,13 @@ public class JavaEditor extends BaseDialog {
                     Log.err(ignored.getMessage());
                     Vars.ui.showException(ignored);
                 }
-            else
-                a = new TextArea(rs.toString().replace("\n", "\r"));
+            else {
+                try {
+                    a = new TextArea(rs.getString().replace("\n", "\r"));
+                }catch (FormatterException f){
+                    Vars.ui.showException("Formatter Err", f);
+                }
+            }
             label = new Label("");
             label.setStyle(new Label.LabelStyle(label.getStyle()));
             label.getStyle().font = Fonts.def;
