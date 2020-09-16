@@ -101,7 +101,7 @@ public class Main {
         };
         ozoneStyle.stageBackground = Styles.none;
         Manifest.menu = new OzoneMenu(Core.bundle.get("ozone.hud"), ozoneStyle);
-        Manifest.javaEditor = new JavaEditor(Core.bundle.get("ozone.javaEditor"), ozoneStyle);
+        Manifest.javaEditor = new JavaEditor(Core.bundle.get("ozone.javaEditor"), Styles.defaultDialog);
 
     }
 
