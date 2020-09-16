@@ -7,6 +7,7 @@ import Ozone.Manifest;
 import Ozone.Settings;
 import arc.Core;
 import arc.input.KeyCode;
+import arc.scene.Action;
 import arc.scene.ui.TextField;
 import mindustry.Vars;
 import mindustry.gen.Icon;
@@ -21,11 +22,7 @@ public class OzoneMenu extends BaseDialog {
         this.keyDown((key) -> {
             if (key == KeyCode.escape || key == KeyCode.back) {
                 Core.app.post(this::hide);
-                try {
-                    if (!Vars.ui.hudfrag.shown())
-                        Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
-                } catch (Throwable ignored) { }
-            }else if(key == KeyCode.enter){
+              }else if(key == KeyCode.enter){
                 Commands.call(commands);
                 commands = "";
                 commandsField.clearText();
@@ -33,6 +30,13 @@ public class OzoneMenu extends BaseDialog {
         });
         this.shown(this::setup);
         this.onResize(this::setup);
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+        try { if (!Vars.ui.hudfrag.shown()) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag); } catch (Throwable ignored) { }
+
     }
 
     public void setup() {
@@ -58,10 +62,6 @@ public class OzoneMenu extends BaseDialog {
             } catch (Throwable ignored) { }
             Manifest.javaEditor.show();
         }).growX();
-        try {
-            if (Vars.ui.hudfrag.shown())
-                Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
-        } catch (Throwable ignored) {
-        }
+        try { if (Vars.ui.hudfrag.shown()) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag); } catch (Throwable ignored) { }
     }
 }

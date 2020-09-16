@@ -1,8 +1,11 @@
 package Ozone.UI;
 
+import Atom.Reflect.Reflect;
 import Atom.Runtime.RuntimeClass;
 import Atom.Runtime.RuntimeSource;
+import Ozone.Commands.Commands;
 import arc.Core;
+import arc.input.KeyCode;
 import arc.scene.ui.Label;
 import arc.scene.ui.TextArea;
 import arc.scene.ui.layout.Table;
@@ -44,6 +47,12 @@ public class JavaEditor extends BaseDialog {
         addColor();
     }
 
+    @Override
+    public void hide() {
+        super.hide();
+        try { if (!Vars.ui.hudfrag.shown()) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag); } catch (Throwable ignored) { }
+    }
+
     void Run() {
         try {
         rs.AssignSourceCode(a.getText().replace("\r", "\n"));
@@ -60,6 +69,8 @@ public class JavaEditor extends BaseDialog {
     }
 
     void setup() {
+        try { if (Vars.ui.hudfrag.shown()) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag); } catch (Throwable ignored) { }
+
         cont.clear();
         label = null;
         if (rs == null) {
@@ -75,7 +86,7 @@ public class JavaEditor extends BaseDialog {
             table.add("Package: ");
             table.field(packages.get(), packages::set).growX();
             table.row();
-            table.button("save", Styles.clearPartialt, () -> {
+            table.button(Core.bundle.get("save"), Styles.clearPartialt, () -> {
                 if (name.get().isEmpty())
                     Vars.ui.showInfo("Class name must not empty");
                 else if (packages.get().isEmpty())
@@ -96,16 +107,16 @@ public class JavaEditor extends BaseDialog {
         } else {
             buttons.clear();
             addCloseButton();
-            buttons.button("Reformat/CheckCode", Icon.book, this::setup);
-            buttons.button("Run", Icon.box, this::Run);
-            buttons.button("Save", Icon.save, () -> Vars.platform.showFileChooser(false, ".java", fi -> {
+            buttons.button(Core.bundle.get("ozone.javaEditor.reformat"), Icon.book, this::setup);
+            buttons.button(Core.bundle.get("ozone.javaEditor.run"), Icon.box, this::Run);
+            buttons.button(Core.bundle.get("save"), Icon.save, () -> Vars.platform.showFileChooser(false, ".java", fi -> {
                 try {
                     rs.save(fi.file());
                 } catch (IOException e) {
                     Vars.ui.showException("Failed to save", e);
                 }
             }));
-            buttons.button("Open", Icon.file, () -> Vars.platform.showFileChooser(true, ".java", fi -> rs = new RuntimeSource(fi.file())));
+            buttons.button(Core.bundle.get("open"), Icon.file, () -> Vars.platform.showFileChooser(true, ".java", fi -> rs = new RuntimeSource(fi.file())));
             if (a != null)
                 try {
                     a = new TextArea(new Formatter().formatSource(a.getText()));
