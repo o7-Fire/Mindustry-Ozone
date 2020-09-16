@@ -6,14 +6,19 @@ Atom.Reflect.Reflect -> a.a.a:
     java.util.ArrayList findDeclaredField(java.lang.Class,Atom.Struct.Filter,java.lang.Object) -> b
     boolean lambda$getMethod$1(java.lang.String,java.lang.reflect.Method) -> a
     boolean lambda$getField$0(java.lang.String,java.lang.reflect.Field) -> a
+    void <init>(java.io.File) -> <init>
 Atom.Runtime.RuntimeSource -> a.b.a:
     java.io.File workingDir -> a
     java.util.ArrayList imports -> b
     java.lang.String packages -> c
     java.lang.String name -> d
+    java.io.File sourceFile -> e
+    void <init>(java.io.File) -> <init>
     void <init>(java.lang.String,java.lang.String) -> <init>
     void <init>() -> <init>
     void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
+    void AssignSourceCode(java.lang.String) -> a
+    Atom.Reflect.Reflect compile$761218c3(java.io.OutputStream) -> a
     void <clinit>() -> <clinit>
 Atom.Struct.Filter -> a.c.a:
     boolean accept(java.lang.Object) -> accept
@@ -134,14 +139,24 @@ Ozone.Settings -> b.d:
     void <clinit>() -> <clinit>
 Ozone.UI.JavaEditor -> b.c.a:
     Atom.Runtime.RuntimeSource rs -> a
-    java.util.ArrayList messages -> b
-    java.util.HashMap color -> c
-    arc.scene.ui.Label label -> d
+    Atom.Reflect.Reflect rc$4bc128b2 -> b
+    java.util.ArrayList messages -> c
+    java.util.HashMap color -> d
+    arc.scene.ui.TextArea a -> e
+    arc.scene.ui.Label label -> f
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
-    void setup() -> a
-    void updateChat() -> b
+    void Run() -> a
+    void setup() -> b
+    void updateChat() -> c
+    void lambda$setup$4() -> d
+    void lambda$setup$3(arc.files.Fi) -> a
+    void lambda$setup$2() -> e
+    void lambda$setup$1(arc.files.Fi) -> b
     void lambda$setup$0(java.util.concurrent.atomic.AtomicReference,java.util.concurrent.atomic.AtomicReference,java.util.regex.Pattern,arc.scene.ui.layout.Table) -> a
-Ozone.UI.OzoneMenu -> b.c.b:
+Ozone.UI.JavaEditor$1 -> b.c.b:
+    void <init>(Ozone.UI.JavaEditor) -> <init>
+    void write(int) -> write
+Ozone.UI.OzoneMenu -> b.c.c:
     arc.scene.ui.TextField commandsField -> a
     java.lang.String commands -> b
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>

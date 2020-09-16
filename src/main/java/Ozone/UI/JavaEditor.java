@@ -26,8 +26,8 @@ import java.util.regex.Pattern;
 
 public class JavaEditor extends BaseDialog {
     public static int pad = 8;
-    private RuntimeSource rs;
-    private RuntimeClass rc;
+    private volatile RuntimeSource rs = null;
+    private volatile RuntimeClass rc = null;
     public ArrayList<String> messages = new ArrayList<>();
     private HashMap<String, String> color = new HashMap<>();
     private TextArea a;
@@ -49,7 +49,7 @@ public class JavaEditor extends BaseDialog {
         rs.AssignSourceCode(a.getText().replace("\r", "\n"));
         rs.compile(new OutputStream() {
                 @Override
-                public void write(int b) throws IOException {
+                public void write(int b) {
 
                 }
         });
@@ -88,6 +88,7 @@ public class JavaEditor extends BaseDialog {
                     rs = new RuntimeSource(packages.get(), name.get());
                     table.clear();
                     setup();
+
                 }
             }).size(Core.graphics.getWidth() / 8, Core.graphics.getHeight() / 12);
             cont.row();
@@ -113,7 +114,7 @@ public class JavaEditor extends BaseDialog {
                     Vars.ui.showException(ignored);
                 }
             else
-                a = new TextArea(rc.toString().replace("\n", "\r"));
+                a = new TextArea(rs.toString().replace("\n", "\r"));
             label = new Label("");
             label.setStyle(new Label.LabelStyle(label.getStyle()));
             label.getStyle().font = Fonts.def;
