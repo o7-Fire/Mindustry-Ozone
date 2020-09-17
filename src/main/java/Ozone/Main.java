@@ -73,7 +73,7 @@ public class Main {
             }
             if (Settings.colorPatch)
                 for (String s : Core.bundle.getKeys()) {
-                    modified.put(s, getRandomHexColor() + modified.get(s));
+                    modified.put(s, getRandomHexColor() + modified.get(s) + "[white]");
                 }
             Core.bundle.setProperties(modified);
             Log.infoTag("Ozone", "Patching translation done: " + Time.elapsed());

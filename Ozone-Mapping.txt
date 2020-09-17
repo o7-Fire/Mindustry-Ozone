@@ -82,8 +82,9 @@ Ozone.Commands.Commands -> b.a.a:
     void taskMove(java.util.ArrayList) -> d
     void chaosKick(java.util.ArrayList) -> e
     void tellUser(java.lang.String) -> c
-    void lambda$chaosKick$1() -> b
-    void lambda$taskMove$0(long,java.lang.Object) -> a
+    void lambda$chaosKick$2() -> b
+    void lambda$taskMove$1(long,java.lang.Object) -> a
+    float lambda$infoPathfinding$0(mindustry.world.Tile) -> a
     void <clinit>() -> <clinit>
 Ozone.Commands.Commands$Command -> b.a.b:
     java.util.function.Consumer method -> a
