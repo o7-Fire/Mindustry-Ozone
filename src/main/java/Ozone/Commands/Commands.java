@@ -2,6 +2,7 @@ package Ozone.Commands;
 
 import Atom.Time.Countdown;
 import arc.Core;
+import arc.scene.style.TextureRegionDrawable;
 import arc.struct.Seq;
 import arc.util.Log;
 import mindustry.Vars;
@@ -9,6 +10,7 @@ import mindustry.ai.Astar;
 import mindustry.content.Blocks;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
+import mindustry.gen.Icon;
 import mindustry.gen.Player;
 import mindustry.world.Block;
 import mindustry.world.Tile;
@@ -25,7 +27,6 @@ public class Commands {
     public static final HashMap<String, Command> commandsList = new HashMap<>();
     private static final ArrayList<Seq<Tile>> modifiedTiles = new ArrayList<>();
     private static boolean init = false;
-    //Nexity shitcode revised by Itzbenz
     private volatile static boolean falseVote = false;
 
     public static void init() {
@@ -80,8 +81,10 @@ public class Commands {
             }
             int xT = Integer.parseInt(s.get(2));
             int yT = Integer.parseInt(s.get(3));
-            if (s.size() <= 5)
-                block = s.get(4);
+            if ((xS - xT) < 4 || (yS - yT) < 4) {
+                tellUser("distance too short");
+            }
+            if (s.size() <= 5) block = s.get(4);
             Block pathfindingBlock = null;
             if (!block.isEmpty()) {
                 pathfindingBlock = Vars.content.block(block);
@@ -183,10 +186,26 @@ public class Commands {
     public static class Command {
         public final Consumer<ArrayList<String>> method;
         public final String description;
+        public final TextureRegionDrawable icon;
+        public boolean supportGUI = false;
 
         public Command(Consumer<ArrayList<String>> method, String description) {
             this.method = method;
             this.description = getTranslation(description);
+            icon = Icon.add;
+        }
+
+        public Command(Consumer<ArrayList<String>> method, String description, TextureRegionDrawable icon) {
+            this.method = method;
+            this.description = getTranslation(description);
+            this.icon = icon;
+        }
+
+        public Command(Consumer<ArrayList<String>> method, String description, TextureRegionDrawable icon, boolean supportGUI) {
+            this.method = method;
+            this.description = getTranslation(description);
+            this.icon = icon;
+            this.supportGUI = supportGUI;
         }
     }
 }

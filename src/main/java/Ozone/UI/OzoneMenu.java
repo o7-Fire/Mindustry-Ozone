@@ -45,14 +45,12 @@ public class OzoneMenu extends BaseDialog {
         cont.clear();
         cont.button(Core.bundle.get("ozone.javaEditor"), Icon.pencil, () -> {
             Core.app.post(this::hide);
-            try {
-                if (!Vars.ui.hudfrag.shown())
-                    Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
-            } catch (Throwable ignored) {
-            }
             Manifest.javaEditor.show();
-        })
-                .size(Core.graphics.getWidth() / 6, Core.graphics.getHeight() / 12);
+        }).size(Core.graphics.getWidth() / 6, Core.graphics.getHeight() / 12);
+        cont.button(Core.bundle.get("ozone.commandsUI"), Icon.distribution, () -> {
+            Core.app.post(this::hide);
+            Manifest.javaEditor.show();
+        }).size(Core.graphics.getWidth() / 6, Core.graphics.getHeight() / 12).left();
         cont.row();
         cont.table((s) -> {
             s.left();
@@ -65,7 +63,6 @@ public class OzoneMenu extends BaseDialog {
                 commandsField.clearText();
             });
         }).growX().fillX().padBottom(6.0F).bottom().size(Core.graphics.getWidth(), Core.graphics.getHeight() / 12);
-        ;
 
 
         try {

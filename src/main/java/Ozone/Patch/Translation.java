@@ -19,6 +19,7 @@ public class Translation {
         registerWords("ozone.javaEditor", "Java Executor");
         registerWords("ozone.javaEditor.reformat", "Reformat");
         registerWords("ozone.javaEditor.run", "Run");
+        registerWords("ozone.commandsUI", "Commands GUI");
         commands.put("help", "help desk");
         commands.put("chaosKick", "vote everyone everytime everywhere");
         commands.put("taskMove", "move using current unit pathfinding algorithm");
