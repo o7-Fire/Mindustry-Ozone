@@ -33,6 +33,7 @@ public class Commands {
     public static void init() {
         if (init) return;
         init = true;
+
         commandsList.put("help", new Command(Commands::help, "help"));
         commandsList.put("chaos-kick", new Command(Commands::chaosKick, "chaosKick"));
         commandsList.put("task-move", new Command(Commands::taskMove, "taskMove"));
