@@ -100,7 +100,6 @@ Ozone.Commands.PlayerInterface -> b.a.c:
 Ozone.Commands.Task.Move -> b.a.a.a:
     arc.math.geom.Vec2 destPos -> a
     arc.math.geom.Vec2 destTilePos -> b
-    double lastDist -> c
     void <init>(float,float) -> <init>
     void <init>(arc.math.geom.Vec2) -> <init>
     void taskCompleted() -> a
