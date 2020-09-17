@@ -10,6 +10,7 @@ import mindustry.content.Blocks;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
+import mindustry.world.Block;
 import mindustry.world.Tile;
 
 import java.util.ArrayList;
@@ -66,10 +67,11 @@ public class Commands {
     public static void infoPathfinding(ArrayList<String> s) {
         if (s.size() < 4) {
             tellUser("Not enough arguments");
-            tellUser("usage: " + "info-pathfinding x(source-coordinate) y(source-coordinate) x(target-coordinate) y(target-coordinate) color(hex color)(optional)");
+            tellUser("usage: " + "info-pathfinding x(source-coordinate) y(source-coordinate) x(target-coordinate) y(target-coordinate) block(Blocks)(optional)");
             return;
         }
         try {
+            String block = "";
             int xS = Integer.parseInt(s.get(0));
             int yS = Integer.parseInt(s.get(1));
             if (Vars.world.tile(xS, yS) == null) {
@@ -78,20 +80,33 @@ public class Commands {
             }
             int xT = Integer.parseInt(s.get(2));
             int yT = Integer.parseInt(s.get(3));
+            if (s.size() <= 5)
+                block = s.get(4);
+            Block pathfindingBlock = null;
+            if (!block.isEmpty()) {
+                pathfindingBlock = Vars.content.block(block);
+                if (pathfindingBlock == null)
+                    tellUser("Nonexistent block, using default block: magmarock/dirtwall");
+            }
             if (Vars.world.tile(xT, yT) == null) {
                 tellUser("Non existent target tiles");
                 return;
             }
             Tile target = Vars.world.tile(xT, yT);
             Tile source = Vars.world.tile(xS, yS);
-            Seq<Tile> tiles = Astar.pathfind(source, target, h -> {
-                if (h.build != null) if (h.build.team != Vars.player.team()) return 10f;
-                return 0;
-            }, Tile::passable);
+            Seq<Tile> tiles = Astar.pathfind(source, target, h -> 0, Tile::passable);
 
             for (Tile t : tiles) {
-                t.setOverlay(Blocks.router);
+                if (t.block() == null)
+                    tellUser("Null block: " + t.toString());
+                else if (pathfindingBlock != null)
+                    t.setOverlay(pathfindingBlock);
+                else if (t.block().isFloor())
+                    t.setOverlay(Blocks.magmarock);
+                else if (t.block().isStatic())
+                    t.setOverlay(Blocks.dirtWall);
             }
+            tellUser("to clear pathfinding overlay use /sync");
         } catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");
             Vars.ui.showException(f);
@@ -162,7 +177,7 @@ public class Commands {
         if (Vars.ui.scriptfrag.shown())
             Log.infoTag("Ozone", s);
         else
-            Vars.ui.chatfrag.addMessage("[white][[blue]Ozone[white]]: " + s, null);
+            Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
     }
 
     public static class Command {
