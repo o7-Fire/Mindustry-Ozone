@@ -36,8 +36,6 @@ public class Move extends Task {
         return distanceTo(PlayerInterface.getCurrentPos(), destPos) < tolerance;
     }
 
-    //for fuck sake why its move in opposite direction
-    //TODO use algorithm, if dist more far than before change direction if not stay on that direction
     @Override
     public void update() {
         if (tick()) return;

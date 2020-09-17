@@ -74,6 +74,10 @@ public class Commands {
         try {
             int x = Integer.parseInt(s.get(0));
             int y = Integer.parseInt(s.get(1));
+            if (Vars.world.tile(x, y) == null) {
+                tellUser("Non existent tiles");
+                return;
+            }
             long start = System.currentTimeMillis();
             PlayerInterface.moveTo(x, y, a -> {
                 tellUser("Reached in " + Countdown.result(start, TimeUnit.SECONDS));
