@@ -1,8 +1,8 @@
 package Ozone;
 
 import Atom.Random;
+import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
-import Ozone.Commands.PlayerInterface;
 import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
@@ -28,7 +28,7 @@ public class Main {
         loadSettings();
         patch();
         initUI();
-        PlayerInterface.init();
+        BotInterface.init();
         Commands.init();
     }
 

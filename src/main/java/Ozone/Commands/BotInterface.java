@@ -11,15 +11,15 @@ import mindustry.world.Tile;
 
 import java.util.function.Consumer;
 
-public class PlayerInterface {
+public class BotInterface {
     private static volatile boolean init = false;
     private static final Queue<Task> taskQueue = new Queue<>();
 
-    public static void init(){
-        if(init)return;
+    public static void init() {
+        if (init) return;
         init = true;
-        Events.run(EventType.Trigger.update, PlayerInterface::update);
-        Events.run(EventType.WorldLoadEvent.class, PlayerInterface::reset);
+        Events.run(EventType.Trigger.update, BotInterface::update);
+        Events.run(EventType.WorldLoadEvent.class, BotInterface::reset);
     }
 
     public static void moveTo(int x, int y, Consumer<Object> onDone) {
@@ -43,12 +43,13 @@ public class PlayerInterface {
     }
 
     public static Vec2 getCurrentTilePos() {
-        return getCurrentTilePos(new Vec2(Vars.player.x, Vars.player.y));
+        return new Vec2(Vars.player.tileX(), Vars.player.tileY());
     }
 
     public static Vec2 getCurrentTilePos(Vec2 ref) {
         return new Vec2(Math.round(ref.x / 8), Math.round(ref.y / 8));
     }
+
 
     private static void reset() {
         taskQueue.clear();

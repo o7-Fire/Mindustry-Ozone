@@ -1,6 +1,6 @@
 package Atom.Test;
 
-import Ozone.Commands.PlayerInterface;
+import Ozone.Commands.BotInterface;
 
 public class Test {
     public Test() {
@@ -8,6 +8,6 @@ public class Test {
     }
 
     public void run() {
-        PlayerInterface.moveTo(1000, 1000, null);
+        BotInterface.moveTo(1000, 1000, null);
     }
 }
