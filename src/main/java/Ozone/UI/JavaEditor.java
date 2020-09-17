@@ -3,16 +3,13 @@ package Ozone.UI;
 import Atom.Reflect.Reflect;
 import Atom.Runtime.RuntimeClass;
 import Atom.Runtime.RuntimeSource;
-import Ozone.Commands.Commands;
 import arc.Core;
-import arc.input.KeyCode;
 import arc.scene.ui.Label;
 import arc.scene.ui.TextArea;
 import arc.scene.ui.layout.Table;
 import arc.util.Log;
 import com.google.googlejavaformat.java.Formatter;
 import com.google.googlejavaformat.java.FormatterException;
-import javassist.compiler.CompileError;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.ui.Fonts;
@@ -119,7 +116,7 @@ public class JavaEditor extends BaseDialog {
             buttons.clear();
             addCloseButton();
             buttons.button(Core.bundle.get("ozone.javaEditor.reformat"), Icon.book, this::setup);
-            buttons.button(Core.bundle.get("ozone.javaEditor.run"), Icon.box, this::Run);
+            buttons.button(Core.bundle.get("run"), Icon.box, this::Run);
             buttons.button(Core.bundle.get("save"), Icon.save, () -> Vars.platform.showFileChooser(false, ".java", fi -> {
                 try {
                     rs.save(fi.file());

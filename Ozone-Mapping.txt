@@ -143,6 +143,7 @@ Ozone.Patch.SettingsDialog$4 -> b.b.f:
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
 Ozone.Settings -> b.d:
     boolean colorPatch -> a
+    boolean debugMode -> b
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 Ozone.UI.JavaEditor -> b.c.a:

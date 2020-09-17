@@ -11,7 +11,7 @@ import mindustry.world.Tile;
 public class Move extends Task {
     private final Vec2 destPos, destTilePos;
     private final Tile destTile;
-    private final int tolerance = 3;
+    private final int airTolerance = 3, landTolerance = 1;
 
     public Move(float x, float y) {
         this(new Vec2(x, y));
@@ -33,7 +33,7 @@ public class Move extends Task {
 
     @Override
     public boolean isCompleted() {
-        return distanceTo(PlayerInterface.getCurrentPos(), destPos) < tolerance;
+        return distanceTo(PlayerInterface.getCurrentPos(), destPos) < airTolerance;
     }
 
     @Override
@@ -44,13 +44,13 @@ public class Move extends Task {
             int yy = Math.round(destTilePos.y - PlayerInterface.getCurrentTilePos().y);
             Log.debug("Ozone-AI @", "X: " + xx);
             Log.debug("Ozone-AI @", "Y: " + yy);
-            if (Meth.positive(yy) < tolerance) yy = 0;
+            if (Meth.positive(yy) < airTolerance) yy = 0;
             else if (yy < 0) yy = -1;
-            else if (yy > tolerance) yy = 1;
+            else if (yy > airTolerance) yy = 1;
 
-            if (Meth.positive(xx) < tolerance) xx = 0;
+            if (Meth.positive(xx) < airTolerance) xx = 0;
             else if (xx < 0) xx = -1;
-            else if (xx > tolerance) xx = 1;
+            else if (xx > airTolerance) xx = 1;
             setMov(new Vec2(xx, yy));
             double lastDist = getCurrentDistance();
             Log.debug("Ozone-AI @", "Dist: " + lastDist);

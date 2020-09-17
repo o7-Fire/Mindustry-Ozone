@@ -1,6 +1,7 @@
 package Ozone.Commands;
 
 import Atom.Time.Countdown;
+import arc.Core;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.gen.Call;
@@ -22,11 +23,16 @@ public class Commands {
     public static void init() {
         if (init) return;
         init = true;
-        commandsList.put("help", new Command(Commands::help, "Help desk"));
-        commandsList.put("chaos-kick", new Command(Commands::DeceptionKick, "make hell lose with votekick"));
-        commandsList.put("task-move", new Command(Commands::move, "Move like an AI"));
-        commandsList.put("info-pos", new Command(Commands::pos, "Get current pos"));
+        commandsList.put("help", new Command(Commands::help, "help"));
+        commandsList.put("chaos-kick", new Command(Commands::chaosKick, "chaosKick"));
+        commandsList.put("task-move", new Command(Commands::taskMove, "taskMove"));
+        commandsList.put("info-pos", new Command(Commands::infoPos, "infoPos"));
+        commandsList.put("info-pathfinding", new Command(Commands::infoPathfinding, "infoPathfinding"));
         Log.infoTag("Ozone", "Commands Center Initialized");
+    }
+
+    public static String getTranslation(String name) {
+        return Core.bundle.get("ozone.commands." + name);
     }
 
     public static boolean call(String message) {
@@ -50,7 +56,11 @@ public class Commands {
         return true;
     }
 
-    public static void pos(ArrayList<String> a) {
+    public static void infoPathfinding(ArrayList<String> a) {
+
+    }
+
+    public static void infoPos(ArrayList<String> a) {
         tellUser("Player x,y: " + Vars.player.x + ", " + Vars.player.y);
         tellUser("Player tile x,y: " + Vars.player.tileX() + ", " + Vars.player.tileY());
     }
@@ -65,7 +75,7 @@ public class Commands {
         tellUser(sb.toString());
     }
 
-    public static void move(ArrayList<String> s) {
+    public static void taskMove(ArrayList<String> s) {
         if (s.size() < 2) {
             tellUser("Not enough arguments");
             tellUser("usage: " + "task-move x(coordinate) y(coordinate)");
@@ -89,7 +99,8 @@ public class Commands {
 
     //Nexity shitcode revised by Itzbenz
     private volatile static boolean falseVote = false;
-    public static void DeceptionKick(ArrayList<String > unused) {
+
+    public static void chaosKick(ArrayList<String> unused) {
         falseVote = !falseVote;
         if (falseVote) {
             Thread s1 = new Thread(() -> {
@@ -97,7 +108,10 @@ public class Commands {
                     for (Player target : Groups.player) {
                         if (!target.name.equals(Vars.player.name)) {
                             Call.sendChatMessage("/votekick " + target.name);
-                            try { Thread.sleep(200); } catch (Throwable ignored) {}
+                            try {
+                                Thread.sleep(200);
+                            } catch (Throwable ignored) {
+                            }
                         }
                     }
             });
@@ -113,7 +127,7 @@ public class Commands {
         if(Vars.ui.scriptfrag.shown())
             Log.infoTag("Ozone", s);
         else
-            Vars.ui.chatfrag.addMessage("[white][[royal]Ozone[white]]: " + s, null);
+            Vars.ui.chatfrag.addMessage("[white][[blue]Ozone[white]]: " + s, null);
     }
 
     public static class Command {
@@ -122,7 +136,7 @@ public class Commands {
 
         public Command(Consumer<ArrayList<String>> method, String description) {
             this.method = method;
-            this.description = description;
+            this.description = getTranslation(description);
         }
     }
 }
