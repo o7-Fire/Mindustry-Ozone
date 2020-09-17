@@ -26,8 +26,8 @@ import java.util.Map;
 import static mindustry.Vars.*;
 
 public class CommandsListFrag extends Fragment {
-    private final Table logs = new Table().marginRight(30f).marginLeft(20f);
-    private final Table content = new Table().marginRight(30f).marginLeft(20f);
+    private Table logs = new Table().marginRight(30f).marginLeft(20f);
+    private Table content = new Table().marginRight(30f).marginLeft(20f);
     public boolean visible = false;
     private Queue<Task> commandsTask = new arc.struct.Queue<>();
     private float h = 70F;
@@ -105,7 +105,7 @@ public class CommandsListFrag extends Fragment {
             }
             content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
             content.row();
-            content.add().height(4f).color(Color.magenta).growX();
+            content.image().height(4f).color(Color.magenta).growX();
             content.row();
         }
 
@@ -119,8 +119,7 @@ public class CommandsListFrag extends Fragment {
         if (visible) {
             rebuild();
         } else {
-            logs.clear();
-            sField.setMessageText("");
+            sField.clearText();
             Core.scene.setKeyboardFocus(null);
         }
     }

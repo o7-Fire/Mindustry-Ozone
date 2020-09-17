@@ -160,10 +160,9 @@ Ozone.Settings -> b.d:
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 Ozone.UI.CommandsListFrag -> b.c.a:
-    arc.scene.ui.layout.Table logs -> a
-    arc.scene.ui.layout.Table content -> b
-    boolean visible -> c
-    float h -> d
+    arc.scene.ui.layout.Table content -> a
+    boolean visible -> b
+    float h -> c
     void <init>() -> <init>
     void toggle() -> a
     void lambda$rebuild$11(java.lang.String,java.util.Map$Entry) -> a

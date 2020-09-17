@@ -81,7 +81,7 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     outjars "build/libs/${project.archivesBaseName}.out.jar"
 }
 task copyRuntimeLibs(type: Copy) {
-    println 'copying dependency'
+    println 'Heil o7'
     from project.configurations.runtimeClasspath
     into "libs/dependenciesLibrary"
 }
