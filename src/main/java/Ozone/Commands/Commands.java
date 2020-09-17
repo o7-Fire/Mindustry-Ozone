@@ -2,11 +2,15 @@ package Ozone.Commands;
 
 import Atom.Time.Countdown;
 import arc.Core;
+import arc.struct.Seq;
 import arc.util.Log;
 import mindustry.Vars;
+import mindustry.ai.Astar;
+import mindustry.content.Blocks;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
+import mindustry.world.Tile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +22,10 @@ import java.util.function.Consumer;
 public class Commands {
 
     public static final HashMap<String, Command> commandsList = new HashMap<>();
+    private static final ArrayList<Seq<Tile>> modifiedTiles = new ArrayList<>();
     private static boolean init = false;
+    //Nexity shitcode revised by Itzbenz
+    private volatile static boolean falseVote = false;
 
     public static void init() {
         if (init) return;
@@ -56,8 +63,39 @@ public class Commands {
         return true;
     }
 
-    public static void infoPathfinding(ArrayList<String> a) {
+    public static void infoPathfinding(ArrayList<String> s) {
+        if (s.size() < 4) {
+            tellUser("Not enough arguments");
+            tellUser("usage: " + "info-pathfinding x(source-coordinate) y(source-coordinate) x(target-coordinate) y(target-coordinate) color(hex color)(optional)");
+            return;
+        }
+        try {
+            int xS = Integer.parseInt(s.get(0));
+            int yS = Integer.parseInt(s.get(1));
+            if (Vars.world.tile(xS, yS) == null) {
+                tellUser("Non existent source tiles");
+                return;
+            }
+            int xT = Integer.parseInt(s.get(2));
+            int yT = Integer.parseInt(s.get(3));
+            if (Vars.world.tile(xT, yT) == null) {
+                tellUser("Non existent target tiles");
+                return;
+            }
+            Tile target = Vars.world.tile(xT, yT);
+            Tile source = Vars.world.tile(xS, yS);
+            Seq<Tile> tiles = Astar.pathfind(source, target, h -> {
+                if (h.build != null) if (h.build.team != Vars.player.team()) return 10f;
+                return 0;
+            }, Tile::passable);
 
+            for (Tile t : tiles) {
+                t.setOverlay(Blocks.router);
+            }
+        } catch (NumberFormatException f) {
+            tellUser("Failed to parse integer, are you sure that argument was integer ?");
+            Vars.ui.showException(f);
+        }
     }
 
     public static void infoPos(ArrayList<String> a) {
@@ -97,9 +135,6 @@ public class Commands {
 
     }
 
-    //Nexity shitcode revised by Itzbenz
-    private volatile static boolean falseVote = false;
-
     public static void chaosKick(ArrayList<String> unused) {
         falseVote = !falseVote;
         if (falseVote) {
@@ -124,7 +159,7 @@ public class Commands {
 
 
     public static void tellUser(String s) {
-        if(Vars.ui.scriptfrag.shown())
+        if (Vars.ui.scriptfrag.shown())
             Log.infoTag("Ozone", s);
         else
             Vars.ui.chatfrag.addMessage("[white][[blue]Ozone[white]]: " + s, null);

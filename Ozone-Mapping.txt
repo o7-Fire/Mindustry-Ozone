@@ -74,14 +74,16 @@ Ozone.Commands.Commands -> b.a.a:
     boolean init -> b
     boolean falseVote -> c
     void init() -> a
-    boolean call(java.lang.String) -> a
-    void pos(java.util.ArrayList) -> a
-    void help(java.util.ArrayList) -> b
-    void move(java.util.ArrayList) -> c
-    void DeceptionKick(java.util.ArrayList) -> d
-    void tellUser(java.lang.String) -> b
-    void lambda$DeceptionKick$1() -> b
-    void lambda$move$0(long,java.lang.Object) -> a
+    java.lang.String getTranslation(java.lang.String) -> a
+    boolean call(java.lang.String) -> b
+    void infoPathfinding(java.util.ArrayList) -> a
+    void infoPos(java.util.ArrayList) -> b
+    void help(java.util.ArrayList) -> c
+    void taskMove(java.util.ArrayList) -> d
+    void chaosKick(java.util.ArrayList) -> e
+    void tellUser(java.lang.String) -> c
+    void lambda$chaosKick$1() -> b
+    void lambda$taskMove$0(long,java.lang.Object) -> a
     void <clinit>() -> <clinit>
 Ozone.Commands.Commands$Command -> b.a.b:
     java.util.function.Consumer method -> a
