@@ -9,6 +9,7 @@ Atom.Reflect.Reflect -> a.a.a:
     java.util.ArrayList findDeclaredField(java.lang.Class,Atom.Struct.Filter,java.lang.Object) -> b
     boolean lambda$getMethod$1(java.lang.String,java.lang.reflect.Method) -> a
     boolean lambda$getField$0(java.lang.String,java.lang.reflect.Field) -> a
+    int positive(int) -> a
     void <init>(java.io.File) -> <init>
     void load(java.lang.String) -> a
     void invokeMethod(java.lang.String) -> b
@@ -94,7 +95,6 @@ Ozone.Commands.PlayerInterface -> b.a.c:
     void update() -> d
     arc.math.geom.Vec2 getCurrentPos() -> b
     arc.math.geom.Vec2 getCurrentTilePos() -> c
-    arc.math.geom.Vec2 getCurrentTilePos(arc.math.geom.Vec2) -> a
     void reset() -> e
     void <clinit>() -> <clinit>
 Ozone.Commands.Task.Move -> b.a.a.a:
@@ -130,6 +130,7 @@ Ozone.Main$1 -> b.c:
     void <init>() -> <init>
 Ozone.Patch.DesktopInput -> b.b.a:
     void <init>() -> <init>
+    void setMove(arc.math.geom.Vec2) -> a
 Ozone.Patch.SettingsDialog -> b.b.b:
     void <init>() -> <init>
     void lambda$new$0(java.lang.reflect.Field,boolean) -> a
