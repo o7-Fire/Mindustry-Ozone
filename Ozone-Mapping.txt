@@ -69,7 +69,17 @@ Main.Ozone -> Main.Ozone:
     void <init>() -> <init>
     void init() -> init
     void loadContent() -> loadContent
-Ozone.Commands.Commands -> b.a.a:
+Ozone.Commands.BotInterface -> b.a.a:
+    boolean init -> a
+    arc.struct.Queue taskQueue -> b
+    void init() -> a
+    void moveTo(int,int,java.util.function.Consumer) -> a
+    void update() -> d
+    arc.math.geom.Vec2 getCurrentPos() -> b
+    arc.math.geom.Vec2 getCurrentTilePos() -> c
+    void reset() -> e
+    void <clinit>() -> <clinit>
+Ozone.Commands.Commands -> b.a.b:
     java.util.HashMap commandsList -> a
     boolean init -> b
     boolean falseVote -> c
@@ -86,28 +96,23 @@ Ozone.Commands.Commands -> b.a.a:
     void lambda$taskMove$1(long,java.lang.Object) -> a
     float lambda$infoPathfinding$0(mindustry.world.Tile) -> a
     void <clinit>() -> <clinit>
-Ozone.Commands.Commands$Command -> b.a.b:
+Ozone.Commands.Commands$Command -> b.a.c:
     java.util.function.Consumer method -> a
     java.lang.String description -> b
     void <init>(java.util.function.Consumer,java.lang.String) -> <init>
-Ozone.Commands.PlayerInterface -> b.a.c:
-    boolean init -> a
-    arc.struct.Queue taskQueue -> b
-    void init() -> a
-    void moveTo(int,int,java.util.function.Consumer) -> a
-    void update() -> d
-    arc.math.geom.Vec2 getCurrentPos() -> b
-    arc.math.geom.Vec2 getCurrentTilePos() -> c
-    void reset() -> e
-    void <clinit>() -> <clinit>
 Ozone.Commands.Task.Move -> b.a.a.a:
     arc.math.geom.Vec2 destPos -> a
     arc.math.geom.Vec2 destTilePos -> b
+    mindustry.world.Tile destTile -> c
+    arc.struct.Seq pathfindingCache -> d
     void <init>(float,float) -> <init>
     void <init>(arc.math.geom.Vec2) -> <init>
     void taskCompleted() -> a
     boolean isCompleted() -> b
     void update() -> c
+    void setMov(arc.math.geom.Vec2) -> a
+    double getCurrentDistance() -> e
+    float isSafe(mindustry.world.Tile) -> a
     double distanceTo(arc.math.geom.Vec2,arc.math.geom.Vec2) -> a
 Ozone.Commands.Task.Task -> b.a.a.b:
     java.util.ArrayList onTaskCompleted -> a
@@ -175,11 +180,12 @@ Ozone.UI.OzoneMenu -> b.c.c:
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
     void hide() -> a
     void setup() -> b
-    void lambda$setup$5(arc.scene.ui.layout.Table) -> a
-    void lambda$setup$4() -> c
-    void lambda$setup$3(java.lang.String) -> a
-    java.lang.CharSequence lambda$setup$2() -> d
-    void lambda$setup$1() -> e
+    void lambda$setup$6(arc.scene.ui.layout.Table) -> a
+    void lambda$setup$5() -> c
+    void lambda$setup$4(java.lang.String) -> a
+    java.lang.CharSequence lambda$setup$3() -> d
+    void lambda$setup$2() -> e
+    void lambda$setup$1() -> f
     void lambda$new$0(arc.input.KeyCode) -> a
 com.google.common.annotations.Beta -> com.google.common.annotations.Beta:
 com.google.common.annotations.GwtCompatible -> com.google.common.annotations.GwtCompatible:

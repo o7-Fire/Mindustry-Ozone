@@ -47,10 +47,11 @@ public class OzoneMenu extends BaseDialog {
             Core.app.post(this::hide);
             Manifest.javaEditor.show();
         }).size(Core.graphics.getWidth() / 6, Core.graphics.getHeight() / 12);
+        cont.row();
         cont.button(Core.bundle.get("ozone.commandsUI"), Icon.distribution, () -> {
             Core.app.post(this::hide);
-            Manifest.javaEditor.show();
-        }).size(Core.graphics.getWidth() / 6, Core.graphics.getHeight() / 12).left();
+            Manifest.commFrag.toggle();
+        }).size(Core.graphics.getWidth() / 6, Core.graphics.getHeight() / 12);
         cont.row();
         cont.table((s) -> {
             s.left();
