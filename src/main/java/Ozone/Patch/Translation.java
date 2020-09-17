@@ -4,6 +4,7 @@ import static Ozone.Interface.registerWords;
 public class Translation {
     public static void patch(){
         registerWords("setting.ozone.antiSpam.name", "Enable Anti-Spam");
+        registerWords("setting.ozone.debugMode.name", "Enable Debug Mode");
         registerWords("setting.ozone.colorPatch.name", "Enable Colorized Text");
         registerWords("setting.ozone.commandsPrefix.name", "Commands Prefix");
         registerWords("ozone.menu", "Ozone Menu");
