@@ -22,7 +22,7 @@ public class Move extends Task {
         destPos = new Vec2(dest.x * 8, dest.y * 8);
         destTile = new Tile(Math.round(dest.x), Math.round(dest.y));
         destTilePos = dest;
-        setTick(20);
+        setTick(5);
 
     }
 
