@@ -84,6 +84,8 @@ public class Main {
             Log.infoTag("Ozone", "Patching ChatFragment");
             //Vars.ui.chatfrag = new ChatFragment();
             Log.infoTag("Ozone", "Patching Complete");
+            if(Settings.debugMode) Log.setLogLevel(Log.LogLevel.debug);
+            Log.debug("Ozone-Debug", "Debugs, peoples, debugs");
         } catch (Throwable t) {
             Log.infoTag("Ozone", "Patch failed");
             Log.err(t);
