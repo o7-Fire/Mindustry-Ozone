@@ -79,9 +79,7 @@ public class Commands {
                 return;
             }
             long start = System.currentTimeMillis();
-            PlayerInterface.moveTo(x, y, a -> {
-                tellUser("Reached in " + Countdown.result(start, TimeUnit.SECONDS));
-            });
+            PlayerInterface.moveTo(x, y, a -> tellUser("Reached in " + Countdown.result(start, TimeUnit.SECONDS)));
         } catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");
             Vars.ui.showException(f);
