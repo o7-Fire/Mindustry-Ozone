@@ -46,12 +46,12 @@ public class Commands {
     public static boolean call(String message) {
         //if (!message.startsWith(Settings.commandsPrefix)) return false;
         String[] arg = message.replaceFirst(",", "").split(" ");
-        if (!commandsList.containsKey(arg[0])) {
+        if (!commandsList.containsKey(arg[0].toLowerCase())) {
             tellUser("Commands not found");
             help(new ArrayList<>());
             return false;
         }
-        Command comm = commandsList.get(arg[0]);
+        Command comm = commandsList.get(arg[0].toLowerCase());
         ArrayList<String> args;
         if (message.contains(" ")) {
             message = message.replaceFirst(arg[0], "").replaceFirst(" ", "");

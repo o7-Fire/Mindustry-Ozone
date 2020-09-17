@@ -175,11 +175,11 @@ Ozone.UI.OzoneMenu -> b.c.c:
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
     void hide() -> a
     void setup() -> b
-    void lambda$setup$5() -> c
-    void lambda$setup$4(arc.scene.ui.layout.Table) -> a
-    void lambda$setup$3() -> d
-    void lambda$setup$2(java.lang.String) -> a
-    java.lang.CharSequence lambda$setup$1() -> e
+    void lambda$setup$5(arc.scene.ui.layout.Table) -> a
+    void lambda$setup$4() -> c
+    void lambda$setup$3(java.lang.String) -> a
+    java.lang.CharSequence lambda$setup$2() -> d
+    void lambda$setup$1() -> e
     void lambda$new$0(arc.input.KeyCode) -> a
 com.google.common.annotations.Beta -> com.google.common.annotations.Beta:
 com.google.common.annotations.GwtCompatible -> com.google.common.annotations.GwtCompatible:
