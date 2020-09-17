@@ -63,7 +63,7 @@ public class OzoneMenu extends BaseDialog {
             } catch (Throwable ignored) {
             }
             Manifest.javaEditor.show();
-        }).growX();
+        }).growX().top();
         try {
             if (Vars.ui.hudfrag.shown())
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
