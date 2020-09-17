@@ -18,7 +18,6 @@ import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.gen.Icon;
 import mindustry.gen.Tex;
-import mindustry.graphics.Pal;
 import mindustry.ui.Styles;
 import mindustry.ui.fragments.Fragment;
 
@@ -106,7 +105,7 @@ public class CommandsListFrag extends Fragment {
             }
             content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
             content.row();
-            content.add().height(4f).color(Pal.engine).growX();
+            content.add().height(4f).color(Color.magenta).growX();
             content.row();
         }
 

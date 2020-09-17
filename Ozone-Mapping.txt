@@ -1,8 +1,9 @@
 Atom.Reflect.Reflect -> a.a.a:
-    java.lang.Object claszObject -> b
-    java.lang.Class loadC -> c
-    java.net.URLClassLoader classLoader -> d
+    java.lang.Object claszObject -> c
+    java.lang.Class loadC -> d
+    java.net.URLClassLoader classLoader -> e
     Ozone.UI.JavaEditor javaEditor -> a
+    Ozone.UI.CommandsListFrag commFrag -> b
     java.lang.Object getField(java.lang.Class,java.lang.String,java.lang.Object) -> a
     java.lang.reflect.Method getMethod(java.lang.Class,java.lang.String,java.lang.Object) -> b
     java.util.ArrayList findMethod(java.lang.Class,Atom.Struct.Filter,java.lang.Object) -> a
@@ -10,6 +11,7 @@ Atom.Reflect.Reflect -> a.a.a:
     boolean lambda$getMethod$1(java.lang.String,java.lang.reflect.Method) -> a
     boolean lambda$getField$0(java.lang.String,java.lang.reflect.Field) -> a
     int positive(int) -> a
+    java.lang.String getRandomHexColor() -> a
     void <init>(java.io.File) -> <init>
     void load(java.lang.String) -> a
     void invokeMethod(java.lang.String) -> b
@@ -86,11 +88,12 @@ Ozone.Commands.Commands -> b.a.b:
     void init() -> a
     java.lang.String getTranslation(java.lang.String) -> a
     boolean call(java.lang.String) -> b
-    void infoPathfinding(java.util.ArrayList) -> a
-    void infoPos(java.util.ArrayList) -> b
-    void help(java.util.ArrayList) -> c
-    void taskMove(java.util.ArrayList) -> d
-    void chaosKick(java.util.ArrayList) -> e
+    void randomKick(java.util.ArrayList) -> a
+    void infoPathfinding(java.util.ArrayList) -> b
+    void infoPos(java.util.ArrayList) -> c
+    void help(java.util.ArrayList) -> d
+    void taskMove(java.util.ArrayList) -> e
+    void chaosKick(java.util.ArrayList) -> f
     void tellUser(java.lang.String) -> c
     void lambda$chaosKick$2() -> b
     void lambda$taskMove$1(long,java.lang.Object) -> a
@@ -99,7 +102,9 @@ Ozone.Commands.Commands -> b.a.b:
 Ozone.Commands.Commands$Command -> b.a.c:
     java.util.function.Consumer method -> a
     java.lang.String description -> b
+    arc.scene.style.TextureRegionDrawable icon -> c
     void <init>(java.util.function.Consumer,java.lang.String) -> <init>
+    void <init>(java.util.function.Consumer,java.lang.String,arc.scene.style.TextureRegionDrawable,boolean) -> <init>
 Ozone.Commands.Task.Move -> b.a.a.a:
     arc.math.geom.Vec2 destPos -> a
     arc.math.geom.Vec2 destTilePos -> b
@@ -154,7 +159,19 @@ Ozone.Settings -> b.d:
     boolean debugMode -> b
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-Ozone.UI.JavaEditor -> b.c.a:
+Ozone.UI.CommandsListFrag -> b.c.a:
+    arc.scene.ui.layout.Table logs -> a
+    arc.scene.ui.layout.Table content -> b
+    boolean visible -> c
+    float h -> d
+    void <init>() -> <init>
+    void toggle() -> a
+    void lambda$rebuild$11(java.lang.String,java.util.Map$Entry) -> a
+    void lambda$rebuild$10(java.util.Map$Entry) -> a
+    java.lang.CharSequence lambda$rebuild$9(java.util.Map$Entry) -> b
+Ozone.UI.CommandsListFrag$1 -> b.c.b:
+    void <init>(Ozone.UI.CommandsListFrag) -> <init>
+Ozone.UI.JavaEditor -> b.c.c:
     Atom.Runtime.RuntimeSource rs -> a
     Atom.Reflect.Reflect rc$4bc128b2 -> b
     java.util.ArrayList messages -> c
@@ -170,11 +187,11 @@ Ozone.UI.JavaEditor -> b.c.a:
     void lambda$setup$2() -> e
     void lambda$setup$1(arc.files.Fi) -> b
     void lambda$setup$0(java.util.concurrent.atomic.AtomicReference,java.util.concurrent.atomic.AtomicReference,java.util.regex.Pattern,arc.scene.ui.layout.Table) -> a
-Ozone.UI.JavaEditor$1 -> b.c.b:
+Ozone.UI.JavaEditor$1 -> b.c.d:
     java.lang.StringBuilder val$sb -> a
     void <init>(Ozone.UI.JavaEditor,java.lang.StringBuilder) -> <init>
     void write(int) -> write
-Ozone.UI.OzoneMenu -> b.c.c:
+Ozone.UI.OzoneMenu -> b.c.e:
     arc.scene.ui.TextField commandsField -> a
     java.lang.String commands -> b
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
