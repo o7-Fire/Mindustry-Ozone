@@ -11,8 +11,7 @@ import mindustry.world.Tile;
 public class Move extends Task {
     private final Vec2 destPos, destTilePos;
     private final Tile destTile;
-    private final int tolerance = 5;
-    private double lastDist = 0;
+    private final int tolerance = 3;
 
     public Move(float x, float y) {
         this(new Vec2(x, y));
@@ -54,7 +53,7 @@ public class Move extends Task {
         else if (xx < 0) xx = -1;
         else if (xx > tolerance) xx = 1;
         setMov(new Vec2(xx, yy));
-        lastDist = getCurrentDistance();
+        double lastDist = getCurrentDistance();
         Log.infoTag("Ozone-AI", "Dist: " + lastDist);
         Log.infoTag("Ozone-AI", "DriveX: " + xx);
         Log.infoTag("Ozone-AI", "DriveY: " + yy);
