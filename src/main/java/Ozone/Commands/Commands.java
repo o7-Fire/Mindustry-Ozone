@@ -39,7 +39,7 @@ public class Commands {
         commandsList.put("task-move", new Command(Commands::taskMove, "taskMove"));
         commandsList.put("info-pos", new Command(Commands::infoPos, "infoPos"));
         commandsList.put("info-pathfinding", new Command(Commands::infoPathfinding, "infoPathfinding"));
-        commandsList.put("random-kick", new Command(Commands::randomKick, "randomKick"));
+        commandsList.put("random-kick", new Command(Commands::randomKick, "randomKick", Icon.hammer, true));
 
         Log.infoTag("Ozone", "Commands Center Initialized");
     }
