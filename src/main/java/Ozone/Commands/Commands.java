@@ -1,5 +1,6 @@
 package Ozone.Commands;
 
+import Atom.Random;
 import Atom.Time.Countdown;
 import arc.Core;
 import arc.scene.style.TextureRegionDrawable;
@@ -37,6 +38,8 @@ public class Commands {
         commandsList.put("task-move", new Command(Commands::taskMove, "taskMove"));
         commandsList.put("info-pos", new Command(Commands::infoPos, "infoPos"));
         commandsList.put("info-pathfinding", new Command(Commands::infoPathfinding, "infoPathfinding"));
+        commandsList.put("random-kick", new Command(Commands::randomKick, "randomKick"));
+
         Log.infoTag("Ozone", "Commands Center Initialized");
     }
 
@@ -63,6 +66,15 @@ public class Commands {
         }
         comm.method.accept(args);
         return true;
+    }
+
+    public static void randomKick(ArrayList<String> s) {
+        ArrayList<Player> players = new ArrayList<>();
+        for (Player p : Groups.player)
+            players.add(p);
+        Player[] players1 = new Player[players.size()];
+        Player p = Random.getRandom(players1);
+        Call.sendChatMessage("/votekick " + p.name);
     }
 
     public static void infoPathfinding(ArrayList<String> s) {
