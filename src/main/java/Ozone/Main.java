@@ -46,6 +46,8 @@ public class Main {
         Events.run(EventType.Trigger.update, Main::update);
     }
 
+    //totally not keylogger
+    //and if you say its a keylogger then you are definition of cancer that need to be eradicated from this world
     private static void update() {
         for (ObjectMap.Entry<ImprovisedKeybinding, Runnable> s : Interface.keybindings.entries()) {
             switch (s.key.keyMode) {
