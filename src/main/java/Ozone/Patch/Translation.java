@@ -6,10 +6,11 @@ import java.util.Map;
 import static Ozone.Interface.registerWords;
 public class Translation {
     public static void patch() {
-        HashMap<String, String> settings = new HashMap<>();
         String[] normalSinglet = {"Run"};
         String[] singlet1 = {"String", "Integer", "Float", "Long", "Boolean", "Commands"};
+        HashMap<String, String> settings = new HashMap<>();
         HashMap<String, String> commands = new HashMap<>();
+        HashMap<String, String> keyBinds = new HashMap<>();
         settings.put("antiSpam", "Enable Anti-Spam");
         settings.put("debugMode", "Enable Debug Mode");
         settings.put("colorPatch", "Enable Colorized Text");
@@ -31,7 +32,10 @@ public class Translation {
         for (Map.Entry<String, String> s : settings.entrySet()) {
             registerWords("setting.ozone." + s.getKey() + ".name", s.getValue());
         }
+        for (Map.Entry<String, String> s : keyBinds.entrySet()) {
+            registerWords("section." + s.getKey() + ".name", s.getValue());
+        }
         for (String s : singlet1) registerWords(s, "[" + s + "]");
-        for (String s : normalSinglet) registerWords(s, s);
+        for (String s : normalSinglet) registerWords(s);
     }
 }

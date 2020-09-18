@@ -4,17 +4,20 @@ import Atom.Random;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
 import Ozone.Patch.DesktopInput;
+import Ozone.Patch.ImprovisedKeybinding;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.JavaEditor;
 import Ozone.UI.OzoneMenu;
 import arc.Core;
+import arc.Events;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
 import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
+import mindustry.game.EventType;
 import mindustry.gen.Tex;
 import mindustry.graphics.Pal;
 import mindustry.ui.Fonts;
@@ -31,6 +34,7 @@ public class Main {
         initUI();
         BotInterface.init();
         Commands.init();
+        initEvent();
     }
 
 
@@ -38,6 +42,24 @@ public class Main {
 
     }
 
+    private static void initEvent() {
+        Events.run(EventType.Trigger.update, Main::update);
+    }
+
+    private static void update() {
+        for (ObjectMap.Entry<ImprovisedKeybinding, Runnable> s : Interface.keybindings.entries()) {
+            switch (s.key.keyMode) {
+                case tap:
+                    if (Core.input.keyTap(s.key.keyBind)) s.value.run();
+                    continue;
+                case down:
+                    if (Core.input.keyDown(s.key.keyBind)) s.value.run();
+                    continue;
+                case release:
+                    if (Core.input.keyRelease(s.key.keyBind)) s.value.run();
+            }
+        }
+    }
 
     private static void loadSettings() {
         Core.settings.put("crashreport", false);
