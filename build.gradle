@@ -41,13 +41,17 @@ ext {
 repositories {
     mavenCentral()
     maven{ url 'https://www.jitpack.io' }
-
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
     testImplementation 'junit:junit:4.12'
-    api atom(":Atomic")
-    compileOnly "com.github.Anuken:Mindustry:$MindustryHash"
+    //api atom(":Atomic")
+    compileOnly files('libs/Atomic.jar')
+    compileOnly files('libs/Mindustry.jar')
+    //compileOnly "com.github.Anuken:Mindustry:$MindustryHash"
 }
 tasks.withType(JavaCompile) {
     sourceCompatibility = 1.8
@@ -72,7 +76,7 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
         libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
         //libraryjars "${System.getProperty('java.home')}/jmods/....."
     }
-    libraryjars "/dependencies/", jarfilter: '!**.jar', filter: '!module-info.class'
+    libraryjars "libs"
 
     injars "build/libs/${project.archivesBaseName}.jar"
     outjars "build/libs/${project.archivesBaseName}.out.jar"
