@@ -27,9 +27,9 @@ import java.util.regex.Pattern;
 
 public class JavaEditor extends BaseDialog {
     public static int pad = 8;
+    public ArrayList<String> messages = new ArrayList<>();
     private volatile RuntimeSource rs = null;
     private volatile RuntimeClass rc = null;
-    public ArrayList<String> messages = new ArrayList<>();
     private HashMap<String, String> color = new HashMap<>();
     private TextArea a;
     private Label label;
@@ -48,36 +48,44 @@ public class JavaEditor extends BaseDialog {
     @Override
     public void hide() {
         super.hide();
-        try { if (!Vars.ui.hudfrag.shown()) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag); } catch (Throwable ignored) { }
+        try {
+            if (!Vars.ui.hudfrag.shown())
+                Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
+        } catch (Throwable ignored) {
+        }
     }
 
     void Run() {
         StringBuilder sb = new StringBuilder();
         try {
-        rs.AssignSourceCode(a.getText().replace("\r", "\n"));
-        rc = rs.compile(new OutputStream() {
+            rs.AssignSourceCode(a.getText().replace("\r", "\n"));
+            rc = rs.compile(new OutputStream() {
                 @Override
                 public void write(int b) {
                     sb.append((char) b);
                 }
-        });
-        setup();
+            });
+            setup();
         } catch (Throwable t) {
             messages.add(sb.toString());
-           Vars.ui.showException("Compiler Error", t);
+            Vars.ui.showException("Compiler Error", t);
         }
-        try{
+        try {
             rc.load(rs.packages + "." + rs.name);
             rc.invokeMethod("run");
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
             Vars.ui.showException("Error", e);
-        } catch (NoSuchMethodException | ClassNotFoundException  e) {
-           Vars.ui.showErrorMessage("\"run\" method not found in class: " + rs.packages + "." + rs.name);
+        } catch (NoSuchMethodException | ClassNotFoundException e) {
+            Vars.ui.showErrorMessage("\"run\" method not found in class: " + rs.packages + "." + rs.name);
         }
     }
 
     void setup() {
-        try { if (Vars.ui.hudfrag.shown()) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag); } catch (Throwable ignored) { }
+        try {
+            if (Vars.ui.hudfrag.shown())
+                Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
+        } catch (Throwable ignored) {
+        }
 
         cont.clear();
         label = null;
@@ -135,7 +143,7 @@ public class JavaEditor extends BaseDialog {
             else {
                 try {
                     a = new TextArea(rs.getString().replace("\n", "\r"));
-                }catch (FormatterException f){
+                } catch (FormatterException f) {
                     Vars.ui.showException("Formatter Err", f);
                 }
             }
@@ -162,14 +170,14 @@ public class JavaEditor extends BaseDialog {
         label.setText(sb.toString());
     }
 
-    public void updateColor(){
-        if(a == null)
+    public void updateColor() {
+        if (a == null)
             return;
         ArrayList<String> code = new ArrayList<>(Arrays.asList(a.getText().replace("\r", "\n").split(" ")));
         StringBuilder sb = new StringBuilder();
         boolean contain = false;
-        for(String s : code){
-            if(color.containsKey(s)) {
+        for (String s : code) {
+            if (color.containsKey(s)) {
                 sb.append("[").append(color.get(s)).append("]");
                 contain = true;
             }
@@ -177,16 +185,17 @@ public class JavaEditor extends BaseDialog {
             sb.append("[white]");
             sb.append(" ");
         }
-        if(!contain)
+        if (!contain)
             return;
         try {
             a.setText(new Formatter().formatSource(sb.toString().replace("\n", "\r")));
             return;
-        } catch (FormatterException ignored) { }
+        } catch (FormatterException ignored) {
+        }
         a.setText(sb.toString().replace("\n", "\r"));
     }
 
-    public void addColor(){
+    public void addColor() {
         color.clear();
         color.put("class", "purple");
         color.put("static", "purple");

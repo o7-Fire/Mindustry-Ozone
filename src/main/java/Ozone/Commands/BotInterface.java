@@ -12,8 +12,8 @@ import mindustry.world.Tile;
 import java.util.function.Consumer;
 
 public class BotInterface {
-    private static volatile boolean init = false;
     private static final Queue<Task> taskQueue = new Queue<>();
+    private static volatile boolean init = false;
 
     public static void init() {
         if (init) return;

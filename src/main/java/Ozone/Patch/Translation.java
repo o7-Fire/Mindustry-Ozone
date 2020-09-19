@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static Ozone.Interface.registerWords;
+
 public class Translation {
     public static void patch() {
         String[] normalSinglet = {"Run"};

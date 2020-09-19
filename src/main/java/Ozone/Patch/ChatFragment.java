@@ -52,6 +52,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
         }
     };
     private HashMap<String, AntiSpam> antiSpam = new HashMap<>();
+
     public ChatFragment() {
         this.setFillParent(true);
         this.font = Fonts.def;
@@ -256,7 +257,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
                 }
             }
             antiSpam.get(sender).setLastMessage(cm.message);
-        }else {
+        } else {
             this.messages.insert(0, cm);
             ++this.fadetime;
             this.fadetime = Math.min(this.fadetime, 10.0F) + 1.0F;

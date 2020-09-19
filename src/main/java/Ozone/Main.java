@@ -46,17 +46,17 @@ public class Main {
         Events.run(EventType.Trigger.update, Main::update);
     }
 
-      public static void update() {
-          for (ObjectMap.Entry<ImprovisedKeybinding, Runnable> s : Interface.keybindings.entries()) {
-              switch (s.key.keyMode) {
-                  case tap:
-                      if (Core.input.keyTap(s.key.keyBind)) s.value.run();
-                      continue;
-                  case down:
-                      if (Core.input.keyDown(s.key.keyBind)) s.value.run();
-                      continue;
-                  case release:
-                      if (Core.input.keyRelease(s.key.keyBind)) s.value.run();
+    public static void update() {
+        for (ObjectMap.Entry<ImprovisedKeybinding, Runnable> s : Interface.keybindings.entries()) {
+            switch (s.key.keyMode) {
+                case tap:
+                    if (Core.input.keyTap(s.key.keyBind)) s.value.run();
+                    continue;
+                case down:
+                    if (Core.input.keyDown(s.key.keyBind)) s.value.run();
+                    continue;
+                case release:
+                    if (Core.input.keyRelease(s.key.keyBind)) s.value.run();
             }
         }
     }
@@ -107,7 +107,7 @@ public class Main {
             Log.infoTag("Ozone", "Patching ChatFragment");
             //Vars.ui.chatfrag = new ChatFragment();
             Log.infoTag("Ozone", "Patching Complete");
-            if(Settings.debugMode) Log.setLogLevel(Log.LogLevel.debug);
+            if (Settings.debugMode) Log.setLogLevel(Log.LogLevel.debug);
             Log.debug("Ozone-Debug", "Debugs, peoples, debugs");
         } catch (Throwable t) {
             Log.infoTag("Ozone", "Patch failed");

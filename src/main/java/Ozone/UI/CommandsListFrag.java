@@ -26,9 +26,9 @@ import java.util.Map;
 import static mindustry.Vars.*;
 
 public class CommandsListFrag extends Fragment {
+    public boolean visible = false;
     private Table logs = new Table().marginRight(30f).marginLeft(20f);
     private Table content = new Table().marginRight(30f).marginLeft(20f);
-    public boolean visible = false;
     private Queue<Task> commandsTask = new arc.struct.Queue<>();
     private float h = 70F;
     private TextField sField;
