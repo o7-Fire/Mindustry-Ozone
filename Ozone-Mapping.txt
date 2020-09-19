@@ -93,7 +93,60 @@ Ozone.Main$1 -> a.c:
 Ozone.Main$2 -> a.d:
     int[] $SwitchMap$Ozone$Patch$ImprovisedKeybinding$mode -> a
     void <clinit>() -> <clinit>
-Ozone.Patch.DesktopInput -> a.b.a:
+Ozone.Patch.ChatFragment -> a.b.a:
+    arc.struct.Seq messages -> a
+    float fadetime -> b
+    boolean shown -> c
+    arc.scene.ui.TextField chatfield -> d
+    arc.scene.ui.Label fieldlabel -> e
+    arc.graphics.g2d.Font font -> f
+    arc.graphics.g2d.GlyphLayout layout -> g
+    float offsetx -> h
+    float offsety -> i
+    float fontoffsetx -> j
+    float chatspace -> k
+    arc.graphics.Color shadowColor -> l
+    float textspacing -> m
+    arc.struct.Seq history -> n
+    int historyPos -> o
+    int scrollPos -> p
+    mindustry.ui.fragments.Fragment container -> q
+    java.util.HashMap antiSpam -> r
+    void <init>() -> <init>
+    mindustry.ui.fragments.Fragment container() -> container
+    void clearMessages() -> clearMessages
+    void draw() -> draw
+    void sendMessage() -> a
+    void toggle() -> toggle
+    void hide() -> hide
+    void updateChat() -> updateChat
+    void clearChatInput() -> clearChatInput
+    boolean shown() -> shown
+    void addMessage(java.lang.String,java.lang.String) -> addMessage
+    void lambda$toggle$2(java.lang.String) -> a
+    void lambda$new$1() -> b
+    boolean lambda$new$0() -> c
+Ozone.Patch.ChatFragment$1 -> a.b.b:
+    Ozone.Patch.ChatFragment this$0 -> a
+    void <init>(Ozone.Patch.ChatFragment) -> <init>
+    void build(arc.scene.Group) -> build
+Ozone.Patch.ChatFragment$AntiSpam -> a.b.c:
+    int maxRepeatingChar -> c
+    long rateLimit -> d
+    java.lang.String lastMessage -> a
+    int lastMessageTimes -> e
+    java.lang.String reasons -> b
+    long lastMessageSent -> f
+    void <init>(java.lang.String) -> <init>
+    void setLastMessage(java.lang.String) -> a
+    java.lang.String filter(java.lang.String) -> b
+    void <clinit>() -> <clinit>
+Ozone.Patch.ChatFragment$ChatMessage -> a.b.d:
+    java.lang.String message -> a
+    java.lang.String formattedMessage -> b
+    void <init>(java.lang.String,java.lang.String) -> <init>
+    void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
+Ozone.Patch.DesktopInput -> a.b.e:
     float xav -> a
     float yav -> b
     void <init>() -> <init>
@@ -101,8 +154,8 @@ Ozone.Patch.DesktopInput -> a.b.a:
     void buildPlacementUI(arc.scene.ui.layout.Table) -> buildPlacementUI
     void updateMovement(mindustry.gen.Unit) -> updateMovement
     void lambda$buildPlacementUI$0() -> a
-Ozone.Patch.ImprovisedKeybinding -> a.b.b:
-Ozone.Patch.ImprovisedKeybinding$mode -> a.b.c:
+Ozone.Patch.ImprovisedKeybinding -> a.b.f:
+Ozone.Patch.ImprovisedKeybinding$mode -> a.b.g:
     Ozone.Patch.ImprovisedKeybinding$mode down -> a
     Ozone.Patch.ImprovisedKeybinding$mode release -> b
     Ozone.Patch.ImprovisedKeybinding$mode tap -> c
@@ -110,28 +163,28 @@ Ozone.Patch.ImprovisedKeybinding$mode -> a.b.c:
     Ozone.Patch.ImprovisedKeybinding$mode[] values() -> a
     void <init>(java.lang.String,int) -> <init>
     void <clinit>() -> <clinit>
-Ozone.Patch.SettingsDialog -> a.b.d:
+Ozone.Patch.SettingsDialog -> a.b.h:
     void <init>() -> <init>
     void lambda$new$0(java.lang.reflect.Field,boolean) -> a
-Ozone.Patch.SettingsDialog$1 -> a.b.e:
+Ozone.Patch.SettingsDialog$1 -> a.b.i:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Patch.SettingsDialog$2 -> a.b.f:
+Ozone.Patch.SettingsDialog$2 -> a.b.j:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Patch.SettingsDialog$3 -> a.b.g:
+Ozone.Patch.SettingsDialog$3 -> a.b.k:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Patch.SettingsDialog$4 -> a.b.h:
+Ozone.Patch.SettingsDialog$4 -> a.b.l:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
@@ -139,7 +192,8 @@ Ozone.Patch.SettingsDialog$4 -> a.b.h:
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
 Ozone.Settings -> a.e:
     boolean colorPatch -> a
-    boolean debugMode -> b
+    boolean antiSpam -> b
+    boolean debugMode -> c
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 Ozone.UI.CommandsListFrag -> a.c.a:

@@ -104,7 +104,7 @@ public class Main {
             Vars.control.input = new DesktopInput();
             Log.infoTag("Ozone", "Patching Settings");
             Vars.ui.settings = new SettingsDialog();
-            Log.infoTag("Ozone", "Patching ChatFragment");
+            //Log.infoTag("Ozone", "Patching ChatFragment");
             //Vars.ui.chatfrag = new ChatFragment();
             Log.infoTag("Ozone", "Patching Complete");
             if (Settings.debugMode) Log.setLogLevel(Log.LogLevel.debug);

@@ -44,10 +44,12 @@ public class Ozone extends Mod {
             if (!atom.exists()) {
                 Log.infoTag("Ozone", "Downloading Library");
                 SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library (6 MB) please wait");
+                //how to download a file synchronously
                 URL jitpack = new URL(AtomDownload);
                 ReadableByteChannel rbc = Channels.newChannel(jitpack.openStream());
                 FileOutputStream fos = new FileOutputStream(atom);
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                //done lol
                 if (atom.exists()) {
                     SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "You need to restart mindustry");
                     System.exit(0);

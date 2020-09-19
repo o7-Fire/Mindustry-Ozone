@@ -13,12 +13,12 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Font;
 import arc.graphics.g2d.GlyphLayout;
 import arc.math.Mathf;
-import arc.scene.Element;
 import arc.scene.Group;
 import arc.scene.ui.Label;
 import arc.scene.ui.TextField;
 import arc.scene.ui.layout.Scl;
 import arc.struct.Seq;
+import arc.util.Align;
 import arc.util.Time;
 import mindustry.Vars;
 import mindustry.gen.Call;
@@ -28,8 +28,13 @@ import mindustry.ui.fragments.Fragment;
 
 import java.util.HashMap;
 
+import static arc.Core.input;
+import static arc.Core.scene;
+import static mindustry.Vars.*;
+
 public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
 
+    private static final int messagesShown = 10;
     private Seq<ChatMessage> messages = new Seq<>();
     private float fadetime;
     private boolean shown = false;
@@ -37,12 +42,9 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
     private Label fieldlabel = new Label(">");
     private Font font;
     private GlyphLayout layout = new GlyphLayout();
-    private float offsetx = Scl.scl(4.0F);
-    private float offsety = Scl.scl(4.0F);
-    private float fontoffsetx = Scl.scl(2.0F);
-    private float chatspace = Scl.scl(50.0F);
-    private Color shadowColor = new Color(0.0F, 0.0F, 0.0F, 0.4F);
-    private float textspacing = Scl.scl(10.0F);
+    private float offsetx = Scl.scl(4), offsety = Scl.scl(4), fontoffsetx = Scl.scl(2), chatspace = Scl.scl(50);
+    private Color shadowColor = new Color(0, 0, 0, 0.4f);
+    private float textspacing = Scl.scl(10);
     private Seq<String> history = new Seq<>();
     private int historyPos = 0;
     private int scrollPos = 0;
@@ -54,50 +56,52 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
     private HashMap<String, AntiSpam> antiSpam = new HashMap<>();
 
     public ChatFragment() {
-        this.setFillParent(true);
-        this.font = Fonts.def;
-        this.visible(() -> {
-            if (!Vars.net.active() && this.messages.size > 0) {
-                this.clearMessages();
-                if (this.shown) {
-                    this.hide();
+        super();
+
+        setFillParent(true);
+        font = Fonts.def;
+
+        visible(() -> {
+            if (!net.active() && messages.size > 0) {
+                clearMessages();
+
+                if (shown) {
+                    hide();
                 }
             }
 
-            return Vars.net.active();
+            return net.active();
         });
-        this.update(() -> {
-            if (Vars.net.active() && Core.input.keyTap(Binding.chat) && (Core.scene.getKeyboardFocus() == this.chatfield || Core.scene.getKeyboardFocus() == null || Vars.ui.minimapfrag.shown()) && !Vars.ui.scriptfrag.shown()) {
-                this.toggle();
+
+        update(() -> {
+
+            if (net.active() && input.keyTap(Binding.chat) && (scene.getKeyboardFocus() == chatfield || scene.getKeyboardFocus() == null || ui.minimapfrag.shown()) && !ui.scriptfrag.shown()) {
+                toggle();
             }
 
-            if (this.shown) {
-                if (Core.input.keyTap(Binding.chat_history_prev) && this.historyPos < this.history.size - 1) {
-                    if (this.historyPos == 0) {
-                        this.history.set(0, this.chatfield.getText());
-                    }
-
-                    ++this.historyPos;
-                    this.updateChat();
+            if (shown) {
+                if (input.keyTap(Binding.chat_history_prev) && historyPos < history.size - 1) {
+                    if (historyPos == 0) history.set(0, chatfield.getText());
+                    historyPos++;
+                    updateChat();
                 }
-
-                if (Core.input.keyTap(Binding.chat_history_next) && this.historyPos > 0) {
-                    --this.historyPos;
-                    this.updateChat();
+                if (input.keyTap(Binding.chat_history_next) && historyPos > 0) {
+                    historyPos--;
+                    updateChat();
                 }
-
-                this.scrollPos = (int) Mathf.clamp((float) this.scrollPos + Core.input.axis(Binding.chat_scroll), 0.0F, (float) Math.max(0, this.messages.size - 10));
+                scrollPos = (int) Mathf.clamp(scrollPos + input.axis(Binding.chat_scroll), 0, Math.max(0, messages.size - messagesShown));
             }
-
         });
-        this.history.insert(0, "");
-        this.setup();
+
+        history.insert(0, "");
+        setup();
     }
 
     @Override
     public Fragment container() {
-        return this.container;
+        return container;
     }
+
 
     @Override
     public void clearMessages() {
@@ -108,68 +112,76 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
     }
 
     private void setup() {
-        this.fieldlabel.setStyle(new Label.LabelStyle(this.fieldlabel.getStyle()));
-        this.fieldlabel.getStyle().font = this.font;
-        this.fieldlabel.setStyle(this.fieldlabel.getStyle());
-        this.chatfield = new TextField("", new TextField.TextFieldStyle((TextField.TextFieldStyle) Core.scene.getStyle(TextField.TextFieldStyle.class)));
-        this.chatfield.setMaxLength(150);
-        this.chatfield.getStyle().background = null;
-        this.chatfield.getStyle().font = Fonts.chat;
-        this.chatfield.getStyle().fontColor = Color.white;
-        this.chatfield.setStyle(this.chatfield.getStyle());
-        this.bottom().left().marginBottom(this.offsety).marginLeft(this.offsetx * 2.0F).add(this.fieldlabel).padBottom(6.0F);
-        this.add(this.chatfield).padBottom(this.offsety).padLeft(this.offsetx).growX().padRight(this.offsetx).height(28.0F);
-        if (Vars.mobile) {
-            this.marginBottom(105.0F);
-            this.marginRight(240.0F);
-        }
+        fieldlabel.setStyle(new Label.LabelStyle(fieldlabel.getStyle()));
+        fieldlabel.getStyle().font = font;
+        fieldlabel.setStyle(fieldlabel.getStyle());
 
+        chatfield = new TextField("", new TextField.TextFieldStyle(scene.getStyle(TextField.TextFieldStyle.class)));
+        chatfield.setMaxLength(Vars.maxTextLength);
+        chatfield.getStyle().background = null;
+        chatfield.getStyle().font = Fonts.chat;
+        chatfield.getStyle().fontColor = Color.white;
+        chatfield.setStyle(chatfield.getStyle());
+
+        bottom().left().marginBottom(offsety).marginLeft(offsetx * 2).add(fieldlabel).padBottom(6f);
+
+        add(chatfield).padBottom(offsety).padLeft(offsetx).growX().padRight(offsetx).height(28);
+
+        if (Vars.mobile) {
+            marginBottom(105f);
+            marginRight(240f);
+        }
     }
 
     @Override
     public void draw() {
-        float opacity = (float) Core.settings.getInt("chatopacity") / 100.0F;
-        float textWidth = Math.min((float) Core.graphics.getWidth() / 1.5F, Scl.scl(700.0F));
-        Draw.color(this.shadowColor);
-        if (this.shown) {
-            Fill.crect(this.offsetx, this.chatfield.y, this.chatfield.getWidth() + 15.0F, this.chatfield.getHeight() - 1.0F);
+        float opacity = Core.settings.getInt("chatopacity") / 100f;
+        float textWidth = Math.min(Core.graphics.getWidth() / 1.5f, Scl.scl(700f));
+
+        Draw.color(shadowColor);
+
+        if (shown) {
+            Fill.crect(offsetx, chatfield.y, chatfield.getWidth() + 15f, chatfield.getHeight() - 1);
         }
 
         super.draw();
-        float spacing = this.chatspace;
-        this.chatfield.visible = this.shown;
-        this.fieldlabel.visible = this.shown;
-        Draw.color(this.shadowColor);
-        Draw.alpha(this.shadowColor.a * opacity);
-        float theight = this.offsety + spacing + this.getMarginBottom();
 
-        for (int i = this.scrollPos; i < this.messages.size && i < 10 + this.scrollPos && ((float) i < this.fadetime || this.shown); ++i) {
-            this.layout.setText(this.font, ((ChatMessage) this.messages.get(i)).formattedMessage, Color.white, textWidth, 12, true);
-            theight += this.layout.height + this.textspacing;
-            if (i - this.scrollPos == 0) {
-                theight -= this.textspacing + 1.0F;
-            }
+        float spacing = chatspace;
 
-            this.font.getCache().clear();
-            this.font.getCache().addText(((ChatMessage) this.messages.get(i)).formattedMessage, this.fontoffsetx + this.offsetx, this.offsety + theight, textWidth, 12, true);
-            if (!this.shown && this.fadetime - (float) i < 1.0F && this.fadetime - (float) i >= 0.0F) {
-                this.font.getCache().setAlphas((this.fadetime - (float) i) * opacity);
-                Draw.color(0.0F, 0.0F, 0.0F, this.shadowColor.a * (this.fadetime - (float) i) * opacity);
+        chatfield.visible = shown;
+        fieldlabel.visible = shown;
+
+        Draw.color(shadowColor);
+        Draw.alpha(shadowColor.a * opacity);
+
+        float theight = offsety + spacing + getMarginBottom();
+        for (int i = scrollPos; i < messages.size && i < messagesShown + scrollPos && (i < fadetime || shown); i++) {
+
+            layout.setText(font, messages.get(i).formattedMessage, Color.white, textWidth, Align.bottomLeft, true);
+            theight += layout.height + textspacing;
+            if (i - scrollPos == 0) theight -= textspacing + 1;
+
+            font.getCache().clear();
+            font.getCache().addText(messages.get(i).formattedMessage, fontoffsetx + offsetx, offsety + theight, textWidth, Align.bottomLeft, true);
+
+            if (!shown && fadetime - i < 1f && fadetime - i >= 0f) {
+                font.getCache().setAlphas((fadetime - i) * opacity);
+                Draw.color(0, 0, 0, shadowColor.a * (fadetime - i) * opacity);
             } else {
-                this.font.getCache().setAlphas(opacity);
+                font.getCache().setAlphas(opacity);
             }
 
-            Fill.crect(this.offsetx, theight - this.layout.height - 2.0F, textWidth + Scl.scl(4.0F), this.layout.height + this.textspacing);
-            Draw.color(this.shadowColor);
-            Draw.alpha(opacity * this.shadowColor.a);
-            this.font.getCache().draw();
+            Fill.crect(offsetx, theight - layout.height - 2, textWidth + Scl.scl(4f), layout.height + textspacing);
+            Draw.color(shadowColor);
+            Draw.alpha(opacity * shadowColor.a);
+
+            font.getCache().draw();
         }
 
         Draw.color();
-        if (this.fadetime > 0.0F && !this.shown) {
-            this.fadetime -= Time.delta / 180.0F;
-        }
 
+        if (fadetime > 0 && !shown)
+            fadetime -= Time.delta / 180f;
     }
 
     private void sendMessage() {
@@ -184,56 +196,58 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
 
     @Override
     public void toggle() {
-        if (!this.shown) {
-            Core.scene.setKeyboardFocus(this.chatfield);
-            this.shown = !this.shown;
-            if (Vars.mobile) {
+
+        if (!shown) {
+            scene.setKeyboardFocus(chatfield);
+            shown = !shown;
+            if (mobile) {
                 Input.TextInput input = new Input.TextInput();
-                input.maxLength = 150;
-                input.accepted = (text) -> {
-                    this.chatfield.setText(text);
-                    this.sendMessage();
-                    this.hide();
+                input.maxLength = maxTextLength;
+                input.accepted = text -> {
+                    chatfield.setText(text);
+                    sendMessage();
+                    hide();
                     Core.input.setOnscreenKeyboardVisible(false);
                 };
                 input.canceled = this::hide;
                 Core.input.getTextInput(input);
             } else {
-                this.chatfield.fireClick();
+                chatfield.fireClick();
             }
         } else {
-            Core.scene.setKeyboardFocus((Element) null);
-            this.shown = !this.shown;
-            this.scrollPos = 0;
-            this.sendMessage();
+            scene.setKeyboardFocus(null);
+            shown = !shown;
+            scrollPos = 0;
+            sendMessage();
         }
-
     }
+
 
     @Override
     public void hide() {
-        Core.scene.setKeyboardFocus(null);
-        this.shown = false;
-        this.clearChatInput();
+        scene.setKeyboardFocus(null);
+        shown = false;
+        clearChatInput();
     }
 
     @Override
     public void updateChat() {
-        this.chatfield.setText(this.history.get(this.historyPos));
-        this.chatfield.setCursorPosition(this.chatfield.getText().length());
+        chatfield.setText(history.get(historyPos));
+        chatfield.setCursorPosition(chatfield.getText().length());
     }
 
     @Override
     public void clearChatInput() {
-        this.historyPos = 0;
-        this.history.set(0, "");
-        this.chatfield.setText("");
+        historyPos = 0;
+        history.set(0, "");
+        chatfield.setText("");
     }
 
     @Override
     public boolean shown() {
-        return this.shown;
+        return shown;
     }
+
 
     @Override
     public void addMessage(String message, String sender) {
@@ -246,26 +260,23 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
                 if (!filter.isEmpty()) {
                     if (message1.message.equals(victim.lastMessage)) messages.remove(0);
                     messages.insert(0, new ChatMessage(filter, sender, victim.reasons));
-                } else this.messages.insert(0, cm);
+                } else messages.insert(0, cm);
             } else {
                 antiSpam.put(sender, new AntiSpam(sender));
-                this.messages.insert(0, cm);
-                ++this.fadetime;
-                this.fadetime = Math.min(this.fadetime, 10.0F) + 1.0F;
-                if (this.scrollPos > 0) {
-                    ++this.scrollPos;
-                }
+                messages.insert(0, cm);
+                fadetime += 1f;
+                fadetime = Math.min(fadetime, messagesShown) + 1f;
+                if (scrollPos > 0) scrollPos++;
             }
             antiSpam.get(sender).setLastMessage(cm.message);
         } else {
-            this.messages.insert(0, cm);
-            ++this.fadetime;
-            this.fadetime = Math.min(this.fadetime, 10.0F) + 1.0F;
-            if (this.scrollPos > 0) {
-                ++this.scrollPos;
-            }
-        }
+            messages.insert(0, cm);
 
+            fadetime += 1f;
+            fadetime = Math.min(fadetime, messagesShown) + 1f;
+
+            if (scrollPos > 0) scrollPos++;
+        }
     }
 
     private static class AntiSpam {
