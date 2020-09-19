@@ -17,9 +17,9 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 public class PreLoad {
-    public static String AtomHash = "f802965617";
+    public final static String AtomHash = "02051bd3ca";
     public static URLClassLoader atomicClassloader = null;
-    public static String AtomDownload = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/Atomic/" + AtomHash + "/Atomic-" + AtomHash + ".jar";
+    public final static String AtomDownload = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/Atomic/" + AtomHash + "/Atomic-" + AtomHash + ".jar";
     private static volatile boolean init = false;
 
     public static boolean init() {
