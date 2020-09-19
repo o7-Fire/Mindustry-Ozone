@@ -1,6 +1,7 @@
 package Main;
 
 import Ozone.Main;
+import Ozone.Pre.PreLoad;
 import mindustry.mod.Mod;
 
 public class Ozone extends Mod {
@@ -8,12 +9,12 @@ public class Ozone extends Mod {
 
     @Override
     public void init() {
-        Main.init();
+        PreLoad.init(Main::init);
     }
 
     @Override
     public void loadContent() {
-        Main.loadContent();
+        PreLoad.init(Main::loadContent);
     }
 
 

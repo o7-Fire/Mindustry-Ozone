@@ -47,7 +47,8 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.12'
+    //testImplementation 'junit:junit:4.12'
+    implementation 'junit:junit:4.12'
     //api atom(":Atomic")
     compileOnly files('libs/Atomic.jar')
     compileOnly files('libs/Mindustry.jar')
