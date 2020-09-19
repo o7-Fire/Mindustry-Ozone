@@ -12,7 +12,7 @@ public class Translation {
         HashMap<String, String> settings = new HashMap<>();
         HashMap<String, String> commands = new HashMap<>();
         HashMap<String, String> keyBinds = new HashMap<>();
-        settings.put("antiSpam", "Enable Anti-Spam");
+        settings.put("antiSpam", "[Broken]Enable Anti-Spam");
         settings.put("debugMode", "Enable Debug Mode");
         settings.put("colorPatch", "Enable Colorized Text");
         settings.put("commandsPrefix", "Commands Prefix");
