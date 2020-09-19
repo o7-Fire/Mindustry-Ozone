@@ -132,10 +132,8 @@ Ozone.Patch.SettingsDialog$4 -> a.b.h:
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
 Ozone.Pre.PreLoad -> a.c.a:
-    java.lang.String AtomHash -> b
     java.net.URLClassLoader atomicClassloader -> a
-    java.lang.String AtomDownload -> c
-    boolean init -> d
+    boolean init -> b
     void <init>() -> <init>
     boolean init() -> a
     void lambda$init$0(java.lang.Throwable,mindustry.game.EventType$ClientLoadEvent) -> a
