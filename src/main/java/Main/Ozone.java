@@ -43,7 +43,7 @@ public class Ozone extends Mod {
             Log.infoTag("Ozone", "Loading library");
             if (!atom.exists()) {
                 Log.infoTag("Ozone", "Downloading Library");
-                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library");
+                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library (6 MB) please wait");
                 URL jitpack = new URL(AtomDownload);
                 ReadableByteChannel rbc = Channels.newChannel(jitpack.openStream());
                 FileOutputStream fos = new FileOutputStream(atom);
