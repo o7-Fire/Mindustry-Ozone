@@ -22,8 +22,8 @@ public class PreLoad {
     public static String AtomDownload = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/Atomic/" + AtomHash + "/Atomic-" + AtomHash + ".jar";
     private static volatile boolean init = false;
 
-    public static void init(Runnable r) {
-        if (init) return;
+    public static boolean init() {
+        if (init) return true;
         init = true;
         try {
             File ozone = new File(PreLoad.class.getProtectionDomain().getCodeSource().getLocation().getFile());
@@ -31,7 +31,7 @@ public class PreLoad {
             File atom = new File(parentFile, "Atomic-" + AtomHash + ".jar");
             if (!atom.exists()) {
                 Log.infoTag("Ozone", "Downloading Library");
-                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library from: " + AtomDownload);
+                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library from: \n" + AtomDownload);
                 URL jitpack = new URL(AtomDownload);
                 ReadableByteChannel rbc = Channels.newChannel(jitpack.openStream());
                 FileOutputStream fos = new FileOutputStream(atom);
@@ -43,10 +43,9 @@ public class PreLoad {
                 Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
                 method.setAccessible(true);
                 method.invoke(PreLoad.class.getClassLoader(), atom.toURI().toURL());
-                if (Manifest.checkIntegrity()) {
-                    r.run();
-                    return;
-                }
+                if (Manifest.checkIntegrity())
+                    return true;
+
             } catch (Throwable t) {
                 Log.err(t);
                 Log.err("Using second strategy to load library");
@@ -59,7 +58,7 @@ public class PreLoad {
                 Object sclo = scl.getDeclaredConstructor().newInstance();
                 sclm.invoke(sclo, atomicClassloader, atom);
                 Random.getRandomHexColor();
-                if (Manifest.checkIntegrity()) r.run();
+                if (Manifest.checkIntegrity()) return true;
 
             } catch (Throwable t) {
                 Log.err("Failed to load Atomic Library");
@@ -73,6 +72,7 @@ public class PreLoad {
                 Vars.ui.showInfoText("Failed to load ozone", "See log for more information");
             });
         }
+        return false;
     }
 }
 

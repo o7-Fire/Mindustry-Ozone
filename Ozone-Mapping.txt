@@ -1,6 +1,3 @@
-Atom.Test.Test -> Atom.Test.Test:
-    void <init>() -> <init>
-    void run() -> run
 Main.Ozone -> Main.Ozone:
     void <init>() -> <init>
     void init() -> init
@@ -8,13 +5,203 @@ Main.Ozone -> Main.Ozone:
 Ozone.Commands.BotInterface -> a.a.a:
     arc.struct.Queue taskQueue -> a
     boolean init -> b
+    void init() -> a
     void moveTo(int,int,java.util.function.Consumer) -> a
+    void update() -> d
+    arc.math.geom.Vec2 getCurrentPos() -> b
+    arc.math.geom.Vec2 getCurrentTilePos() -> c
+    void reset() -> e
     void <clinit>() -> <clinit>
-Ozone.Commands.Task.Move -> a.a.a.a:
-    mindustry.world.Tile destTile -> a
+Ozone.Commands.Commands -> a.a.b:
+    java.util.HashMap commandsList -> a
+    boolean init -> b
+    boolean falseVote -> c
+    void init() -> a
+    java.lang.String getTranslation(java.lang.String) -> a
+    boolean call(java.lang.String) -> b
+    void randomKick(java.util.ArrayList) -> a
+    void infoPathfinding(java.util.ArrayList) -> b
+    void infoPos(java.util.ArrayList) -> c
+    void help(java.util.ArrayList) -> d
+    void taskMove(java.util.ArrayList) -> e
+    void chaosKick(java.util.ArrayList) -> f
+    void tellUser(java.lang.String) -> c
+    void lambda$chaosKick$2() -> b
+    void lambda$taskMove$1(long,java.lang.Object) -> a
+    float lambda$infoPathfinding$0(mindustry.world.Tile) -> a
+    void <clinit>() -> <clinit>
+Ozone.Commands.Commands$Command -> a.a.c:
+    java.util.function.Consumer method -> a
+    java.lang.String description -> b
+    arc.scene.style.TextureRegionDrawable icon -> c
+    Ozone.UI.OzoneMenu menu -> d
+    Ozone.UI.JavaEditor javaEditor -> e
+    Ozone.UI.CommandsListFrag commFrag -> f
+    void <init>(java.util.function.Consumer,java.lang.String) -> <init>
+    void <init>(java.util.function.Consumer,java.lang.String,arc.scene.style.TextureRegionDrawable,boolean) -> <init>
+Ozone.Commands.Task.CommandsSpam -> a.a.a.a:
+    int howManyTimes -> a
+    int delays -> b
+    int currentCycle -> c
+    java.lang.String commands -> d
+    void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
+    boolean isCompleted() -> a
+    void update() -> b
+Ozone.Commands.Task.Move -> a.a.a.b:
+    arc.math.geom.Vec2 destPos -> a
+    arc.math.geom.Vec2 destTilePos -> b
+    mindustry.world.Tile destTile -> c
+    arc.struct.Seq pathfindingCache -> d
     void <init>(float,float) -> <init>
     void <init>(arc.math.geom.Vec2) -> <init>
+    void taskCompleted() -> c
+    boolean isCompleted() -> a
+    void update() -> b
+    void setMov(arc.math.geom.Vec2) -> a
+    double getCurrentDistance() -> e
     float isSafe(mindustry.world.Tile) -> a
-Ozone.Commands.Task.Task -> a.a.a.b:
+    double distanceTo(arc.math.geom.Vec2,arc.math.geom.Vec2) -> a
+Ozone.Commands.Task.Task -> a.a.a.c:
     java.util.ArrayList onTaskCompleted -> a
+    int tick -> b
+    int currentTick -> c
     void <init>() -> <init>
+    void onTaskCompleted(java.util.function.Consumer) -> a
+    void taskCompleted() -> c
+    void setTick(int) -> a
+    boolean tick() -> d
+    boolean isCompleted() -> a
+    void update() -> b
+Ozone.Interface -> a.a:
+    arc.struct.ObjectMap bundle -> a
+    arc.struct.ObjectMap keybindings -> b
+    void registerWords(java.lang.String,java.lang.String) -> a
+    void registerWords(java.lang.String) -> a
+    void <clinit>() -> <clinit>
+Ozone.Main -> a.b:
+    void init() -> a
+    void update() -> b
+    void patch() -> c
+Ozone.Main$1 -> a.c:
+    void <init>() -> <init>
+Ozone.Main$2 -> a.d:
+    int[] $SwitchMap$Ozone$Patch$ImprovisedKeybinding$mode -> a
+    void <clinit>() -> <clinit>
+Ozone.Patch.DesktopInput -> a.b.a:
+    float xav -> a
+    float yav -> b
+    void <init>() -> <init>
+    void setMove(arc.math.geom.Vec2) -> a
+    void buildPlacementUI(arc.scene.ui.layout.Table) -> buildPlacementUI
+    void updateMovement(mindustry.gen.Unit) -> updateMovement
+    void lambda$buildPlacementUI$0() -> a
+Ozone.Patch.ImprovisedKeybinding -> a.b.b:
+Ozone.Patch.ImprovisedKeybinding$mode -> a.b.c:
+    Ozone.Patch.ImprovisedKeybinding$mode down -> a
+    Ozone.Patch.ImprovisedKeybinding$mode release -> b
+    Ozone.Patch.ImprovisedKeybinding$mode tap -> c
+    Ozone.Patch.ImprovisedKeybinding$mode[] $VALUES -> d
+    Ozone.Patch.ImprovisedKeybinding$mode[] values() -> a
+    void <init>(java.lang.String,int) -> <init>
+    void <clinit>() -> <clinit>
+Ozone.Patch.SettingsDialog -> a.b.d:
+    void <init>() -> <init>
+    void lambda$new$0(java.lang.reflect.Field,boolean) -> a
+Ozone.Patch.SettingsDialog$1 -> a.b.e:
+    java.lang.reflect.Field val$f -> a
+    void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
+    void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
+    void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
+    java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
+Ozone.Patch.SettingsDialog$2 -> a.b.f:
+    java.lang.reflect.Field val$f -> a
+    void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
+    void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
+    void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
+    java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
+Ozone.Patch.SettingsDialog$3 -> a.b.g:
+    java.lang.reflect.Field val$f -> a
+    void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
+    void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
+    void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
+    java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
+Ozone.Patch.SettingsDialog$4 -> a.b.h:
+    java.lang.reflect.Field val$f -> a
+    void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
+    void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
+    void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
+    java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
+Ozone.Pre.PreLoad -> a.c.a:
+    java.lang.String AtomHash -> b
+    java.net.URLClassLoader atomicClassloader -> a
+    java.lang.String AtomDownload -> c
+    boolean init -> d
+    void <init>() -> <init>
+    boolean init() -> a
+    void lambda$init$0(java.lang.Throwable,mindustry.game.EventType$ClientLoadEvent) -> a
+    void <clinit>() -> <clinit>
+Ozone.Settings -> a.e:
+    boolean colorPatch -> a
+    boolean debugMode -> b
+    void <init>() -> <init>
+    void <clinit>() -> <clinit>
+Ozone.UI.CommandsListFrag -> a.d.a:
+    boolean visible -> a
+    arc.scene.ui.layout.Table content -> b
+    arc.struct.Queue commandsTask -> c
+    float h -> d
+    arc.scene.ui.TextField sField -> e
+    java.lang.String commands -> f
+    void <init>() -> <init>
+    void build(arc.scene.Group) -> build
+    void rebuild() -> b
+    void toggle() -> a
+    void lambda$rebuild$11(java.lang.String,java.util.Map$Entry) -> a
+    void lambda$rebuild$10(java.util.Map$Entry) -> a
+    java.lang.CharSequence lambda$rebuild$9(java.util.Map$Entry) -> b
+    void lambda$build$8(arc.scene.ui.layout.Table) -> a
+    void lambda$build$7(arc.scene.ui.layout.Table) -> b
+    void lambda$build$6(arc.scene.ui.layout.Table) -> c
+    void lambda$build$5() -> c
+    void lambda$build$4(java.lang.String) -> a
+    void lambda$build$3(java.lang.String,java.lang.String) -> a
+    void lambda$build$2(java.lang.String) -> b
+    void lambda$build$1() -> d
+    boolean lambda$build$0() -> e
+Ozone.UI.CommandsListFrag$1 -> a.d.b:
+    void <init>(Ozone.UI.CommandsListFrag) -> <init>
+    void draw() -> draw
+Ozone.UI.JavaEditor -> a.d.c:
+    java.util.ArrayList messages -> a
+    Atom.Runtime.RuntimeSource rs -> b
+    Atom.Runtime.RuntimeClass rc -> c
+    java.util.HashMap color -> d
+    arc.scene.ui.TextArea a -> e
+    arc.scene.ui.Label label -> f
+    void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
+    void hide() -> hide
+    void Run() -> a
+    void setup() -> b
+    void updateChat() -> c
+    void lambda$setup$4() -> d
+    void lambda$setup$3(arc.files.Fi) -> a
+    void lambda$setup$2() -> e
+    void lambda$setup$1(arc.files.Fi) -> b
+    void lambda$setup$0(java.util.concurrent.atomic.AtomicReference,java.util.concurrent.atomic.AtomicReference,java.util.regex.Pattern,arc.scene.ui.layout.Table) -> a
+Ozone.UI.JavaEditor$1 -> a.d.d:
+    java.lang.StringBuilder val$sb -> a
+    void <init>(Ozone.UI.JavaEditor,java.lang.StringBuilder) -> <init>
+    void write(int) -> write
+Ozone.UI.OzoneMenu -> a.d.e:
+    arc.scene.ui.TextField commandsField -> a
+    java.lang.String commands -> b
+    void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
+    void hide() -> hide
+    void setup() -> a
+    void lambda$setup$6(arc.scene.ui.layout.Table) -> a
+    void lambda$setup$5() -> b
+    void lambda$setup$4(java.lang.String) -> a
+    java.lang.CharSequence lambda$setup$3() -> c
+    void lambda$setup$2() -> d
+    void lambda$setup$1() -> e
+    void lambda$new$0(arc.input.KeyCode) -> a
