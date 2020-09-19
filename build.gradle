@@ -50,7 +50,7 @@ dependencies {
     //testImplementation 'junit:junit:4.12'
     testImplementation 'junit:junit:4.12'
     //api atom(":Atomic")
-    implementation files('libs/Atomic.jar')
+    compileOnly files('libs/Atomic.jar')
     compileOnly files('libs/Mindustry.jar')
     //compileOnly "com.github.Anuken:Mindustry:$MindustryHash"
 }
@@ -82,8 +82,3 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     injars "build/libs/${project.archivesBaseName}.jar"
     outjars "build/libs/${project.archivesBaseName}.out.jar"
 }
-task copyDependencies(type: Copy) {
-    from configurations.runtime
-    into 'dependencies'
-}
-build.dependsOn(copyDependencies)
