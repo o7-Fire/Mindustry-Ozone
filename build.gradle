@@ -72,9 +72,7 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
         libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
         //libraryjars "${System.getProperty('java.home')}/jmods/....."
     }
-    libraryjars files(configurations.compile.collect())
-    libraryjars "libs/dependenciesLibrary"
-    libraryjars "E:\\App\\.gradle\\caches\\modules-2\\files-2.1", jarfilter: '!**.jar'
+    libraryjars "dependencies"
 
     injars "build/libs/${project.archivesBaseName}.jar"
     outjars "build/libs/${project.archivesBaseName}.out.jar"
