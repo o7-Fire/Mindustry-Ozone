@@ -46,19 +46,17 @@ public class Main {
         Events.run(EventType.Trigger.update, Main::update);
     }
 
-    //totally not keylogger
-    //and if you say its a keylogger then you are definition of cancer that need to be eradicated from this world
-    private static void update() {
-        for (ObjectMap.Entry<ImprovisedKeybinding, Runnable> s : Interface.keybindings.entries()) {
-            switch (s.key.keyMode) {
-                case tap:
-                    if (Core.input.keyTap(s.key.keyBind)) s.value.run();
-                    continue;
-                case down:
-                    if (Core.input.keyDown(s.key.keyBind)) s.value.run();
-                    continue;
-                case release:
-                    if (Core.input.keyRelease(s.key.keyBind)) s.value.run();
+      public static void update() {
+          for (ObjectMap.Entry<ImprovisedKeybinding, Runnable> s : Interface.keybindings.entries()) {
+              switch (s.key.keyMode) {
+                  case tap:
+                      if (Core.input.keyTap(s.key.keyBind)) s.value.run();
+                      continue;
+                  case down:
+                      if (Core.input.keyDown(s.key.keyBind)) s.value.run();
+                      continue;
+                  case release:
+                      if (Core.input.keyRelease(s.key.keyBind)) s.value.run();
             }
         }
     }
