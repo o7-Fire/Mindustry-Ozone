@@ -1,6 +1,7 @@
 /libs/
 .attach_*
 /tools
+/dependencies
 ## Java
 
 *.class
@@ -113,3 +114,4 @@ android/libs/
 annotations/src/main/resources/revisions/EffectState/6.json
 Ozone-Mapping.txt
 copy.bat
+/dependencies/
