@@ -29,22 +29,12 @@ public class Ozone extends Mod {
 
     @Override
     public void init() {
-        if (inits())
-            Main.init();
-        else
-            Log.err("Ozone Error");
-        if (atomicClassloader != null)
-            Log.err("AtomicClassLoader isn't null");
+        Main.init();
     }
 
     @Override
     public void loadContent() {
-        if (inits())
-            Main.loadContent();
-        else
-            Log.err("Ozone Error");
-        if (atomicClassloader != null)
-            Log.err("AtomicClassLoader isn't null");
+        Main.loadContent();
     }
 
     public boolean inits() {
@@ -54,14 +44,17 @@ public class Ozone extends Mod {
             File ozone = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
             File parentFile = ozone.getParentFile();
             File atom = new File(parentFile, "Atomic-" + AtomHash + ".jar");
+            Log.infoTag("Ozone", "Loading library");
             if (!atom.exists()) {
                 Log.infoTag("Ozone", "Downloading Library");
                 SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library from: " + ad);
+                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "that mean you probably need to restart mindustry after this");
                 URL jitpack = new URL(AtomDownload);
                 ReadableByteChannel rbc = Channels.newChannel(jitpack.openStream());
                 FileOutputStream fos = new FileOutputStream(atom);
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             }
+            Log.infoTag("Ozone", "Loading library with mods classloader");
             try {
                 if (!(this.getClass().getClassLoader() instanceof URLClassLoader))
                     throw new RuntimeException("Classloader is not URLClassloader");
@@ -72,9 +65,11 @@ public class Ozone extends Mod {
                     return true;
 
             } catch (Throwable t) {
-                Log.err(t);
+                t.printStackTrace();
+                Log.info(t);
                 Log.err("Using second strategy to load library");
             }
+            Log.infoTag("Ozone", "Loading library with new classloader");
 
             try {
                 atomicClassloader = new URLClassLoader(new URL[]{atom.toURI().toURL(), new URL(AtomDownload), ozone.toURI().toURL()});
@@ -86,10 +81,12 @@ public class Ozone extends Mod {
                 if (Manifest.checkIntegrity()) return true;
 
             } catch (Throwable t) {
-                Log.err("Failed to load Atomic Library");
+                t.printStackTrace();
+                Log.info("Failed to load Atomic Library");
                 throw new RuntimeException(t);
             }
         } catch (Throwable t) {
+            t.printStackTrace();
             Log.err(t);
             Log.infoTag("Ozone", "Cant load ozone, aborting");
             Events.on(EventType.ClientLoadEvent.class, s -> {

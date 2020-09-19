@@ -1,7 +1,15 @@
 Main.Ozone -> Main.Ozone:
+    java.lang.String AtomHash -> AtomHash
+    java.lang.String AtomDownload -> AtomDownload
+    java.net.URLClassLoader atomicClassloader -> atomicClassloader
+    java.lang.String ad -> ad
+    boolean init -> init
     void <init>() -> <init>
     void init() -> init
     void loadContent() -> loadContent
+    boolean inits() -> inits
+    void lambda$inits$0(java.lang.Throwable,mindustry.game.EventType$ClientLoadEvent) -> lambda$inits$0
+    void <clinit>() -> <clinit>
 Ozone.Commands.BotInterface -> a.a.a:
     arc.struct.Queue taskQueue -> a
     boolean init -> b
@@ -131,19 +139,12 @@ Ozone.Patch.SettingsDialog$4 -> a.b.h:
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Pre.PreLoad -> a.c.a:
-    java.net.URLClassLoader atomicClassloader -> a
-    boolean init -> b
-    void <init>() -> <init>
-    boolean init() -> a
-    void lambda$init$0(java.lang.Throwable,mindustry.game.EventType$ClientLoadEvent) -> a
-    void <clinit>() -> <clinit>
 Ozone.Settings -> a.e:
     boolean colorPatch -> a
     boolean debugMode -> b
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-Ozone.UI.CommandsListFrag -> a.d.a:
+Ozone.UI.CommandsListFrag -> a.c.a:
     boolean visible -> a
     arc.scene.ui.layout.Table content -> b
     arc.struct.Queue commandsTask -> c
@@ -166,10 +167,10 @@ Ozone.UI.CommandsListFrag -> a.d.a:
     void lambda$build$2(java.lang.String) -> b
     void lambda$build$1() -> d
     boolean lambda$build$0() -> e
-Ozone.UI.CommandsListFrag$1 -> a.d.b:
+Ozone.UI.CommandsListFrag$1 -> a.c.b:
     void <init>(Ozone.UI.CommandsListFrag) -> <init>
     void draw() -> draw
-Ozone.UI.JavaEditor -> a.d.c:
+Ozone.UI.JavaEditor -> a.c.c:
     java.util.ArrayList messages -> a
     Atom.Runtime.RuntimeSource rs -> b
     Atom.Runtime.RuntimeClass rc -> c
@@ -186,11 +187,11 @@ Ozone.UI.JavaEditor -> a.d.c:
     void lambda$setup$2() -> e
     void lambda$setup$1(arc.files.Fi) -> b
     void lambda$setup$0(java.util.concurrent.atomic.AtomicReference,java.util.concurrent.atomic.AtomicReference,java.util.regex.Pattern,arc.scene.ui.layout.Table) -> a
-Ozone.UI.JavaEditor$1 -> a.d.d:
+Ozone.UI.JavaEditor$1 -> a.c.d:
     java.lang.StringBuilder val$sb -> a
     void <init>(Ozone.UI.JavaEditor,java.lang.StringBuilder) -> <init>
     void write(int) -> write
-Ozone.UI.OzoneMenu -> a.d.e:
+Ozone.UI.OzoneMenu -> a.c.e:
     arc.scene.ui.TextField commandsField -> a
     java.lang.String commands -> b
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
