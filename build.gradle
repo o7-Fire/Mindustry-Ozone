@@ -47,7 +47,6 @@ repositories {
 dependencies {
     testImplementation 'junit:junit:4.12'
     api atom(":Atomic")
-    //compileOnly atom(":Aindustry")
     compileOnly "com.github.Anuken:Mindustry:$MindustryHash"
 }
 tasks.withType(JavaCompile) {
@@ -80,9 +79,8 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     injars "build/libs/${project.archivesBaseName}.jar"
     outjars "build/libs/${project.archivesBaseName}.out.jar"
 }
-task copyRuntimeLibs(type: Copy) {
-    println 'Heil o7'
-    from project.configurations.runtimeClasspath
-    into "libs/dependenciesLibrary"
+task copyDependencies(type: Copy) {
+    from configurations.runtimeClasspath.collect{it.isDirectory() ? it : zipTree(it)}
+    into 'dependencies'
 }
-build.dependsOn(copyRuntimeLibs)
+build.dependsOn(copyDependencies)
