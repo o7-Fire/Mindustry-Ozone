@@ -72,13 +72,14 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
         libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
         //libraryjars "${System.getProperty('java.home')}/jmods/....."
     }
-    libraryjars "dependencies"
+    libraryjars files(configurations.compile.collect())
+    libraryjars "/dependencies/", jarfilter: '!**.jar', filter: '!module-info.class'
 
     injars "build/libs/${project.archivesBaseName}.jar"
     outjars "build/libs/${project.archivesBaseName}.out.jar"
 }
 task copyDependencies(type: Copy) {
-    from configurations.runtimeClasspath.collect{it.isDirectory() ? it : zipTree(it)}
+    from configurations.runtime
     into 'dependencies'
 }
 build.dependsOn(copyDependencies)
