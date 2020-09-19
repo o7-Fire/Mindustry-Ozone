@@ -1,2 +1,3 @@
 -keep class !Ozone.** { *; }
+-dontwarn
 -printmapping Ozone-Mapping.txt

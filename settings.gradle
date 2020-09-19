@@ -10,7 +10,6 @@ if(new File(settingsDir, '../Atom').exists()) {
     use(
             ":Atom",
             ":Atom:Log",
-            ":Atom:Atomic",
-            ":Atom:Aindustry"
+            ":Atom:Atomic"
     )
 }
