@@ -25,6 +25,7 @@ import java.util.Map;
 
 import static mindustry.Vars.*;
 
+//wont show wtf
 public class CommandsListFrag extends Fragment {
     public boolean visible = false;
     private Table logs = new Table().marginRight(30f).marginLeft(20f);

@@ -94,24 +94,33 @@ public class Commands {
             }
             int xT = Integer.parseInt(s.get(2));
             int yT = Integer.parseInt(s.get(3));
-            if ((xS - xT) < 4 || (yS - yT) < 4) {
-                tellUser("distance too short");
-            }
-            if (s.size() <= 5) block = s.get(4);
+            if (s.size() == 5) block = s.get(4);
             Block pathfindingBlock = null;
             if (!block.isEmpty()) {
                 pathfindingBlock = Vars.content.block(block);
                 if (pathfindingBlock == null)
                     tellUser("Nonexistent block, using default block: magmarock/dirtwall");
             }
-            if (Vars.world.tile(xT, yT) == null) {
+
+
+            Tile target = Vars.world.tile(xT, yT);
+            Tile source = Vars.world.tile(xS, yS);
+            if (target == null) {
                 tellUser("Non existent target tiles");
                 return;
             }
-            Tile target = Vars.world.tile(xT, yT);
-            Tile source = Vars.world.tile(xS, yS);
-            Seq<Tile> tiles = Astar.pathfind(source, target, h -> 0, Tile::passable);
-
+            if (source == null) {
+                tellUser("Non existent source tiles");
+                return;
+            }
+            Seq<Tile> tiles;
+            try {
+                tiles = Astar.pathfind(source, target, h -> 0, Tile::passable);
+            } catch (Throwable t) {
+                tellUser("Pathfinding failed");
+                tellUser(t.toString());
+                return;
+            }
             for (Tile t : tiles) {
                 if (t.block() == null)
                     tellUser("Null block: " + t.toString());

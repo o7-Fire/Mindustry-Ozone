@@ -3,15 +3,17 @@ package Ozone.Commands.Task;
 import Ozone.Commands.Commands;
 import mindustry.Vars;
 
+//not finished
 public class CommandsSpam extends Task {
-    private int howManyTimes = 1, delays = 200, currentCycle = 0;
+    private int howManyTimes = 1;
+    private int currentCycle = 0;
     private String commands = "";
 
     public CommandsSpam(String howMany, String delay, String commands) {
         try {
-            if (howMany.isEmpty()) {
-            } else
+            if (!howMany.isEmpty())
                 howManyTimes = Integer.parseInt(howMany);
+            int delays;
             if (delay.isEmpty())
                 delays = 0;
             else
@@ -35,6 +37,7 @@ public class CommandsSpam extends Task {
 
     @Override
     public void update() {
+        if (tick()) return;
         if (currentCycle > howManyTimes) return;
         currentCycle++;
         Commands.call(commands);
