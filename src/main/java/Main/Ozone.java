@@ -15,7 +15,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class Ozone extends Mod {
-    public final static String AtomHash = "02051bd3ca";
+    public final static String AtomHash = "0406278912";
     public final static String AtomDownload = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/Atomic/" + AtomHash + "/Atomic-" + AtomHash + ".jar";
     public boolean libraryURLLoaded;
     public boolean libraryExists;

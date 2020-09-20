@@ -52,9 +52,8 @@ Ozone.Commands.Commands$Command -> a.a.c:
     void <init>(java.util.function.Consumer,java.lang.String,arc.scene.style.TextureRegionDrawable,boolean) -> <init>
 Ozone.Commands.Task.CommandsSpam -> a.a.a.a:
     int howManyTimes -> a
-    int delays -> b
-    int currentCycle -> c
-    java.lang.String commands -> d
+    int currentCycle -> b
+    java.lang.String commands -> c
     void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
     boolean isCompleted() -> a
     void update() -> b

@@ -2,6 +2,7 @@ package Ozone.Commands;
 
 import Atom.Random;
 import Atom.Time.Countdown;
+import Atom.Utility.Utility;
 import arc.Core;
 import arc.scene.style.TextureRegionDrawable;
 import arc.struct.Seq;
@@ -26,7 +27,6 @@ import java.util.function.Consumer;
 public class Commands {
 
     public static final HashMap<String, Command> commandsList = new HashMap<>();
-    private static final ArrayList<Seq<Tile>> modifiedTiles = new ArrayList<>();
     private static boolean init = false;
     private volatile static boolean falseVote = false;
 
@@ -40,8 +40,17 @@ public class Commands {
         commandsList.put("info-pos", new Command(Commands::infoPos, "infoPos"));
         commandsList.put("info-pathfinding", new Command(Commands::infoPathfinding, "infoPathfinding"));
         commandsList.put("random-kick", new Command(Commands::randomKick, "randomKick", Icon.hammer, true));
-
+        commandsList.put("info-unit", new Command(Commands::infoUnit, "infoUnit", Icon.units, true));
+        commandsList.put("force-exit", new Command(Commands::forceExit, "forceExit"));
         Log.infoTag("Ozone", "Commands Center Initialized");
+    }
+
+    public static void forceExit(ArrayList<String> s) {
+        throw new RuntimeException("Force Exit: " + Utility.joiner(Utility.getArray(s), ", "));
+    }
+
+    public static void infoUnit(ArrayList<String> s) {
+        tellUser(Vars.player.unit().getClass().getCanonicalName());
     }
 
     public static String getTranslation(String name) {
