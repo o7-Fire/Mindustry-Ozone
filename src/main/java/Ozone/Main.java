@@ -12,7 +12,6 @@ import Ozone.UI.JavaEditor;
 import Ozone.UI.OzoneMenu;
 import arc.Core;
 import arc.Events;
-import arc.KeyBinds;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
 import arc.util.Log;
@@ -21,7 +20,6 @@ import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.gen.Tex;
 import mindustry.graphics.Pal;
-import mindustry.input.Binding;
 import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 
@@ -46,19 +44,7 @@ public class Main {
     }
 
     private static void patchLast() {
-        Log.infoTag("Ozone", "Patching Keybind");
-        KeyBinds.KeyBind[] keyBids = Interface.keybindings.keys().toSeq().toArray();
-        KeyBinds.KeyBind[] keyBinds = Binding.values();
-        KeyBinds.KeyBind[] keybind = new KeyBinds.KeyBind[keyBids.length + keyBinds.length];
-        int m = 0;
-        for (int i = 0; i < keyBids.length; i++) {
-            m = i;
-            keybind[m] = keyBids[m];
-        }
-        for (int i = m; i < keyBinds.length; i++) {
-            keybind[m] = keyBinds[i];
-        }
-        Core.keybinds.setDefaults(keybind);
+
     }
 
     private static void initEvent() {
