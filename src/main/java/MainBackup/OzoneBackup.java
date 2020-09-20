@@ -8,13 +8,11 @@ public class OzoneBackup extends Mod {
 
     @Override
     public void init() {
-
         Main.init();
     }
 
     @Override
     public void loadContent() {
-
         Main.loadContent();
     }
 }
