@@ -28,14 +28,16 @@ Ozone.Commands.Commands -> a.a.b:
     boolean init -> b
     boolean falseVote -> c
     void init() -> a
+    void forceExit(java.util.ArrayList) -> a
+    void infoUnit(java.util.ArrayList) -> b
     java.lang.String getTranslation(java.lang.String) -> a
     boolean call(java.lang.String) -> b
-    void randomKick(java.util.ArrayList) -> a
-    void infoPathfinding(java.util.ArrayList) -> b
-    void infoPos(java.util.ArrayList) -> c
-    void help(java.util.ArrayList) -> d
-    void taskMove(java.util.ArrayList) -> e
-    void chaosKick(java.util.ArrayList) -> f
+    void randomKick(java.util.ArrayList) -> c
+    void infoPathfinding(java.util.ArrayList) -> d
+    void infoPos(java.util.ArrayList) -> e
+    void help(java.util.ArrayList) -> f
+    void taskMove(java.util.ArrayList) -> g
+    void chaosKick(java.util.ArrayList) -> h
     void tellUser(java.lang.String) -> c
     void lambda$chaosKick$2() -> b
     void lambda$taskMove$1(long,java.lang.Object) -> a
@@ -47,7 +49,6 @@ Ozone.Commands.Commands$Command -> a.a.c:
     arc.scene.style.TextureRegionDrawable icon -> c
     Ozone.UI.OzoneMenu menu -> d
     Ozone.UI.JavaEditor javaEditor -> e
-    Ozone.UI.CommandsListFrag commFrag -> f
     void <init>(java.util.function.Consumer,java.lang.String) -> <init>
     void <init>(java.util.function.Consumer,java.lang.String,arc.scene.style.TextureRegionDrawable,boolean) -> <init>
 Ozone.Commands.Task.CommandsSpam -> a.a.a.a:
@@ -85,6 +86,7 @@ Ozone.Commands.Task.Task -> a.a.a.c:
 Ozone.Interface -> a.a:
     arc.struct.ObjectMap bundle -> a
     arc.struct.ObjectMap keybindings -> b
+    void registerKeybinding(Ozone.Patch.ImprovisedKeybinding,java.lang.Runnable) -> a
     void registerWords(java.lang.String,java.lang.String) -> a
     void registerWords(java.lang.String) -> a
     void <clinit>() -> <clinit>
@@ -106,6 +108,14 @@ Ozone.Patch.DesktopInput -> a.b.a:
     void updateMovement(mindustry.gen.Unit) -> updateMovement
     void lambda$buildPlacementUI$0() -> a
 Ozone.Patch.ImprovisedKeybinding -> a.b.b:
+    java.lang.String name -> b
+    java.lang.String category -> c
+    arc.KeyBinds$KeybindValue value -> d
+    Ozone.Patch.ImprovisedKeybinding$mode keyMode -> a
+    void <init>(java.lang.String,arc.KeyBinds$KeybindValue,java.lang.String,Ozone.Patch.ImprovisedKeybinding$mode) -> <init>
+    java.lang.String name() -> name
+    arc.KeyBinds$KeybindValue defaultValue(arc.input.InputDevice$DeviceType) -> defaultValue
+    java.lang.String category() -> category
 Ozone.Patch.ImprovisedKeybinding$mode -> a.b.c:
     Ozone.Patch.ImprovisedKeybinding$mode down -> a
     Ozone.Patch.ImprovisedKeybinding$mode release -> b

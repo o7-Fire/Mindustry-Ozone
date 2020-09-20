@@ -52,7 +52,7 @@ public class Preload {
             try {
                 //Inform user
                 Log.infoTag("Ozone", "Downloading Library");
-                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library (7 MB), click OK to continue");
+                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library (7 MB), click OK to continue, this is gonna take a while");
                 //how to download a file synchronously
                 URL jitpack = new URL(AtomDownload);
                 ReadableByteChannel rbc = Channels.newChannel(jitpack.openStream());
