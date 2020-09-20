@@ -23,14 +23,16 @@ public class Preload {
     public static void restart() {
         SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "You need to restart mindustry");
         try {
+            //get JRE or something
             final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+            //get Mindustry Jar
             final File currentJar = new File(DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 
-            /* is it a jar file? */
+            //it is a jar ?
             if (!currentJar.getName().endsWith(".jar"))
                 throw new RuntimeException(currentJar.getAbsolutePath() + " is not a jar");
 
-            /* Build command: java -jar application.jar */
+            //java -jar path/to/Mindustry.jar
             final ArrayList<String> command = new ArrayList<>();
             command.add(javaBin);
             command.add("-jar");
@@ -40,6 +42,7 @@ public class Preload {
             builder.start();
         } catch (Throwable ignored) {
         }
+        //exits is priority
         System.exit(0);
     }
 

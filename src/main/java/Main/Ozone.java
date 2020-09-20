@@ -2,6 +2,7 @@ package Main;
 
 import Ozone.Main;
 import Ozone.Pre.Preload;
+import arc.Core;
 import arc.Events;
 import arc.util.Log;
 import mindustry.Vars;
@@ -22,6 +23,8 @@ public class Ozone extends Mod {
     public Mod mainMod = null;
 
     public Ozone() {
+        //gay spy
+        if (Core.settings != null) Core.settings.put("crashreport", false);
         //get location of this Ozone mods
         File ozone = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
         //get Mods directory from Mods/Ozone.jar
