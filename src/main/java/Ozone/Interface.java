@@ -19,7 +19,7 @@ public class Interface {
             Vars.ui.showErrorMessage(title + "\n" + description);
     }
 
-    public synchronized static void registerKeybind(ImprovisedKeybinding b, Runnable r) {
+    public synchronized static void registerKeybinding(ImprovisedKeybinding b, Runnable r) {
         keybindings.put(b, r);
     }
 

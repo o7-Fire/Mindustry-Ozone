@@ -1,6 +1,7 @@
 package Ozone;
 
 import Atom.Random;
+import Atom.Utility.Utility;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
 import Ozone.Patch.DesktopInput;
@@ -12,6 +13,7 @@ import Ozone.UI.JavaEditor;
 import Ozone.UI.OzoneMenu;
 import arc.Core;
 import arc.Events;
+import arc.KeyBinds;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
 import arc.util.Log;
@@ -20,6 +22,7 @@ import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.gen.Tex;
 import mindustry.graphics.Pal;
+import mindustry.input.Binding;
 import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 
@@ -34,12 +37,20 @@ public class Main {
         initUI();
         BotInterface.init();
         Commands.init();
+        patchLast();
         initEvent();
     }
 
 
     public static void loadContent() {
 
+    }
+
+    private static void patchLast() {
+        KeyBinds.KeyBind[] keyBids;
+        keyBids = Interface.keybindings.keys().toSeq().toArray();
+        KeyBinds.KeyBind[] keyBinds = Utility.concatenate(keyBids, Binding.values());
+        Core.keybinds.setDefaults(keyBinds);
     }
 
     private static void initEvent() {
@@ -50,13 +61,13 @@ public class Main {
         for (ObjectMap.Entry<ImprovisedKeybinding, Runnable> s : Interface.keybindings.entries()) {
             switch (s.key.keyMode) {
                 case tap:
-                    if (Core.input.keyTap(s.key.keyBind)) s.value.run();
+                    if (Core.input.keyTap(s.key)) s.value.run();
                     continue;
                 case down:
-                    if (Core.input.keyDown(s.key.keyBind)) s.value.run();
+                    if (Core.input.keyDown(s.key)) s.value.run();
                     continue;
                 case release:
-                    if (Core.input.keyRelease(s.key.keyBind)) s.value.run();
+                    if (Core.input.keyRelease(s.key)) s.value.run();
             }
         }
     }
@@ -124,10 +135,10 @@ public class Main {
                 titleFontColor = Pal.accent;
             }
         };
-        ozoneStyle.stageBackground = Styles.none;
-        Manifest.menu = new OzoneMenu(Core.bundle.get("ozone.hud"), ozoneStyle);
         Manifest.javaEditor = new JavaEditor(Core.bundle.get("ozone.javaEditor"), Styles.defaultDialog);
         Manifest.commFrag = new CommandsListFrag();
+        ozoneStyle.stageBackground = Styles.none;
+        Manifest.menu = new OzoneMenu(Core.bundle.get("ozone.hud"), ozoneStyle);
 
     }
 
