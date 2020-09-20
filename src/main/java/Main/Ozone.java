@@ -9,6 +9,7 @@ import mindustry.game.EventType;
 import mindustry.mod.Mod;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -37,6 +38,9 @@ public class Ozone extends Mod {
             Preload.incites(atom, AtomDownload, this);
             //no error thrown ? good
             libraryURLLoaded = true;
+        } catch (FileNotFoundException t) {
+            libraryURLLoaded = false;
+            Log.err("Cant download Atom library");
         } catch (Throwable t) {
             //Exception just summoned
             libraryURLLoaded = false;

@@ -5,6 +5,7 @@ import arc.util.Log;
 import mindustry.desktop.DesktopLauncher;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -69,7 +70,7 @@ public class Preload {
         return atom.exists();
     }
 
-    public static void incites(File atom, String AtomDownload, Object clz) throws NoSuchMethodException, MalformedURLException, InvocationTargetException, IllegalAccessException {
+    public static void incites(File atom, String AtomDownload, Object clz) throws NoSuchMethodException, MalformedURLException, InvocationTargetException, IllegalAccessException, FileNotFoundException {
         //don't run more than once
         if (init) return;
         init = true;
@@ -77,7 +78,8 @@ public class Preload {
         if (!(clz.getClass().getClassLoader() instanceof URLClassLoader))
             throw new RuntimeException(clz + " Classloader is not URLClassloader, how it could be ???");
         //check library needed to load Ozone
-        if (!checkLibrary(AtomDownload, atom)) throw new RuntimeException("Atom Library can't be downloaded/loaded");
+        if (!checkLibrary(AtomDownload, atom))
+            throw new FileNotFoundException("Atom Library can't be downloaded/loaded");
         //Inform users
         Log.infoTag("Ozone", "Loading library");
         //add Atom to URL classloader to be used
