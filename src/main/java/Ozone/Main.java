@@ -47,6 +47,7 @@ public class Main {
     }
 
     private static void patchLast() {
+        Log.infoTag("Ozone", "Patching Arc");
         KeyBinds.KeyBind[] keyBids = Interface.keybindings.keys().toSeq().toArray();
         KeyBinds.KeyBind[] keyBinds = Binding.values();
         KeyBinds.KeyBind[] keybinding = new KeyBinds.KeyBind[keyBids.length + keyBinds.length];
