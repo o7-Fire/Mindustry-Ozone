@@ -1,7 +1,6 @@
 package Ozone;
 
 import Atom.Random;
-import Atom.Utility.Utility;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
 import Ozone.Patch.DesktopInput;
@@ -47,10 +46,18 @@ public class Main {
     }
 
     private static void patchLast() {
-        KeyBinds.KeyBind[] keyBids;
-        keyBids = Interface.keybindings.keys().toSeq().toArray();
-        KeyBinds.KeyBind[] keyBinds = Utility.concatenate(keyBids, Binding.values());
-        Core.keybinds.setDefaults(keyBinds);
+        KeyBinds.KeyBind[] keyBids = Interface.keybindings.keys().toSeq().toArray();
+        KeyBinds.KeyBind[] keyBinds = Binding.values();
+        KeyBinds.KeyBind[] keybind = new KeyBinds.KeyBind[keyBids.length + keyBinds.length];
+        int m = 0;
+        for (int i = 0; i < keyBids.length; i++) {
+            m = i;
+            keybind[m] = keyBids[m];
+        }
+        for (int i = m; i < keyBinds.length; i++) {
+            keybind[m] = keyBinds[i];
+        }
+        Core.keybinds.setDefaults(keybind);
     }
 
     private static void initEvent() {
