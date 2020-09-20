@@ -15,7 +15,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class Ozone extends Mod {
-    public final static String AtomHash = "0406278912";
+    public final static String AtomHash = "0b101a226f";
     public final static String AtomDownload = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/Atomic/" + AtomHash + "/Atomic-" + AtomHash + ".jar";
     public boolean libraryURLLoaded;
     public boolean libraryExists;
@@ -30,7 +30,7 @@ public class Ozone extends Mod {
         //get Mods directory from Mods/Ozone.jar
         File parentFile = ozone.getParentFile();
         //get Mods/Library directory
-        File library = new File(parentFile, "Library");
+        File library = new File(parentFile, "libs");
         //just in case
         library.mkdirs();
         //Mods/Library/Atomic-AtomHash.jar
