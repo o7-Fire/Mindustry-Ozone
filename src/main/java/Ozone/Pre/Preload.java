@@ -62,6 +62,7 @@ public class Preload {
                 if (atom.exists()) {
                     SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "Atom library has been downloaded: " + atom.getAbsolutePath());
                     //Why restart ???
+                    //good question, its just cool to restart
                     restart();
                 }
             } catch (Throwable t) {
@@ -82,7 +83,7 @@ public class Preload {
             throw new RuntimeException(clz + " Classloader is not URLClassloader, how it could be ???");
         //check library needed to load Ozone
         if (!checkLibrary(AtomDownload, atom))
-            throw new FileNotFoundException("Atom Library can't be downloaded/loaded");
+            throw new FileNotFoundException("Atom Library can't be downloaded/not found");
         //Inform users
         Log.infoTag("Ozone", "Loading library");
         //add Atom to URL classloader to be used
