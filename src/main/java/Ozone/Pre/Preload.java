@@ -16,6 +16,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 
+//have you load library today ?
 public class Preload {
     private static volatile boolean init = false;
 
