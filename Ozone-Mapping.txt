@@ -17,19 +17,44 @@ Ozone.Commands.BotInterface -> a.a.a:
     arc.struct.Queue taskQueue -> a
     boolean init -> b
     void init() -> a
-    void update() -> b
-    void reset() -> c
+    void addTask(Ozone.Commands.Task.Task,java.util.function.Consumer) -> a
+    void moveTo(int,int,java.util.function.Consumer) -> a
+    void update() -> d
+    arc.math.geom.Vec2 getCurrentPos() -> b
+    arc.math.geom.Vec2 getCurrentTilePos() -> c
+    void reset() -> e
     void <clinit>() -> <clinit>
 Ozone.Commands.Commands -> a.a.b:
     java.util.HashMap commandsList -> a
-    boolean falseVote -> b
-    boolean call(java.lang.String) -> a
-    void help$6ba92955() -> a
-    void tellUser(java.lang.String) -> b
+    boolean init -> b
+    boolean falseVote -> c
+    void init() -> a
+    void sendColorize(java.util.ArrayList) -> a
+    void taskDeconstruct(java.util.ArrayList) -> b
+    void forceExit(java.util.ArrayList) -> c
+    void infoUnit(java.util.ArrayList) -> d
+    java.lang.String getTranslation(java.lang.String) -> a
+    boolean call(java.lang.String) -> b
+    void randomKick(java.util.ArrayList) -> e
+    void infoPathfinding(java.util.ArrayList) -> f
+    void infoPos(java.util.ArrayList) -> g
+    void help(java.util.ArrayList) -> h
+    void taskMove(java.util.ArrayList) -> i
+    void chaosKick(java.util.ArrayList) -> j
+    void tellUser(java.lang.String) -> c
+    void lambda$chaosKick$3() -> b
+    void lambda$taskMove$2(long,java.lang.Object) -> a
+    float lambda$infoPathfinding$1(mindustry.world.Tile) -> a
+    void lambda$taskDeconstruct$0(long,java.lang.Object) -> b
     void <clinit>() -> <clinit>
 Ozone.Commands.Commands$Command -> a.a.c:
-    Ozone.UI.OzoneMenu menu -> a
-    Ozone.UI.JavaEditor javaEditor -> b
+    java.util.function.Consumer method -> a
+    java.lang.String description -> b
+    arc.scene.style.TextureRegionDrawable icon -> c
+    Ozone.UI.OzoneMenu menu -> d
+    Ozone.UI.JavaEditor javaEditor -> e
+    void <init>(java.util.function.Consumer,java.lang.String) -> <init>
+    void <init>(java.util.function.Consumer,java.lang.String,arc.scene.style.TextureRegionDrawable,boolean) -> <init>
 Ozone.Commands.Task.CommandsSpam -> a.a.a.a:
     int howManyTimes -> a
     int currentCycle -> b
@@ -37,11 +62,33 @@ Ozone.Commands.Task.CommandsSpam -> a.a.a.a:
     void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
     boolean isCompleted() -> a
     void update() -> b
-Ozone.Commands.Task.Task -> a.a.a.b:
+Ozone.Commands.Task.DestructBlock -> a.a.a.b:
+    boolean half -> a
+    int x -> b
+    int y -> c
+    void <init>(int,int,boolean) -> <init>
+    boolean isCompleted() -> a
+    void update() -> b
+Ozone.Commands.Task.Move -> a.a.a.c:
+    arc.math.geom.Vec2 destPos -> a
+    arc.math.geom.Vec2 destTilePos -> b
+    mindustry.world.Tile destTile -> c
+    arc.struct.Seq pathfindingCache -> d
+    void <init>(float,float) -> <init>
+    void <init>(arc.math.geom.Vec2) -> <init>
+    void taskCompleted() -> c
+    boolean isCompleted() -> a
+    void update() -> b
+    void setMov(arc.math.geom.Vec2) -> a
+    double getCurrentDistance() -> e
+    float isSafe(mindustry.world.Tile) -> a
+    double distanceTo(arc.math.geom.Vec2,arc.math.geom.Vec2) -> a
+Ozone.Commands.Task.Task -> a.a.a.d:
     java.util.ArrayList onTaskCompleted -> a
     int tick -> b
     int currentTick -> c
     void <init>() -> <init>
+    void onTaskCompleted(java.util.function.Consumer) -> a
     void taskCompleted() -> c
     void setTick(int) -> a
     boolean tick() -> d
@@ -63,6 +110,7 @@ Ozone.Patch.DesktopInput -> a.b.a:
     float xav -> a
     float yav -> b
     void <init>() -> <init>
+    void setMove(arc.math.geom.Vec2) -> a
     void buildPlacementUI(arc.scene.ui.layout.Table) -> buildPlacementUI
     void updateMovement(mindustry.gen.Unit) -> updateMovement
     void lambda$buildPlacementUI$0() -> a
@@ -128,6 +176,9 @@ Ozone.UI.CommandsListFrag -> a.d.a:
     void build(arc.scene.Group) -> build
     void rebuild() -> b
     void toggle() -> a
+    void lambda$rebuild$11(java.lang.String,java.util.Map$Entry) -> a
+    void lambda$rebuild$10(java.util.Map$Entry) -> a
+    java.lang.CharSequence lambda$rebuild$9(java.util.Map$Entry) -> b
     void lambda$build$8(arc.scene.ui.layout.Table) -> a
     void lambda$build$7(arc.scene.ui.layout.Table) -> b
     void lambda$build$6(arc.scene.ui.layout.Table) -> c
