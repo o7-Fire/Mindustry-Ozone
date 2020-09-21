@@ -44,7 +44,24 @@ public class Commands {
         commandsList.put("info-unit", new Command(Commands::infoUnit, "infoUnit", Icon.units, true));
         commandsList.put("force-exit", new Command(Commands::forceExit, "forceExit"));
         commandsList.put("task-deconstruct", new Command(Commands::taskDeconstruct, "taskDeconstruct"));
+        commandsList.put("send-colorize", new Command(Commands::sendColorize, "sendColorize"));
         Log.infoTag("Ozone", "Commands Center Initialized");
+    }
+
+    public static void sendColorize(ArrayList<String> s) {
+        if (s.isEmpty()) {
+            tellUser("Empty ? gabe itch");
+            return;
+        }
+        String text = Utility.joiner(Utility.getArray(s), " ");
+        StringBuilder sb = new StringBuilder();
+        for (char c : text.toCharArray()) {
+            if (c != ' ')
+                sb.append(Random.getRandomHexColor()).append(c);
+            else
+                sb.append(c);
+        }
+        Call.sendChatMessage(sb.toString());
     }
 
     public static void taskDeconstruct(ArrayList<String> s) {

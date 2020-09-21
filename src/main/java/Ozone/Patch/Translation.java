@@ -29,6 +29,7 @@ public class Translation {
         commands.put("infoPathfinding", "get Pathfinding overlay");
         commands.put("forceExit", "you want to crash ?");
         commands.put("taskDeconstruct", "deconstruct your block with AI");
+        commands.put("sendColorize", "send Colorized text");
         for (Map.Entry<String, String> s : commands.entrySet()) {
             registerWords("ozone.commands." + s.getKey(), s.getValue());
         }

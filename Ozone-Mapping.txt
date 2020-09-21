@@ -29,17 +29,18 @@ Ozone.Commands.Commands -> a.a.b:
     boolean init -> b
     boolean falseVote -> c
     void init() -> a
-    void taskDeconstruct(java.util.ArrayList) -> a
-    void forceExit(java.util.ArrayList) -> b
-    void infoUnit(java.util.ArrayList) -> c
+    void sendColorize(java.util.ArrayList) -> a
+    void taskDeconstruct(java.util.ArrayList) -> b
+    void forceExit(java.util.ArrayList) -> c
+    void infoUnit(java.util.ArrayList) -> d
     java.lang.String getTranslation(java.lang.String) -> a
     boolean call(java.lang.String) -> b
-    void randomKick(java.util.ArrayList) -> d
-    void infoPathfinding(java.util.ArrayList) -> e
-    void infoPos(java.util.ArrayList) -> f
-    void help(java.util.ArrayList) -> g
-    void taskMove(java.util.ArrayList) -> h
-    void chaosKick(java.util.ArrayList) -> i
+    void randomKick(java.util.ArrayList) -> e
+    void infoPathfinding(java.util.ArrayList) -> f
+    void infoPos(java.util.ArrayList) -> g
+    void help(java.util.ArrayList) -> h
+    void taskMove(java.util.ArrayList) -> i
+    void chaosKick(java.util.ArrayList) -> j
     void tellUser(java.lang.String) -> c
     void lambda$chaosKick$3() -> b
     void lambda$taskMove$2(long,java.lang.Object) -> a
