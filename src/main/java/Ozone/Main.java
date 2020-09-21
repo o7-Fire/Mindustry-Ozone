@@ -2,7 +2,6 @@ package Ozone;
 
 import Atom.Random;
 import Ozone.Commands.BotInterface;
-import Ozone.Commands.Commands;
 import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
@@ -30,7 +29,7 @@ public class Main {
         patch();
         initUI();
         BotInterface.init();
-        Commands.init();
+
     }
 
 
@@ -95,6 +94,7 @@ public class Main {
             Vars.ui.settings = new SettingsDialog();
             //Log.infoTag("Ozone", "Patching ChatFragment");
             //Vars.ui.chatfrag = new ChatFragment();
+            Vars.enableConsole = true;
             Log.infoTag("Ozone", "Patching Complete");
             if (Settings.debugMode) Log.setLogLevel(Log.LogLevel.debug);
             Log.debug("Ozone-Debug", "Debugs, peoples, debugs");

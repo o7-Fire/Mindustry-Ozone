@@ -57,7 +57,7 @@ public class Commands {
         StringBuilder sb = new StringBuilder();
         for (char c : text.toCharArray()) {
             if (c != ' ')
-                sb.append(Random.getRandomHexColor()).append(c);
+                sb.append("[").append(Random.getRandomHexColor()).append("]").append(c);
             else
                 sb.append(c);
         }
