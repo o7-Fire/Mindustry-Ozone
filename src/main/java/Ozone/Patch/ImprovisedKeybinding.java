@@ -25,6 +25,10 @@ public class ImprovisedKeybinding implements KeyBinds.KeyBind {
         return value;
     }
 
+    public KeyBinds.KeybindValue defaultValue() {
+        return value;
+    }
+
     @Override
     public String category() {
         return category;

@@ -17,6 +17,7 @@ Ozone.Commands.BotInterface -> a.a.a:
     arc.struct.Queue taskQueue -> a
     boolean init -> b
     void init() -> a
+    void addTask(Ozone.Commands.Task.Task,java.util.function.Consumer) -> a
     void moveTo(int,int,java.util.function.Consumer) -> a
     void update() -> d
     arc.math.geom.Vec2 getCurrentPos() -> b
@@ -28,20 +29,22 @@ Ozone.Commands.Commands -> a.a.b:
     boolean init -> b
     boolean falseVote -> c
     void init() -> a
-    void forceExit(java.util.ArrayList) -> a
-    void infoUnit(java.util.ArrayList) -> b
+    void taskDeconstruct(java.util.ArrayList) -> a
+    void forceExit(java.util.ArrayList) -> b
+    void infoUnit(java.util.ArrayList) -> c
     java.lang.String getTranslation(java.lang.String) -> a
     boolean call(java.lang.String) -> b
-    void randomKick(java.util.ArrayList) -> c
-    void infoPathfinding(java.util.ArrayList) -> d
-    void infoPos(java.util.ArrayList) -> e
-    void help(java.util.ArrayList) -> f
-    void taskMove(java.util.ArrayList) -> g
-    void chaosKick(java.util.ArrayList) -> h
+    void randomKick(java.util.ArrayList) -> d
+    void infoPathfinding(java.util.ArrayList) -> e
+    void infoPos(java.util.ArrayList) -> f
+    void help(java.util.ArrayList) -> g
+    void taskMove(java.util.ArrayList) -> h
+    void chaosKick(java.util.ArrayList) -> i
     void tellUser(java.lang.String) -> c
-    void lambda$chaosKick$2() -> b
-    void lambda$taskMove$1(long,java.lang.Object) -> a
-    float lambda$infoPathfinding$0(mindustry.world.Tile) -> a
+    void lambda$chaosKick$3() -> b
+    void lambda$taskMove$2(long,java.lang.Object) -> a
+    float lambda$infoPathfinding$1(mindustry.world.Tile) -> a
+    void lambda$taskDeconstruct$0(long,java.lang.Object) -> b
     void <clinit>() -> <clinit>
 Ozone.Commands.Commands$Command -> a.a.c:
     java.util.function.Consumer method -> a
@@ -58,7 +61,14 @@ Ozone.Commands.Task.CommandsSpam -> a.a.a.a:
     void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
     boolean isCompleted() -> a
     void update() -> b
-Ozone.Commands.Task.Move -> a.a.a.b:
+Ozone.Commands.Task.DestructBlock -> a.a.a.b:
+    boolean half -> a
+    int x -> b
+    int y -> c
+    void <init>(int,int,boolean) -> <init>
+    boolean isCompleted() -> a
+    void update() -> b
+Ozone.Commands.Task.Move -> a.a.a.c:
     arc.math.geom.Vec2 destPos -> a
     arc.math.geom.Vec2 destTilePos -> b
     mindustry.world.Tile destTile -> c
@@ -72,7 +82,7 @@ Ozone.Commands.Task.Move -> a.a.a.b:
     double getCurrentDistance() -> e
     float isSafe(mindustry.world.Tile) -> a
     double distanceTo(arc.math.geom.Vec2,arc.math.geom.Vec2) -> a
-Ozone.Commands.Task.Task -> a.a.a.c:
+Ozone.Commands.Task.Task -> a.a.a.d:
     java.util.ArrayList onTaskCompleted -> a
     int tick -> b
     int currentTick -> c
