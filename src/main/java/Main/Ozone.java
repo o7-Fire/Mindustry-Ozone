@@ -23,7 +23,7 @@ public class Ozone extends Mod {
     public Mod mainMod = null;
 
     public Ozone() {
-        //gay spy
+        //gay spy, actually no
         if (Core.settings != null) Core.settings.put("crashreport", false);
         //get location of this Ozone mods
         File ozone = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile());

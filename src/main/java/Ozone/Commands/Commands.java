@@ -3,6 +3,7 @@ package Ozone.Commands;
 import Atom.Random;
 import Atom.Time.Countdown;
 import Atom.Utility.Utility;
+import Ozone.Commands.Task.DestructBlock;
 import arc.Core;
 import arc.scene.style.TextureRegionDrawable;
 import arc.struct.Seq;
@@ -42,7 +43,34 @@ public class Commands {
         commandsList.put("random-kick", new Command(Commands::randomKick, "randomKick", Icon.hammer, true));
         commandsList.put("info-unit", new Command(Commands::infoUnit, "infoUnit", Icon.units, true));
         commandsList.put("force-exit", new Command(Commands::forceExit, "forceExit"));
+        commandsList.put("task-deconstruct", new Command(Commands::taskDeconstruct, "taskDeconstruct"));
         Log.infoTag("Ozone", "Commands Center Initialized");
+    }
+
+    public static void taskDeconstruct(ArrayList<String> s) {
+        if (s.size() < 2) {
+            tellUser("Not enough arguments");
+            tellUser("Usage: task-deconstruct x(coordinate) y(coordinate) half(boolean)(optional default: false)");
+            return;
+        }
+        try {
+            int x = Integer.parseInt(s.get(0));
+            int y = Integer.parseInt(s.get(1));
+            if (Vars.world.tile(x, y) == null) {
+                tellUser("Non existent tiles");
+                return;
+            }
+            boolean half = false;
+            // i don't trust user
+            if (s.size() == 3) {
+                half = true;
+            }
+            long start = System.currentTimeMillis();
+            BotInterface.addTask(new DestructBlock(x, y, half), a -> tellUser("Completed in " + Countdown.result(start, TimeUnit.SECONDS)));
+        } catch (NumberFormatException f) {
+            tellUser("Failed to parse integer, are you sure that argument was integer ?");
+            Vars.ui.showException(f);
+        }
     }
 
     public static void forceExit(ArrayList<String> s) {

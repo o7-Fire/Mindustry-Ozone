@@ -52,7 +52,8 @@ public class Preload {
             try {
                 //Inform user
                 Log.infoTag("Ozone", "Downloading Library");
-                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library (7 MB), click OK to continue, this is gonna take a while");
+                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library (7 MB), click OK to continue");
+                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "This is gonna take 10 - 120 second");
                 //how to download a file synchronously
                 URL jitpack = new URL(AtomDownload);
                 ReadableByteChannel rbc = Channels.newChannel(jitpack.openStream());
@@ -61,10 +62,11 @@ public class Preload {
                 //its exists
                 if (atom.exists()) {
                     SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "Atom library has been downloaded: " + atom.getAbsolutePath());
-                    //Why restart ???
-                    //good question, its just cool to restart
+                    //Q: Why restart ???
+                    //A: its just cool to restart
                     restart();
                 }
+                //if its reach to here, then its must not exists and there no internet connection ? wtf
             } catch (Throwable t) {
                 //oh no internet error
                 SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "Atom library can't be downloaded: " + t.toString());

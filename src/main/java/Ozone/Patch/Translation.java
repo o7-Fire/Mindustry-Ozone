@@ -27,6 +27,8 @@ public class Translation {
         commands.put("taskMove", "move using current unit pathfinding algorithm");
         commands.put("infoPos", "get current info pos");
         commands.put("infoPathfinding", "get Pathfinding overlay");
+        commands.put("forceExit", "you want to crash ?");
+        commands.put("taskDeconstruct", "deconstruct your block with AI");
         for (Map.Entry<String, String> s : commands.entrySet()) {
             registerWords("ozone.commands." + s.getKey(), s.getValue());
         }

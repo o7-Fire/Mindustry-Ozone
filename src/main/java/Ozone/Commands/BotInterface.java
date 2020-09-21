@@ -22,6 +22,11 @@ public class BotInterface {
         Events.run(EventType.WorldLoadEvent.class, BotInterface::reset);
     }
 
+    public static void addTask(Task task, Consumer<Object> onDone) {
+        if (onDone != null) task.onTaskCompleted(onDone);
+        taskQueue.addLast(task);
+    }
+
     public static void moveTo(int x, int y, Consumer<Object> onDone) {
         Move task = new Move(x, y);
         if (onDone != null) task.onTaskCompleted(onDone);
