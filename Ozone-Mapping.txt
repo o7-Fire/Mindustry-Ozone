@@ -17,9 +17,9 @@ Ozone.Commands.BotInterface -> a.a.a:
     arc.struct.Queue taskQueue -> a
     boolean init -> b
     void init() -> a
+    void update() -> d
     void addTask(Ozone.Commands.Task.Task,java.util.function.Consumer) -> a
     void moveTo(int,int,java.util.function.Consumer) -> a
-    void update() -> d
     arc.math.geom.Vec2 getCurrentPos() -> b
     arc.math.geom.Vec2 getCurrentTilePos() -> c
     void reset() -> e
@@ -69,6 +69,7 @@ Ozone.Commands.Task.DestructBlock -> a.a.a.b:
     void <init>(int,int,boolean) -> <init>
     boolean isCompleted() -> a
     void update() -> b
+    boolean lambda$update$0(mindustry.entities.units.BuildPlan) -> a
 Ozone.Commands.Task.Move -> a.a.a.c:
     arc.math.geom.Vec2 destPos -> a
     arc.math.geom.Vec2 destTilePos -> b
