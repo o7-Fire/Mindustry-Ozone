@@ -2,6 +2,7 @@ package Ozone;
 
 import Atom.Random;
 import Ozone.Commands.BotInterface;
+import Ozone.Commands.Commands;
 import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
@@ -29,7 +30,7 @@ public class Main {
         patch();
         initUI();
         BotInterface.init();
-
+        Commands.init();
     }
 
 
