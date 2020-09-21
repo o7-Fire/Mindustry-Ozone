@@ -24,7 +24,7 @@ public class Translation {
         registerWords("ozone.commandsUI", "Commands GUI");
         commands.put("help", "help desk");
         commands.put("chaosKick", "vote everyone everytime everywhere");
-        commands.put("taskMove", "move using current unit pathfinding algorithm");
+        commands.put("taskMove", "move using current unit with pathfinding algorithm");
         commands.put("infoPos", "get current info pos");
         commands.put("infoPathfinding", "get Pathfinding overlay");
         commands.put("forceExit", "you want to crash ?");

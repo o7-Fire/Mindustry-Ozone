@@ -5,7 +5,10 @@ import Atom.Time.Countdown;
 import Atom.Utility.Utility;
 import Ozone.Commands.Task.DestructBlock;
 import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.Colors;
 import arc.scene.style.TextureRegionDrawable;
+import arc.struct.OrderedMap;
 import arc.struct.Seq;
 import arc.util.Log;
 import mindustry.Vars;
@@ -55,11 +58,27 @@ public class Commands {
         }
         String text = Utility.joiner(Utility.getArray(s), " ");
         StringBuilder sb = new StringBuilder();
-        for (char c : text.toCharArray()) {
-            if (c != ' ')
-                sb.append("[").append(Random.getRandomHexColor()).append("]").append(c);
-            else
-                sb.append(c);
+        if (text.length() * 8 > Vars.maxTextLength) {
+            OrderedMap<String, Color> map = Colors.getColors();
+            ArrayList<String> colors = new ArrayList<>();
+            for (String mp : map.keys()) {
+                colors.add('[' + mp + ']');
+            }
+            String[] colorss = new String[colors.size()];
+            colorss = colors.toArray(colorss);
+            for (char c : text.toCharArray()) {
+                if (c != ' ') {
+                    sb.append(Random.getRandom(colorss)).append(c);
+                } else
+                    sb.append(c);
+            }
+        } else {
+            for (char c : text.toCharArray()) {
+                if (c != ' ')
+                    sb.append("[").append(Random.getRandomHexColor()).append("]").append(c);
+                else
+                    sb.append(c);
+            }
         }
         Call.sendChatMessage(sb.toString());
     }
