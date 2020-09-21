@@ -58,7 +58,7 @@ public class Commands {
         }
         String text = Utility.joiner(Utility.getArray(s), " ");
         StringBuilder sb = new StringBuilder();
-        if (text.length() * 8 > Vars.maxTextLength) {
+        if (text.length() * 10 > Vars.maxTextLength) {
             OrderedMap<String, Color> map = Colors.getColors();
             ArrayList<String> colors = new ArrayList<>();
             for (String mp : map.keys()) {
