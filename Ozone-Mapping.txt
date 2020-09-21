@@ -102,13 +102,9 @@ Ozone.Interface -> a.a:
     void <clinit>() -> <clinit>
 Ozone.Main -> a.b:
     void init() -> a
-    void update() -> b
-    void patch() -> c
+    void patch() -> b
 Ozone.Main$1 -> a.c:
     void <init>() -> <init>
-Ozone.Main$2 -> a.d:
-    int[] $SwitchMap$Ozone$Patch$ImprovisedKeybinding$mode -> a
-    void <clinit>() -> <clinit>
 Ozone.Patch.DesktopInput -> a.b.a:
     float xav -> a
     float yav -> b
@@ -118,20 +114,17 @@ Ozone.Patch.DesktopInput -> a.b.a:
     void updateMovement(mindustry.gen.Unit) -> updateMovement
     void lambda$buildPlacementUI$0() -> a
 Ozone.Patch.ImprovisedKeybinding -> a.b.b:
-    java.lang.String name -> b
-    java.lang.String category -> c
-    arc.KeyBinds$KeybindValue value -> d
-    Ozone.Patch.ImprovisedKeybinding$mode keyMode -> a
+    java.lang.String name -> a
+    java.lang.String category -> b
+    arc.KeyBinds$KeybindValue value -> c
     void <init>(java.lang.String,arc.KeyBinds$KeybindValue,java.lang.String,Ozone.Patch.ImprovisedKeybinding$mode) -> <init>
     java.lang.String name() -> name
     arc.KeyBinds$KeybindValue defaultValue(arc.input.InputDevice$DeviceType) -> defaultValue
     java.lang.String category() -> category
 Ozone.Patch.ImprovisedKeybinding$mode -> a.b.c:
-    Ozone.Patch.ImprovisedKeybinding$mode down -> a
-    Ozone.Patch.ImprovisedKeybinding$mode release -> b
-    Ozone.Patch.ImprovisedKeybinding$mode tap -> c
-    Ozone.Patch.ImprovisedKeybinding$mode[] $VALUES -> d
-    Ozone.Patch.ImprovisedKeybinding$mode[] values() -> a
+    Ozone.Patch.ImprovisedKeybinding$mode down -> b
+    Ozone.Patch.ImprovisedKeybinding$mode release -> c
+    Ozone.Patch.ImprovisedKeybinding$mode tap -> a
     void <init>(java.lang.String,int) -> <init>
     void <clinit>() -> <clinit>
 Ozone.Patch.SettingsDialog -> a.b.d:
@@ -166,7 +159,7 @@ Ozone.Pre.Preload -> a.c.a:
     boolean checkLibrary(java.lang.String,java.io.File) -> a
     void incites(java.io.File,java.lang.String,java.lang.Object) -> a
     void <clinit>() -> <clinit>
-Ozone.Settings -> a.e:
+Ozone.Settings -> a.d:
     boolean colorPatch -> a
     boolean debugMode -> b
     void <init>() -> <init>
