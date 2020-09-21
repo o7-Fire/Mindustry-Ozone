@@ -22,6 +22,12 @@ public class BotInterface {
         Events.run(EventType.WorldLoadEvent.class, BotInterface::reset);
     }
 
+    private static void update() {
+        if (taskQueue.isEmpty()) return;
+        if (!taskQueue.first().isCompleted()) taskQueue.first().update();
+        else taskQueue.removeFirst().taskCompleted();
+    }
+
     public static void addTask(Task task, Consumer<Object> onDone) {
         if (onDone != null) task.onTaskCompleted(onDone);
         taskQueue.addLast(task);
@@ -33,11 +39,6 @@ public class BotInterface {
         taskQueue.addLast(task);
     }
 
-    private static void update() {
-        if (taskQueue.isEmpty()) return;
-        if (!taskQueue.first().isCompleted()) taskQueue.first().update();
-        else taskQueue.removeFirst().taskCompleted();
-    }
 
     public static Vec2 getCurrentPos() {
         return new Vec2(Vars.player.x, Vars.player.y);

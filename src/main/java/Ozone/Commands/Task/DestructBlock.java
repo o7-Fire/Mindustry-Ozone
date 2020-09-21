@@ -32,10 +32,9 @@ public class DestructBlock extends Task {
     public void update() {
         Tile t = Vars.world.tile(x, y);
         if (t == null) return;
-        if (half) {
-            //its a ConstructBlock ? then we done
-            if (Vars.world.tile(x, y).block() instanceof ConstructBlock) return;
-            Vars.player.builder().removeBuild(x, y, true);
-        }
+        if (half && Vars.world.tile(x, y).block() instanceof ConstructBlock) return;
+        int idx = Vars.player.builder().plans().indexOf((req) -> req.breaking && req.x == x && req.y == y);
+        if (idx != -1) return;
+        Vars.player.builder().removeBuild(x, y, true);
     }
 }
