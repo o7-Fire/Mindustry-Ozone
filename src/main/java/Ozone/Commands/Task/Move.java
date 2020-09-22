@@ -9,6 +9,7 @@ import arc.util.Log;
 import mindustry.Vars;
 import mindustry.ai.Astar;
 import mindustry.content.Blocks;
+import mindustry.gen.Call;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 
@@ -30,7 +31,7 @@ public class Move extends Task {
         if (!Vars.player.unit().isFlying()) {
             destTile = new Tile(Math.round(dest.x), Math.round(dest.y));
             pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, this::isSafe, s -> {
-                return s.passable() && s.floor() != Blocks.deepwater.asFloor();
+                return s.passable() && s.floor() != Blocks.deepwater.asFloor() && s.block() == null;
             });
 
         }
@@ -39,6 +40,7 @@ public class Move extends Task {
     @Override
     public void taskCompleted() {
         Vars.player.reset();
+        if (!pathfindingCache.isEmpty()) Call.sendChatMessage("/sync");
         super.taskCompleted();
     }
 
@@ -127,6 +129,8 @@ public class Move extends Task {
                 if (tile == null) continue;
                 if (tile.block() == null) continue;
                 if (tile.team() != Vars.player.team())
+                    danger += 3f;
+                else //obstruction is bad
                     danger += 1f;
             }
         }
