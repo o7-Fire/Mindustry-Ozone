@@ -81,7 +81,7 @@ Ozone.Commands.Task.Move -> a.a.a.c:
     boolean isCompleted() -> a
     void update() -> b
     void setMov(arc.math.geom.Vec2) -> a
-    double getCurrentDistance() -> e
+    float getCurrentDistance() -> e
     float isSafe(mindustry.world.Tile) -> a
     double distanceTo(arc.math.geom.Vec2,arc.math.geom.Vec2) -> a
     boolean lambda$new$0(mindustry.world.Tile) -> b

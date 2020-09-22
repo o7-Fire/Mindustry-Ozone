@@ -2,6 +2,7 @@ package Ozone.Commands.Task;
 
 import Atom.Meth;
 import Ozone.Commands.BotInterface;
+import Ozone.Commands.Pathfinding;
 import Ozone.Patch.DesktopInput;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
@@ -11,12 +12,13 @@ import mindustry.ai.Astar;
 import mindustry.content.Blocks;
 import mindustry.gen.Call;
 import mindustry.world.Tile;
-import mindustry.world.blocks.environment.Floor;
+
+import static Ozone.Commands.Pathfinding.distanceTo;
 
 //TODO relocate these method
 public class Move extends Task {
     private final Vec2 destPos, destTilePos;
-    private final int airTolerance = 2, landTolerance = 1;
+    private final float airTolerance = 1.2f, landTolerance = 0.04f;
     private Tile destTile = null;
     private Seq<Tile> pathfindingCache = new Seq<>();
 
@@ -30,7 +32,7 @@ public class Move extends Task {
         setTick(5);
         if (!Vars.player.unit().isFlying()) {
             destTile = new Tile(Math.round(dest.x), Math.round(dest.y));
-            pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, this::isSafe, s -> {
+            pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, Pathfinding::isSafe, s -> {
                 return s.passable() && s.floor() != Blocks.deepwater.asFloor() && s.build == null;
             });
 
@@ -121,37 +123,6 @@ public class Move extends Task {
         return (float) distanceTo(BotInterface.getCurrentTilePos(), destTilePos);
     }
 
-    //its expensive to compute lmao
-    //TODO optimize
-    public float isSafe(Tile tile) {
-        float danger = 0f;
-        Floor floor = tile.floor();
-        for (int i = 0; i < 4; i++) {
-            for (Tile t : BotInterface.getNearby(tile, i, 4)) {
-                float fDanger = 0f;
-                //such a lie, it can be null but intellj refuse to
-                if (tile == null) continue;
-                if (!t.passable())
-                    fDanger += 0.4f;//avoid unpassable, sometime its stuck
-                if (t.floor().isLiquid)
-                    fDanger += 0.3f;//avoid the liquid
-                if (tile.build == null) continue;
-                if (tile.team() != Vars.player.team())
-                    fDanger += 3f;
-                if (fDanger != 0f)
-                    fDanger = fDanger / Vars.player.tileOn().dst(t);
-                Log.debug(t.toString() + "\nIndex: " + danger);
-                danger += fDanger;
-            }
-        }
-        return danger;
-    }
-
-    public double distanceTo(Vec2 source, Vec2 target) {
-        double dx = source.x - target.x;
-        double dy = source.y - target.y;
-        return Math.sqrt(dx * dx + dy * dy);
-    }
 
 
 }
