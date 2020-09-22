@@ -127,7 +127,7 @@ public class Move extends Task {
             for (Tile t : BotInterface.getNearby(tile, i, 6)) {
                 //such a lie
                 if (tile == null) continue;
-                if (tile.block() == null) continue;
+                if (tile.build == null) continue;
                 if (tile.team() != Vars.player.team())
                     danger += 3f;
                 else //obstruction is bad
