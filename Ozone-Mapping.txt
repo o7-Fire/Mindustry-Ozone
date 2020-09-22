@@ -19,6 +19,7 @@ Ozone.Commands.BotInterface -> a.a.a:
     void init() -> a
     void update() -> d
     void addTask(Ozone.Commands.Task.Task,java.util.function.Consumer) -> a
+    java.util.ArrayList getNearby(mindustry.world.Tile,int,int) -> a
     arc.math.geom.Vec2 getCurrentPos() -> b
     arc.math.geom.Vec2 getCurrentTilePos() -> c
     void reset() -> e
