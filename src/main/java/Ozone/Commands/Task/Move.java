@@ -125,18 +125,21 @@ public class Move extends Task {
         float danger = 0f;
         Floor floor = tile.floor();
         for (int i = 0; i < 4; i++) {
-            for (Tile t : BotInterface.getNearby(tile, i, 6)) {
+            for (Tile t : BotInterface.getNearby(tile, i, 4)) {
+                float fDanger = 0f;
                 //such a lie, it can be null but intellj refuse to
                 if (tile == null) continue;
-                if (!t.passable() || t.build != null)
-                    danger += 0.4f;//avoid wall, sometime its stuck
+                if (!t.passable())
+                    fDanger += 0.4f;//avoid unpassable, sometime its stuck
                 if (t.floor().isLiquid)
-                    danger += 0.3f;//avoid the liquid
+                    fDanger += 0.3f;//avoid the liquid
                 if (tile.build == null) continue;
                 if (tile.team() != Vars.player.team())
-                    danger += 3f;
-                else //obstruction is bad
-                    danger += 0.5f;
+                    fDanger += 3f;
+                if (fDanger != 0f)
+                    fDanger = fDanger / Vars.player.tileOn().dst(t);
+                Log.debug(t.toString() + "\nIndex: " + danger);
+                danger += fDanger;
             }
         }
         return danger;
