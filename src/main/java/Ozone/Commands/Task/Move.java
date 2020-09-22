@@ -31,7 +31,7 @@ public class Move extends Task {
         if (!Vars.player.unit().isFlying()) {
             destTile = new Tile(Math.round(dest.x), Math.round(dest.y));
             pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, this::isSafe, s -> {
-                return s.passable() && !s.floor().isLiquid && s.build == null;
+                return s.passable() && s.floor() != Blocks.deepwater.asFloor() && s.build == null;
             });
 
         }
@@ -129,7 +129,7 @@ public class Move extends Task {
                 //such a lie, it can be null but intellj refuse to
                 if (tile == null) continue;
                 if (t.floor().isLiquid)
-                    danger += 0.3f;//avoid the wateeer
+                    danger += 0.3f;//avoid the liquid
                 if (tile.build == null) continue;
                 if (tile.team() != Vars.player.team())
                     danger += 3f;
