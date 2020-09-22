@@ -83,7 +83,7 @@ public class Move extends Task {
                     t.setOverlay(Blocks.dirtWall);
             }
             if (destTile != null)
-                if (distanceTo(BotInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance)
+                if (distanceTo(BotInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance && !pathfindingCache.isEmpty())
                     pathfindingCache.remove(0).clearOverlay();
             destTile = pathfindingCache.get(0);
             destTile.setOverlay(Blocks.dirt);
@@ -131,7 +131,7 @@ public class Move extends Task {
                 if (tile.team() != Vars.player.team())
                     danger += 3f;
                 else //obstruction is bad
-                    danger += 1f;
+                    danger += 0.5f;
             }
         }
         return danger;
