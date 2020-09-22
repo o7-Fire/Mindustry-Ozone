@@ -120,5 +120,4 @@ public class SettingsDialog extends SettingsMenuDialog {
 
 
     }
-
 }

@@ -126,7 +126,7 @@ public class Move extends Task {
         Floor floor = tile.floor();
         for (int i = 0; i < 4; i++) {
             for (Tile t : BotInterface.getNearby(tile, i, 6)) {
-                //such a lie
+                //such a lie, it can be null but intellj refuse to
                 if (tile == null) continue;
                 if (t.floor().isLiquid)
                     danger += 0.3f;//avoid the wateeer

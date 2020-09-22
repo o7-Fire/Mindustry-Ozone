@@ -33,6 +33,7 @@ public class OzoneMenu extends BaseDialog {
         Interface.registerKeybinding(new ImprovisedKeybinding("ozone.menu", KeyCode.backtick, "Ozone", ImprovisedKeybinding.mode.tap), this::show);
     }
 
+
     @Override
     public void hide() {
         super.hide();
@@ -68,7 +69,7 @@ public class OzoneMenu extends BaseDialog {
             });
         }).growX().fillX().padBottom(6.0F).bottom().size(Core.graphics.getWidth(), Core.graphics.getHeight() / 12);
 
-
+        Core.scene.setKeyboardFocus(commandsField);
         try {
             if (Vars.ui.hudfrag.shown())
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
