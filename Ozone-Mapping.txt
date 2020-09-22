@@ -19,7 +19,6 @@ Ozone.Commands.BotInterface -> a.a.a:
     void init() -> a
     void update() -> d
     void addTask(Ozone.Commands.Task.Task,java.util.function.Consumer) -> a
-    void moveTo(int,int,java.util.function.Consumer) -> a
     arc.math.geom.Vec2 getCurrentPos() -> b
     arc.math.geom.Vec2 getCurrentTilePos() -> c
     void reset() -> e
