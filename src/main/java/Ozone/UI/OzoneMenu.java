@@ -37,6 +37,7 @@ public class OzoneMenu extends BaseDialog {
     @Override
     public void hide() {
         super.hide();
+        Core.scene.setKeyboardFocus(null);
         try {
             if (!Vars.ui.hudfrag.shown())
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
