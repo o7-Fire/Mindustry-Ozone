@@ -31,7 +31,7 @@ public class Move extends Task {
         if (!Vars.player.unit().isFlying()) {
             destTile = new Tile(Math.round(dest.x), Math.round(dest.y));
             pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, this::isSafe, s -> {
-                return s.passable() && s.floor() != Blocks.deepwater.asFloor() && s.build == null;
+                return s.passable() && !s.floor().isLiquid && s.build == null;
             });
 
         }
@@ -41,6 +41,7 @@ public class Move extends Task {
     public void taskCompleted() {
         Vars.player.reset();
         if (!pathfindingCache.isEmpty()) Call.sendChatMessage("/sync");
+        setMov(new Vec2(0, 0));
         super.taskCompleted();
     }
 
@@ -49,7 +50,7 @@ public class Move extends Task {
         if (Vars.player.unit().isFlying())
             return distanceTo(BotInterface.getCurrentPos(), destPos) < airTolerance;
         else
-            return distanceTo(BotInterface.getCurrentPos(), destPos) < landTolerance;
+            return distanceTo(BotInterface.getCurrentPos(), destPos) < landTolerance || pathfindingCache.isEmpty();
     }
 
     @Override
@@ -82,9 +83,12 @@ public class Move extends Task {
                 else if (t.block().isStatic())
                     t.setOverlay(Blocks.dirtWall);
             }
-            if (destTile != null)
-                if (distanceTo(BotInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance && !pathfindingCache.isEmpty())
+            if (destTile != null) {
+                if (distanceTo(BotInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance) {
                     pathfindingCache.remove(0).clearOverlay();
+                }
+            }
+            if (pathfindingCache.isEmpty()) return;
             destTile = pathfindingCache.get(0);
             destTile.setOverlay(Blocks.dirt);
             int xx = Math.round(destTile.x - BotInterface.getCurrentTilePos().x);
@@ -120,13 +124,12 @@ public class Move extends Task {
     public float isSafe(Tile tile) {
         float danger = 0f;
         Floor floor = tile.floor();
-        if (Blocks.water.asFloor().equals(floor) || Blocks.darksandWater.asFloor().equals(floor) || Blocks.taintedWater.asFloor().equals(floor) || Blocks.deepwater.asFloor().equals(floor) || Blocks.darksandTaintedWater.asFloor().equals(floor)) {
-            danger += 2f;
-        }
         for (int i = 0; i < 4; i++) {
             for (Tile t : BotInterface.getNearby(tile, i, 6)) {
                 //such a lie
                 if (tile == null) continue;
+                if (t.floor().isLiquid)
+                    danger += 0.3f;//avoid the wateeer
                 if (tile.build == null) continue;
                 if (tile.team() != Vars.player.team())
                     danger += 3f;
