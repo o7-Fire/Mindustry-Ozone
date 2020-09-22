@@ -3,7 +3,6 @@ package Ozone.Commands.Task;
 import Atom.Meth;
 import Ozone.Commands.BotInterface;
 import Ozone.Patch.DesktopInput;
-import Ozone.Settings;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Log;
@@ -11,6 +10,7 @@ import mindustry.Vars;
 import mindustry.ai.Astar;
 import mindustry.content.Blocks;
 import mindustry.world.Tile;
+import mindustry.world.blocks.environment.Floor;
 
 public class Move extends Task {
     private final Vec2 destPos, destTilePos;
@@ -28,17 +28,10 @@ public class Move extends Task {
         setTick(5);
         if (!Vars.player.unit().isFlying()) {
             destTile = new Tile(Math.round(dest.x), Math.round(dest.y));
-            pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, this::isSafe, Tile::passable);
-            if (Settings.debugMode) {
-                for (Tile t : pathfindingCache) {
-                    if (t.block() == null)
-                        tellUser("Null block: " + t.toString());
-                    else if (t.block().isFloor())
-                        t.setOverlay(Blocks.magmarock);
-                    else if (t.block().isStatic())
-                        t.setOverlay(Blocks.dirtWall);
-                }
-            }
+            pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, this::isSafe, s -> {
+                return s.passable() && s.floor() != Blocks.deepwater.asFloor();
+            });
+
         }
     }
 
@@ -78,9 +71,17 @@ public class Move extends Task {
             Log.debug("Ozone-AI @", "DriveY: " + yy);
         } else {
             if (pathfindingCache.isEmpty()) return;
+            for (Tile t : pathfindingCache) {
+                if (t.block() == null)
+                    tellUser("Null block: " + t.toString());
+                else if (t.block().isFloor())
+                    t.setOverlay(Blocks.magmarock);
+                else if (t.block().isStatic())
+                    t.setOverlay(Blocks.dirtWall);
+            }
             if (destTile != null)
                 if (distanceTo(BotInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance)
-                    pathfindingCache.remove(0);
+                    pathfindingCache.remove(0).clearOverlay();
             destTile = pathfindingCache.get(0);
             destTile.setOverlay(Blocks.dirt);
             int xx = Math.round(destTile.x - BotInterface.getCurrentTilePos().x);
@@ -112,6 +113,11 @@ public class Move extends Task {
     }
 
     public float isSafe(Tile tile) {
+        float danger = 0f;
+        Floor floor = tile.floor();
+        if (Blocks.water.asFloor().equals(floor) || Blocks.darksandWater.asFloor().equals(floor) || Blocks.taintedWater.asFloor().equals(floor) || Blocks.deepwater.asFloor().equals(floor) || Blocks.darksandTaintedWater.asFloor().equals(floor)) {
+            danger += 2f;
+        }
         return 0f;
     }
 
