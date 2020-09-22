@@ -12,6 +12,7 @@ import mindustry.content.Blocks;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 
+//TODO relocate these method
 public class Move extends Task {
     private final Vec2 destPos, destTilePos;
     private final int airTolerance = 2, landTolerance = 1;
