@@ -214,11 +214,7 @@ public class Commands {
     }
 
     public static void toggleUI() {
-        if (Manifest.menu.isShown())
-            Manifest.menu.hide();
-
-        if (Vars.ui.chatfrag.shown())
-            Vars.ui.chatfrag.toggle();
+        Manifest.menu.hide();
     }
 
     public static void infoPos(ArrayList<String> a) {

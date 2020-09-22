@@ -37,7 +37,6 @@ public class OzoneMenu extends BaseDialog {
     @Override
     public void hide() {
         super.hide();
-        Core.scene.setKeyboardFocus(null);
         try {
             if (!Vars.ui.hudfrag.shown())
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
@@ -70,7 +69,7 @@ public class OzoneMenu extends BaseDialog {
             });
         }).growX().fillX().padBottom(6.0F).bottom().size(Core.graphics.getWidth(), Core.graphics.getHeight() / 12);
 
-        Core.scene.setKeyboardFocus(commandsField);
+
         try {
             if (Vars.ui.hudfrag.shown())
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
