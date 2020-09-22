@@ -3,11 +3,13 @@ package Ozone.Commands.Task;
 import Atom.Meth;
 import Ozone.Commands.BotInterface;
 import Ozone.Patch.DesktopInput;
+import Ozone.Settings;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.ai.Astar;
+import mindustry.content.Blocks;
 import mindustry.world.Tile;
 
 public class Move extends Task {
@@ -27,6 +29,16 @@ public class Move extends Task {
         if (!Vars.player.unit().isFlying()) {
             destTile = new Tile(Math.round(dest.x), Math.round(dest.y));
             pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, this::isSafe, Tile::passable);
+            if (Settings.debugMode) {
+                for (Tile t : pathfindingCache) {
+                    if (t.block() == null)
+                        tellUser("Null block: " + t.toString());
+                    else if (t.block().isFloor())
+                        t.setOverlay(Blocks.magmarock);
+                    else if (t.block().isStatic())
+                        t.setOverlay(Blocks.dirtWall);
+                }
+            }
         }
     }
 
@@ -70,6 +82,7 @@ public class Move extends Task {
                 if (distanceTo(BotInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance)
                     pathfindingCache.remove(0);
             destTile = pathfindingCache.get(0);
+            destTile.setOverlay(Blocks.dirt);
             int xx = Math.round(destTile.x - BotInterface.getCurrentTilePos().x);
             int yy = Math.round(destTile.y - BotInterface.getCurrentTilePos().y);
             Log.debug("Ozone-AI @", "X: " + xx);
