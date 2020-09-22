@@ -128,7 +128,7 @@ public class Move extends Task {
             for (Tile t : BotInterface.getNearby(tile, i, 6)) {
                 //such a lie, it can be null but intellj refuse to
                 if (tile == null) continue;
-                if (!t.passable())
+                if (!t.passable() || t.build != null)
                     danger += 0.4f;//avoid wall, sometime its stuck
                 if (t.floor().isLiquid)
                     danger += 0.3f;//avoid the liquid
