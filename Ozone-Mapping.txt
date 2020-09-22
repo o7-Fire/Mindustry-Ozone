@@ -83,6 +83,7 @@ Ozone.Commands.Task.Move -> a.a.a.c:
     double getCurrentDistance() -> e
     float isSafe(mindustry.world.Tile) -> a
     double distanceTo(arc.math.geom.Vec2,arc.math.geom.Vec2) -> a
+    boolean lambda$new$0(mindustry.world.Tile) -> b
 Ozone.Commands.Task.Task -> a.a.a.d:
     java.util.ArrayList onTaskCompleted -> a
     int tick -> b

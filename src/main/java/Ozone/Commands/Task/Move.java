@@ -112,13 +112,24 @@ public class Move extends Task {
         return distanceTo(BotInterface.getCurrentTilePos(), destTilePos);
     }
 
+    //its expensive to compute lmao
+    //TODO optimize
     public float isSafe(Tile tile) {
         float danger = 0f;
         Floor floor = tile.floor();
         if (Blocks.water.asFloor().equals(floor) || Blocks.darksandWater.asFloor().equals(floor) || Blocks.taintedWater.asFloor().equals(floor) || Blocks.deepwater.asFloor().equals(floor) || Blocks.darksandTaintedWater.asFloor().equals(floor)) {
             danger += 2f;
         }
-        return 0f;
+        for (int i = 0; i < 4; i++) {
+            for (Tile t : BotInterface.getNearby(tile, i, 6)) {
+                //such a lie
+                if (tile == null) continue;
+                if (tile.block() == null) continue;
+                if (tile.team() != Vars.player.team())
+                    danger += 1f;
+            }
+        }
+        return danger;
     }
 
     public double distanceTo(Vec2 source, Vec2 target) {

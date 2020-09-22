@@ -9,6 +9,7 @@ import mindustry.game.EventType;
 import mindustry.world.Tile;
 import org.openjdk.tools.sjavac.Log;
 
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class BotInterface {
@@ -34,6 +35,28 @@ public class BotInterface {
         Log.debug("Task: " + task.getName() + " has been added to queue : " + taskQueue.size);
     }
 
+
+    public static ArrayList<Tile> getNearby(Tile tile, int rotation, int range) {
+        ArrayList<Tile> tiles = new ArrayList<>();
+        if (rotation == 0) {
+            for (int i = 0; i < range; i++) {
+                tiles.add(Vars.world.tile(tile.x + 1 + i, tile.y));
+            }
+        } else if (rotation == 1) {
+            for (int i = 0; i < range; i++) {
+                tiles.add(Vars.world.tile(tile.x, tile.y + 1 + i));
+            }
+        } else if (rotation == 2) {
+            for (int i = 0; i < range; i++) {
+                tiles.add(Vars.world.tile(tile.x - 1 - i, tile.y));
+            }
+        } else if (rotation == 3) {
+            for (int i = 0; i < range; i++) {
+                tiles.add(Vars.world.tile(tile.x, tile.y - 1 - i));
+            }
+        }
+        return tiles;
+    }
 
     public static Vec2 getCurrentPos() {
         return new Vec2(Vars.player.x, Vars.player.y);
