@@ -1,6 +1,5 @@
 package Ozone.Commands;
 
-import Ozone.Commands.Task.Move;
 import Ozone.Commands.Task.Task;
 import arc.Events;
 import arc.math.geom.Vec2;
@@ -8,6 +7,7 @@ import arc.struct.Queue;
 import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.world.Tile;
+import org.openjdk.tools.sjavac.Log;
 
 import java.util.function.Consumer;
 
@@ -31,12 +31,7 @@ public class BotInterface {
     public static void addTask(Task task, Consumer<Object> onDone) {
         if (onDone != null) task.onTaskCompleted(onDone);
         taskQueue.addLast(task);
-    }
-
-    public static void moveTo(int x, int y, Consumer<Object> onDone) {
-        Move task = new Move(x, y);
-        if (onDone != null) task.onTaskCompleted(onDone);
-        taskQueue.addLast(task);
+        Log.debug("Task: " + task.getName() + " has been added to queue : " + taskQueue.size);
     }
 
 

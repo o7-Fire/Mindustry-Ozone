@@ -4,6 +4,7 @@ import Atom.Random;
 import Atom.Time.Countdown;
 import Atom.Utility.Utility;
 import Ozone.Commands.Task.DestructBlock;
+import Ozone.Commands.Task.Move;
 import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.Colors;
@@ -240,7 +241,7 @@ public class Commands {
                 return;
             }
             long start = System.currentTimeMillis();
-            BotInterface.moveTo(x, y, a -> tellUser("Reached in " + Countdown.result(start, TimeUnit.SECONDS)));
+            BotInterface.addTask(new Move(x, y), a -> tellUser("Reached in " + Countdown.result(start, TimeUnit.SECONDS)));
         } catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");
             Vars.ui.showException(f);
