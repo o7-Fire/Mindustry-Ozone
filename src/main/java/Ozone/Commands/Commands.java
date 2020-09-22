@@ -5,6 +5,7 @@ import Atom.Time.Countdown;
 import Atom.Utility.Utility;
 import Ozone.Commands.Task.DestructBlock;
 import Ozone.Commands.Task.Move;
+import Ozone.Manifest;
 import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.Colors;
@@ -212,6 +213,11 @@ public class Commands {
         }
     }
 
+    public static void toggleUI() {
+        if (Manifest.menu.isShown())
+            Manifest.menu.hide();
+    }
+
     public static void infoPos(ArrayList<String> a) {
         tellUser("Player x,y: " + Vars.player.x + ", " + Vars.player.y);
         tellUser("Player tile x,y: " + Vars.player.tileX() + ", " + Vars.player.tileY());
@@ -242,6 +248,7 @@ public class Commands {
             }
             long start = System.currentTimeMillis();
             BotInterface.addTask(new Move(x, y), a -> tellUser("Reached in " + Countdown.result(start, TimeUnit.SECONDS)));
+            toggleUI();
         } catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");
             Vars.ui.showException(f);
