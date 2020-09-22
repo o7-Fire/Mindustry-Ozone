@@ -57,8 +57,8 @@ public class Move extends Task {
     public void update() {
         if (tick()) return;
         if (Vars.player.unit().isFlying()) {
-            int xx = Math.round(destTilePos.x - BotInterface.getCurrentTilePos().x);
-            int yy = Math.round(destTilePos.y - BotInterface.getCurrentTilePos().y);
+            float xx = Math.round(destTilePos.x - BotInterface.getCurrentTilePos().x);
+            float yy = Math.round(destTilePos.y - BotInterface.getCurrentTilePos().y);
             Log.debug("Ozone-AI @", "X: " + xx);
             Log.debug("Ozone-AI @", "Y: " + yy);
             if (Meth.positive(yy) < airTolerance) yy = 0;
@@ -69,7 +69,7 @@ public class Move extends Task {
             else if (xx < 0) xx = -1;
             else if (xx > airTolerance) xx = 1;
             setMov(new Vec2(xx, yy));
-            double lastDist = getCurrentDistance();
+            float lastDist = getCurrentDistance();
             Log.debug("Ozone-AI @", "Dist: " + lastDist);
             Log.debug("Ozone-AI @", "DriveX: " + xx);
             Log.debug("Ozone-AI @", "DriveY: " + yy);
@@ -91,8 +91,8 @@ public class Move extends Task {
             if (pathfindingCache.isEmpty()) return;
             destTile = pathfindingCache.get(0);
             destTile.setOverlay(Blocks.dirt);
-            int xx = Math.round(destTile.x - BotInterface.getCurrentTilePos().x);
-            int yy = Math.round(destTile.y - BotInterface.getCurrentTilePos().y);
+            float xx = destTile.x - BotInterface.getCurrentTilePos().x;
+            float yy = destTile.y - BotInterface.getCurrentTilePos().y;
             Log.debug("Ozone-AI @", "X: " + xx);
             Log.debug("Ozone-AI @", "Y: " + yy);
             if (Meth.positive(yy) < landTolerance) yy = 0;
@@ -102,8 +102,10 @@ public class Move extends Task {
             if (Meth.positive(xx) < landTolerance) xx = 0;
             else if (xx < 0) xx = -1;
             else if (xx > landTolerance) xx = 1;
+            float lastDist = getCurrentDistance();
+
             setMov(new Vec2(xx, yy));
-            double lastDist = getCurrentDistance();
+
             Log.debug("Ozone-AI @", "Dist: " + lastDist);
             Log.debug("Ozone-AI @", "DriveX: " + xx);
             Log.debug("Ozone-AI @", "DriveY: " + yy);
@@ -115,8 +117,8 @@ public class Move extends Task {
         else Log.infoTag("Ozone", "Can't control movement, DesktopInput not patched");
     }
 
-    public double getCurrentDistance() {
-        return distanceTo(BotInterface.getCurrentTilePos(), destTilePos);
+    public float getCurrentDistance() {
+        return (float) distanceTo(BotInterface.getCurrentTilePos(), destTilePos);
     }
 
     //its expensive to compute lmao
