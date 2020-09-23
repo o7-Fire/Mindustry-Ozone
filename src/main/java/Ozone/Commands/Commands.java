@@ -50,6 +50,7 @@ public class Commands {
         commandsList.put("force-exit", new Command(Commands::forceExit, "forceExit"));
         commandsList.put("task-deconstruct", new Command(Commands::taskDeconstruct, "taskDeconstruct"));
         commandsList.put("send-colorize", new Command(Commands::sendColorize, "sendColorize"));
+
         Log.infoTag("Ozone", "Commands Center Initialized");
     }
 

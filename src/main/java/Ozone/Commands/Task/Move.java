@@ -8,6 +8,7 @@ import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Log;
+import arc.util.Tmp;
 import mindustry.Vars;
 import mindustry.ai.Astar;
 import mindustry.content.Blocks;
@@ -30,9 +31,12 @@ public class Move extends Task {
     public Move(Vec2 dest) {
         destPos = new Vec2(dest.x * 8, dest.y * 8);
         destTilePos = dest;
+        destTile = Vars.world.tile(Math.round(dest.x), Math.round(dest.y));
+        if(destTile == null)
+            tellUser("what, there is nothing in there");
         setTick(5);
         if (!Vars.player.unit().isFlying()) {
-            destTile = new Tile(Math.round(dest.x), Math.round(dest.y));
+
             pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, Pathfinding::isSafe, s -> {
                 return  s != null&&s.passable() && s.floor() != Blocks.deepwater.asFloor() && s.build == null;
             });
@@ -59,24 +63,7 @@ public class Move extends Task {
     @Override
     public void update() {
         if (tick()) return;
-        if (Vars.player.unit().isFlying()) {
-            float xx = destTilePos.x - BotInterface.getCurrentTilePos().x;
-            float yy = destTilePos.y - BotInterface.getCurrentTilePos().y;
-            Log.debug("Ozone-AI @", "X: " + xx);
-            Log.debug("Ozone-AI @", "Y: " + yy);
-            if (Meth.positive(yy) < airTolerance) yy = 0;
-            else if (yy < 0) yy = -1;
-            else if (yy > airTolerance) yy = 1;
-
-            if (Meth.positive(xx) < airTolerance) xx = 0;
-            else if (xx < 0) xx = -1;
-            else if (xx > airTolerance) xx = 1;
-            setMov(new Vec2(xx, yy));
-            float lastDist = getCurrentDistance();
-            Log.debug("Ozone-AI @", "Dist: " + lastDist);
-            Log.debug("Ozone-AI @", "DriveX: " + xx);
-            Log.debug("Ozone-AI @", "DriveY: " + yy);
-        } else {
+        if (!Vars.player.unit().isFlying()) {
             if (pathfindingCache.isEmpty()) return;
             for (Tile t : pathfindingCache) {
                 if (t.block() == null)
@@ -94,33 +81,16 @@ public class Move extends Task {
             if (pathfindingCache.isEmpty()) return;
             destTile = pathfindingCache.get(0);
             destTile.setOverlay(Blocks.dirt);
-            setMov(destTile);
-            /*
-            float xx = destTile.x - BotInterface.getCurrentTilePos().x;
-            float yy = destTile.y - BotInterface.getCurrentTilePos().y;
-            Log.debug("Ozone-AI @", "X: " + xx);
-            Log.debug("Ozone-AI @", "Y: " + yy);
-            if (Meth.positive(yy) < landTolerance) yy = 0;
-            else if (yy < 0) yy = -1;
-            else if (yy > landTolerance) yy = 1;
-
-            if (Meth.positive(xx) < landTolerance) xx = 0;
-            else if (xx < 0) xx = -1;
-            else if (xx > landTolerance) xx = 1;
-            float lastDist = getCurrentDistance();
-            setMov(new Vec2(xx, yy));
-
-            Log.debug("Ozone-AI @", "Dist: " + lastDist);
-            Log.debug("Ozone-AI @", "DriveX: " + xx);
-            Log.debug("Ozone-AI @", "DriveY: " + yy);
-
-           */
         }
+        setMov(destTile);
     }
 
     public void setMov(Tile targetTile){
         Vec2 vec = new Vec2();
-        Vars.player.unit().moveAt(vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed));
+        vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed * 2f);
+        Log.debug("Ozone-AI @", "DriveX: " + vec.x);
+        Log.debug("Ozone-AI @", "DriveY: " + vec.y);
+        Vars.player.unit().moveAt(vec);
     }
 
     public void setMov(Vec2 mov) {

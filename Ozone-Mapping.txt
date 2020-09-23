@@ -74,16 +74,15 @@ Ozone.Commands.Task.DestructBlock -> a.a.a.b:
     boolean lambda$update$0(mindustry.entities.units.BuildPlan) -> a
 Ozone.Commands.Task.Move -> a.a.a.c:
     arc.math.geom.Vec2 destPos -> a
-    arc.math.geom.Vec2 destTilePos -> b
-    mindustry.world.Tile destTile -> c
-    arc.struct.Seq pathfindingCache -> d
+    mindustry.world.Tile destTile -> b
+    arc.struct.Seq pathfindingCache -> c
     void <init>(float,float) -> <init>
     void <init>(arc.math.geom.Vec2) -> <init>
     void taskCompleted() -> c
     boolean isCompleted() -> a
     void update() -> b
-    void setMov(arc.math.geom.Vec2) -> a
-    boolean lambda$new$0(mindustry.world.Tile) -> a
+    void setMov(mindustry.world.Tile) -> a
+    boolean lambda$new$0(mindustry.world.Tile) -> b
 Ozone.Commands.Task.Task -> a.a.a.d:
     java.util.ArrayList onTaskCompleted -> a
     int tick -> b
