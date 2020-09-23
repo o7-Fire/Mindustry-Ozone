@@ -50,8 +50,13 @@ public class Commands {
         commandsList.put("force-exit", new Command(Commands::forceExit, "forceExit"));
         commandsList.put("task-deconstruct", new Command(Commands::taskDeconstruct, "taskDeconstruct"));
         commandsList.put("send-colorize", new Command(Commands::sendColorize, "sendColorize"));
-
+        commandsList.put("task-clear", new Command(Commands::taskClear, "taskClear"));
         Log.infoTag("Ozone", "Commands Center Initialized");
+    }
+
+    public static void taskClear(ArrayList<String> s) {
+        BotInterface.reset();
+        tellUser("Task cleared");
     }
 
     public static void sendColorize(ArrayList<String> s) {

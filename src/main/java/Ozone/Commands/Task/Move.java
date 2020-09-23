@@ -9,6 +9,7 @@ import mindustry.ai.Astar;
 import mindustry.content.Blocks;
 import mindustry.world.Tile;
 
+import static Ozone.Commands.BotInterface.samePos;
 import static Ozone.Commands.BotInterface.setMov;
 import static Ozone.Commands.Pathfinding.distanceTo;
 
@@ -55,28 +56,33 @@ public class Move extends Task {
     @Override
     public void update() {
         if(!tick())
-        if (!Vars.player.unit().isFlying()) {
-            if (pathfindingCache.isEmpty()) return;
-            if(!alreadyOverlay)
-            for (Tile t : pathfindingCache) {
-                if(t.x  + t.y == destTile.x+destTile.y)
-                    alreadyOverlay = true;
-                if (t.block() == null)
-                    tellUser("Null block: " + t.toString());
-                else if (t.block().isFloor())
-                    t.setOverlay(Blocks.magmarock);
-                else if (t.block().isStatic())
-                    t.setOverlay(Blocks.dirtWall);
-            }
-            if (destTile != null) {
-                if (distanceTo(BotInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance) {
-                    pathfindingCache.remove(0).clearOverlay();
+            if (!Vars.player.unit().isFlying()) {
+                if (pathfindingCache.isEmpty()) return;
+                if(!alreadyOverlay)
+                    for (Tile t : pathfindingCache) {
+                        if(t.x  + t.y == destTile.x+destTile.y)
+                            alreadyOverlay = true;
+                        if (t.block() == null)
+                            tellUser("Null block: " + t.toString());
+                        else if (t.block().isFloor())
+                            t.setOverlay(Blocks.magmarock);
+                        else if (t.block().isStatic())
+                            t.setOverlay(Blocks.dirtWall);
+                    }
+                if (destTile != null) {
+                    if (distanceTo(BotInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance) {
+                        pathfindingCache.remove(0).clearOverlay();
+                    }
+                }
+                if (pathfindingCache.isEmpty()) return;
+                destTile = pathfindingCache.get(0);
+                destTile.setOverlay(Blocks.dirt);
+            } else {
+                if (samePos(destTile, destTilePos, true)) {
+                    setMov(destTilePos);
+                    return;
                 }
             }
-            if (pathfindingCache.isEmpty()) return;
-            destTile = pathfindingCache.get(0);
-            destTile.setOverlay(Blocks.dirt);
-        }
         setMov(destTile);
     }
 

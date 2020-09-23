@@ -56,7 +56,8 @@ Ozone.Commands.Commands$Command -> a.a.c:
     Ozone.UI.JavaEditor javaEditor -> e
     void <init>(java.util.function.Consumer,java.lang.String) -> <init>
     void <init>(java.util.function.Consumer,java.lang.String,arc.scene.style.TextureRegionDrawable,boolean) -> <init>
-    float isSafe(mindustry.world.Tile) -> a
+    boolean passable(mindustry.world.Tile) -> a
+    float isSafe(mindustry.world.Tile) -> b
     double distanceTo(arc.math.geom.Position,arc.math.geom.Position) -> a
 Ozone.Commands.Task.CommandsSpam -> a.a.a.a:
     int howManyTimes -> a
@@ -83,7 +84,6 @@ Ozone.Commands.Task.Move -> a.a.a.c:
     void taskCompleted() -> c
     boolean isCompleted() -> a
     void update() -> b
-    boolean lambda$new$0(mindustry.world.Tile) -> a
 Ozone.Commands.Task.Task -> a.a.a.d:
     java.util.ArrayList onTaskCompleted -> a
     int tick -> b
@@ -225,3 +225,6 @@ Ozone.UI.OzoneMenu -> a.d.e:
     void lambda$setup$2() -> d
     void lambda$setup$1() -> e
     void lambda$new$0(arc.input.KeyCode) -> a
+mindustry.ai.hack -> mindustry.ai.hack:
+    void <init>() -> <init>
+    int pathCost(mindustry.game.Team,int,int) -> pathCost

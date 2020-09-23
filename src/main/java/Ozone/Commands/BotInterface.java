@@ -1,7 +1,6 @@
 package Ozone.Commands;
 
 import Ozone.Commands.Task.Task;
-import Ozone.Patch.DesktopInput;
 import arc.Events;
 import arc.math.geom.Position;
 import arc.math.geom.Vec2;
@@ -45,10 +44,7 @@ public class BotInterface {
         Vars.player.unit().moveAt(vec);
     }
 
-    public static void setMov(Vec2 mov) {
-        if (Vars.control.input instanceof DesktopInput) ((DesktopInput) Vars.control.input).setMove(mov);
-        else arc.util.Log.infoTag("Ozone", "Can't control movement, DesktopInput not patched");
-    }
+
 
     public static ArrayList<Tile> getNearby(Tile tile, int rotation, int range) {
         ArrayList<Tile> tiles = new ArrayList<>();
@@ -88,8 +84,14 @@ public class BotInterface {
         return new Vec2(Math.round(ref.x / 8), Math.round(ref.y / 8));
     }
 
+    public static boolean samePos(Position pos1, Position pos2, boolean tolerance) {
+        if (tolerance)
+            return Math.round(pos1.getX()) == Math.round(pos2.getX()) && Math.round(pos1.getY()) == Math.round(pos2.getY());
+        else
+            return pos1.getX() == pos2.getX() && pos1.getY() == pos2.getY();
+    }
 
-    private static void reset() {
+    static void reset() {
         taskQueue.clear();
     }
 
