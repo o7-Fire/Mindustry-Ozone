@@ -85,7 +85,7 @@ public class Move extends Task {
 
     public void setMov(Tile targetTile){
         Vec2 vec = new Vec2();
-        vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed * 2f);
+        vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed );
         Log.debug("Ozone-AI @", "DriveX: " + vec.x);
         Log.debug("Ozone-AI @", "DriveY: " + vec.y);
         Vars.player.unit().moveAt(vec);
