@@ -23,7 +23,8 @@ public class Move extends Task {
     private final float airTolerance = 1.2f, landTolerance = 0.04f;
     private Tile destTile = null;
     private Seq<Tile> pathfindingCache = new Seq<>();
-
+    private Vec2 vec = new Vec2();
+    private boolean alreadyOverlay = false;
     public Move(float x, float y) {
         this(new Vec2(x, y));
     }
@@ -34,20 +35,19 @@ public class Move extends Task {
         destTile = Vars.world.tile(Math.round(dest.x), Math.round(dest.y));
         if(destTile == null)
             tellUser("what, there is nothing in there");
+        setTick(5);
         if (!Vars.player.unit().isFlying()) {
-
             pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, Pathfinding::isSafe, s -> {
                 return  s != null&&s.passable() && s.floor() != Blocks.deepwater.asFloor() && s.build == null;
             });
-
         }
     }
 
     @Override
     public void taskCompleted() {
-        Vars.player.reset();
+        if(Vars.net.active())
+            Vars.player.reset();
         if (!pathfindingCache.isEmpty()) Call.sendChatMessage("/sync");
-        setMov(new Vec2(0, 0));
         super.taskCompleted();
     }
 
@@ -61,7 +61,7 @@ public class Move extends Task {
 
     @Override
     public void update() {
-        if (!Vars.player.unit().isFlying()) {
+        if (!Vars.player.unit().isFlying() && !tick()) {
             if (pathfindingCache.isEmpty()) return;
             for (Tile t : pathfindingCache) {
                 if (t.block() == null)
@@ -84,8 +84,8 @@ public class Move extends Task {
     }
 
     public void setMov(Tile targetTile){
-        Vec2 vec = new Vec2();
-        vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed );
+
+        vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed);
         Log.debug("Ozone-AI @", "DriveX: " + vec.x);
         Log.debug("Ozone-AI @", "DriveY: " + vec.y);
         Vars.player.unit().moveAt(vec);
