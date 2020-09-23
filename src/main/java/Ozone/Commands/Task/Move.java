@@ -45,7 +45,9 @@ public class Move extends Task {
     public void taskCompleted() {
         if(Vars.net.active())
             Vars.player.reset();
-        if (!pathfindingCache.isEmpty()) Call.sendChatMessage("/sync");
+        for(Tile t : pathfindingCache)
+            t.clearOverlay();
+
         super.taskCompleted();
     }
 
