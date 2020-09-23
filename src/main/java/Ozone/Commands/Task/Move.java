@@ -34,7 +34,6 @@ public class Move extends Task {
         destTile = Vars.world.tile(Math.round(dest.x), Math.round(dest.y));
         if(destTile == null)
             tellUser("what, there is nothing in there");
-        setTick(1);
         if (!Vars.player.unit().isFlying()) {
 
             pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, Pathfinding::isSafe, s -> {
@@ -62,7 +61,6 @@ public class Move extends Task {
 
     @Override
     public void update() {
-        if (tick()) return;
         if (!Vars.player.unit().isFlying()) {
             if (pathfindingCache.isEmpty()) return;
             for (Tile t : pathfindingCache) {
