@@ -32,7 +32,7 @@ public class Ozone extends Mod {
         File ozone = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
         //get Mods directory from Mods/Ozone.jar
         File parentFile = ozone.getParentFile();
-        //get Mods/Library directory
+        //Mods/libs directory
         File library = new File(parentFile, "libs");
         //just in case
         library.mkdirs();
@@ -46,7 +46,7 @@ public class Ozone extends Mod {
             libraryURLLoaded = true;
         } catch (FileNotFoundException t) {
             libraryURLLoaded = false;
-            Log.err("Cant download Atom library");
+            Log.err("Cant download Atom library: " + t.toString());
         } catch (Throwable t) {
             //Exception just summoned
             libraryURLLoaded = false;
