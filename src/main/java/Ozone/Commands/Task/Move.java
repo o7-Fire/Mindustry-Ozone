@@ -33,9 +33,7 @@ public class Move extends Task {
         destPos = new Vec2(dest.x * 8, dest.y * 8);
         destTilePos = dest;
         destTile = Vars.world.tile(Math.round(dest.x), Math.round(dest.y));
-        if(destTile == null)
-            tellUser("what, there is nothing in there");
-        setTick(5);
+        setTick(10);
         if (!Vars.player.unit().isFlying()) {
             pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, Pathfinding::isSafe, s -> {
                 return  s != null&&s.passable() && s.floor() != Blocks.deepwater.asFloor() && s.build == null;
@@ -61,9 +59,13 @@ public class Move extends Task {
 
     @Override
     public void update() {
-        if (!Vars.player.unit().isFlying() && !tick()) {
+        if(!tick())
+        if (!Vars.player.unit().isFlying()) {
             if (pathfindingCache.isEmpty()) return;
+            if(!alreadyOverlay)
             for (Tile t : pathfindingCache) {
+                if(t.x  + t.y == destTile.x+destTile.y)
+                    alreadyOverlay = true;
                 if (t.block() == null)
                     tellUser("Null block: " + t.toString());
                 else if (t.block().isFloor())
@@ -84,7 +86,6 @@ public class Move extends Task {
     }
 
     public void setMov(Tile targetTile){
-
         vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed);
         Log.debug("Ozone-AI @", "DriveX: " + vec.x);
         Log.debug("Ozone-AI @", "DriveY: " + vec.y);

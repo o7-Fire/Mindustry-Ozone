@@ -76,6 +76,7 @@ Ozone.Commands.Task.Move -> a.a.a.c:
     arc.math.geom.Vec2 destPos -> a
     mindustry.world.Tile destTile -> b
     arc.struct.Seq pathfindingCache -> c
+    arc.math.geom.Vec2 vec -> d
     void <init>(float,float) -> <init>
     void <init>(arc.math.geom.Vec2) -> <init>
     void taskCompleted() -> c
@@ -109,7 +110,6 @@ Ozone.Patch.DesktopInput -> a.b.a:
     float xav -> a
     float yav -> b
     void <init>() -> <init>
-    void setMove(arc.math.geom.Vec2) -> a
     void buildPlacementUI(arc.scene.ui.layout.Table) -> buildPlacementUI
     void updateMovement(mindustry.gen.Unit) -> updateMovement
     void lambda$buildPlacementUI$0() -> a
