@@ -17,31 +17,33 @@ Ozone.Commands.BotInterface -> a.a.a:
     arc.struct.Queue taskQueue -> a
     boolean init -> b
     void init() -> a
-    void update() -> d
+    void update() -> e
     void addTask(Ozone.Commands.Task.Task,java.util.function.Consumer) -> a
     void setMov(arc.math.geom.Position) -> a
     java.util.ArrayList getNearby(mindustry.world.Tile,int,int) -> a
     arc.math.geom.Vec2 getCurrentPos() -> b
     arc.math.geom.Vec2 getCurrentTilePos() -> c
-    void reset() -> e
+    boolean samePos(arc.math.geom.Position,arc.math.geom.Position,boolean) -> a
+    void reset() -> d
     void <clinit>() -> <clinit>
 Ozone.Commands.Commands -> a.a.b:
     java.util.HashMap commandsList -> a
     boolean init -> b
     boolean falseVote -> c
     void init() -> a
-    void sendColorize(java.util.ArrayList) -> a
-    void taskDeconstruct(java.util.ArrayList) -> b
-    void forceExit(java.util.ArrayList) -> c
-    void infoUnit(java.util.ArrayList) -> d
+    void taskClear(java.util.ArrayList) -> a
+    void sendColorize(java.util.ArrayList) -> b
+    void taskDeconstruct(java.util.ArrayList) -> c
+    void forceExit(java.util.ArrayList) -> d
+    void infoUnit(java.util.ArrayList) -> e
     java.lang.String getTranslation(java.lang.String) -> a
     boolean call(java.lang.String) -> b
-    void randomKick(java.util.ArrayList) -> e
-    void infoPathfinding(java.util.ArrayList) -> f
-    void infoPos(java.util.ArrayList) -> g
-    void help(java.util.ArrayList) -> h
-    void taskMove(java.util.ArrayList) -> i
-    void chaosKick(java.util.ArrayList) -> j
+    void randomKick(java.util.ArrayList) -> f
+    void infoPathfinding(java.util.ArrayList) -> g
+    void infoPos(java.util.ArrayList) -> h
+    void help(java.util.ArrayList) -> i
+    void taskMove(java.util.ArrayList) -> j
+    void chaosKick(java.util.ArrayList) -> k
     void tellUser(java.lang.String) -> c
     void lambda$chaosKick$3() -> b
     void lambda$taskMove$2(long,java.lang.Object) -> a
@@ -76,9 +78,10 @@ Ozone.Commands.Task.DestructBlock -> a.a.a.b:
     boolean lambda$update$0(mindustry.entities.units.BuildPlan) -> a
 Ozone.Commands.Task.Move -> a.a.a.c:
     arc.math.geom.Vec2 destPos -> a
-    mindustry.world.Tile destTile -> b
-    arc.struct.Seq pathfindingCache -> c
-    boolean alreadyOverlay -> d
+    arc.math.geom.Vec2 destTilePos -> b
+    mindustry.world.Tile destTile -> c
+    arc.struct.Seq pathfindingCache -> d
+    boolean alreadyOverlay -> e
     void <init>(float,float) -> <init>
     void <init>(arc.math.geom.Vec2) -> <init>
     void taskCompleted() -> c
