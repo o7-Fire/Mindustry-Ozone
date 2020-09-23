@@ -1,7 +1,9 @@
 package Ozone.Commands;
 
 import Ozone.Commands.Task.Task;
+import Ozone.Patch.DesktopInput;
 import arc.Events;
+import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.struct.Queue;
 import mindustry.Vars;
@@ -35,6 +37,18 @@ public class BotInterface {
         Log.debug("Task: " + task.getName() + " has been added to queue : " + taskQueue.size);
     }
 
+    public static void setMov(Position targetTile) {
+        Vec2 vec = new Vec2();
+        vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed);
+        arc.util.Log.debug("Ozone-AI @", "DriveX: " + vec.x);
+        arc.util.Log.debug("Ozone-AI @", "DriveY: " + vec.y);
+        Vars.player.unit().moveAt(vec);
+    }
+
+    public static void setMov(Vec2 mov) {
+        if (Vars.control.input instanceof DesktopInput) ((DesktopInput) Vars.control.input).setMove(mov);
+        else arc.util.Log.infoTag("Ozone", "Can't control movement, DesktopInput not patched");
+    }
 
     public static ArrayList<Tile> getNearby(Tile tile, int rotation, int range) {
         ArrayList<Tile> tiles = new ArrayList<>();

@@ -1,6 +1,6 @@
 package Ozone.Commands;
 
-import arc.math.geom.Vec2;
+import arc.math.geom.Position;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.world.Tile;
@@ -36,9 +36,9 @@ public class Pathfinding {
         return danger;
     }
 
-    public static double distanceTo(Vec2 source, Vec2 target) {
-        double dx = source.x - target.x;
-        double dy = source.y - target.y;
+    public static double distanceTo(Position source, Position target) {
+        double dx = source.getX() - target.getX();
+        double dy = source.getY() - target.getY();
         return Math.sqrt(dx * dx + dy * dy);
     }
 

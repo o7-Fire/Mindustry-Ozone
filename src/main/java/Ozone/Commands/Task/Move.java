@@ -1,20 +1,15 @@
 package Ozone.Commands.Task;
 
-import Atom.Meth;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Pathfinding;
-import Ozone.Patch.DesktopInput;
-import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
-import arc.util.Log;
-import arc.util.Tmp;
 import mindustry.Vars;
 import mindustry.ai.Astar;
 import mindustry.content.Blocks;
-import mindustry.gen.Call;
 import mindustry.world.Tile;
 
+import static Ozone.Commands.BotInterface.setMov;
 import static Ozone.Commands.Pathfinding.distanceTo;
 
 //TODO relocate these method
@@ -85,18 +80,6 @@ public class Move extends Task {
             destTile.setOverlay(Blocks.dirt);
         }
         setMov(destTile);
-    }
-
-    public void setMov(Tile targetTile){
-        vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed);
-        Log.debug("Ozone-AI @", "DriveX: " + vec.x);
-        Log.debug("Ozone-AI @", "DriveY: " + vec.y);
-        Vars.player.unit().moveAt(vec);
-    }
-
-    public void setMov(Vec2 mov) {
-        if (Vars.control.input instanceof DesktopInput) ((DesktopInput) Vars.control.input).setMove(mov);
-        else Log.infoTag("Ozone", "Can't control movement, DesktopInput not patched");
     }
 
     public float getCurrentDistance() {
