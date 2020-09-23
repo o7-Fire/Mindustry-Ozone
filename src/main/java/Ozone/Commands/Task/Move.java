@@ -30,9 +30,7 @@ public class Move extends Task {
         destTile = Vars.world.tile(Math.round(dest.x), Math.round(dest.y));
         setTick(10);
         if (!Vars.player.unit().isFlying()) {
-            pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, Pathfinding::isSafe, s -> {
-                return  s != null&&s.passable() && s.floor() != Blocks.deepwater.asFloor() && s.build == null;
-            });
+              pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, Pathfinding::isSafe, Pathfinding::passable);
         }
     }
 
