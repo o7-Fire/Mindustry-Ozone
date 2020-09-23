@@ -11,6 +11,7 @@ public class Pathfinding {
     //TODO optimize
     public static float isSafe(Tile tile) {
         float danger = 0f;
+        if(tile==null)return danger;
         Floor floor = tile.floor();
         for (int i = 0; i < 4; i++) {
             for (Tile t : BotInterface.getNearby(tile, i, 2)) {

@@ -4,6 +4,7 @@ import Atom.Meth;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Pathfinding;
 import Ozone.Patch.DesktopInput;
+import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Log;
@@ -33,7 +34,7 @@ public class Move extends Task {
         if (!Vars.player.unit().isFlying()) {
             destTile = new Tile(Math.round(dest.x), Math.round(dest.y));
             pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, Pathfinding::isSafe, s -> {
-                return s.passable() && s.floor() != Blocks.deepwater.asFloor() && s.build == null;
+                return  s != null&&s.passable() && s.floor() != Blocks.deepwater.asFloor() && s.build == null;
             });
 
         }
@@ -50,7 +51,7 @@ public class Move extends Task {
     @Override
     public boolean isCompleted() {
         if (Vars.player.unit().isFlying())
-            return distanceTo(BotInterface.getCurrentPos(), destPos) < airTolerance;
+            return distanceTo(BotInterface.getCurrentPos(), destPos) < airTolerance * 1.2f;
         else
             return distanceTo(BotInterface.getCurrentPos(), destPos) < landTolerance || pathfindingCache.isEmpty();
     }
@@ -59,8 +60,8 @@ public class Move extends Task {
     public void update() {
         if (tick()) return;
         if (Vars.player.unit().isFlying()) {
-            float xx = Math.round(destTilePos.x - BotInterface.getCurrentTilePos().x);
-            float yy = Math.round(destTilePos.y - BotInterface.getCurrentTilePos().y);
+            float xx = destTilePos.x - BotInterface.getCurrentTilePos().x;
+            float yy = destTilePos.y - BotInterface.getCurrentTilePos().y;
             Log.debug("Ozone-AI @", "X: " + xx);
             Log.debug("Ozone-AI @", "Y: " + yy);
             if (Meth.positive(yy) < airTolerance) yy = 0;
@@ -93,6 +94,8 @@ public class Move extends Task {
             if (pathfindingCache.isEmpty()) return;
             destTile = pathfindingCache.get(0);
             destTile.setOverlay(Blocks.dirt);
+            setMov(destTile);
+            /*
             float xx = destTile.x - BotInterface.getCurrentTilePos().x;
             float yy = destTile.y - BotInterface.getCurrentTilePos().y;
             Log.debug("Ozone-AI @", "X: " + xx);
@@ -105,13 +108,19 @@ public class Move extends Task {
             else if (xx < 0) xx = -1;
             else if (xx > landTolerance) xx = 1;
             float lastDist = getCurrentDistance();
-
             setMov(new Vec2(xx, yy));
 
             Log.debug("Ozone-AI @", "Dist: " + lastDist);
             Log.debug("Ozone-AI @", "DriveX: " + xx);
             Log.debug("Ozone-AI @", "DriveY: " + yy);
+
+           */
         }
+    }
+
+    public void setMov(Tile targetTile){
+        Vec2 vec = new Vec2();
+        Vars.player.unit().moveAt(vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed));
     }
 
     public void setMov(Vec2 mov) {

@@ -55,6 +55,8 @@ Ozone.Commands.Commands$Command -> a.a.c:
     Ozone.UI.JavaEditor javaEditor -> e
     void <init>(java.util.function.Consumer,java.lang.String) -> <init>
     void <init>(java.util.function.Consumer,java.lang.String,arc.scene.style.TextureRegionDrawable,boolean) -> <init>
+    float isSafe(mindustry.world.Tile) -> a
+    double distanceTo(arc.math.geom.Vec2,arc.math.geom.Vec2) -> a
 Ozone.Commands.Task.CommandsSpam -> a.a.a.a:
     int howManyTimes -> a
     int currentCycle -> b
@@ -81,10 +83,7 @@ Ozone.Commands.Task.Move -> a.a.a.c:
     boolean isCompleted() -> a
     void update() -> b
     void setMov(arc.math.geom.Vec2) -> a
-    float getCurrentDistance() -> e
-    float isSafe(mindustry.world.Tile) -> a
-    double distanceTo(arc.math.geom.Vec2,arc.math.geom.Vec2) -> a
-    boolean lambda$new$0(mindustry.world.Tile) -> b
+    boolean lambda$new$0(mindustry.world.Tile) -> a
 Ozone.Commands.Task.Task -> a.a.a.d:
     java.util.ArrayList onTaskCompleted -> a
     int tick -> b
