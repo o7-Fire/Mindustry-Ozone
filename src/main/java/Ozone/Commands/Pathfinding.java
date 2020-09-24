@@ -1,5 +1,6 @@
 package Ozone.Commands;
 
+import Ozone.Patch.Hack;
 import arc.math.geom.Position;
 import arc.util.Log;
 import mindustry.Vars;
@@ -9,7 +10,8 @@ import mindustry.gen.Legsc;
 import mindustry.gen.Unit;
 import mindustry.gen.WaterMovec;
 import mindustry.world.Tile;
-import mindustry.world.blocks.environment.Floor;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class Pathfinding {
 
@@ -17,11 +19,11 @@ public class Pathfinding {
     public static boolean passable(Tile t) {
         if (t == null) return false;
         if (!t.passable()) return false;
-
+        if (t.build != null) return false;
         return true;
     }
 
-    public static int pathTile(int tile, Unit unit) {
+    public static int pathTile(int tile, Unit unit) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Team team = unit.team;
         int cost = -100;
         int type = 0;
@@ -29,23 +31,23 @@ public class Pathfinding {
             type = Pathfinder.costWater;
         else if (unit instanceof Legsc)
             type = Pathfinder.costLegs;
-        cost = mindustry.ai.hack.pathCost(team, tile, type);
+        else if (!unit.isFlying())
+            type = Pathfinder.costGround;
+        cost = Hack.pathCost(team, tile, type);
         return cost;
     }
 
     public static float isSafe(Tile tile) {
         try {
-            int i = pathTile(tile.pos(), Vars.player.unit());
-            if (i == -100) throw new RuntimeException();
-            return i;
-        } catch (Throwable ignored) {
+            if (tile == null) return 0f;//no fuck given
+            return pathTile(tile.pos(), Vars.player.unit());
+        } catch (Throwable g) {
+            Log.debug("Failed to get pathTile for: " + tile.toString() + "\n" + g.toString());
             float danger = 0f;
-            if (tile == null) return danger;
-            Floor floor = tile.floor();
             for (int i = 0; i < 4; i++) {
                 for (Tile t : BotInterface.getNearby(tile, i, 2)) {
                     float fDanger = 0f;
-                    //such a lie, it can be null but intellj refuse to
+                    //such a lie, it can be null but intellij refuse to
                     if (tile == null) continue;
                     if (!t.passable())
                         fDanger += 0.4f;//avoid unpassable, sometime its stuck

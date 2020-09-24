@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+    maven{ url 'https://www.jitpack.io' }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile files("${System.getProperty('java.home')}/../lib/tools.jar")
+    compile 'com.github.o7-Fire.Atomic-Library:Atomic:d2e69aaa4d'
+}
+tasks.withType(JavaCompile){
+    if(JavaVersion.current() != JavaVersion.VERSION_1_8){
+        options.compilerArgs.addAll(['--release', '8'])
+    }
+}
+
+tasks.withType(Javadoc){
+    options.addStringOption('Xdoclint:none', '-quiet')
+}

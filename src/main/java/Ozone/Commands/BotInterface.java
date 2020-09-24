@@ -1,6 +1,7 @@
 package Ozone.Commands;
 
 import Ozone.Commands.Task.Task;
+import Ozone.Settings;
 import arc.Events;
 import arc.math.geom.Position;
 import arc.math.geom.Vec2;
@@ -38,9 +39,14 @@ public class BotInterface {
 
     public static void setMov(Position targetTile) {
         Vec2 vec = new Vec2();
+        if (Vars.player.unit() == null) return;
         vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed);
-        arc.util.Log.debug("Ozone-AI @", "DriveX: " + vec.x);
-        arc.util.Log.debug("Ozone-AI @", "DriveY: " + vec.y);
+        if (Settings.debugMode && !Vars.disableUI) {
+            if (Vars.ui.scriptfrag.shown()) {
+                Vars.ui.scriptfrag.addMessage("Ozone-AI DriveX: " + vec.x);
+                Vars.ui.scriptfrag.addMessage("Ozone-AI DriveY: " + vec.y);
+            }
+        }
         Vars.player.unit().moveAt(vec);
     }
 

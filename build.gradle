@@ -23,7 +23,19 @@ ext {
     MindustryHash = "v105"
     atomHash = "d2e69aaa4d"
 
+    writeProcessors = {
+        new File(rootDir, "CodeGen/src/main/resources/META-INF/services/").mkdirs()
+        def processorFile = new File(rootDir, "CodeGen/src/main/resources/META-INF/services/javax.annotation.processing.Processor")
+        def text = new StringBuilder()
+        def files = new File(rootDir, "CodeGen/src/main/java")
+        files.eachFileRecurse(groovy.io.FileType.FILES){ file ->
+            if(file.name.endsWith(".java") && (file.text.contains(" extends AtomProcessor") || (file.text.contains(" extends AbstractProcessor") && !file.text.contains("abstract class")))){
+                text.append(file.path.substring(files.path.length() + 1)).append("\n")
+            }
+        }
 
+        processorFile.text = text.toString().replace(".java", "").replace("/", ".").replace("\\", ".")
+    }
     localAtom = {
         return new File('../Atoms').exists()
     }
@@ -45,15 +57,20 @@ repositories {
         dirs 'libs'
     }
 }
+task preGen{
+    writeProcessors()
+}
 
 dependencies {
-    //testImplementation 'junit:junit:4.12'
+    compileJava.dependsOn(preGen)
     testImplementation 'junit:junit:4.12'
-    //api atom(":Atomic")
     compileOnly files('libs/Atomic.jar')
     compileOnly files('libs/Mindustry.jar')
-    //compileOnly "com.github.Anuken:Mindustry:$MindustryHash"
+    compileOnly project(":CodeGen")
+    annotationProcessor project(":CodeGen")
 }
+
+
 tasks.withType(JavaCompile) {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8

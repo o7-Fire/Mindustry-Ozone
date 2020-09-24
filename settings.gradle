@@ -1,4 +1,4 @@
-rootProject.name = 'Ozone-Mods'
+rootProject.name = 'Ozone'
 def use = { ... names ->
     for(String name : names){
         include(name)
@@ -12,3 +12,5 @@ if(new File(settingsDir, '../Atom').exists()) {
             ":Atom:Atomic"
     )
 }
+include 'CodeGen'
+

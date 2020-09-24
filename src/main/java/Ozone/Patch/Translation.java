@@ -6,6 +6,7 @@ import java.util.Map;
 import static Ozone.Interface.registerWords;
 
 public class Translation {
+
     public static void patch() {
         String[] normalSinglet = {"Run"};
         String[] singlet1 = {"String", "Integer", "Float", "Long", "Boolean", "Commands"};

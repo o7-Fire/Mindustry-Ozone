@@ -7,14 +7,12 @@
 * Multi-Core CPU
 * 8 GB of RAM for bots operation
 
-# Installation
-* 1.Download the zip
-* 2.Unzip
-* 3.Open terminal
-* 4.CD to the folder where gradlew located
-* 5.gradlew build
-* 6.Copy .jar from build/lib to Mindustry/mods
-* 7.Run mindustry
+# Build
+* 0.Install JDK 14
+* 1.Download `Mindustry.jar` & `Atomic.jar`
+* 2.Copy it to `libs` folder
+* 3.run `./gradlew proguard`
+* 4.you get the mods in `build/libs/`
 
 # Feature
 > Inerts

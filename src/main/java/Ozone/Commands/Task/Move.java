@@ -56,7 +56,7 @@ public class Move extends Task {
     @Override
     public void update() {
         if(!tick())
-            if (Vars.player.dead()) return;//lmao wtf
+            if (Vars.player.dead()) return;
             if (!Vars.player.unit().isFlying()) {
                 if (pathfindingCache.isEmpty()) return;
                 if(!alreadyOverlay)

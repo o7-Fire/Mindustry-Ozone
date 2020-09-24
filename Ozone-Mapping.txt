@@ -228,6 +228,3 @@ Ozone.UI.OzoneMenu -> a.d.e:
     void lambda$setup$2() -> d
     void lambda$setup$1() -> e
     void lambda$new$0(arc.input.KeyCode) -> a
-mindustry.ai.hack -> mindustry.ai.hack:
-    void <init>() -> <init>
-    int pathCost(mindustry.game.Team,int,int) -> pathCost
