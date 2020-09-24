@@ -116,3 +116,8 @@ Ozone-Mapping.txt
 copy.bat
 /dependencies/
 /CodeGen/src/main/resources/META-INF/services/javax.annotation.processing.Processor
+/CodeGen/build/
+CodeGen/build/libs/CodeGen.jar
+CodeGen/build/resources/main/META-INF/services/javax.annotation.processing.Processor
+CodeGen/build/tmp/compileJava/source-classes-mapping.txt
+CodeGen/build/tmp/jar/MANIFEST.MF
