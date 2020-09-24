@@ -11,8 +11,9 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile files("${System.getProperty('java.home')}/../lib/tools.jar")
-    compile 'com.github.o7-Fire.Atomic-Library:Atomic:d2e69aaa4d'
+    compile files("${System.getProperty('java.home')}/../lib/tools.jar")//non existent in java 9+
+    compile group: 'fr.inria.gforge.spoon', name: 'spoon-core', version: '8.3.0-beta-9'
+
 }
 tasks.withType(JavaCompile){
     if(JavaVersion.current() != JavaVersion.VERSION_1_8){

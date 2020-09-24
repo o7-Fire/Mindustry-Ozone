@@ -1,20 +1,33 @@
 package Atom.Annotation;
 
+
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import java.util.HashSet;
 import java.util.Set;
 
 public class StringObfuscator extends AtomProcessor {
-
+    private String parent = "Ozone";
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        return super.getSupportedAnnotationTypes();
+        HashSet<String> h = new HashSet<>();
+        h.add(ObfuscatorEntryPoint.class.getTypeName());
+        return h;
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        info("oh no");
-        return super.process(annotations, roundEnv);
+        if (annotations.isEmpty()) return false;
+        Set<? extends Element> s = roundEnv.getRootElements();
+        for (javax.lang.model.element.Element a : s) {
+
+
+        }
+        info("oh yes");
+        info("gabe ich");
+        info(roundEnv.toString());
+        return true;
     }
 
 
