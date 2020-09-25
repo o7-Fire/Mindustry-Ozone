@@ -15,6 +15,7 @@ buildscript{
 
 plugins {
     id 'java'
+
 }
 apply plugin: 'java-library'
 
@@ -81,6 +82,9 @@ jar{
     archiveFileName = "${project.archivesBaseName}.jar"
     from{
         configurations.runtimeClasspath.collect{it.isDirectory() ? it : zipTree(it)}
+    }
+    manifest {
+        attributes 'Main-Class': 'Main.h'
     }
 }
 task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {

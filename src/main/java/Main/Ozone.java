@@ -21,6 +21,14 @@ public class Ozone extends Mod {
     public boolean libraryExists;
     public URLClassLoader classloader;
     public Mod mainMod = null;
+    //get location of this Ozone mods
+    public static File ozone = new File(Ozone.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+    //get Mods directory from Mods/Ozone.jar
+    public static File parentFile = ozone.getParentFile();
+    //Mods/libs directory
+    public static File library = new File(parentFile, "libs");
+    //Mods/Library/Atomic-AtomHash.jar
+    public static File atom = new File(library, "Atomic-" + AtomHash + ".jar");
 
     public Ozone() {
         //gay spy, actually no
@@ -28,17 +36,9 @@ public class Ozone extends Mod {
             Core.settings.put("crashreport", false);
             Core.settings.manualSave();
         }
-        //get location of this Ozone mods
-        File ozone = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
-        //get Mods directory from Mods/Ozone.jar
-        File parentFile = ozone.getParentFile();
-        //Mods/libs directory
-        File library = new File(parentFile, "libs");
+
         //just in case
         library.mkdirs();
-        //Mods/Library/Atomic-AtomHash.jar
-        File atom = new File(library, "Atomic-" + AtomHash + ".jar");
-
         try {
             //Check library
             Preload.incites(atom, AtomDownload, this);
