@@ -175,13 +175,14 @@ Ozone.Pre.Download -> a.c.a:
     int size -> c
     int status -> d
     java.io.File file -> e
-    Ozone.Swing.SPreLoad preLoad -> f
+    Ozone.Swing.SPreLoad swing -> f
+    long lastRecordTime -> g
+    long lastRecord -> h
     void <init>(java.net.URL,java.io.File) -> <init>
     void display() -> a
     int getSize() -> b
     int getStatus() -> c
     void run() -> run
-    void lambda$display$0() -> d
     void <clinit>() -> <clinit>
 Ozone.Pre.PreInstall -> a.c.b:
     void <init>() -> <init>
@@ -216,7 +217,8 @@ Ozone.Swing.Main -> a.d.a:
 Ozone.Swing.SPreLoad -> a.d.b:
     java.awt.Frame frame1 -> a
     javax.swing.JLabel label1 -> b
-    javax.swing.JProgressBar progressBar1 -> c
+    javax.swing.JLabel label2 -> c
+    javax.swing.JProgressBar progressBar1 -> d
     void <init>() -> <init>
 Ozone.UI.CommandsListFrag -> a.e.a:
     boolean visible -> a

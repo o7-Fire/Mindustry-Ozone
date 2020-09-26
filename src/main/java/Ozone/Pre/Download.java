@@ -56,7 +56,7 @@ public class Download implements Runnable {
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
         swing.frame1.setSize(Math.round(width / 1.3F), height / 3);
-        swing.label2.setText("0 Mb/s");
+        swing.label2.setText("Connecting....");
         swing.label1.setText("Downloading: " + url.toString());
         swing.frame1.pack();
         swing.progressBar1.setMaximum(100);
@@ -66,6 +66,10 @@ public class Download implements Runnable {
     private void setMax(){
         if(swing == null)return;
         swing.progressBar1.setMaximum(getSize());
+        if(getSize() < 10000000)
+            swing.label2.setText((getSize()/1000)/1000F + " KB");
+        else
+            swing.label2.setText((getSize()/1000000)/1000F + " MB");
         swing.frame1.pack();
     }
 
