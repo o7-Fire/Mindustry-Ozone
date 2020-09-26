@@ -7,7 +7,6 @@ import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
 import Ozone.UI.CommandsListFrag;
-import Ozone.UI.JavaEditor;
 import Ozone.UI.OzoneMenu;
 import arc.Core;
 import arc.scene.ui.Dialog;
@@ -114,7 +113,7 @@ public class Main {
                 titleFontColor = Pal.accent;
             }
         };
-         Manifest.commFrag = new CommandsListFrag();
+        Manifest.commFrag = new CommandsListFrag();
         ozoneStyle.stageBackground = Styles.none;
         Manifest.menu = new OzoneMenu(Core.bundle.get("ozone.hud"), ozoneStyle);
 
