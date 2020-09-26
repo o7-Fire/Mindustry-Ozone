@@ -1,5 +1,7 @@
 Main.Ozone -> Main.Ozone:
     java.lang.String AtomHash -> AtomHash
+    java.lang.String atomFile -> atomFile
+    java.lang.String libs -> libs
     java.lang.String AtomDownload -> AtomDownload
     boolean libraryURLLoaded -> libraryURLLoaded
     boolean libraryExists -> libraryExists
@@ -16,8 +18,14 @@ Main.Ozone -> Main.Ozone:
     void <clinit>() -> <clinit>
 Main.h -> Main.h:
     Ozone.Swing.Main m -> m
+    java.io.File mindustry -> mindustry
     void <init>() -> <init>
     void main(java.lang.String[]) -> main
+    void lambda$main$4(java.awt.event.ActionEvent) -> lambda$main$4
+    void lambda$main$3(Ozone.Pre.Download,java.io.File) -> lambda$main$3
+    void lambda$main$2(Ozone.Pre.Download) -> lambda$main$2
+    void lambda$main$1(java.awt.event.ActionEvent) -> lambda$main$1
+    void lambda$main$0(java.awt.event.ActionEvent) -> lambda$main$0
 MainBackup.OzoneBackup -> MainBackup.OzoneBackup:
     void <init>() -> <init>
     void init() -> init
@@ -167,7 +175,18 @@ Ozone.Patch.SettingsDialog$4 -> a.b.h:
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Pre.Preload -> a.c.a:
+Ozone.Pre.Download -> a.c.a:
+    java.net.URL url -> b
+    java.util.concurrent.atomic.AtomicInteger downloaded -> a
+    int size -> c
+    int status -> d
+    java.io.File file -> e
+    void <init>(java.net.URL,java.io.File) -> <init>
+    int getSize() -> a
+    int getStatus() -> b
+    void run() -> run
+    void <clinit>() -> <clinit>
+Ozone.Pre.Preload -> a.c.b:
     boolean init -> a
     boolean checkLibrary(java.lang.String,java.io.File) -> a
     void incites(java.io.File,java.lang.String,java.lang.Object) -> a
@@ -178,10 +197,16 @@ Ozone.Settings -> a.d:
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 Ozone.Swing.Main -> a.d.a:
-    javax.swing.JFrame frame1 -> a
-    javax.swing.JTextField textField1 -> b
-    javax.swing.JButton button1 -> c
-    javax.swing.JButton button2 -> d
+    javax.swing.JDialog dialog1 -> a
+    javax.swing.JFileChooser fileChooser1 -> b
+    javax.swing.JFrame frame1 -> c
+    javax.swing.JLabel label1 -> j
+    javax.swing.JLabel label4 -> d
+    javax.swing.JButton button3 -> e
+    javax.swing.JLabel labelStatus -> f
+    javax.swing.JProgressBar progressBar1 -> g
+    javax.swing.JButton buttonInstall -> h
+    javax.swing.JButton buttonExit -> i
     void <init>() -> <init>
 Ozone.UI.CommandsListFrag -> a.e.a:
     boolean visible -> a
