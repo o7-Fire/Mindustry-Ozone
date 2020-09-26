@@ -2,10 +2,10 @@
 ### Classified For Your Eyes Only
 
 
-# Requirement
+# Minimum Requirement
 * Java 14/8 (JDK 14 preferable)
-* Multi-Core CPU
-* 8 GB of RAM for bots operation
+* 4 thread CPU
+* 4 GB of RAM for bots operation
 
 # Build
 * 0.Install JDK 14
@@ -15,7 +15,7 @@
 * 4.you get the mods in `build/libs/`
 
 # Feature
-> Inerts
+> Fun tools
 * Colorized Text
 * Auto AI
 
