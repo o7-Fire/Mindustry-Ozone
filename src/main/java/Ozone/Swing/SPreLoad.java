@@ -28,7 +28,6 @@ public class SPreLoad extends JFrame {
         {
             frame1.setResizable(false);
             frame1.setTitle("Downloading");
-            frame1.setAlwaysOnTop(true);
             frame1.setEnabled(false);
             frame1.setLayout(new MigLayout(
                 "fill,hidemode 3",

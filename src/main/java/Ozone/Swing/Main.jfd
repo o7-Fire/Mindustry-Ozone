@@ -17,7 +17,7 @@ new FormModel {
 				"value": "cell 0 0 4 3"
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 940, 90 )
+			"location": new java.awt.Point( 675, 45 )
 			"size": new java.awt.Dimension( 525, 370 )
 		} )
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
