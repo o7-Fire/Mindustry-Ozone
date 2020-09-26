@@ -18,97 +18,19 @@ public class Main extends JPanel {
         initComponents();
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Itzbenz
-    public JFrame frame1;
-    public JLabel label1;
-    public JLabel label3;
-    public JTextField textField1;
-    public JButton button3;
-    public JLabel labelStatus;
-    public JProgressBar progressBar1;
-    public JButton buttonInstall;
-    public JButton buttonExit;
-    public JDialog dialog1;
-    public JFileChooser fileChooser1;
-
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - Itzbenz
+        dialog1 = new JDialog();
+        fileChooser1 = new JFileChooser();
         frame1 = new JFrame();
         label1 = new JLabel();
-        label3 = new JLabel();
-        textField1 = new JTextField();
+        label4 = new JLabel();
         button3 = new JButton();
         labelStatus = new JLabel();
         progressBar1 = new JProgressBar();
         buttonInstall = new JButton();
         buttonExit = new JButton();
-        dialog1 = new JDialog();
-        fileChooser1 = new JFileChooser();
-
-        //======== frame1 ========
-        {
-            frame1.setTitle("Ozone Installer");
-            frame1.setResizable(false);
-            Container frame1ContentPane = frame1.getContentPane();
-            frame1ContentPane.setLayout(new MigLayout(
-                    "hidemode 3",
-                    // columns
-                    "[fill]" +
-                            "[fill]" +
-                            "[fill]" +
-                            "[fill]" +
-                            "[fill]" +
-                            "[fill]" +
-                            "[fill]" +
-                            "[fill]" +
-                            "[fill]" +
-                            "[fill]" +
-                            "[fill]",
-                    // rows
-                    "[]" +
-                            "[]" +
-                            "[]" +
-                            "[]" +
-                            "[]" +
-                            "[]" +
-                            "[]" +
-                            "[]" +
-                            "[]" +
-                            "[]"));
-
-            //---- label1 ----
-            label1.setText("Mindustry Folder");
-            frame1ContentPane.add(label1, "cell 0 0 2 1");
-
-            //---- label3 ----
-            label3.setText("For Mindustry 106 Only");
-            frame1ContentPane.add(label3, "cell 10 0");
-
-            //---- textField1 ----
-            textField1.setText("Mindustry/mods");
-            frame1ContentPane.add(textField1, "cell 0 1 10 1");
-
-            //---- button3 ----
-            button3.setText("Open");
-            frame1ContentPane.add(button3, "cell 10 1");
-
-            //---- labelStatus ----
-            labelStatus.setText("Downloading Atomic");
-            frame1ContentPane.add(labelStatus, "cell 0 6 11 1");
-            frame1ContentPane.add(progressBar1, "cell 0 7 11 2");
-
-            //---- buttonInstall ----
-            buttonInstall.setText("Install");
-            frame1ContentPane.add(buttonInstall, "cell 0 9");
-
-            //---- buttonExit ----
-            buttonExit.setText("Exit");
-            frame1ContentPane.add(buttonExit, "cell 10 9");
-            frame1.pack();
-            frame1.setLocationRelativeTo(frame1.getOwner());
-        }
 
         //======== dialog1 ========
         {
@@ -116,22 +38,80 @@ public class Main extends JPanel {
             dialog1.setTitle("Select Mindustry Directory");
             Container dialog1ContentPane = dialog1.getContentPane();
             dialog1ContentPane.setLayout(new MigLayout(
-                    "hidemode 3",
-                    // columns
-                    "[fill]" +
-                            "[fill]" +
-                            "[fill]" +
-                            "[fill]",
-                    // rows
-                    "[]" +
-                            "[]" +
-                            "[]" +
-                            "[]"));
+                "hidemode 3",
+                // columns
+                "[fill]" +
+                "[fill]" +
+                "[fill]" +
+                "[fill]",
+                // rows
+                "[]" +
+                "[]" +
+                "[]" +
+                "[]"));
             dialog1ContentPane.add(fileChooser1, "cell 0 0 4 3");
             dialog1.pack();
             dialog1.setLocationRelativeTo(dialog1.getOwner());
         }
+
+        //======== frame1 ========
+        {
+            frame1.setResizable(false);
+            frame1.setTitle("Ozone Installer");
+            Container frame1ContentPane = frame1.getContentPane();
+            frame1ContentPane.setLayout(new MigLayout(
+                "fill,hidemode 3",
+                // columns
+                "[fill]" +
+                "[fill]",
+                // rows
+                "[]" +
+                "[]" +
+                "[]" +
+                "[]" +
+                "[]"));
+
+            //---- label1 ----
+            label1.setText("Mindustry 106");
+            frame1ContentPane.add(label1, "cell 0 0 2 1");
+
+            //---- label4 ----
+            label4.setText("Mindustry/mods");
+            frame1ContentPane.add(label4, "cell 0 1");
+
+            //---- button3 ----
+            button3.setText("Open");
+            frame1ContentPane.add(button3, "cell 1 1");
+
+            //---- labelStatus ----
+            labelStatus.setText("Downloading Library");
+            frame1ContentPane.add(labelStatus, "cell 0 2 2 1");
+            frame1ContentPane.add(progressBar1, "cell 0 3 2 1");
+
+            //---- buttonInstall ----
+            buttonInstall.setText("Install");
+            frame1ContentPane.add(buttonInstall, "cell 0 4");
+
+            //---- buttonExit ----
+            buttonExit.setText("Exit");
+            frame1ContentPane.add(buttonExit, "cell 1 4");
+            frame1.pack();
+            frame1.setLocationRelativeTo(frame1.getOwner());
+        }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
+
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    // Generated using JFormDesigner Evaluation license - Itzbenz
+    public JDialog dialog1;
+    public JFileChooser fileChooser1;
+    public JFrame frame1;
+    public JLabel label1;
+    public JLabel label4;
+    public JButton button3;
+    public JLabel labelStatus;
+    public JProgressBar progressBar1;
+    public JButton buttonInstall;
+    public JButton buttonExit;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
