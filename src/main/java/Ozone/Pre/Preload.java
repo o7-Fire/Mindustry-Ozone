@@ -12,6 +12,8 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 //have you load library today ?
@@ -54,25 +56,12 @@ public class Preload {
                 SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library (7 MB), click OK to continue");
                 //how to download a file synchronously
                 URL jitpack = new URL(AtomDownload);
-                Download download = new Download(jitpack, atom);
-                SPreLoad s = new SPreLoad();
-                new Thread(() -> {
-                    try {
-                        while (download.getSize() == -1) Thread.sleep(10);
-                        s.progressBar1.setMaximum(download.getSize());
-                        while (download.getStatus() != Download.DOWNLOADING) Thread.sleep(10);
-                        s.frame1.setVisible(true);
-                        s.label1.setText("Downloading: " + AtomDownload);
-                        s.frame1.pack();
-                        while (download.getStatus() == Download.DOWNLOADING) {
-                            Thread.sleep(10);
-                            s.progressBar1.setValue(download.downloaded.get());
-                        }
-                        s.frame1.setVisible(false);
-                    } catch (Throwable t) {
-                    }
-                });
+                File temp = new File(atom.getParent(), "/"+System.currentTimeMillis() +".temp");
+                Download download = new Download(jitpack, temp);
+                download.display();
                 download.run();
+                Files.copy(temp.toPath(), atom.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                temp.deleteOnExit();
                 //its exists
                 if (atom.exists()) {
                     SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "Atom library has been downloaded: " + atom.getAbsolutePath());

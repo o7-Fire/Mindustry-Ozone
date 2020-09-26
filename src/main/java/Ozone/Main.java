@@ -114,8 +114,7 @@ public class Main {
                 titleFontColor = Pal.accent;
             }
         };
-        Manifest.javaEditor = new JavaEditor(Core.bundle.get("ozone.javaEditor"), Styles.defaultDialog);
-        Manifest.commFrag = new CommandsListFrag();
+         Manifest.commFrag = new CommandsListFrag();
         ozoneStyle.stageBackground = Styles.none;
         Manifest.menu = new OzoneMenu(Core.bundle.get("ozone.hud"), ozoneStyle);
 

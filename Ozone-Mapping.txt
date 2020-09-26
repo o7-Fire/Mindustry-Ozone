@@ -67,7 +67,6 @@ Ozone.Commands.Commands$Command -> a.a.c:
     java.lang.String description -> b
     arc.scene.style.TextureRegionDrawable icon -> c
     Ozone.UI.OzoneMenu menu -> d
-    Ozone.UI.JavaEditor javaEditor -> e
     void <init>(java.util.function.Consumer,java.lang.String) -> <init>
     void <init>(java.util.function.Consumer,java.lang.String,arc.scene.style.TextureRegionDrawable,boolean) -> <init>
     boolean passable(mindustry.world.Tile) -> a
@@ -176,10 +175,13 @@ Ozone.Pre.Download -> a.c.a:
     int size -> c
     int status -> d
     java.io.File file -> e
+    Ozone.Swing.SPreLoad preLoad -> f
     void <init>(java.net.URL,java.io.File) -> <init>
-    int getSize() -> a
-    int getStatus() -> b
+    void display() -> a
+    int getSize() -> b
+    int getStatus() -> c
     void run() -> run
+    void lambda$display$0() -> d
     void <clinit>() -> <clinit>
 Ozone.Pre.PreInstall -> a.c.b:
     void <init>() -> <init>
@@ -193,7 +195,6 @@ Ozone.Pre.Preload -> a.c.c:
     boolean init -> a
     boolean checkLibrary(java.lang.String,java.io.File) -> a
     void incites(java.io.File,java.lang.String,java.lang.Object) -> a
-    void lambda$checkLibrary$0(Ozone.Pre.Download,Ozone.Swing.SPreLoad,java.lang.String) -> a
     void <clinit>() -> <clinit>
 Ozone.Settings -> a.d:
     boolean colorPatch -> a
@@ -244,27 +245,8 @@ Ozone.UI.CommandsListFrag$1 -> a.e.b:
     void <init>(Ozone.UI.CommandsListFrag) -> <init>
     void draw() -> draw
 Ozone.UI.JavaEditor -> a.e.c:
-    java.util.ArrayList messages -> a
-    Atom.Runtime.RuntimeSource rs -> b
-    Atom.Runtime.RuntimeClass rc -> c
-    java.util.HashMap color -> d
-    arc.scene.ui.TextArea a -> e
-    arc.scene.ui.Label label -> f
-    void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
     void hide() -> hide
-    void Run() -> a
-    void setup() -> b
-    void updateChat() -> c
-    void lambda$setup$4() -> d
-    void lambda$setup$3(arc.files.Fi) -> a
-    void lambda$setup$2() -> e
-    void lambda$setup$1(arc.files.Fi) -> b
-    void lambda$setup$0(java.util.concurrent.atomic.AtomicReference,java.util.concurrent.atomic.AtomicReference,java.util.regex.Pattern,arc.scene.ui.layout.Table) -> a
-Ozone.UI.JavaEditor$1 -> a.e.d:
-    java.lang.StringBuilder val$sb -> a
-    void <init>(Ozone.UI.JavaEditor,java.lang.StringBuilder) -> <init>
-    void write(int) -> write
-Ozone.UI.OzoneMenu -> a.e.e:
+Ozone.UI.OzoneMenu -> a.e.d:
     arc.scene.ui.TextField commandsField -> a
     java.lang.String commands -> b
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
