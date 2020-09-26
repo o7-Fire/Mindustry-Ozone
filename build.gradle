@@ -57,6 +57,9 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+    flatDir {
+        dirs 'lib'
+    }
 }
 task preGen{
     writeProcessors()
@@ -68,6 +71,8 @@ dependencies {
     compileOnly files('libs/Atomic.jar')
     compileOnly files('libs/Mindustry.jar')
     compileOnly project(":CodeGen")
+    implementation files('lib/miglayout-core.jar')
+    implementation files('lib/miglayout-swing.jar')
     annotationProcessor project(":CodeGen")
 }
 
@@ -96,10 +101,10 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     } else {
         // As of Java 9, the runtime classes are packaged in modular jmod files.
         libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
-        //libraryjars "${System.getProperty('java.home')}/jmods/....."
+        libraryjars "${System.getProperty('java.home')}/jmods/java.desktop.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
     }
     libraryjars "libs"
-
+    libraryjars "lib"
     injars "build/libs/${project.archivesBaseName}.jar"
     outjars "build/libs/${project.archivesBaseName}.out.jar"
 }

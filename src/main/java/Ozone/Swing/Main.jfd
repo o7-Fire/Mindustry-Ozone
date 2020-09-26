@@ -1,0 +1,36 @@
+JFDML JFormDesigner: "7.0.2.6.321" Java: "11.0.8" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+			"$layoutConstraints": "hidemode 3"
+			"$columnConstraints": "[fill][fill][fill][fill][fill][fill][fill][fill][fill][fill]"
+			"$rowConstraints": "[][][][][][]"
+		} ) {
+			name: "frame1"
+			"title": "Ozone Installer"
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textField1"
+				"text": "Mindustry/mods"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 2 10 1"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button1"
+				"text": "Install"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 5"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button2"
+				"text": "Exit"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 9 5"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 210, 105 )
+			"size": new java.awt.Dimension( 390, 210 )
+		} )
+	}
+}

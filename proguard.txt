@@ -1,2 +1,3 @@
 -keep class !Ozone.** { *; }
 -printmapping Ozone-Mapping.txt
+-keepattributes Signature

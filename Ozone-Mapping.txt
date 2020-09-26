@@ -5,10 +5,19 @@ Main.Ozone -> Main.Ozone:
     boolean libraryExists -> libraryExists
     java.net.URLClassLoader classloader -> classloader
     mindustry.mod.Mod mainMod -> mainMod
+    java.io.File ozone -> ozone
+    java.io.File parentFile -> parentFile
+    java.io.File library -> library
+    java.io.File atom -> atom
     void <init>() -> <init>
     void init() -> init
     void loadContent() -> loadContent
     void lambda$new$0(mindustry.game.EventType$ClientLoadEvent) -> lambda$new$0
+    void <clinit>() -> <clinit>
+Main.h -> Main.h:
+    Ozone.Swing.Main m -> m
+    void <init>() -> <init>
+    void main(java.lang.String[]) -> main
 MainBackup.OzoneBackup -> MainBackup.OzoneBackup:
     void <init>() -> <init>
     void init() -> init
@@ -168,7 +177,13 @@ Ozone.Settings -> a.d:
     boolean debugMode -> b
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-Ozone.UI.CommandsListFrag -> a.d.a:
+Ozone.Swing.Main -> a.d.a:
+    javax.swing.JLabel label1 -> a
+    javax.swing.JButton button1 -> b
+    javax.swing.JButton button2 -> c
+    javax.swing.JTextField textField1 -> d
+    void <init>() -> <init>
+Ozone.UI.CommandsListFrag -> a.e.a:
     boolean visible -> a
     arc.scene.ui.layout.Table content -> b
     arc.struct.Queue commandsTask -> c
@@ -191,10 +206,10 @@ Ozone.UI.CommandsListFrag -> a.d.a:
     void lambda$build$2(java.lang.String) -> b
     void lambda$build$1() -> d
     boolean lambda$build$0() -> e
-Ozone.UI.CommandsListFrag$1 -> a.d.b:
+Ozone.UI.CommandsListFrag$1 -> a.e.b:
     void <init>(Ozone.UI.CommandsListFrag) -> <init>
     void draw() -> draw
-Ozone.UI.JavaEditor -> a.d.c:
+Ozone.UI.JavaEditor -> a.e.c:
     java.util.ArrayList messages -> a
     Atom.Runtime.RuntimeSource rs -> b
     Atom.Runtime.RuntimeClass rc -> c
@@ -211,11 +226,11 @@ Ozone.UI.JavaEditor -> a.d.c:
     void lambda$setup$2() -> e
     void lambda$setup$1(arc.files.Fi) -> b
     void lambda$setup$0(java.util.concurrent.atomic.AtomicReference,java.util.concurrent.atomic.AtomicReference,java.util.regex.Pattern,arc.scene.ui.layout.Table) -> a
-Ozone.UI.JavaEditor$1 -> a.d.d:
+Ozone.UI.JavaEditor$1 -> a.e.d:
     java.lang.StringBuilder val$sb -> a
     void <init>(Ozone.UI.JavaEditor,java.lang.StringBuilder) -> <init>
     void write(int) -> write
-Ozone.UI.OzoneMenu -> a.d.e:
+Ozone.UI.OzoneMenu -> a.e.e:
     arc.scene.ui.TextField commandsField -> a
     java.lang.String commands -> b
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
