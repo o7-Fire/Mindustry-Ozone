@@ -39,6 +39,7 @@ public class PreInstall {
         m.buttonInstall.addActionListener(e -> {
             m.labelStatus.setVisible(true);
             m.progressBar1.setVisible(true);
+            m.labelStatus.setText("Scanning");
             m.frame1.pack();
             //mods
             File mods = new File(mindustry, "mods/");
@@ -89,11 +90,13 @@ public class PreInstall {
                         while (download.getStatus() == Download.DOWNLOADING) {
                             Thread.sleep(10);
                             m.progressBar1.setValue(download.downloaded.get());
+                            m.frame1.pack();
                         }
                         m.progressBar1.setVisible(false);
                         m.labelStatus.setText("Copying: " + PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile() + " to: " + ozone.getAbsolutePath());
                         Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                        m.labelStatus.setText("Finished");
+                        m.labelStatus.setText("Installed");
+                        m.frame1.pack();
 
                     } catch (Throwable g) {
                         g.printStackTrace();
