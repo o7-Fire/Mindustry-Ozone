@@ -52,8 +52,8 @@ public class Preload {
             try {
                 //Inform user
                 Log.infoTag("Ozone", "Downloading Library");
-                //there is no "no" option :3
-                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library (7 MB), click OK to continue");
+                //there is no "no" option
+                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Click OK to continue");
                 //how to download a file synchronously
                 URL jitpack = new URL(AtomDownload);
                 File temp = new File(atom.getParent(), "/"+System.currentTimeMillis() +".temp");
