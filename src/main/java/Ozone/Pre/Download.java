@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicInteger;
 
+//probably will be relocated to Atom library
 public class Download implements Runnable {
 
     // These are the status names.
@@ -33,6 +34,7 @@ public class Download implements Runnable {
     private File file;
     private SPreLoad swing = null;
     private long lastRecordTime = 0, lastRecord = 0;
+
     // Constructor for Download.
     public Download(URL url, File file) {
         this.url = url;
