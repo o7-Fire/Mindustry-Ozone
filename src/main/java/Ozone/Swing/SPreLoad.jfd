@@ -11,16 +11,24 @@ new FormModel {
 			name: "frame1"
 			"resizable": false
 			"title": "Downloading"
+			"alwaysOnTop": true
+			"enabled": false
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label1"
 				"text": "Downloading"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 0 0 2 1"
 			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label2"
+				"text": "10 MBPS/s"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 1"
+			} )
 			add( new FormComponent( "javax.swing.JProgressBar" ) {
 				name: "progressBar1"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 1 2 2"
+				"value": "cell 0 2 2 1"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 175, 230 )

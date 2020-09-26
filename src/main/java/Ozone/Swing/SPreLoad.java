@@ -21,12 +21,15 @@ public class SPreLoad extends JFrame {
         // Generated using JFormDesigner Evaluation license - Itzbenz
         frame1 = new Frame();
         label1 = new JLabel();
+        label2 = new JLabel();
         progressBar1 = new JProgressBar();
 
         //======== frame1 ========
         {
             frame1.setResizable(false);
             frame1.setTitle("Downloading");
+            frame1.setAlwaysOnTop(true);
+            frame1.setEnabled(false);
             frame1.setLayout(new MigLayout(
                 "fill,hidemode 3",
                 // columns
@@ -40,7 +43,11 @@ public class SPreLoad extends JFrame {
             //---- label1 ----
             label1.setText("Downloading");
             frame1.add(label1, "cell 0 0 2 1");
-            frame1.add(progressBar1, "cell 0 1 2 2");
+
+            //---- label2 ----
+            label2.setText("10 MBPS/s");
+            frame1.add(label2, "cell 0 1");
+            frame1.add(progressBar1, "cell 0 2 2 1");
             frame1.pack();
             frame1.setLocationRelativeTo(frame1.getOwner());
         }
@@ -51,6 +58,7 @@ public class SPreLoad extends JFrame {
     // Generated using JFormDesigner Evaluation license - Itzbenz
     public Frame frame1;
     public JLabel label1;
+    public JLabel label2;
     public JProgressBar progressBar1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
