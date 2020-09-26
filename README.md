@@ -11,8 +11,14 @@
 * 0.Install JDK 14
 * 1.Download `Mindustry.jar` & `Atomic.jar`
 * 2.Copy it to `libs` folder
-* 3.run `./gradlew proguard`
+* 3.run `./gradlew jar`
 * 4.you get the mods in `build/libs/`
+
+# Install
+* 0.Download `Ozone.jar`
+* 1.Install Java
+* 2.Run Ozone installation by opening `Ozone.jar` with java
+* 3.Run Mindustry
 
 # Feature
 > Fun tools
