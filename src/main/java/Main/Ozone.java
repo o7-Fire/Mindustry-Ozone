@@ -15,7 +15,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class Ozone extends Mod {
-    public final static String AtomHash = "d2e69aaa4d";
+    public final static String AtomHash = "d2e69aaa4d", atomFile = "Atomic-" + AtomHash + ".jar", libs = "libs";
     public final static String AtomDownload = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/Atomic/" + AtomHash + "/Atomic-" + AtomHash + ".jar";
     public boolean libraryURLLoaded;
     public boolean libraryExists;
@@ -23,12 +23,12 @@ public class Ozone extends Mod {
     public Mod mainMod = null;
     //get location of this Ozone mods
     public static File ozone = new File(Ozone.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-    //get Mods directory from Mods/Ozone.jar
+    //get Mods directory from mods/Ozone.jar
     public static File parentFile = ozone.getParentFile();
-    //Mods/libs directory
-    public static File library = new File(parentFile, "libs");
-    //Mods/Library/Atomic-AtomHash.jar
-    public static File atom = new File(library, "Atomic-" + AtomHash + ".jar");
+    //mods/libs directory
+    public static File library = new File(parentFile, libs);
+    //mods/libs/Atomic-AtomHash.jar
+    public static File atom = new File(library, atomFile);
 
     public Ozone() {
         //gay spy, actually no

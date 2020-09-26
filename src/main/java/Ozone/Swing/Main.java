@@ -14,33 +14,49 @@ import java.awt.*;
  * @author Itzbenz
  */
 public class Main extends JPanel {
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Itzbenz
-    private JFrame frame1;
-    private JTextField textField1;
-    private JButton button1;
-    private JButton button2;
-
     public Main() {
         initComponents();
     }
+
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    // Generated using JFormDesigner Evaluation license - Itzbenz
+    public JFrame frame1;
+    public JLabel label1;
+    public JLabel label3;
+    public JTextField textField1;
+    public JButton button3;
+    public JLabel labelStatus;
+    public JProgressBar progressBar1;
+    public JButton buttonInstall;
+    public JButton buttonExit;
+    public JDialog dialog1;
+    public JFileChooser fileChooser1;
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - Itzbenz
         frame1 = new JFrame();
+        label1 = new JLabel();
+        label3 = new JLabel();
         textField1 = new JTextField();
-        button1 = new JButton();
-        button2 = new JButton();
+        button3 = new JButton();
+        labelStatus = new JLabel();
+        progressBar1 = new JProgressBar();
+        buttonInstall = new JButton();
+        buttonExit = new JButton();
+        dialog1 = new JDialog();
+        fileChooser1 = new JFileChooser();
 
         //======== frame1 ========
         {
             frame1.setTitle("Ozone Installer");
+            frame1.setResizable(false);
             Container frame1ContentPane = frame1.getContentPane();
             frame1ContentPane.setLayout(new MigLayout(
                     "hidemode 3",
                     // columns
                     "[fill]" +
+                            "[fill]" +
                             "[fill]" +
                             "[fill]" +
                             "[fill]" +
@@ -56,21 +72,64 @@ public class Main extends JPanel {
                             "[]" +
                             "[]" +
                             "[]" +
+                            "[]" +
+                            "[]" +
+                            "[]" +
+                            "[]" +
                             "[]"));
+
+            //---- label1 ----
+            label1.setText("Mindustry Folder");
+            frame1ContentPane.add(label1, "cell 0 0 2 1");
+
+            //---- label3 ----
+            label3.setText("For Mindustry 106 Only");
+            frame1ContentPane.add(label3, "cell 10 0");
 
             //---- textField1 ----
             textField1.setText("Mindustry/mods");
-            frame1ContentPane.add(textField1, "cell 0 2 10 1");
+            frame1ContentPane.add(textField1, "cell 0 1 10 1");
 
-            //---- button1 ----
-            button1.setText("Install");
-            frame1ContentPane.add(button1, "cell 0 5");
+            //---- button3 ----
+            button3.setText("Open");
+            frame1ContentPane.add(button3, "cell 10 1");
 
-            //---- button2 ----
-            button2.setText("Exit");
-            frame1ContentPane.add(button2, "cell 9 5");
+            //---- labelStatus ----
+            labelStatus.setText("Downloading Atomic");
+            frame1ContentPane.add(labelStatus, "cell 0 6 11 1");
+            frame1ContentPane.add(progressBar1, "cell 0 7 11 2");
+
+            //---- buttonInstall ----
+            buttonInstall.setText("Install");
+            frame1ContentPane.add(buttonInstall, "cell 0 9");
+
+            //---- buttonExit ----
+            buttonExit.setText("Exit");
+            frame1ContentPane.add(buttonExit, "cell 10 9");
             frame1.pack();
             frame1.setLocationRelativeTo(frame1.getOwner());
+        }
+
+        //======== dialog1 ========
+        {
+            dialog1.setResizable(false);
+            dialog1.setTitle("Select Mindustry Directory");
+            Container dialog1ContentPane = dialog1.getContentPane();
+            dialog1ContentPane.setLayout(new MigLayout(
+                    "hidemode 3",
+                    // columns
+                    "[fill]" +
+                            "[fill]" +
+                            "[fill]" +
+                            "[fill]",
+                    // rows
+                    "[]" +
+                            "[]" +
+                            "[]" +
+                            "[]"));
+            dialog1ContentPane.add(fileChooser1, "cell 0 0 4 3");
+            dialog1.pack();
+            dialog1.setLocationRelativeTo(dialog1.getOwner());
         }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
