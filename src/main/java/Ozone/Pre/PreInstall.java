@@ -5,13 +5,13 @@ import Ozone.Swing.Main;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 import static Main.Ozone.*;
-import static Main.h.*;
-import static Main.Ozone.AtomDownload;
+import static Main.h.mindustry;
 
 public class PreInstall {
 
@@ -57,6 +57,15 @@ public class PreInstall {
                 m.labelStatus.setText("Already Installed");
                 System.out.println("Already Installed");
                 m.progressBar1.setVisible(false);
+                return;
+            }
+            if (atom.exists()) {
+                try {
+                    Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    m.labelStatus.setText("Finished");
+                } catch (IOException ioException) {
+                    m.labelStatus.setText(ioException.getMessage());
+                }
                 return;
             }
             try {

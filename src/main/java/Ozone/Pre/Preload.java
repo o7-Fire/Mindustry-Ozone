@@ -1,19 +1,17 @@
 package Ozone.Pre;
 
+import Ozone.Swing.SPreLoad;
 import arc.backend.sdl.jni.SDL;
 import arc.util.Log;
 import mindustry.desktop.DesktopLauncher;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 
 //have you load library today ?
@@ -52,13 +50,29 @@ public class Preload {
             try {
                 //Inform user
                 Log.infoTag("Ozone", "Downloading Library");
+                //there is no "no" option :3
                 SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Downloading library (7 MB), click OK to continue");
-                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "This is gonna take 10 - 120 second");
                 //how to download a file synchronously
                 URL jitpack = new URL(AtomDownload);
-                ReadableByteChannel rbc = Channels.newChannel(jitpack.openStream());
-                FileOutputStream fos = new FileOutputStream(atom);
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                Download download = new Download(jitpack, atom);
+                SPreLoad s = new SPreLoad();
+                new Thread(() -> {
+                    try {
+                        while (download.getSize() == -1) Thread.sleep(10);
+                        s.progressBar1.setMaximum(download.getSize());
+                        while (download.getStatus() != Download.DOWNLOADING) Thread.sleep(10);
+                        s.frame1.setVisible(true);
+                        s.label1.setText("Downloading: " + AtomDownload);
+                        s.frame1.pack();
+                        while (download.getStatus() == Download.DOWNLOADING) {
+                            Thread.sleep(10);
+                            s.progressBar1.setValue(download.downloaded.get());
+                        }
+                        s.frame1.setVisible(false);
+                    } catch (Throwable t) {
+                    }
+                });
+                download.run();
                 //its exists
                 if (atom.exists()) {
                     SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "Atom library has been downloaded: " + atom.getAbsolutePath());

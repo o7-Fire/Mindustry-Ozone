@@ -17,15 +17,10 @@ Main.Ozone -> Main.Ozone:
     void lambda$new$0(mindustry.game.EventType$ClientLoadEvent) -> lambda$new$0
     void <clinit>() -> <clinit>
 Main.h -> Main.h:
-    Ozone.Swing.Main m -> m
     java.io.File mindustry -> mindustry
+    Ozone.Swing.Main m -> m
     void <init>() -> <init>
     void main(java.lang.String[]) -> main
-    void lambda$main$4(java.awt.event.ActionEvent) -> lambda$main$4
-    void lambda$main$3(Ozone.Pre.Download,java.io.File) -> lambda$main$3
-    void lambda$main$2(Ozone.Pre.Download) -> lambda$main$2
-    void lambda$main$1(java.awt.event.ActionEvent) -> lambda$main$1
-    void lambda$main$0(java.awt.event.ActionEvent) -> lambda$main$0
 MainBackup.OzoneBackup -> MainBackup.OzoneBackup:
     void <init>() -> <init>
     void init() -> init
@@ -186,10 +181,19 @@ Ozone.Pre.Download -> a.c.a:
     int getStatus() -> b
     void run() -> run
     void <clinit>() -> <clinit>
-Ozone.Pre.Preload -> a.c.b:
+Ozone.Pre.PreInstall -> a.c.b:
+    void <init>() -> <init>
+    void install(Ozone.Swing.Main) -> a
+    void lambda$install$4(Ozone.Swing.Main,java.awt.event.ActionEvent) -> a
+    void lambda$install$3(Ozone.Pre.Download,Ozone.Swing.Main,java.io.File) -> a
+    void lambda$install$2(Ozone.Pre.Download,Ozone.Swing.Main) -> a
+    void lambda$install$1(java.awt.event.ActionEvent) -> a
+    void lambda$install$0(Ozone.Swing.Main,java.awt.event.ActionEvent) -> b
+Ozone.Pre.Preload -> a.c.c:
     boolean init -> a
     boolean checkLibrary(java.lang.String,java.io.File) -> a
     void incites(java.io.File,java.lang.String,java.lang.Object) -> a
+    void lambda$checkLibrary$0(Ozone.Pre.Download,Ozone.Swing.SPreLoad,java.lang.String) -> a
     void <clinit>() -> <clinit>
 Ozone.Settings -> a.d:
     boolean colorPatch -> a
@@ -207,6 +211,11 @@ Ozone.Swing.Main -> a.d.a:
     javax.swing.JProgressBar progressBar1 -> g
     javax.swing.JButton buttonInstall -> h
     javax.swing.JButton buttonExit -> i
+    void <init>() -> <init>
+Ozone.Swing.SPreLoad -> a.d.b:
+    java.awt.Frame frame1 -> a
+    javax.swing.JLabel label1 -> b
+    javax.swing.JProgressBar progressBar1 -> c
     void <init>() -> <init>
 Ozone.UI.CommandsListFrag -> a.e.a:
     boolean visible -> a
