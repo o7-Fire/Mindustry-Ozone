@@ -13,4 +13,6 @@ if(new File(settingsDir, '../Atom').exists()) {
     )
 }
 include 'CodeGen'
+include 'tools'
+
 
