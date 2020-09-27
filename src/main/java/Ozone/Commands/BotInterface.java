@@ -6,10 +6,10 @@ import arc.Events;
 import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.struct.Queue;
+import arc.util.Log;
 import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.world.Tile;
-import org.openjdk.tools.sjavac.Log;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;

@@ -49,7 +49,7 @@ public class Main {
 
     }
 
-    private static void loadSettings() {
+    protected static void loadSettings() {
         Core.settings.put("crashreport", false);
         Field[] set = Settings.class.getDeclaredFields();
         for (Field f : set) {
@@ -73,7 +73,7 @@ public class Main {
 
     }
 
-    private static void patch() {
+    protected static void patch() {
         try {
             Log.infoTag("Ozone", "Patching");
             Translation.patch();
@@ -104,7 +104,7 @@ public class Main {
         }
     }
 
-    public static void initUI() {
+    protected static void initUI() {
         Dialog.DialogStyle ozoneStyle = new Dialog.DialogStyle() {
             {
                 stageBackground = Styles.none;
