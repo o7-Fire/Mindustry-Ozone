@@ -2,7 +2,7 @@
 .attach_*
 /dependencies
 ## Java
-
+tools/build
 *.class
 *.war
 *.ear
