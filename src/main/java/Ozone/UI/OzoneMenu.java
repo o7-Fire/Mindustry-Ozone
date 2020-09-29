@@ -4,7 +4,6 @@ package Ozone.UI;
 import Atom.Reflect.Reflect;
 import Ozone.Commands.Commands;
 import Ozone.Interface;
-import Ozone.Manifest;
 import Ozone.Patch.ImprovisedKeybinding;
 import arc.Core;
 import arc.input.KeyCode;
@@ -49,7 +48,6 @@ public class OzoneMenu extends BaseDialog {
         cont.clear();
         cont.button(Core.bundle.get("ozone.javaEditor"), Icon.pencil, () -> {
             Core.app.post(this::hide);
-            Manifest.javaEditor.show();
         }).size(Core.graphics.getWidth() / 6, Core.graphics.getHeight() / 12);
         cont.row();
         cont.button(Core.bundle.get("ozone.commandsUI"), Icon.distribution, () -> {

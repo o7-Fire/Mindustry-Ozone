@@ -246,9 +246,7 @@ Ozone.UI.CommandsListFrag -> a.e.a:
 Ozone.UI.CommandsListFrag$1 -> a.e.b:
     void <init>(Ozone.UI.CommandsListFrag) -> <init>
     void draw() -> draw
-Ozone.UI.JavaEditor -> a.e.c:
-    void hide() -> hide
-Ozone.UI.OzoneMenu -> a.e.d:
+Ozone.UI.OzoneMenu -> a.e.c:
     arc.scene.ui.TextField commandsField -> a
     java.lang.String commands -> b
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>

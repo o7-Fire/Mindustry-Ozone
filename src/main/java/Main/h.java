@@ -2,7 +2,6 @@ package Main;
 
 import Ozone.Pre.PreInstall;
 import Ozone.Swing.Main;
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import javax.swing.*;
 import java.io.File;
@@ -12,7 +11,10 @@ public class h {
     private static Main m;
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        UIManager.setLookAndFeel(WindowsLookAndFeel.class.getTypeName());
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Throwable ignored) {
+        }
         if (System.getProperty("os.name").toUpperCase().contains("WIN"))
             mindustry = new File(System.getenv("AppData") + "/Mindustry");
         else

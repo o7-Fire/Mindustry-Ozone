@@ -74,6 +74,7 @@ dependencies {
     implementation files('lib/miglayout-core.jar')
     implementation files('lib/miglayout-swing.jar')
     annotationProcessor project(":CodeGen")
+
 }
 
 

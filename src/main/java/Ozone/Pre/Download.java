@@ -1,7 +1,6 @@
 package Ozone.Pre;
 
 import Ozone.Swing.SPreLoad;
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,10 +47,9 @@ public class Download implements Runnable {
     //fancy swing
     public void display() {
         swing = new SPreLoad();
-        try{
-            UIManager.setLookAndFeel(WindowsLookAndFeel.class.getTypeName());
-        }catch (Throwable s){
-            s.printStackTrace();
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Throwable ignored) {
         }
         swing.progressBar1.setMinimum(0);
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
