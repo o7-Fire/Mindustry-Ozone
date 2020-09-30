@@ -121,8 +121,4 @@ task deploy(type: Jar) {
 
     from { [zipTree("Desktop/build/libs/Ozone-Desktop.jar"), zipTree("Android/build/libs/Ozone-Android.jar")] }
 
-    doLast {
-        delete { delete "Desktop/build/libs/Ozone-Desktop.jar" }
-        delete { delete "Android/build/libs/Ozone-Android.jar" }
-    }
 }
