@@ -3,6 +3,7 @@ apply plugin: 'java'
 dependencies {
     compileOnly fileTree(dir: "libs", include: ["*.jar"])
     testImplementation 'junit:junit:4.12'
+    compile rootProject
 }
 
 jar {
