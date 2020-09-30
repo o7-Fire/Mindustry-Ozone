@@ -21,10 +21,14 @@ jobs:
       run: chmod +x ./gradlew
     - name: Build mod jar
       run: ./gradlew deploy
+    - name: Output Android
+      run: ls ./Android/build/libs
+    - name: Output Desktop
+      run: ls ./Desktop/build/libs
     - name: Upload built jar file
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.REPOSITORY_NAME }}
         path: |
-          Android/build/libs/Ozone-Android.jar
-          Desktop/build/libs/Ozone-Desktop.jar
+          /Android/build/libs/Ozone-Android.jar
+          /Desktop/build/libs/Ozone-Desktop.jar
