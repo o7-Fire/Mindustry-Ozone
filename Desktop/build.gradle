@@ -8,10 +8,10 @@ repositories {
     mavenCentral()
 }
 //Desktop jar with installer and separated library
-jar{
+jar {
     archiveFileName = "${project.archivesBaseName}.jar"
-    from{
-        configurations.runtimeClasspath.collect{it.isDirectory() ? it : zipTree(it)}
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
     manifest {
         attributes 'Main-Class': 'Main.h'

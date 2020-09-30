@@ -1,4 +1,4 @@
-buildscript{
+buildscript {
     repositories {
         mavenLocal()
         jcenter()
@@ -16,13 +16,13 @@ buildscript{
 apply plugin: 'java'
 apply plugin: 'java-library'
 
-allprojects{
-    repositories{
+allprojects {
+    repositories {
         mavenLocal()
         mavenCentral()
-        maven{ url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven{ url "https://oss.sonatype.org/content/repositories/releases/" }
-        maven{ url 'https://jitpack.io' }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url 'https://jitpack.io' }
         jcenter()
         flatDir {
             dirs 'libs'
@@ -34,17 +34,17 @@ allprojects{
 
     }
 
-    tasks.withType(JavaCompile){
+    tasks.withType(JavaCompile) {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
         options.encoding = "UTF-8"
         options.compilerArgs += ["-Xlint:deprecation"]
-        if(JavaVersion.current() != JavaVersion.VERSION_1_8){
+        if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
             options.compilerArgs.addAll(['--release', '8'])
         }
     }
 
-    ext{
+    ext {
         sdkVersion = '29'
         sdkRoot = System.getenv("ANDROID_HOME")
         doExec = { cmd ->
@@ -64,8 +64,8 @@ ext {
         def processorFile = new File(rootDir, "CodeGen/src/main/resources/META-INF/services/javax.annotation.processing.Processor")
         def text = new StringBuilder()
         def files = new File(rootDir, "CodeGen/src/main/java")
-        files.eachFileRecurse(groovy.io.FileType.FILES){ file ->
-            if(file.name.endsWith(".java") && (file.text.contains(" extends AtomProcessor") || (file.text.contains(" extends AbstractProcessor") && !file.text.contains("abstract class")))){
+        files.eachFileRecurse(groovy.io.FileType.FILES) { file ->
+            if (file.name.endsWith(".java") && (file.text.contains(" extends AtomProcessor") || (file.text.contains(" extends AbstractProcessor") && !file.text.contains("abstract class")))) {
                 text.append(file.path.substring(files.path.length() + 1)).append("\n")
             }
         }
@@ -77,7 +77,7 @@ ext {
 
 repositories {
     mavenCentral()
-    maven{ url 'https://www.jitpack.io' }
+    maven { url 'https://www.jitpack.io' }
     flatDir {
         dirs 'libs'
     }
@@ -85,7 +85,7 @@ repositories {
         dirs 'lib'
     }
 }
-task preGen{
+task preGen {
     writeProcessors()
 }
 
@@ -99,15 +99,15 @@ dependencies {
 }
 
 
-task deploy(type: Jar){
+task deploy(type: Jar) {
     dependsOn ":Android:proguard"
     dependsOn ":Desktop:proguard"
     archiveFileName = "${project.archivesBaseName}.jar"
 
-    from{ [zipTree("Desktop/build/libs/${project.archivesBaseName}Desktop.jar"), zipTree("Android/build/libs/${project.archivesBaseName}Android.jar")] }
+    from { [zipTree("Desktop/build/libs/${project.archivesBaseName}Desktop.jar"), zipTree("Android/build/libs/${project.archivesBaseName}Android.jar")] }
 
-    doLast{
-        delete{ delete "Desktop/build/libs/${project.archivesBaseName}Desktop.jar" }
-        delete{ delete "Android/build/libs/${project.archivesBaseName}Android.jar" }
+    doLast {
+        delete { delete "Desktop/build/libs/${project.archivesBaseName}Desktop.jar" }
+        delete { delete "Android/build/libs/${project.archivesBaseName}Android.jar" }
     }
 }
