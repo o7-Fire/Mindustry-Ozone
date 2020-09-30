@@ -89,11 +89,12 @@ task preGen {
     writeProcessors()
 }
 
+//there is reason why use local jar
 dependencies {
     compileJava.dependsOn(preGen)
     testImplementation 'junit:junit:4.12'
-    compileOnly files('libs/Atomic.jar')
-    compileOnly files('libs/Mindustry.jar')
+    compileOnly files("${project.rootDir}/libs/Atomic.jar")
+    compileOnly files("${project.rootDir}/libs/Mindustry.jar")
     compileOnly project(":CodeGen")
     annotationProcessor project(":CodeGen")
 }
