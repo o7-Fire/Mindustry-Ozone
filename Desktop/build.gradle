@@ -9,7 +9,7 @@ repositories {
 }
 //Desktop jar with installer and separated library
 jar {
-    archiveFileName = "${project.archivesBaseName}.jar"
+    archiveFileName = "Ozone.jar"
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
@@ -20,6 +20,8 @@ jar {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation rootProject
+    compileOnly files("${project.rootDir}/libs/Atomic.jar")
+    compileOnly files("${project.rootDir}/libs/Mindustry.jar")
     implementation files("${project.rootDir}/lib/miglayout-core.jar")
     implementation files("${project.rootDir}/lib/miglayout-swing.jar")
 }
@@ -37,6 +39,6 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     }
     libraryjars "libs"
     libraryjars "lib"
-    injars "$buildDir/libs/${project.archivesBaseName}.jar"
-    outjars "$buildDir/libs/${project.archivesBaseName}Desktop.jar"
+    injars "$buildDir/libs/Ozone.jar"
+    outjars "$buildDir/libs/Ozone-Desktop.jar"
 }

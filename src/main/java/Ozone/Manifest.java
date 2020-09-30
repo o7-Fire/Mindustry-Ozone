@@ -8,5 +8,5 @@ import Ozone.UI.OzoneMenu;
 public class Manifest {
     public static OzoneMenu menu;
     public static CommandsListFrag commFrag;
-
+    public static Platform platform;
 }

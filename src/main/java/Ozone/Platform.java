@@ -1,11 +1,13 @@
 package Ozone;
 
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.io.File;
+
 
 public interface Platform {
 
-    default ClassLoader loadCl(URL[] urls) {
-        return new URLClassLoader(urls);
+    default void loadAtom(File atom, String AtomDownload, Object clz) {
+        //what
     }
+
+
 }

@@ -10,7 +10,7 @@ public class h {
     public static File mindustry;
     private static Main m;
 
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (Throwable ignored) {
@@ -18,7 +18,7 @@ public class h {
         if (System.getProperty("os.name").toUpperCase().contains("WIN"))
             mindustry = new File(System.getenv("AppData") + "/Mindustry");
         else
-            mindustry = new File(System.getenv("user.home"));
+            mindustry = new File(System.getenv("HOME"));
         m = new Main();
         PreInstall.install(m);
     }

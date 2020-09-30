@@ -102,7 +102,6 @@ public class Main extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Itzbenz
     public JDialog dialog1;
     public JFileChooser fileChooser1;
     public JFrame frame1;

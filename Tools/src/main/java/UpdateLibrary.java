@@ -1,5 +1,5 @@
 import Main.Ozone;
-import Ozone.Pre.Download;
+import Ozone.Pre.DownloadSwing;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -9,7 +9,7 @@ public class UpdateLibrary {
     public static void main(String[] args) throws MalformedURLException {
         File atomic = new File("libs/Atomic.jar");
         atomic.delete();
-        Download download = new Download(new URL(Ozone.AtomDownload), atomic);
+        DownloadSwing download = new DownloadSwing(new URL(Ozone.AtomDownload), atomic);
         download.display();
         download.run();
     }

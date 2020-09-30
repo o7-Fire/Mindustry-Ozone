@@ -55,7 +55,6 @@ public class SPreLoad extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Itzbenz
     public Frame frame1;
     public JLabel label1;
     public JLabel label2;

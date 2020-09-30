@@ -35,6 +35,7 @@ public class PreInstall {
             }
             m.label4.setText(mindustry.getAbsolutePath());
             m.dialog1.setVisible(false);
+            m.frame1.pack();
         });
         m.buttonExit.addActionListener(e -> System.exit(0));
         m.buttonInstall.addActionListener(e -> {

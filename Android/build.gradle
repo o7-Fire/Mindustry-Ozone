@@ -6,6 +6,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     compileOnly files("$sdkRoot/platforms/android-$sdkVersion/android.jar")
     implementation rootProject
+    compileOnly files("${project.rootDir}/libs/Atomic.jar")
+    compileOnly files("${project.rootDir}/libs/Mindustry.jar")
     println "Android SDK: $sdkRoot"
     println "Android SDK Version: $sdkVersion"
 }
@@ -35,6 +37,6 @@ task proguard(dependsOn: jarAndroid, type: proguard.gradle.ProGuardTask) {
     // Automatically handle the Java version of this build.
     libraryjars "$sdkRoot/platforms/android-$sdkVersion/android.jar"
     libraryjars "libs"
-    injars "$buildDir/libs/${project.archivesBaseName}Android.jar"
-    outjars "$buildDir/libs/${project.archivesBaseName}Android.out.jar"
+    injars "$buildDir/libs/Ozone.jar"
+    outjars "$buildDir/libs/Ozone-Android.jar"
 }

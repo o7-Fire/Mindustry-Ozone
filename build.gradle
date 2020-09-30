@@ -33,6 +33,16 @@ allprojects {
 
 
     }
+    repositories {
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+        flatDir {
+            dirs 'libs'
+        }
+        flatDir {
+            dirs 'lib'
+        }
+    }
 
     tasks.withType(JavaCompile) {
         sourceCompatibility = 1.8
