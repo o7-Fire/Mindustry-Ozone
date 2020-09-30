@@ -26,7 +26,7 @@ task jarAndroid(dependsOn: jar) {
 
 }
 task proguard(dependsOn: jarAndroid, type: proguard.gradle.ProGuardTask) {
-    configuration 'proguard.txt'
+    configuration "${project.rootDir}/proguard.txt"
     // Automatically handle the Java version of this build.
     libraryjars "$sdkRoot/platforms/android-$sdkVersion/android.jar"
     libraryjars "libs"
