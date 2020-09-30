@@ -119,7 +119,7 @@ task deploy(type: Jar) {
     dependsOn ":Android:proguard"
     dependsOn ":Desktop:proguard"
 
-    from { [zipTree("Desktop/build/libs/${project.archivesBaseName}Desktop.jar"), zipTree("Android/build/libs/${project.archivesBaseName}Android.jar")] }
+    from { [zipTree("Desktop/build/libs/Ozone-Desktop.jar"), zipTree("Android/build/libs/Ozone-Android.jar")] }
 
     doLast {
         delete { delete "Desktop/build/libs/Ozone-Desktop.jar" }
