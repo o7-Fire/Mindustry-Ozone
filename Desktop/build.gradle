@@ -38,8 +38,8 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
         libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
         libraryjars "${System.getProperty('java.home')}/jmods/java.desktop.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
     }
-    libraryjars "libs"
-    libraryjars "lib"
+    libraryjars "${project.rootDir}/libs"
+    libraryjars "${project.rootDir}/lib"
     injars "$buildDir/libs/Ozone.jar"
     outjars "$buildDir/libs/Ozone-Desktop.jar"
 }

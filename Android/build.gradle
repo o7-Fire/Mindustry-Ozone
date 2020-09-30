@@ -36,7 +36,7 @@ task proguard(dependsOn: jarAndroid, type: proguard.gradle.ProGuardTask) {
     configuration "${project.rootDir}/proguard.txt"
     // Automatically handle the Java version of this build.
     libraryjars "$sdkRoot/platforms/android-$sdkVersion/android.jar"
-    libraryjars "libs"
+    libraryjars "${project.rootDir}/libs"
     injars "$buildDir/libs/Ozone.jar"
     outjars "$buildDir/libs/Ozone-Android.jar"
 }
