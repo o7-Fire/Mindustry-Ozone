@@ -29,6 +29,7 @@ public class PreInstall {
         m.frame1.setVisible(true);
         m.button3.addActionListener(e -> {
             m.dialog1.setVisible(true);
+            m.fileChooser1.setFileHidingEnabled(true);
             m.fileChooser1.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             if (m.fileChooser1.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 mindustry = m.fileChooser1.getSelectedFile();
