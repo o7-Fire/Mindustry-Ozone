@@ -38,5 +38,5 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     libraryjars "libs"
     libraryjars "lib"
     injars "$buildDir/libs/${project.archivesBaseName}.jar"
-    outjars "$buildDir  /libs/${project.archivesBaseName}Desktop.jar"
+    outjars "$buildDir/libs/${project.archivesBaseName}Desktop.jar"
 }

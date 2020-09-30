@@ -44,6 +44,14 @@ allprojects{
         }
     }
 
+    ext{
+        sdkVersion = '29'
+        sdkRoot = System.getenv("ANDROID_HOME")
+        doExec = { cmd ->
+            def proc = cmd.execute(null, new File("$buildDir/libs"))
+            proc.waitForProcessOutput(System.out, System.err)
+        }
+    }
 }
 
 ext {

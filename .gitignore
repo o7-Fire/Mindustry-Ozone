@@ -8,7 +8,8 @@ Tools/build
 *.ear
 hs_err_pid*
 crash-report-*
-
+Android/build
+Desktop/build
 ## Robovm
 /ios/robovm-build/
 
