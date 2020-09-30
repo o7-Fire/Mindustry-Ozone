@@ -35,7 +35,15 @@ task jarAndroid(dependsOn: jar) {
 }
 task proguard(dependsOn: jarAndroid, type: proguard.gradle.ProGuardTask) {
     configuration "${project.rootDir}/proguard.txt"
+
     // Automatically handle the Java version of this build.
+    if (System.getProperty('java.version').startsWith('1.')) {
+        // Before Java 9, the runtime classes were packaged in a single jar file.
+        libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
+    } else {
+        // As of Java 9, the runtime classes are packaged in modular jmod files.
+        libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+    }
     libraryjars "$sdkRoot/platforms/android-$sdkVersion/android.jar"
     libraryjars "${project.rootDir}/libs"
     injars "$buildDir/libs/Ozone.jar"
