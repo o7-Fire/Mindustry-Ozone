@@ -13,7 +13,8 @@ dependencies {
 }
 
 jar {
-    archiveFileName = "${project.archivesBaseName}.jar"
+    dependsOn ":jar"
+    archiveFileName = "Ozone.jar"
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }

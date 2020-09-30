@@ -108,7 +108,12 @@ dependencies {
     compileOnly project(":CodeGen")
     annotationProcessor project(":CodeGen")
 }
-
+jar {
+    archiveFileName = "Ozone.jar"
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
 
 task deploy(type: Jar) {
     dependsOn ":Android:proguard"
