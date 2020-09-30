@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+}
+
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+//Desktop jar with installer and separated library
+jar{
+    archiveFileName = "${project.archivesBaseName}.jar"
+    from{
+        configurations.runtimeClasspath.collect{it.isDirectory() ? it : zipTree(it)}
+    }
+    manifest {
+        attributes 'Main-Class': 'Main.h'
+    }
+}
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile rootProject
+    implementation files('lib/miglayout-core.jar')
+    implementation files('lib/miglayout-swing.jar')
+}
+//Obfuscated Desktop jar
+task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
+    configuration 'proguard.txt'
+    // Automatically handle the Java version of this build.
+    if (System.getProperty('java.version').startsWith('1.')) {
+        // Before Java 9, the runtime classes were packaged in a single jar file.
+        libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
+    } else {
+        // As of Java 9, the runtime classes are packaged in modular jmod files.
+        libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+        libraryjars "${System.getProperty('java.home')}/jmods/java.desktop.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+    }
+    libraryjars "libs"
+    libraryjars "lib"
+    injars "$buildDir/libs/${project.archivesBaseName}.jar"
+    outjars "$buildDir  /libs/${project.archivesBaseName}Desktop.jar"
+}

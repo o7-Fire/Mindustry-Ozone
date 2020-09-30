@@ -2,7 +2,7 @@
 .attach_*
 /dependencies
 ## Java
-tools/build
+Tools/build
 *.class
 *.war
 *.ear
@@ -111,7 +111,7 @@ gradle-app.setting
 Thumbs.db
 android/libs/
 annotations/src/main/resources/revisions/EffectState/6.json
-Ozone-Mapping.txt
+Desktop/Ozone-Mapping.txt
 copy.bat
 /dependencies/
 /CodeGen/src/main/resources/META-INF/services/javax.annotation.processing.Processor

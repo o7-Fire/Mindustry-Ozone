@@ -13,11 +13,38 @@ buildscript{
     }
 }
 
-plugins {
-    id 'java'
+apply plugin: 'java'
+apply plugin: 'java-library'
+
+allprojects{
+    repositories{
+        mavenLocal()
+        mavenCentral()
+        maven{ url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven{ url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven{ url 'https://jitpack.io' }
+        jcenter()
+        flatDir {
+            dirs 'libs'
+        }
+        flatDir {
+            dirs 'lib'
+        }
+
+
+    }
+
+    tasks.withType(JavaCompile){
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+        options.encoding = "UTF-8"
+        options.compilerArgs += ["-Xlint:deprecation"]
+        if(JavaVersion.current() != JavaVersion.VERSION_1_8){
+            options.compilerArgs.addAll(['--release', '8'])
+        }
+    }
 
 }
-apply plugin: 'java-library'
 
 ext {
 
@@ -37,18 +64,7 @@ ext {
 
         processorFile.text = text.toString().replace(".java", "").replace("/", ".").replace("\\", ".")
     }
-    localAtom = {
-        return new File('../Atoms').exists()
-    }
 
-    atom = { String name ->
-        if (localAtom()) {
-            return project(":Atom:$name")
-        } else {
-            if (name.contains(':')) name = name.split(':').last()
-            return "com.github.o7-Fire.Atomic-Library:$name:$atomHash"
-        }
-    }
 }
 
 repositories {
@@ -71,41 +87,19 @@ dependencies {
     compileOnly files('libs/Atomic.jar')
     compileOnly files('libs/Mindustry.jar')
     compileOnly project(":CodeGen")
-    implementation files('lib/miglayout-core.jar')
-    implementation files('lib/miglayout-swing.jar')
     annotationProcessor project(":CodeGen")
-
 }
 
 
-tasks.withType(JavaCompile) {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-    options.encoding = "UTF-8"
-    options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
-}
-jar{
+task deploy(type: Jar){
+    dependsOn ":Android:proguard"
+    dependsOn ":Desktop:proguard"
     archiveFileName = "${project.archivesBaseName}.jar"
-    from{
-        configurations.runtimeClasspath.collect{it.isDirectory() ? it : zipTree(it)}
+
+    from{ [zipTree("Desktop/build/libs/${project.archivesBaseName}Desktop.jar"), zipTree("Android/build/libs/${project.archivesBaseName}Android.jar")] }
+
+    doLast{
+        delete{ delete "Desktop/build/libs/${project.archivesBaseName}Desktop.jar" }
+        delete{ delete "Android/build/libs/${project.archivesBaseName}Android.jar" }
     }
-    manifest {
-        attributes 'Main-Class': 'Main.h'
-    }
-}
-task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
-    configuration 'proguard.txt'
-    // Automatically handle the Java version of this build.
-    if (System.getProperty('java.version').startsWith('1.')) {
-        // Before Java 9, the runtime classes were packaged in a single jar file.
-        libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
-    } else {
-        // As of Java 9, the runtime classes are packaged in modular jmod files.
-        libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
-        libraryjars "${System.getProperty('java.home')}/jmods/java.desktop.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
-    }
-    libraryjars "libs"
-    libraryjars "lib"
-    injars "build/libs/${project.archivesBaseName}.jar"
-    outjars "build/libs/${project.archivesBaseName}.out.jar"
 }

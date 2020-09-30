@@ -1,3 +1,7 @@
+include ':Android'
+include 'CodeGen'
+include 'Tools'
+include 'Desktop'
 rootProject.name = 'Ozone'
 def use = { ... names ->
     for(String name : names){
@@ -12,7 +16,5 @@ if(new File(settingsDir, '../Atom').exists()) {
             ":Atom:Atomic"
     )
 }
-include 'CodeGen'
-include 'tools'
 
 
