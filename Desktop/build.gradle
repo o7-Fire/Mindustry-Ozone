@@ -22,6 +22,7 @@ dependencies {
     implementation rootProject
     compileOnly files("${project.rootDir}/libs/Atomic.jar")
     compileOnly files("${project.rootDir}/libs/Mindustry.jar")
+    implementation files("${project.rootDir}/lib/flatlaf-0.42.jar")
     implementation files("${project.rootDir}/lib/miglayout-core.jar")
     implementation files("${project.rootDir}/lib/miglayout-swing.jar")
 }

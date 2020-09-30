@@ -1,8 +1,8 @@
 package Ozone.Pre;
 
 import Ozone.Swing.SPreLoad;
+import Ozone.Swing.Theme;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,10 +47,7 @@ public class DownloadSwing implements Runnable {
 
     public void display() {
         swing = new SPreLoad();
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (Throwable ignored) {
-        }
+        Theme.setTheme();
         swing.progressBar1.setMinimum(0);
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
