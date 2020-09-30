@@ -1,6 +1,6 @@
 package Ozone.Pre;
 
-import Ozone.Swing.SPreLoad;
+
 import arc.backend.sdl.jni.SDL;
 import arc.util.Log;
 import mindustry.desktop.DesktopLauncher;
@@ -22,6 +22,7 @@ public class Preload {
 
     public static void restart() {
         SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "You need to restart mindustry");
+        //try restart
         try {
             //get JRE or something
             final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
@@ -33,16 +34,17 @@ public class Preload {
                 throw new RuntimeException(currentJar.getAbsolutePath() + " is not a jar");
 
             //java -jar path/to/Mindustry.jar
-            final ArrayList<String> command = new ArrayList<>();
+            ArrayList<String> command = new ArrayList<>();
             command.add(javaBin);
             command.add("-jar");
             command.add(currentJar.getPath());
 
-            final ProcessBuilder builder = new ProcessBuilder(command);
+            ProcessBuilder builder = new ProcessBuilder(command);
             builder.start();
         } catch (Throwable ignored) {
+            //mmm android
         }
-        //exits is priority
+        //exit is priority
         System.exit(0);
     }
 
@@ -58,7 +60,6 @@ public class Preload {
                 URL jitpack = new URL(AtomDownload);
                 File temp = new File(atom.getParent(), "/"+System.currentTimeMillis() +".temp");
                 Download download = new Download(jitpack, temp);
-                download.display();
                 download.run();
                 Files.copy(temp.toPath(), atom.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 temp.deleteOnExit();
@@ -72,7 +73,7 @@ public class Preload {
                 //if its reach to here, then its must not exists and there no internet connection ? wtf
             } catch (Throwable t) {
                 //oh no internet error
-                SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "Atom library can't be downloaded: " + t.toString());
+                SDL.SDL_ShowSimpleMessageBox(16, "Ozone", "Atom library can't be downloaded: " + t.toString());
                 Log.err(t);
             }
         //reliable shit

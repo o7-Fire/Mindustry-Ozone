@@ -30,6 +30,7 @@ public class Main {
         initUI();
         BotInterface.init();
         Commands.init();
+
     }
 
 

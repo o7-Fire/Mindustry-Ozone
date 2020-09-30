@@ -19,9 +19,9 @@ jar {
 }
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile rootProject
-    implementation files('lib/miglayout-core.jar')
-    implementation files('lib/miglayout-swing.jar')
+    implementation rootProject
+    implementation files("${project.rootDir}/lib/miglayout-core.jar")
+    implementation files("${project.rootDir}/lib/miglayout-swing.jar")
 }
 //Obfuscated Desktop jar
 task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {

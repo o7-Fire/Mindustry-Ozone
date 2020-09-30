@@ -10,19 +10,20 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-import static Main.Ozone.*;
 import static Main.h.mindustry;
 
 public class PreInstall {
+    public final static String AtomHash = "a2961d4c26", atomFile = "Atomic-" + AtomHash + ".jar", libs = "libs";
+    public final static String AtomDownload = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/Atomic/" + AtomHash + "/Atomic-" + AtomHash + ".jar";
 
-    public static void install(Main m){
+    public static void install(Main m) {
         m.label4.setText(mindustry.getAbsolutePath());
         m.labelStatus.setVisible(false);
         m.progressBar1.setVisible(false);
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
-        m.frame1.setSize(Math.round(width/1.3F), height/3);
+        m.frame1.setSize(Math.round(width / 1.3F), height / 3);
         m.frame1.pack();
         m.frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         m.frame1.setVisible(true);

@@ -1,9 +1,13 @@
 apply plugin: 'java'
+
 //heck loading Atomic library is complicated in android
 dependencies {
     compileOnly fileTree(dir: "libs", include: ["*.jar"])
     testImplementation 'junit:junit:4.12'
-    compile rootProject
+    compileOnly files("$sdkRoot/platforms/android-$sdkVersion/android.jar")
+    implementation rootProject
+    println "Android SDK: $sdkRoot"
+    println "Android SDK Version: $sdkVersion"
 }
 
 jar {
@@ -22,7 +26,7 @@ task jarAndroid(dependsOn: jar) {
         def dependencies = files.collect { "--classpath $it.path" }.join(" ")
 
         //dex and desugar files - this requires d8 in your PATH
-        doExec("d8 $dependencies --min-api 14 --output ${project.archivesBaseName}Android.jar ${project.archivesBaseName}.jar")
+        //doExec("d8 $dependencies --min-api 14 --output ${project.archivesBaseName}Android.jar ${project.archivesBaseName}.jar")
     }
 
 }
