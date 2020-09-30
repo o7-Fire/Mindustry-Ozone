@@ -37,9 +37,10 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
         // As of Java 9, the runtime classes are packaged in modular jmod files.
         libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
         libraryjars "${System.getProperty('java.home')}/jmods/java.desktop.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+        libraryjars "${System.getProperty('java.home')}/jmods/java.logging.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
     }
-    libraryjars "${project.rootDir}/libs"
-    libraryjars "${project.rootDir}/lib"
+    libraryjars "${project.rootDir}/libs/"
+    libraryjars "${project.rootDir}/lib/"
     injars "$buildDir/libs/Ozone.jar"
     outjars "$buildDir/libs/Ozone-Desktop.jar"
 }
