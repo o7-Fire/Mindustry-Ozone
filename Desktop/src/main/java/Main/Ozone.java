@@ -14,6 +14,9 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+/**
+ * @author Itzbenz
+ */
 public class Ozone extends Mod {
     public final static String AtomHash = "a2961d4c26", atomFile = "Atomic-" + AtomHash + ".jar", libs = "libs";
     public final static String AtomDownload = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/Atomic/" + AtomHash + "/Atomic-" + AtomHash + ".jar";

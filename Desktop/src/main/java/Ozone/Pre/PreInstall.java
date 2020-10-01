@@ -27,9 +27,10 @@ public class PreInstall {
         m.frame1.pack();
         m.frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         m.frame1.setVisible(true);
+
         m.button3.addActionListener(e -> {
             m.dialog1.setVisible(true);
-            m.fileChooser1.setFileHidingEnabled(true);
+            m.fileChooser1.setFileHidingEnabled(false);
             m.fileChooser1.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             if (m.fileChooser1.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 mindustry = m.fileChooser1.getSelectedFile();
@@ -39,6 +40,8 @@ public class PreInstall {
             m.frame1.pack();
         });
         m.buttonExit.addActionListener(e -> System.exit(0));
+
+        //Install Button
         m.buttonInstall.addActionListener(e -> {
             m.labelStatus.setVisible(true);
             m.progressBar1.setVisible(true);
@@ -49,6 +52,8 @@ public class PreInstall {
             if (!mods.exists()) {
                 System.out.println(mods.getAbsolutePath() + " doesn't exists, are you sure this is right directory");
                 m.labelStatus.setText(mods.getAbsolutePath() + " doesn't exists, are you sure this is right directory");
+                m.frame1.pack();
+                return;
             }
             //mods/libs
             File library = new File(mods, libs);
