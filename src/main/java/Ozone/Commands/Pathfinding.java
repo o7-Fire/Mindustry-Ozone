@@ -14,18 +14,26 @@ import mindustry.world.Tile;
 import java.lang.reflect.InvocationTargetException;
 
 public class Pathfinding {
-
+//TODO don't be stupid
 
     public static boolean passable(Tile t) {
+        Unit unit = Vars.player.unit();
         if (t == null) return false;
-        if (!t.passable()) return false;
-        if (t.build != null) return false;
+        if (unit instanceof WaterMovec) {
+            if (!t.block().isFloor()) return false;
+            if (!t.block().asFloor().isLiquid) return false;
+        } else if (unit instanceof Legsc) {
+            if (!t.passable()) return false;
+        } else if (!unit.isFlying()) {
+            if (!t.passable()) return false;
+            if (t.build != null) return false;
+        }
         return true;
     }
 
     public static int pathTile(int tile, Unit unit) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Team team = unit.team;
-        int cost = -100;
+        int cost;
         int type = 0;
         if (unit instanceof WaterMovec)
             type = Pathfinder.costWater;

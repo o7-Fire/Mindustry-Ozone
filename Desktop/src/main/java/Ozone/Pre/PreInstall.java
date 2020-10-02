@@ -67,6 +67,7 @@ public class PreInstall {
             if (ozone.exists()) {
                 try {
                     m.labelStatus.setText("Updating");
+                    m.frame1.pack();
                     Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 } catch (Throwable t) {
                     m.labelStatus.setText(t.getMessage());

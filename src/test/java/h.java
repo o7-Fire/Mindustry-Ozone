@@ -14,7 +14,6 @@ public class h {
         temp.deleteOnExit();
         System.out.println(temp.getAbsolutePath());
         Download d = new Download(new URL("http://212.183.159.230/200MB.zip"), temp);
-        d.display();
         d.run();
 
     }
