@@ -28,8 +28,10 @@ public class PreInstall {
         m.frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         m.frame1.setVisible(true);
 
+        //shitty file chooser
         m.button3.addActionListener(e -> {
             m.dialog1.setVisible(true);
+            m.fileChooser1.setSelectedFile(mindustry);
             m.fileChooser1.setFileHidingEnabled(false);
             m.fileChooser1.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             if (m.fileChooser1.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -58,13 +60,20 @@ public class PreInstall {
             //mods/libs
             File library = new File(mods, libs);
             //mods/Ozone.jar
-            File ozone = new File(mods, "/Ozone.jar");
+            File ozone = new File(mods, "Ozone.jar");
             library.mkdirs();
             //mods/libs/Atomic-AtomHash.jar
             File atom = new File(library, atomFile);
+            if (ozone.exists()) {
+                try {
+                    m.labelStatus.setText("Updating");
+                    Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    m.labelStatus.setText("Finished");
+                } catch (Throwable t) {
+                    m.labelStatus.setText(t.getMessage());
+                }
+            }
             if (atom.exists() && ozone.exists()) {
-                m.labelStatus.setText("Already Installed");
-                System.out.println("Already Installed");
                 m.progressBar1.setVisible(false);
                 return;
             }

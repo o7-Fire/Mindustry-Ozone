@@ -18,7 +18,7 @@ public class h {
             if (System.getProperty("os.name").toUpperCase().contains("WIN"))
                 mindustry = new File(System.getenv("AppData") + "/Mindustry");
             else
-                mindustry = new File(System.getenv("HOME") + "/.share/");
+                mindustry = new File(System.getenv("HOME") + "/.local/share/Mindustry");
         } catch (Throwable t) {
             mindustry = new File("mindustry/");
         }
