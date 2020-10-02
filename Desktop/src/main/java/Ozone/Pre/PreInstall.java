@@ -68,13 +68,14 @@ public class PreInstall {
                 try {
                     m.labelStatus.setText("Updating");
                     Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    m.labelStatus.setText("Finished");
                 } catch (Throwable t) {
                     m.labelStatus.setText(t.getMessage());
                 }
             }
             if (atom.exists() && ozone.exists()) {
+                m.labelStatus.setText("Atom already downloaded");
                 m.progressBar1.setVisible(false);
+                m.frame1.pack();
                 return;
             }
             if (atom.exists()) {
