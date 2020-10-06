@@ -41,7 +41,6 @@ public class Move extends Task {
             Vars.player.reset();
         for(Tile t : pathfindingCache)
             t.clearOverlay();
-
         super.taskCompleted();
     }
 

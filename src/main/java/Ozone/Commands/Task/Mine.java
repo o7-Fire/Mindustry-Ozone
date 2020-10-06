@@ -10,12 +10,9 @@ import mindustry.world.blocks.environment.OreBlock;
 public class Mine extends Task {
     public Block ore;
 
-    public Mine(Block block) {
+    public Mine(OreBlock block) {
         setTick(20);
-        if (!(block instanceof OreBlock)) {
-            ore = null;
-            return;
-        }
+
     }
 
     public Mine() {

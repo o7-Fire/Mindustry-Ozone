@@ -27,6 +27,10 @@ public abstract class Task {
             s.accept(new Object());
     }
 
+    public void interrupt() {
+        taskCompleted();
+    }
+
     protected void setTick(int tick1) {
         tick = tick1;
     }

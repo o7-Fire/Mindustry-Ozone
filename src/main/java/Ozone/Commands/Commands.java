@@ -45,13 +45,18 @@ public class Commands {
         commandsList.put("task-move", new Command(Commands::taskMove, "taskMove"));
         commandsList.put("info-pos", new Command(Commands::infoPos, "infoPos"));
         commandsList.put("info-pathfinding", new Command(Commands::infoPathfinding, "infoPathfinding"));
-        commandsList.put("random-kick", new Command(Commands::randomKick, "randomKick", Icon.hammer, true));
-        commandsList.put("info-unit", new Command(Commands::infoUnit, "infoUnit", Icon.units, true));
+        commandsList.put("random-kick", new Command(Commands::randomKick, "randomKick", Icon.hammer));
+        commandsList.put("info-unit", new Command(Commands::infoUnit, "infoUnit", Icon.units));
         commandsList.put("force-exit", new Command(Commands::forceExit, "forceExit"));
         commandsList.put("task-deconstruct", new Command(Commands::taskDeconstruct, "taskDeconstruct"));
         commandsList.put("send-colorize", new Command(Commands::sendColorize, "sendColorize"));
         commandsList.put("task-clear", new Command(Commands::taskClear, "taskClear"));
+        commandsList.put("shuffle-sorter", new Command(Commands::shuffleSorter, "shuffleSorter", Icon.rotate));
         Log.infoTag("Ozone", "Commands Center Initialized");
+    }
+
+    public static void shuffleSorter(ArrayList<String> s) {
+        //TODO find random sorter block
     }
 
     public static void taskClear(ArrayList<String> s) {
@@ -295,12 +300,11 @@ public class Commands {
         public final Consumer<ArrayList<String>> method;
         public final String description;
         public final TextureRegionDrawable icon;
-        public boolean supportGUI = false;
 
         public Command(Consumer<ArrayList<String>> method, String description) {
             this.method = method;
             this.description = getTranslation(description);
-            icon = Icon.add;
+            icon = null;
         }
 
         public Command(Consumer<ArrayList<String>> method, String description, TextureRegionDrawable icon) {
@@ -309,11 +313,6 @@ public class Commands {
             this.icon = icon;
         }
 
-        public Command(Consumer<ArrayList<String>> method, String description, TextureRegionDrawable icon, boolean supportGUI) {
-            this.method = method;
-            this.description = getTranslation(description);
-            this.icon = icon;
-            this.supportGUI = supportGUI;
-        }
+
     }
 }
