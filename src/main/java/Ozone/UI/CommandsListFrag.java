@@ -93,10 +93,10 @@ public class CommandsListFrag extends Fragment {
             if (cl.getValue().icon != null)
                 table.image(cl.getValue().icon).fontScale(3.8f).center().grow();
             button.add(table).size(h);
-            button.labelWrap(name).width(170f).pad(10);
+            button.label(() -> cl.getValue().description);
             try {
                 button.row();
-                button.label(() -> cl.getValue().description);
+                button.label(() -> name);
                 button.button(Icon.settings, Styles.clearPartiali, () -> ui.showConfirm(name, "are you sure want to run commands: " + name, () -> {
                     String com = cl.getKey();
                     Commands.call(com);
@@ -107,7 +107,7 @@ public class CommandsListFrag extends Fragment {
             }
             content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
             content.row();
-            content.image().height(4f).color(Color.magenta).growX();
+            content.image().height(4f).color(Color.gray).growX();
             content.row();
         }
 

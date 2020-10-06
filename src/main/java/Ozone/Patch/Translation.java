@@ -33,6 +33,7 @@ public class Translation {
         commands.put("sendColorize", "send Colorized text");
         commands.put("infoUnit", "get current unit info");
         commands.put("randomKick", "random kick someone");
+        commands.put("shuffleSorter", "shufleelelelel");
         for (Map.Entry<String, String> s : commands.entrySet()) {
             registerWords("ozone.commands." + s.getKey(), s.getValue());
         }
