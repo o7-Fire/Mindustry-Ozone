@@ -57,7 +57,7 @@ public class Main extends JPanel {
         //======== frame1 ========
         {
             frame1.setResizable(false);
-            frame1.setTitle("Ozone Installer");
+            frame1.setTitle("Ozone Installer v0.4");
             Container frame1ContentPane = frame1.getContentPane();
             frame1ContentPane.setLayout(new MigLayout(
                 "fill,hidemode 3",

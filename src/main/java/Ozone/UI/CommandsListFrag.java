@@ -25,12 +25,12 @@ import java.util.Map;
 
 import static mindustry.Vars.*;
 
-//wont show wtf
+//UI madness
 public class CommandsListFrag extends Fragment {
     public boolean visible = false;
     private Table logs = new Table().marginRight(30f).marginLeft(20f);
     private Table content = new Table().marginRight(30f).marginLeft(20f);
-    private Queue<Task> commandsTask = new arc.struct.Queue<>();
+    private Queue<Task> commandsTask = new Queue<>();
     private float h = 70F;
     private TextField sField;
     private String commands = "";
@@ -73,6 +73,7 @@ public class CommandsListFrag extends Fragment {
     public void rebuild() {
         content.clear();
         for (Map.Entry<String, Commands.Command> cl : Commands.commandsList.entrySet()) {
+            if (cl.getValue().icon == null) continue;
             String name = "[" + Random.getRandomHexColor() + "]" + cl.getKey().replace("-", " ") + "[white]";
             Table button = new Table();
             button.left();

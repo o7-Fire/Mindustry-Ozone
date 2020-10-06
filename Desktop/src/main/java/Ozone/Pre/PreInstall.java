@@ -74,7 +74,7 @@ public class PreInstall {
                 }
             }
             if (atom.exists() && ozone.exists()) {
-                m.labelStatus.setText("Atom already downloaded");
+                m.labelStatus.setText("Atom already downloaded & Ozone already updated");
                 m.progressBar1.setVisible(false);
                 m.frame1.pack();
                 return;

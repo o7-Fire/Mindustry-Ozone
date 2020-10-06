@@ -43,19 +43,20 @@ Ozone.Commands.Commands -> Ozone.a.b:
     boolean init -> b
     boolean falseVote -> c
     void init() -> a
-    void taskClear(java.util.ArrayList) -> a
-    void sendColorize(java.util.ArrayList) -> b
-    void taskDeconstruct(java.util.ArrayList) -> c
-    void forceExit(java.util.ArrayList) -> d
-    void infoUnit(java.util.ArrayList) -> e
+    void shuffleSorter(java.util.ArrayList) -> a
+    void taskClear(java.util.ArrayList) -> b
+    void sendColorize(java.util.ArrayList) -> c
+    void taskDeconstruct(java.util.ArrayList) -> d
+    void forceExit(java.util.ArrayList) -> e
+    void infoUnit(java.util.ArrayList) -> f
     java.lang.String getTranslation(java.lang.String) -> a
     boolean call(java.lang.String) -> b
-    void randomKick(java.util.ArrayList) -> f
-    void infoPathfinding(java.util.ArrayList) -> g
-    void infoPos(java.util.ArrayList) -> h
-    void help(java.util.ArrayList) -> i
-    void taskMove(java.util.ArrayList) -> j
-    void chaosKick(java.util.ArrayList) -> k
+    void randomKick(java.util.ArrayList) -> g
+    void infoPathfinding(java.util.ArrayList) -> h
+    void infoPos(java.util.ArrayList) -> i
+    void help(java.util.ArrayList) -> j
+    void taskMove(java.util.ArrayList) -> k
+    void chaosKick(java.util.ArrayList) -> l
     void tellUser(java.lang.String) -> c
     void lambda$chaosKick$3() -> b
     void lambda$taskMove$2(long,java.lang.Object) -> a
@@ -67,8 +68,9 @@ Ozone.Commands.Commands$Command -> Ozone.a.c:
     java.lang.String description -> b
     arc.scene.style.TextureRegionDrawable icon -> c
     Ozone.UI.OzoneMenu menu -> d
+    Ozone.UI.PlayerList playerList -> e
     void <init>(java.util.function.Consumer,java.lang.String) -> <init>
-    void <init>(java.util.function.Consumer,java.lang.String,arc.scene.style.TextureRegionDrawable,boolean) -> <init>
+    void <init>(java.util.function.Consumer,java.lang.String,arc.scene.style.TextureRegionDrawable) -> <init>
     boolean passable(mindustry.world.Tile) -> a
     float isSafe(mindustry.world.Tile) -> b
     double distanceTo(arc.math.geom.Position,arc.math.geom.Position) -> a
@@ -250,6 +252,44 @@ Ozone.UI.OzoneMenu -> Ozone.e.c:
     void lambda$setup$2() -> d
     void lambda$setup$1() -> e
     void lambda$new$0(arc.input.KeyCode) -> a
+Ozone.UI.PlayerList -> Ozone.e.d:
+    arc.scene.ui.layout.Table content -> a
+    boolean visible -> b
+    arc.util.Interval timer -> c
+    arc.scene.ui.TextField sField -> d
+    boolean found -> e
+    void <init>() -> <init>
+    void build(arc.scene.Group) -> build
+    void rebuild() -> b
+    void toggle() -> a
+    void lambda$rebuild$24(float,mindustry.gen.Player) -> a
+    void lambda$rebuild$23(mindustry.gen.Player) -> a
+    void lambda$rebuild$22(mindustry.gen.Player) -> b
+    void lambda$rebuild$21(float,mindustry.gen.Player,mindustry.net.NetConnection,arc.scene.ui.layout.Table) -> a
+    void lambda$rebuild$20(mindustry.gen.Player) -> c
+    arc.scene.event.Touchable lambda$rebuild$19() -> c
+    boolean lambda$rebuild$18(arc.scene.ui.ImageButton) -> a
+    void lambda$rebuild$17(mindustry.gen.Player,arc.scene.ui.ImageButton) -> a
+    void lambda$rebuild$16(mindustry.gen.Player,mindustry.net.NetConnection) -> a
+    void lambda$rebuild$15(java.lang.String,mindustry.gen.Player) -> a
+    void lambda$rebuild$14(java.lang.String) -> a
+    void lambda$rebuild$13(mindustry.gen.Player) -> d
+    void lambda$rebuild$12(mindustry.gen.Player) -> e
+    void lambda$rebuild$11(mindustry.gen.Player) -> f
+    void lambda$rebuild$10(mindustry.gen.Player) -> g
+    boolean lambda$rebuild$9(mindustry.gen.Player) -> h
+    void lambda$build$8(arc.scene.ui.layout.Table) -> a
+    void lambda$build$7(arc.scene.ui.layout.Table) -> b
+    void lambda$build$6(arc.scene.ui.layout.Table) -> c
+    boolean lambda$build$5(arc.scene.ui.TextButton) -> a
+    boolean lambda$build$4(arc.scene.ui.TextButton) -> b
+    void lambda$build$3(java.lang.String) -> b
+    java.lang.CharSequence lambda$build$2() -> d
+    void lambda$build$1() -> e
+    boolean lambda$build$0() -> f
+Ozone.UI.PlayerList$1 -> Ozone.e.e:
+    void <init>(Ozone.UI.PlayerList) -> <init>
+    void draw() -> draw
 com.formdev.flatlaf.FlatClientProperties -> com.formdev.flatlaf.FlatClientProperties:
     java.lang.String BUTTON_TYPE -> BUTTON_TYPE
     java.lang.String BUTTON_TYPE_SQUARE -> BUTTON_TYPE_SQUARE

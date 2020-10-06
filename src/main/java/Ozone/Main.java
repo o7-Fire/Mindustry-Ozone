@@ -8,7 +8,6 @@ import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
-import Ozone.UI.PlayerList;
 import arc.Core;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
@@ -115,9 +114,9 @@ public class Main {
             }
         };
         Manifest.commFrag = new CommandsListFrag();
-        Manifest.playerList = new PlayerList();
         ozoneStyle.stageBackground = Styles.none;
         Manifest.menu = new OzoneMenu(Core.bundle.get("ozone.hud"), ozoneStyle);
+        Manifest.commFrag.build(Vars.ui.hudGroup);
 
     }
 

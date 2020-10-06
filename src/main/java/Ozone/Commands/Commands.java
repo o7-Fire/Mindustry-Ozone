@@ -43,7 +43,7 @@ public class Commands {
         commandsList.put("help", new Command(Commands::help, "help"));
         commandsList.put("chaos-kick", new Command(Commands::chaosKick, "chaosKick"));
         commandsList.put("task-move", new Command(Commands::taskMove, "taskMove"));
-        commandsList.put("info-pos", new Command(Commands::infoPos, "infoPos"));
+        commandsList.put("info-pos", new Command(Commands::infoPos, "infoPos", Icon.move));
         commandsList.put("info-pathfinding", new Command(Commands::infoPathfinding, "infoPathfinding"));
         commandsList.put("random-kick", new Command(Commands::randomKick, "randomKick", Icon.hammer));
         commandsList.put("info-unit", new Command(Commands::infoUnit, "infoUnit", Icon.units));
