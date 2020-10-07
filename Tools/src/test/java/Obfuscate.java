@@ -29,6 +29,7 @@ public class Obfuscate {
         for (File f : files) {
             StringBuilder sb = new StringBuilder();
             for (String s : Files.readAllLines(f.toPath())) {
+                if (s.trim().startsWith("//")) continue;
                 ArrayList<String> ar = yeet('"', s);
                 if (ar.isEmpty()) {
                     sb.append(s).append("\n");
@@ -44,8 +45,14 @@ public class Obfuscate {
                 }
                 sb.append(s);
             }
-            System.out.println(new Formatter().formatSource(sb.toString()));
+            try {
+                System.out.println(new Formatter().formatSource(sb.toString()));
+            } catch (Throwable t) {
+                System.out.println(sb.toString());
+                System.out.println("ERRRRRRRRRRRRRRRRRRr");
+            }
             System.out.println(f.getAbsolutePath());
+
         }
 
     }
