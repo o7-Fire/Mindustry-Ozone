@@ -1,12 +1,13 @@
 import Atom.Meth;
 import Atom.Random;
 import Atom.Time.Countdown;
-import Atom.Utility.Utility;
+import com.google.googlejavaformat.java.Formatter;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Obfuscate {
     public static double avg(ArrayList<Long> arr) {
@@ -21,9 +22,6 @@ public class Obfuscate {
         File root = new File("src/main/java/Ozone/");
         if (!root.exists()) throw new RuntimeException("gay");
         ArrayList<File> files = recurse(root);
-        for (File f : files) {
-            System.out.println(f.getAbsolutePath());
-        }
         System.out.println("Total: " + files.size());
         System.out.println("Commit git crime");
         Process p = Runtime.getRuntime().exec("git commit -m \"yeet on earth, the compiler mean death\"");
@@ -37,12 +35,23 @@ public class Obfuscate {
                     continue;
                 }
                 for (String sa : ar) {
-                
+                    String mod = (obfuscate(sa));
+                    String org = ("\"" + sa + "\"");
+                    s = replace(org, mod, s);
+                    System.out.println(mod);
+                    System.out.println(org);
+                    System.out.println("\n");
                 }
-                System.out.println(Utility.joiner(ar, ", "));
+                sb.append(s);
             }
+            System.out.println(new Formatter().formatSource(sb.toString()));
+            System.out.println(f.getAbsolutePath());
         }
 
+    }
+
+    public static String replace(String regex, String replace, String data) {
+        return Pattern.compile(regex, Pattern.LITERAL).matcher(data).replaceFirst(replace);
     }
 
     // "pac" = new String(new byte[]{102144/912, 97 , 99})
@@ -50,6 +59,7 @@ public class Obfuscate {
         String temp = "new String(new byte[]{";
         String teme = "})";
         StringBuilder sb = new StringBuilder();
+        if (s.isEmpty()) return temp + teme;
         sb.append(temp);
         for (int c : s.toCharArray()) {
             int rand = Random.getInt();
@@ -58,6 +68,7 @@ public class Obfuscate {
             sb.append(gay);
             sb.append(',');
         }
+        sb.deleteCharAt(sb.length() - 1);
         sb.append(teme);
         return sb.toString();
     }
@@ -71,7 +82,6 @@ public class Obfuscate {
             if (!skip)
                 if (c == s) {
                     f = !f;
-                    sb.append(s);
                     continue;
                 }
             if (skip) skip = false;
