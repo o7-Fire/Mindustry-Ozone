@@ -11,5 +11,6 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testImplementation 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'
+    testImplementation 'com.github.o7-Fire:Atomic-Library:f0b1fec517'
     implementation project(":Desktop")
 }
