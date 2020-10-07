@@ -1,4 +1,4 @@
-package Ozone;
+package Garbage;
 
 public class Settings {
 

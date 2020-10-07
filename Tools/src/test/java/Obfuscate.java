@@ -1,5 +1,4 @@
 import Atom.Meth;
-import Atom.Random;
 import Atom.Time.Countdown;
 import com.google.googlejavaformat.java.Formatter;
 import org.junit.Test;
@@ -71,6 +70,22 @@ public class Obfuscate {
         return Pattern.compile(regex, Pattern.LITERAL).matcher(data).replaceFirst(replace);
     }
 
+    public static String getBinary(String s) {
+        byte[] bytes = s.getBytes();
+        StringBuilder binary = new StringBuilder();
+        binary.append("\"");
+        for (byte b : bytes) {
+            int val = b;
+            for (int i = 0; i < 8; i++) {
+                binary.append((val & 128) == 0 ? 0 : 1);
+                val <<= 1;
+            }
+            binary.append(' ');
+        }
+        binary.append("\"");
+        return binary.toString();
+    }
+
     // "pac" = new String(new byte[]{102144/912, 97 , 99})
     public static String obfuscate(String s) {
         String temp = "new String(new byte[]{";
@@ -79,10 +94,9 @@ public class Obfuscate {
         if (s.isEmpty()) return temp + teme;
         sb.append(temp);
         for (int c : s.toCharArray()) {
-            int rand = Random.getInt();
-            int main = c * rand;
-            String gay = main + "/" + rand;
-            sb.append(gay);
+            sb.append("Integer.parseInt(");
+            sb.append(getBinary(String.valueOf(c)));
+            sb.append(", 2)");
             sb.append(',');
         }
         sb.deleteCharAt(sb.length() - 1);

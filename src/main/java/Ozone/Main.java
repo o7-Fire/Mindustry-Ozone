@@ -1,6 +1,7 @@
 package Ozone;
 
 import Atom.Random;
+import Garbage.Settings;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
 import Ozone.Patch.DesktopInput;

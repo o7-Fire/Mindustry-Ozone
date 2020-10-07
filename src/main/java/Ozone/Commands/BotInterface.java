@@ -1,7 +1,7 @@
 package Ozone.Commands;
 
+import Garbage.Settings;
 import Ozone.Commands.Task.Task;
-import Ozone.Settings;
 import arc.Events;
 import arc.math.geom.Position;
 import arc.math.geom.Vec2;

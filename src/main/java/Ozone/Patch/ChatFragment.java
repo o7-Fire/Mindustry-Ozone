@@ -3,8 +3,8 @@ package Ozone.Patch;
 
 import Atom.Time.Countdown;
 import Atom.Utility.Utility;
+import Garbage.Settings;
 import Ozone.Commands.Commands;
-import Ozone.Settings;
 import arc.Core;
 import arc.Input;
 import arc.graphics.Color;

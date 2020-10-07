@@ -1,7 +1,7 @@
 package Ozone.Patch;
 
 import Atom.Reflect.Reflect;
-import Ozone.Settings;
+import Garbage.Settings;
 import arc.Core;
 import arc.util.Log;
 import mindustry.Vars;
