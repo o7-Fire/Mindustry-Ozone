@@ -94,6 +94,7 @@ public class Obfuscate {
         if (s.isEmpty()) return temp + teme;
         sb.append(temp);
         for (int c : s.toCharArray()) {
+            sb.append("(byte)");
             sb.append("Integer.parseInt(");
             sb.append(getBinary(String.valueOf(c)));
             sb.append(", 2)");
