@@ -111,7 +111,6 @@ public class Obfuscate {
             sb.append(temp);
             for (int c : s.toCharArray()) {
                 sb.append(c);
-                sb.append(", 2)");
                 sb.append(',');
             }
             sb.deleteCharAt(sb.length() - 1);
