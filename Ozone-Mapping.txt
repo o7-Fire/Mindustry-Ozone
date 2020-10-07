@@ -68,7 +68,7 @@ Ozone.Commands.Commands$Command -> Ozone.a.c:
     java.lang.String description -> b
     arc.scene.style.TextureRegionDrawable icon -> c
     Ozone.UI.OzoneMenu menu -> d
-    Ozone.UI.PlayerList playerList -> e
+    Ozone.UI.CommandsListFrag commFrag -> e
     void <init>(java.util.function.Consumer,java.lang.String) -> <init>
     void <init>(java.util.function.Consumer,java.lang.String,arc.scene.style.TextureRegionDrawable) -> <init>
     boolean passable(mindustry.world.Tile) -> a
@@ -120,7 +120,8 @@ Ozone.Interface -> Ozone.a:
     void <clinit>() -> <clinit>
 Ozone.Main -> Ozone.b:
     void init() -> a
-    void patch() -> b
+    void loadSettings() -> b
+    void patch() -> c
 Ozone.Main$1 -> Ozone.c:
     void <init>() -> <init>
 Ozone.Patch.DesktopInput -> Ozone.b.a:
@@ -171,6 +172,8 @@ Ozone.Patch.SettingsDialog$4 -> Ozone.b.h:
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
+Ozone.Patch.Translation -> Ozone.b.i:
+    void patch() -> a
 Ozone.Pre.Download -> Ozone.c.a:
     java.net.URL url -> b
     java.util.concurrent.atomic.AtomicInteger downloaded -> a
@@ -224,16 +227,17 @@ Ozone.UI.CommandsListFrag -> Ozone.e.a:
     void build(arc.scene.Group) -> build
     void rebuild() -> b
     void toggle() -> a
-    void lambda$rebuild$11(java.lang.String,java.util.Map$Entry) -> a
-    void lambda$rebuild$10(java.util.Map$Entry) -> a
+    void lambda$rebuild$12(java.lang.String,java.util.Map$Entry) -> a
+    void lambda$rebuild$11(java.util.Map$Entry) -> a
+    java.lang.CharSequence lambda$rebuild$10(java.lang.String) -> a
     java.lang.CharSequence lambda$rebuild$9(java.util.Map$Entry) -> b
     void lambda$build$8(arc.scene.ui.layout.Table) -> a
     void lambda$build$7(arc.scene.ui.layout.Table) -> b
     void lambda$build$6(arc.scene.ui.layout.Table) -> c
     void lambda$build$5() -> c
-    void lambda$build$4(java.lang.String) -> a
+    void lambda$build$4(java.lang.String) -> b
     void lambda$build$3(java.lang.String,java.lang.String) -> a
-    void lambda$build$2(java.lang.String) -> b
+    void lambda$build$2(java.lang.String) -> c
     void lambda$build$1() -> d
     boolean lambda$build$0() -> e
 Ozone.UI.CommandsListFrag$1 -> Ozone.e.b:
@@ -245,51 +249,12 @@ Ozone.UI.OzoneMenu -> Ozone.e.c:
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>
     void hide() -> hide
     void setup() -> a
-    void lambda$setup$6(arc.scene.ui.layout.Table) -> a
-    void lambda$setup$5() -> b
-    void lambda$setup$4(java.lang.String) -> a
-    java.lang.CharSequence lambda$setup$3() -> c
-    void lambda$setup$2() -> d
-    void lambda$setup$1() -> e
+    void lambda$setup$5(arc.scene.ui.layout.Table) -> a
+    void lambda$setup$4() -> b
+    void lambda$setup$3(java.lang.String) -> a
+    java.lang.CharSequence lambda$setup$2() -> c
+    void lambda$setup$1() -> d
     void lambda$new$0(arc.input.KeyCode) -> a
-Ozone.UI.PlayerList -> Ozone.e.d:
-    arc.scene.ui.layout.Table content -> a
-    boolean visible -> b
-    arc.util.Interval timer -> c
-    arc.scene.ui.TextField sField -> d
-    boolean found -> e
-    void <init>() -> <init>
-    void build(arc.scene.Group) -> build
-    void rebuild() -> b
-    void toggle() -> a
-    void lambda$rebuild$24(float,mindustry.gen.Player) -> a
-    void lambda$rebuild$23(mindustry.gen.Player) -> a
-    void lambda$rebuild$22(mindustry.gen.Player) -> b
-    void lambda$rebuild$21(float,mindustry.gen.Player,mindustry.net.NetConnection,arc.scene.ui.layout.Table) -> a
-    void lambda$rebuild$20(mindustry.gen.Player) -> c
-    arc.scene.event.Touchable lambda$rebuild$19() -> c
-    boolean lambda$rebuild$18(arc.scene.ui.ImageButton) -> a
-    void lambda$rebuild$17(mindustry.gen.Player,arc.scene.ui.ImageButton) -> a
-    void lambda$rebuild$16(mindustry.gen.Player,mindustry.net.NetConnection) -> a
-    void lambda$rebuild$15(java.lang.String,mindustry.gen.Player) -> a
-    void lambda$rebuild$14(java.lang.String) -> a
-    void lambda$rebuild$13(mindustry.gen.Player) -> d
-    void lambda$rebuild$12(mindustry.gen.Player) -> e
-    void lambda$rebuild$11(mindustry.gen.Player) -> f
-    void lambda$rebuild$10(mindustry.gen.Player) -> g
-    boolean lambda$rebuild$9(mindustry.gen.Player) -> h
-    void lambda$build$8(arc.scene.ui.layout.Table) -> a
-    void lambda$build$7(arc.scene.ui.layout.Table) -> b
-    void lambda$build$6(arc.scene.ui.layout.Table) -> c
-    boolean lambda$build$5(arc.scene.ui.TextButton) -> a
-    boolean lambda$build$4(arc.scene.ui.TextButton) -> b
-    void lambda$build$3(java.lang.String) -> b
-    java.lang.CharSequence lambda$build$2() -> d
-    void lambda$build$1() -> e
-    boolean lambda$build$0() -> f
-Ozone.UI.PlayerList$1 -> Ozone.e.e:
-    void <init>(Ozone.UI.PlayerList) -> <init>
-    void draw() -> draw
 com.formdev.flatlaf.FlatClientProperties -> com.formdev.flatlaf.FlatClientProperties:
     java.lang.String BUTTON_TYPE -> BUTTON_TYPE
     java.lang.String BUTTON_TYPE_SQUARE -> BUTTON_TYPE_SQUARE

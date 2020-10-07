@@ -2,3 +2,4 @@
 -keep class Ozone.Settings { *; }
 -printmapping Ozone-Mapping.txt
 -keepattributes Signature
+-optimizations !code/simplification/arithmetic
