@@ -89,37 +89,28 @@ public class Obfuscate {
 
     // "pac" = new String(new byte[]{102144/912, 97 , 99})
     public static String obfuscate(String s) {
-        if (Random.getBool()) {
+
             String temp = "new String(new byte[]{";
             String teme = "})";
             StringBuilder sb = new StringBuilder();
-            if (s.isEmpty()) return temp + teme;
+
+        if (s.isEmpty()) return temp + teme;
             sb.append(temp);
             for (int c : s.toCharArray()) {
-                sb.append(c);
-                sb.append(", 2)");
+                if (Random.getBool())
+                    sb.append(c);
+                else
+                    sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
                 sb.append(',');
             }
             sb.deleteCharAt(sb.length() - 1);
             sb.append(teme);
             return sb.toString();
-        } else {
-            String temp = "new String(new byte[]{";
-            String teme = "})";
-            StringBuilder sb = new StringBuilder();
-            if (s.isEmpty()) return temp + teme;
-            sb.append(temp);
-            for (int c : s.toCharArray()) {
-                sb.append(c);
-                sb.append(',');
-            }
-            sb.deleteCharAt(sb.length() - 1);
-            sb.append(teme);
-            return sb.toString();
-        }
+
     }
 
     public static ArrayList<String> yeet(char s, String data) {
+
         boolean f = false, skip = false;
         ArrayList<String> dats = new ArrayList<>();
         if (!data.contains(String.valueOf(s))) return dats;
