@@ -5,6 +5,7 @@ import com.google.googlejavaformat.java.Formatter;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -45,13 +46,22 @@ public class Obfuscate {
                 }
                 sb.append(s);
             }
+            String g = sb.toString();
             try {
-                System.out.println(new Formatter().formatSource(sb.toString()));
+                g = new Formatter().formatSource(sb.toString());
             } catch (Throwable t) {
+                t.printStackTrace();
                 System.out.println(sb.toString());
                 System.out.println("ERRRRRRRRRRRRRRRRRRr");
             }
             System.out.println(f.getAbsolutePath());
+            try {
+                FileWriter f2 = new FileWriter(f, false);
+                f2.write(g);
+                f2.close();
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
 
         }
 
