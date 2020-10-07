@@ -1,4 +1,5 @@
 import Atom.Meth;
+import Atom.Random;
 import Atom.Time.Countdown;
 import com.google.googlejavaformat.java.Formatter;
 import org.junit.Test;
@@ -88,21 +89,35 @@ public class Obfuscate {
 
     // "pac" = new String(new byte[]{102144/912, 97 , 99})
     public static String obfuscate(String s) {
-        String temp = "new String(new byte[]{";
-        String teme = "})";
-        StringBuilder sb = new StringBuilder();
-        if (s.isEmpty()) return temp + teme;
-        sb.append(temp);
-        for (int c : s.toCharArray()) {
-            sb.append("(byte)");
-            sb.append("Integer.parseInt(");
-            sb.append(getBinary(String.valueOf(c)));
-            sb.append(", 2)");
-            sb.append(',');
+        if (Random.getBool()) {
+            String temp = "new String(new byte[]{";
+            String teme = "})";
+            StringBuilder sb = new StringBuilder();
+            if (s.isEmpty()) return temp + teme;
+            sb.append(temp);
+            for (int c : s.toCharArray()) {
+                sb.append(c);
+                sb.append(", 2)");
+                sb.append(',');
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            sb.append(teme);
+            return sb.toString();
+        } else {
+            String temp = "new String(new byte[]{";
+            String teme = "})";
+            StringBuilder sb = new StringBuilder();
+            if (s.isEmpty()) return temp + teme;
+            sb.append(temp);
+            for (int c : s.toCharArray()) {
+                sb.append(c);
+                sb.append(", 2)");
+                sb.append(',');
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            sb.append(teme);
+            return sb.toString();
         }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append(teme);
-        return sb.toString();
     }
 
     public static ArrayList<String> yeet(char s, String data) {
