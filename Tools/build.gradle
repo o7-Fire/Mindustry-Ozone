@@ -10,5 +10,6 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'
     implementation project(":Desktop")
 }
