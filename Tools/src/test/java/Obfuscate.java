@@ -1,13 +1,16 @@
 import Atom.Meth;
 import Atom.Random;
+import Atom.Struct.Stream;
 import Atom.Time.Countdown;
 import com.google.googlejavaformat.java.Formatter;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Obfuscate {
@@ -21,12 +24,26 @@ public class Obfuscate {
 
     public static void main(String[] args) throws Exception {
         File root = new File("src/main/java/Ozone/");
-        if (!root.exists()) throw new RuntimeException("gay");
-        ArrayList<File> files = recurse(root);
-        System.out.println("Total: " + files.size());
+        File desktop = new File("Desktop/src/main/java/Ozone/");
+        File android = new File("Android/src/main/java/Ozone/");
+        if (!root.exists()) throw new RuntimeException(root.getAbsolutePath() + " doesnt exists");
+        if (!desktop.exists()) throw new RuntimeException(desktop.getAbsolutePath() + " doesnt exists");
+        if (!android.exists()) throw new RuntimeException(android.getAbsolutePath() + " doesnt exists");
+
+        ArrayList<File> core = recurse(root);
+        ArrayList<File> desk = recurse(desktop);
+        ArrayList<File> droid = recurse(android);
+        System.out.println("Total: " + (core.size() + desk.size() + droid.size()));
         System.out.println("Commit git crime");
         Process p = Runtime.getRuntime().exec("git commit -m \"yeet on earth, the compiler mean death\"");
+        Stream.readInputSync(p.getInputStream(), System.out::println, '\n');
+        if (p.waitFor() != 0) throw new RuntimeException("Failed to git commit");
+        obfusc(core);
+        obfusc(desk);
+        obfusc(droid);
+    }
 
+    public static void obfusc(List<File> files) throws IOException {
         for (File f : files) {
             StringBuilder sb = new StringBuilder();
             for (String s : Files.readAllLines(f.toPath())) {
@@ -52,7 +69,7 @@ public class Obfuscate {
             } catch (Throwable t) {
                 t.printStackTrace();
                 System.out.println(sb.toString());
-                System.out.println("ERRRRRRRRRRRRRRRRRRr");
+                System.out.println("ERRRRRRRRRRRRRRRRRR");
             }
             System.out.println(f.getAbsolutePath());
             try {

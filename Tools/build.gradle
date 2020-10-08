@@ -11,7 +11,7 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testImplementation 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'
-    testImplementation 'com.github.o7-Fire:Atomic-Library:1a6938a7be'
+    testImplementation 'com.github.o7-Fire:Atomic-Library:2baa4d27a2'
     testImplementation group: 'com.google.googlejavaformat', name: 'google-java-format', version: '1.7'
     implementation project(":Desktop")
 }
