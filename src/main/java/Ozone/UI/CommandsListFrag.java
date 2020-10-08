@@ -1,6 +1,7 @@
 package Ozone.UI;
 
 import Atom.Random;
+import Garbage.Settings;
 import Ozone.Commands.Commands;
 import Ozone.Commands.Task.CommandsSpam;
 import Ozone.Commands.Task.Task;
@@ -99,7 +100,7 @@ public class CommandsListFrag extends Fragment {
                 button.label(() -> name);
                 button.button(Icon.settings, Styles.clearPartiali, () -> ui.showConfirm(name, "are you sure want to run commands: " + name, () -> {
                     String com = cl.getKey();
-                    Commands.call(com);
+                    Commands.call(Settings.commandsPrefix + com);
                 }));
 
             } catch (Throwable a) {

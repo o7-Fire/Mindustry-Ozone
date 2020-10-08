@@ -49,15 +49,14 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
     private int historyPos = 0;
     private int scrollPos = 0;
     private Fragment container = new Fragment() {
+        @Override
         public void build(Group parent) {
-            Core.scene.add(ChatFragment.this);
+            scene.add(ChatFragment.this);
         }
     };
     private HashMap<String, AntiSpam> antiSpam = new HashMap<>();
 
     public ChatFragment() {
-        super();
-
         setFillParent(true);
         font = Fonts.def;
 
@@ -70,7 +69,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
                 }
             }
 
-            return net.active();
+            return net.active() && ui.hudfrag.shown();
         });
 
         update(() -> {
@@ -97,18 +96,14 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
         setup();
     }
 
-    @Override
     public Fragment container() {
         return container;
     }
 
-
-    @Override
     public void clearMessages() {
-        antiSpam.clear();
-        this.messages.clear();
-        this.history.clear();
-        this.history.insert(0, "");
+        messages.clear();
+        history.clear();
+        history.insert(0, "");
     }
 
     private void setup() {
@@ -184,6 +179,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
             fadetime -= Time.delta / 180f;
     }
 
+
     private void sendMessage() {
         String message = this.chatfield.getText();
         this.clearChatInput();
@@ -221,7 +217,6 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
             sendMessage();
         }
     }
-
 
     @Override
     public void hide() {

@@ -3,6 +3,7 @@ package Ozone.Commands;
 import Atom.Random;
 import Atom.Time.Countdown;
 import Atom.Utility.Utility;
+import Garbage.Settings;
 import Ozone.Commands.Task.DestructBlock;
 import Ozone.Commands.Task.Move;
 import Ozone.Manifest;
@@ -135,7 +136,7 @@ public class Commands {
     }
 
     public static boolean call(String message) {
-        //if (!message.startsWith(Settings.commandsPrefix)) return false;
+        if (!message.startsWith(Settings.commandsPrefix)) return false;
         String[] arg = message.replaceFirst(",", "").split(" ");
         if (!commandsList.containsKey(arg[0].toLowerCase())) {
             tellUser("Commands not found");

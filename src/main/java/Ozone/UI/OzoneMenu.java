@@ -2,6 +2,7 @@ package Ozone.UI;
 
 
 import Atom.Reflect.Reflect;
+import Garbage.Settings;
 import Ozone.Commands.Commands;
 import Ozone.Interface;
 import Ozone.Manifest;
@@ -23,7 +24,7 @@ public class OzoneMenu extends BaseDialog {
             if (key == KeyCode.escape || key == KeyCode.back) {
                 Core.app.post(this::hide);
             } else if (key == KeyCode.enter) {
-                Commands.call(commands);
+                Commands.call(Settings.commandsPrefix + commands);
                 commands = "";
                 commandsField.clearText();
             }
@@ -62,8 +63,8 @@ public class OzoneMenu extends BaseDialog {
             s.label(() -> Core.bundle.get("Commands") + ": ");
             commandsField = s.field(commands, (res) -> commands = res).fillX().growX().get();
             s.button(Icon.zoom, () -> {
-                //Commands.call(Settings.commandsPrefix + commands);
-                Commands.call(commands);
+                Commands.call(Settings.commandsPrefix + commands);
+                //Commands.call(commands);
                 commands = "";
                 commandsField.clearText();
             });
