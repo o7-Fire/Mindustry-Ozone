@@ -97,6 +97,7 @@ public class Preload {
         Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
         method.setAccessible(true);
         method.invoke(clz.getClass().getClassLoader(), atom.toURI().toURL());
+        Log.infoTag("Ozone", "Library loaded by using java.net.URLClassLoader.addURL(java.net.URL)");
         //shit we did it without any error
     }
 }
