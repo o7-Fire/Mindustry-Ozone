@@ -21,6 +21,7 @@ public class Move extends Task {
     private Seq<Tile> pathfindingCache = new Seq<>();
     private Vec2 vec = new Vec2();
     private boolean alreadyOverlay = false;
+
     public Move(float x, float y) {
         this(new Vec2(x, y));
     }
@@ -31,15 +32,15 @@ public class Move extends Task {
         destTile = Vars.world.tile(Math.round(dest.x), Math.round(dest.y));
         setTick(10);
         if (!Vars.player.unit().isFlying()) {
-              pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, Pathfinding::isSafe, Pathfinding::passable);
+            pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, Pathfinding::isSafe, Pathfinding::passable);
         }
     }
 
     @Override
     public void taskCompleted() {
-        if(Vars.net.active())
+        if (Vars.net.active())
             Vars.player.reset();
-        for(Tile t : pathfindingCache)
+        for (Tile t : pathfindingCache)
             t.clearOverlay();
         super.taskCompleted();
     }
@@ -54,42 +55,41 @@ public class Move extends Task {
 
     @Override
     public void update() {
-        if(!tick())
+        if (!tick())
             if (Vars.player.dead()) return;
-            if (!Vars.player.unit().isFlying()) {
-                if (pathfindingCache.isEmpty()) return;
-                if(!alreadyOverlay)
-                    for (Tile t : pathfindingCache) {
-                        if(t.x  + t.y == destTile.x+destTile.y)
-                            alreadyOverlay = true;
-                        if (t.block() == null)
-                            tellUser("Null block: " + t.toString());
-                        else if (t.block().isFloor())
-                            t.setOverlay(Blocks.magmarock);
-                        else if (t.block().isStatic())
-                            t.setOverlay(Blocks.dirtWall);
-                    }
-                if (destTile != null) {
-                    if (distanceTo(BotInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance) {
-                        pathfindingCache.remove(0).clearOverlay();
-                    }
+        if (!Vars.player.unit().isFlying()) {
+            if (pathfindingCache.isEmpty()) return;
+            if (!alreadyOverlay)
+                for (Tile t : pathfindingCache) {
+                    if (t.x + t.y == destTile.x + destTile.y)
+                        alreadyOverlay = true;
+                    if (t.block() == null)
+                        tellUser("Null block: " + t.toString());
+                    else if (t.block().isFloor())
+                        t.setOverlay(Blocks.magmarock);
+                    else if (t.block().isStatic())
+                        t.setOverlay(Blocks.dirtWall);
                 }
-                if (pathfindingCache.isEmpty()) return;
-                destTile = pathfindingCache.get(0);
-                destTile.setOverlay(Blocks.dirt);
-            } else {
-                if (samePos(destTile, destTilePos, true)) {
-                    setMov(destTilePos);
-                    return;
+            if (destTile != null) {
+                if (distanceTo(BotInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance) {
+                    pathfindingCache.remove(0).clearOverlay();
                 }
             }
+            if (pathfindingCache.isEmpty()) return;
+            destTile = pathfindingCache.get(0);
+            destTile.setOverlay(Blocks.dirt);
+        } else {
+            if (samePos(destTile, destTilePos, true)) {
+                setMov(destTilePos);
+                return;
+            }
+        }
         setMov(destTile);
     }
 
     public float getCurrentDistance() {
         return (float) distanceTo(BotInterface.getCurrentTilePos(), destTilePos);
     }
-
 
 
 }

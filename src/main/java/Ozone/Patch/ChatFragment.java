@@ -115,7 +115,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
         chatfield.setMaxLength(Vars.maxTextLength);
         chatfield.getStyle().background = null;
         chatfield.getStyle().font = Fonts.chat;
-        chatfield.getStyle().fontColor = Color.white;
+        chatfield.getStyle().fontColor = Color.coral;
         chatfield.setStyle(chatfield.getStyle());
 
         bottom().left().marginBottom(offsety).marginLeft(offsetx * 2).add(fieldlabel).padBottom(6f);

@@ -51,7 +51,6 @@ public class BotInterface {
     }
 
 
-
     public static ArrayList<Tile> getNearby(Tile tile, int rotation, int range) {
         ArrayList<Tile> tiles = new ArrayList<>();
         if (rotation == 0) {
