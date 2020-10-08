@@ -119,6 +119,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
         chatfield.setStyle(chatfield.getStyle());
 
         bottom().left().marginBottom(offsety).marginLeft(offsetx * 2).add(fieldlabel).padBottom(6f);
+        //its somehow fixed chatfield offset
         row();
         add(chatfield).padBottom(offsety).padLeft(offsetx).growX().padRight(offsetx).height(28);
 
