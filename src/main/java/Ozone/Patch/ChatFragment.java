@@ -42,7 +42,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
     private Label fieldlabel = new Label(">");
     private Font font;
     private GlyphLayout layout = new GlyphLayout();
-    private float offsetx = Scl.scl(4), offsety = Scl.scl(4), fontoffsetx = Scl.scl(2), chatspace = Scl.scl(50);
+    private float offsetx = Scl.scl(8), offsety = Scl.scl(4), fontoffsetx = Scl.scl(2), chatspace = Scl.scl(50);
     private Color shadowColor = new Color(0, 0, 0, 0.4f);
     private float textspacing = Scl.scl(10);
     private Seq<String> history = new Seq<>();
@@ -119,7 +119,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
         chatfield.setStyle(chatfield.getStyle());
 
         bottom().left().marginBottom(offsety).marginLeft(offsetx * 2).add(fieldlabel).padBottom(6f);
-
+        row();
         add(chatfield).padBottom(offsety).padLeft(offsetx).growX().padRight(offsetx).height(28);
 
         if (Vars.mobile) {
