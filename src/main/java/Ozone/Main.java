@@ -36,7 +36,7 @@ public class Main {
 
 
     public static void loadContent() {
-        Vars.netClient
+
     }
 
     private static void patchLast() {
