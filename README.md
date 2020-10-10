@@ -7,12 +7,12 @@
 * 4 thread CPU
 * 4 GB of RAM for bots operation
 
-# Build
+# Build 
 * 0.Install JDK 14
 * 1.Download `Mindustry.jar` & `Atomic.jar`
 * 2.Copy it to `libs` folder
 * 3.run `./gradlew jar`
-* 4.you get the mods in `build/libs/`
+* 4.you get the mods in `Desktop/build/libs/`
 
 # Install
 * 0.Download `Ozone.jar`
