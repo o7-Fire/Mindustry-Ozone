@@ -22,9 +22,9 @@ jobs:
     - name: Build mod jar
       run: ./gradlew deploy
     - name: Output Android
-      run: ls ./Android/build/libs
+      run: ls Android/build/libs
     - name: Output Desktop
-      run: ls ./Desktop/build/libs
+      run: ls Desktop/build/libs
     - name: Upload built jar file
       uses: actions/upload-artifact@v2
       with:
