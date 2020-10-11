@@ -38,16 +38,28 @@ public class Obfuscate {
         Process p = Runtime.getRuntime().exec("git commit -m \"yeet on earth, the compiler mean death\"");
         Stream.readInputSync(p.getInputStream(), System.out::println, '\n');
         if (p.waitFor() != 0) throw new RuntimeException("Failed to git commit");
-        obfusc(core);
-        obfusc(desk);
-        obfusc(droid);
+        obfuscate(core);
+        obfuscate(desk);
+        obfuscate(droid);
     }
 
-    public static void obfusc(List<File> files) throws IOException {
+    public static void obfuscate(List<File> files) throws IOException {
         for (File f : files) {
+            String extension = "";
+            int i = f.getName().lastIndexOf('.');
+            if (i > 0) {
+                extension = f.getName().substring(i + 1);
+            }
+            if (!extension.equals("java")) continue;
             StringBuilder sb = new StringBuilder();
             for (String s : Files.readAllLines(f.toPath())) {
-                if (s.trim().startsWith("//")) continue;
+                s = s.trim();
+                if (s.isEmpty()) continue;
+                if (s.contains("//")) {
+                    int loc = s.indexOf("//");
+                    if (loc == 0) continue;//bruh
+                    s = replace(s.substring(loc + 1), "", s);
+                }
                 ArrayList<String> ar = yeet('"', s);
                 if (ar.isEmpty()) {
                     sb.append(s).append("\n");
@@ -155,6 +167,10 @@ public class Obfuscate {
     public void name() {
         ArrayList<Long> obfuscated = new ArrayList<>();
         ArrayList<Long> normal = new ArrayList<>();
+        ArrayList<String> yet = new ArrayList<>();
+        yet.add("//yes yes no //yes yes no");
+        yet.add("String s = \"literal\";//ofc");
+        yet.add("String gay = \"absolute\";");
         for (int i = 0; i < 1000; i++) {
             Countdown.start();
             String s = new String(new byte[]{984928 / 8794, 852339 / 8787, 447579 / 4521, 768902 / 7186, 555228 / 5724, 795469 / 7723, 294920 / 2920, 318112 / 9941, 416488 / 5272, 87352 / 716, 677100 / 6100, 944350 / 8585, 399354 / 3954, 11730 / 255, 43148 / 644, 291153 / 2623, 986777 / 9053, 929225 / 8525, 556586 / 5738, 347490 / 3159, 820900 / 8209, 669185 / 5819, 240779 / 4081,});
