@@ -188,6 +188,7 @@ public class Obfuscate {
 
     public static ArrayList<File> recurse(File f) {
         ArrayList<File> files = new ArrayList<>();
+        if (f.listFiles() == null) return files;
         for (File c : f.listFiles()) {
             if (c.isDirectory())
                 files.addAll(recurse(c));
