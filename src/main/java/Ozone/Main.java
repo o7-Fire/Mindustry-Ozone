@@ -11,11 +11,13 @@ import Ozone.Patch.Translation;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
 import arc.Core;
+import arc.Events;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
 import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
+import mindustry.game.EventType;
 import mindustry.gen.Tex;
 import mindustry.graphics.Pal;
 import mindustry.ui.Fonts;
@@ -32,6 +34,7 @@ public class Main {
         initUI();
         BotInterface.init();
         Commands.init();
+        initEvent();
     }
 
 
@@ -44,7 +47,9 @@ public class Main {
     }
 
     private static void initEvent() {
-
+        Events.on(EventType.PlayerJoin.class, s -> {
+            
+        });
     }
 
     public static void update() {

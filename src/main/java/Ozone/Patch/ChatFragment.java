@@ -26,6 +26,8 @@ import mindustry.input.Binding;
 import mindustry.ui.Fonts;
 import mindustry.ui.fragments.Fragment;
 
+import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashMap;
 
 import static arc.Core.input;
@@ -311,14 +313,16 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
         }
     }
 
-    private static class ChatMessage {
+    public static class ChatMessage implements Serializable {
         public final String sender;
         public final String message;
         public final String formattedMessage;
+        public final Instant date;
 
         public ChatMessage(String message, String sender) {
             this.message = message;
             this.sender = sender;
+            this.date = Instant.now();
             if (sender == null) {
                 this.formattedMessage = message;
             } else {
@@ -330,6 +334,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
         public ChatMessage(String message, String sender, String antiSpam) {
             this.message = message;
             this.sender = sender;
+            this.date = Instant.now();
             if (sender == null) {
                 this.formattedMessage = message;
             } else {
