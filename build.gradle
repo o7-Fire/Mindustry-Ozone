@@ -67,7 +67,7 @@ allprojects {
 ext {
 
     MindustryHash = "v105"
-    atomHash = "d2e69aaa4d"
+    atomHash = "cfa7716a8e"
 
     writeProcessors = {
         new File(rootDir, "CodeGen/src/main/resources/META-INF/services/").mkdirs()

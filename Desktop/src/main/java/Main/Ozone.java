@@ -1,6 +1,7 @@
 package Main;
 
 import Ozone.Main;
+import Ozone.Manifest;
 import Ozone.Pre.Preload;
 import arc.Core;
 import arc.Events;
@@ -18,20 +19,18 @@ import java.net.URLClassLoader;
  * @author Itzbenz
  */
 public class Ozone extends Mod {
-    public final static String AtomHash = "a2961d4c26", atomFile = "Atomic-" + AtomHash + ".jar", libs = "libs";
-    public final static String AtomDownload = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/Atomic/" + AtomHash + "/Atomic-" + AtomHash + ".jar";
-    public boolean libraryURLLoaded;
-    public boolean libraryExists;
-    public URLClassLoader classloader;
-    public Mod mainMod = null;
     //get location of this Ozone mods
     public static File ozone = new File(Ozone.class.getProtectionDomain().getCodeSource().getLocation().getFile());
     //get Mods directory from mods/Ozone.jar
     public static File parentFile = ozone.getParentFile();
     //mods/libs directory
-    public static File library = new File(parentFile, libs);
+    public static File library = new File(parentFile, Manifest.libs);
     //mods/libs/Atomic-AtomHash.jar
-    public static File atom = new File(library, atomFile);
+    public static File atom = new File(library, Manifest.atomFile);
+    public boolean libraryURLLoaded;
+    public boolean libraryExists;
+    public URLClassLoader classloader;
+    public Mod mainMod = null;
 
     public Ozone() {
         //gay spy, actually no
@@ -44,7 +43,7 @@ public class Ozone extends Mod {
         library.mkdirs();
         try {
             //Check library
-            Preload.incites(atom, AtomDownload, this);
+            Preload.incites(atom, Manifest.atomDownloadLink, this);
             //no error thrown ? good
             libraryURLLoaded = true;
         } catch (FileNotFoundException t) {

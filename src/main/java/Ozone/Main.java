@@ -48,7 +48,7 @@ public class Main {
 
     private static void initEvent() {
         Events.on(EventType.PlayerJoin.class, s -> {
-            
+
         });
     }
 

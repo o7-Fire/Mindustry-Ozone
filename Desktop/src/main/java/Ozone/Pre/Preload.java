@@ -58,7 +58,7 @@ public class Preload {
                 SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Click OK to continue");
                 //how to download a file synchronously
                 URL jitpack = new URL(AtomDownload);
-                File temp = new File(atom.getParent(), "/"+System.currentTimeMillis() +".temp");
+                File temp = new File(atom.getParent(), "/" + System.currentTimeMillis() + ".temp");
                 Download download = new Download(jitpack, temp);
                 download.run();
                 Files.copy(temp.toPath(), atom.toPath(), StandardCopyOption.REPLACE_EXISTING);
