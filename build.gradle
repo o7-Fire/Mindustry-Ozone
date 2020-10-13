@@ -9,14 +9,15 @@ buildscript {
     }
     dependencies {
         classpath 'com.guardsquare:proguard-gradle:7.0.0'
-
+        classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.5.1"
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'java-library'
 
 allprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: "com.github.spotbugs"
     repositories {
         mavenLocal()
         mavenCentral()
