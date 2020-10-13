@@ -100,7 +100,7 @@ public class Commands {
     public static void taskDeconstruct(ArrayList<String> s) {
         if (s.size() < 2) {
             tellUser("Not enough arguments");
-            tellUser("Usage: task-deconstruct x(coordinate) y(coordinate) half(boolean)(optional default: false)");
+            tellUser("Usage: task-deconstruct x(type: coordinate) y(type: coordinate) half(type: boolean, optional default: false)");
             return;
         }
         try {
@@ -168,7 +168,7 @@ public class Commands {
     public static void infoPathfinding(ArrayList<String> s) {
         if (s.size() < 4) {
             tellUser("Not enough arguments");
-            tellUser("usage: " + "info-pathfinding x(source-coordinate) y(source-coordinate) x(target-coordinate) y(target-coordinate) block(Blocks)(optional)");
+            tellUser("usage: " + "info-pathfinding x(type: source-coordinate) y(type: source-coordinate) x(type: target-coordinate) y(type: target-coordinate) block(type: Blocks, optional)");
             return;
         }
         try {
