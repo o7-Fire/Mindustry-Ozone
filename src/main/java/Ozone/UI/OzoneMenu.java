@@ -39,7 +39,7 @@ public class OzoneMenu extends BaseDialog {
     public void hide() {
         super.hide();
         try {
-            if (!Vars.ui.hudfrag.shown())
+            if (!Vars.ui.hudfrag.shown)
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
         } catch (Throwable ignored) {
         }
@@ -72,7 +72,7 @@ public class OzoneMenu extends BaseDialog {
 
 
         try {
-            if (Vars.ui.hudfrag.shown())
+            if (Vars.ui.hudfrag.shown)
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
         } catch (Throwable ignored) {
         }

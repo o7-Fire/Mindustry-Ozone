@@ -1,7 +1,7 @@
 package Ozone.Commands;
 
-import Atom.Random;
 import Atom.Time.Countdown;
+import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Garbage.Settings;
 import Ozone.Commands.Task.DestructBlock;

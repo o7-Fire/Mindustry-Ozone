@@ -72,15 +72,22 @@ ext {
     writeProcessors = {
         new File(rootDir, "CodeGen/src/main/resources/META-INF/services/").mkdirs()
         def processorFile = new File(rootDir, "CodeGen/src/main/resources/META-INF/services/javax.annotation.processing.Processor")
-        def text = new StringBuilder()
+        def pluginFile = new File(rootDir, "CodeGen/src/main/resources/META-INF/services/com.sun.source.util.Plugin")
+        def processorText = new StringBuilder()
+        def pluginText = new StringBuilder()
         def files = new File(rootDir, "CodeGen/src/main/java")
         files.eachFileRecurse(groovy.io.FileType.FILES) { file ->
-            if (file.name.endsWith(".java") && (file.text.contains(" extends AtomProcessor") || (file.text.contains(" extends AbstractProcessor") && !file.text.contains("abstract class")))) {
-                text.append(file.path.substring(files.path.length() + 1)).append("\n")
+            if (file.name.endsWith(".java")&& !file.text.contains("abstract class")) {
+                if ((file.text.contains(" extends AtomProcessor") || (file.text.contains(" extends AbstractProcessor")))) {
+                    processorText.append(file.path.substring(files.path.length() + 1)).append("\n")
+                }else if((file.text.contains(" extends AtomPlugin") || (file.text.contains(" implements Plugin")))){
+                    pluginText.append(file.path.substring(files.path.length() + 1)).append("\n")
+                }
+
             }
         }
-
-        processorFile.text = text.toString().replace(".java", "").replace("/", ".").replace("\\", ".")
+        pluginFile.text =  pluginText.toString().replace(".java", "").replace("/", ".").replace("\\", ".")
+        processorFile.text = processorText.toString().replace(".java", "").replace("/", ".").replace("\\", ".")
     }
 
 }

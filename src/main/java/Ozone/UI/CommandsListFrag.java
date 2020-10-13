@@ -1,6 +1,6 @@
 package Ozone.UI;
 
-import Atom.Random;
+import Atom.Utility.Random;
 import Garbage.Settings;
 import Ozone.Commands.Commands;
 import Ozone.Commands.Task.CommandsSpam;

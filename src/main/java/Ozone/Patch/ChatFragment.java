@@ -71,7 +71,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
                 }
             }
 
-            return net.active() && ui.hudfrag.shown();
+            return net.active() && ui.hudfrag.shown;
         });
 
         update(() -> {

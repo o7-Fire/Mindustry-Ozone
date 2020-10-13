@@ -1,6 +1,6 @@
 package Ozone;
 
-import Atom.Random;
+import Atom.Utility.Random;
 import Garbage.Settings;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
@@ -49,6 +49,19 @@ public class Main {
     private static void initEvent() {
         Events.on(EventType.PlayerJoin.class, s -> {
 
+        });
+        Events.on(EventType.BlockDestroyEvent.class, s -> {
+
+        });
+        Events.on(EventType.BlockBuildBeginEvent.class, s -> {
+
+        });
+        Events.on(EventType.PlayerLeave.class, s -> {
+
+        });
+        Events.on(EventType.ConfigEvent.class, s -> {
+
+            Log.infoTag("ConfigEvent", s.tile.toString() + " has been changed");
         });
     }
 
@@ -123,7 +136,6 @@ public class Main {
             }
         };
         Manifest.commFrag = new CommandsListFrag();
-        ozoneStyle.stageBackground = Styles.none;
         Manifest.menu = new OzoneMenu(Core.bundle.get("ozone.hud"), ozoneStyle);
         Manifest.commFrag.build(Vars.ui.hudGroup);
 
