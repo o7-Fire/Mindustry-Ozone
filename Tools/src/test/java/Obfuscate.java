@@ -59,9 +59,12 @@ public class Obfuscate {
                 s = s.trim();
                 if (s.isEmpty()) continue;
                 if (s.contains("//")) {
+                    if (s.startsWith("//")) continue;
                     int loc = s.indexOf("//");
-                    if (loc == 0) continue;//bruh
-                    s = replace(s.substring(loc), "", s);
+                    while (itIsSurrounded('"', loc, s))
+                        loc = s.indexOf("//", loc);
+                    if (loc != -1)
+                        s = replace(s.substring(loc), "", s);
                 }
                 ArrayList<String> ar = yeet('"', s);
                 if (ar.isEmpty()) {
@@ -97,6 +100,28 @@ public class Obfuscate {
 
         }
 
+    }
+
+    // public static s = "gabe//itch";
+    // "oh//no";//"yet"
+    public static boolean itIsSurrounded(char o, int current, String data) {
+        ArrayList<Integer> openingIndex = new ArrayList<>();
+        int i = 0;
+        while (i != -1) {
+            i = data.indexOf(o, i);
+            if (i != -1)
+                openingIndex.add(i);
+        }
+        boolean yes = false;
+        for (int s : openingIndex) {
+            if (s < current) yes = false;
+            if (yes) {
+                if (s > current) return true;
+            } else {
+                if (s < current) yes = true;
+            }
+        }
+        return false;
     }
 
     public static String replace(String regex, String replace, String data) {
