@@ -110,7 +110,6 @@ public class Obfuscate {
         StringBuilder sb = new StringBuilder();
         String startOffset = Random.getString(Random.getInt(s.length()));
         String endOffset = Random.getString(Random.getInt(s.length()));
-        int actualLength = 0;//im lazy af
         boolean shouldOffset = Random.getBool();
         if (s.isEmpty()) return temp + teem;
         sb.append(temp);
@@ -118,7 +117,6 @@ public class Obfuscate {
         if (shouldOffset && !startOffset.isEmpty()) {
             //start offset
             for (int c : startOffset.toCharArray()) {
-                actualLength++;
                 if (Random.getBool())
                     sb.append(c);
                 else if (Random.getBool())
@@ -129,7 +127,6 @@ public class Obfuscate {
         }
         //actual
         for (int c : s.toCharArray()) {
-            actualLength++;
             if (Random.getBool())
                 sb.append(c);
             else if (Random.getBool())
