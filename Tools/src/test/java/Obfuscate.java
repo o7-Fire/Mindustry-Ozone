@@ -2,6 +2,7 @@ import Atom.Meth;
 import Atom.Random;
 import Atom.Time.Countdown;
 import com.google.googlejavaformat.java.Formatter;
+import com.google.googlejavaformat.java.FormatterException;
 import org.junit.Test;
 
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -42,7 +44,7 @@ public class Obfuscate {
         obfuscate(droid);
     }
 
-    public static void obfuscate(List<File> files) throws IOException {
+    public static void obfuscate(List<File> files) throws IOException, FormatterException {
         for (File f : files) {
             String extension = "";
             int i = f.getName().lastIndexOf('.');
@@ -50,8 +52,9 @@ public class Obfuscate {
                 extension = f.getName().substring(i + 1);
             }
             if (!extension.equals("java")) continue;
+            List<String> formattedS = new ArrayList<>(Arrays.asList(new Formatter().formatSource(new String(Files.readAllBytes(f.toPath()))).split("\n")));
             StringBuilder sb = new StringBuilder();
-            for (String s : Files.readAllLines(f.toPath())) {
+            for (String s : formattedS) {
                 s = s.trim();
                 if (s.isEmpty()) continue;
                 if (s.contains("//")) {
