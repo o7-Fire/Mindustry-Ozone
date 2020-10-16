@@ -51,7 +51,7 @@ public class Main {
                 Core.settings.getBoolOnce("ozoneEpilepsyWarning", () -> {
                     Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning",
                             "A very small percentage of people may experience a seizure when exposed to certain visual images, " +
-                                    "including flashing lights or patterns that may appear on certain UI element on the games.",
+                                    "including flashing lights or patterns that may appear on certain UI element in the game.",
                             "Accept", "Decline", () -> {
                             }, () -> {
                                 Settings.colorPatch = false;
