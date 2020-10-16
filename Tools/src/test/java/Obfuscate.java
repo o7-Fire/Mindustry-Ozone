@@ -45,6 +45,7 @@ public class Obfuscate {
     }
 
     public static void obfuscate(List<File> files) throws IOException, FormatterException {
+        "dont //remove this idiot".length();
         for (File f : files) {
             String extension = "";
             int i = f.getName().lastIndexOf('.');

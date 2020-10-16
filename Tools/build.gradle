@@ -15,4 +15,5 @@ dependencies {
     testImplementation group: 'com.google.googlejavaformat', name: 'google-java-format', version: '1.7'
     implementation project(":Desktop")
     implementation rootProject
+    testCompile 'com.github.ertugrulcetin:CommentRemover:1.2'
 }
