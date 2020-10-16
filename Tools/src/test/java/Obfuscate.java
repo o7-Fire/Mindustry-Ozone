@@ -1,6 +1,5 @@
 import Atom.Meth;
 import Atom.Random;
-import Atom.Struct.Stream;
 import Atom.Time.Countdown;
 import com.google.googlejavaformat.java.Formatter;
 import org.junit.Test;
@@ -38,7 +37,6 @@ public class Obfuscate {
         System.out.println("Total: " + (core.size() + desk.size() + droid.size()));
         System.out.println("Commit git crime");
         Process p = Runtime.getRuntime().exec("git commit -m \"yeet on earth, the compiler mean death\"");
-        Stream.readInputSync(p.getInputStream(), System.out::println, '\n');
         obfuscate(core);
         obfuscate(desk);
         obfuscate(droid);
@@ -107,18 +105,48 @@ public class Obfuscate {
         String temp = "new String(new byte[]{";
         String teem = "})";
         StringBuilder sb = new StringBuilder();
+        String startOffset = Random.getString(Random.getInt(s.length()));
+        String endOffset = Random.getString(Random.getInt(s.length()));
+        boolean shouldOffset = Random.getBool();
         if (s.isEmpty()) return temp + teem;
         sb.append(temp);
+
+        if (shouldOffset && !startOffset.isEmpty()) {
+            //start offset
+            for (int c : startOffset.toCharArray()) {
+                if (Random.getBool())
+                    sb.append(c);
+                else
+                    sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
+                sb.append(',');
+            }
+            sb.deleteCharAt(sb.length() - 1);
+        }
         //actual
         for (int c : s.toCharArray()) {
             if (Random.getBool())
                 sb.append(c);
-            else if (Random.getBool())
+            else
                 sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
             sb.append(',');
         }
         sb.deleteCharAt(sb.length() - 1);
-        sb.append(teem);
+        if (shouldOffset && !endOffset.isEmpty()) {
+            //end offset
+            for (int c : endOffset.toCharArray()) {
+                if (Random.getBool())
+                    sb.append(c);
+                else
+                    sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
+                sb.append(',');
+            }
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        if (!shouldOffset)
+            sb.append(teem);
+        else {
+            sb.append("}").append(", ").append(startOffset.length()).append(", ").append((startOffset.length() + s.length()) - endOffset.length()).append(")");
+        }
         return sb.toString();
 
     }
