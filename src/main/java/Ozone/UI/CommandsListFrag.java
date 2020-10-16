@@ -103,7 +103,10 @@ public class CommandsListFrag extends Fragment {
             }
             content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
             content.row();
-            content.image().height(4f).color(Color.gray).growX();
+            if (Settings.colorPatch)
+                content.image().height(4f).color(Color.valueOf(Random.getRandomHexColor())).growX();
+            else
+                content.image().height(4f).color(Color.gray).growX();
             content.row();
         }
 
