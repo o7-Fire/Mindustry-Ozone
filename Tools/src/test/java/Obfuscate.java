@@ -123,8 +123,8 @@ public class Obfuscate {
                     sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
                 sb.append(',');
             }
-            sb.deleteCharAt(sb.length() - 1);
         }
+        //aa,
         //actual
         for (int c : s.toCharArray()) {
             if (Random.getBool())
@@ -133,7 +133,7 @@ public class Obfuscate {
                 sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
             sb.append(',');
         }
-        sb.deleteCharAt(sb.length() - 1);
+        //aa,bb,
         if (shouldOffset && !endOffset.isEmpty()) {
             //end offset
             for (int c : endOffset.toCharArray()) {
@@ -143,8 +143,9 @@ public class Obfuscate {
                     sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
                 sb.append(',');
             }
-            sb.deleteCharAt(sb.length() - 1);
         }
+        if (sb.charAt(sb.length() - 1) == ',')
+            sb.deleteCharAt(sb.length() - 1);
         if (!shouldOffset)
             sb.append(teem);
         else {
