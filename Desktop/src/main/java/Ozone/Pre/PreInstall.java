@@ -90,7 +90,7 @@ public class PreInstall {
                 return;
             }
             try {
-                Download download = new Download(new URL(AtomDownload), atom);
+                DownloadSwing download = new DownloadSwing(new URL(AtomDownload), atom);
                 new Thread(() -> {
                     try {
                         download.run();
