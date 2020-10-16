@@ -39,7 +39,6 @@ public class Obfuscate {
         System.out.println("Commit git crime");
         Process p = Runtime.getRuntime().exec("git commit -m \"yeet on earth, the compiler mean death\"");
         Stream.readInputSync(p.getInputStream(), System.out::println, '\n');
-        if (p.waitFor() != 0) throw new RuntimeException("Failed to git commit");
         obfuscate(core);
         obfuscate(desk);
         obfuscate(droid);
