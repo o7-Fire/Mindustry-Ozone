@@ -60,7 +60,7 @@ public class Obfuscate {
                 if (s.contains("//")) {
                     int loc = s.indexOf("//");
                     if (loc == 0) continue;//bruh
-                    s = replace(s.substring(loc + 1), "", s);
+                    s = replace(s.substring(loc), "", s);
                 }
                 ArrayList<String> ar = yeet('"', s);
                 if (ar.isEmpty()) {
