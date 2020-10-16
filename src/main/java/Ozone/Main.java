@@ -48,11 +48,10 @@ public class Main {
 
     private static void initEvent() {
         Events.on(EventType.ClientLoadEvent.class, s -> {
-            if (Settings.colorPatch)
                 Core.settings.getBoolOnce("ozoneEpilepsyWarning", () -> {
                     Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning",
                             "A very small percentage of people may experience a seizure when exposed to certain visual images, " +
-                                    "including flashing lights or patterns that may appear in video games.",
+                                    "including flashing lights or patterns that may appear on certain UI element on the games.",
                             "Accept", "Decline", () -> {
                             }, () -> {
                                 Settings.colorPatch = false;
