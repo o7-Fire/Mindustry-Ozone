@@ -14,4 +14,5 @@ dependencies {
     testImplementation 'com.github.o7-Fire:Atomic-Library:2baa4d27a2'
     testImplementation group: 'com.google.googlejavaformat', name: 'google-java-format', version: '1.7'
     implementation project(":Desktop")
+    implementation rootProject
 }

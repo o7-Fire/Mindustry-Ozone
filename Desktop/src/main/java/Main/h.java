@@ -24,6 +24,7 @@ public class h {
             mindustry = new File("mindustry/");//i gave up "yeet"//
         }
         m = new Main();
+
         PreInstall.install(m);
     }
 

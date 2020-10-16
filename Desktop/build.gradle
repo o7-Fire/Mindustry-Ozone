@@ -27,6 +27,16 @@ dependencies {
     implementation files("${project.rootDir}/lib/miglayout-core.jar")
     implementation files("${project.rootDir}/lib/miglayout-swing.jar")
 }
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.encoding = "UTF-8"
+    options.compilerArgs += ["-Xlint:deprecation"]
+    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
+        options.compilerArgs.addAll(['--release', '8'])
+    }
+}
 //Obfuscated Desktop jar
 task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     configuration "${project.rootDir}/proguard.txt"

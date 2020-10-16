@@ -59,7 +59,8 @@ public class Preload {
                 //how to download a file synchronously
                 URL jitpack = new URL(AtomDownload);
                 File temp = new File(atom.getParent(), "/" + System.currentTimeMillis() + ".temp");
-                Download download = new Download(jitpack, temp);
+                DownloadSwing download = new DownloadSwing(jitpack, temp);
+                download.display();
                 download.run();
                 Files.copy(temp.toPath(), atom.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 temp.deleteOnExit();

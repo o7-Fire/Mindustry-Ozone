@@ -36,8 +36,10 @@ public class CommandsListFrag extends Fragment {
     private TextField sField;
     private String commands = "";
 
+
     @Override
     public void build(Group parent) {
+
         parent.fill(cont -> {
             cont.visible(() -> visible);
             cont.update(() -> {
@@ -55,8 +57,8 @@ public class CommandsListFrag extends Fragment {
                 pane.labelWrap(Commands.commandsList.size() + " Commands in total").marginLeft(20);
                 pane.row();
                 sField = pane.field(commands, (res) -> commands = res).fillX().growX().get();
-                pane.button(Icon.zoom, () -> Vars.ui.showTextInput("Commands", "How many times you want to run this",
-                        2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay ? in tick, 20 tick is the lowest standard",
+                pane.button(Icon.exchange, () -> Vars.ui.showTextInput("Commands", "How many times you want to run this",
+                        2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay ? in tick, 20 tick is the lowest standard, 1 if you persist",
                                 6, "100", true, d -> commandsTask.addLast(new CommandsSpam(c, d, commands)))));
                 pane.row();
                 pane.pane(content).grow().get().setScrollingDisabled(true, false);

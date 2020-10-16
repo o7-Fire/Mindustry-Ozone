@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class StringObfuscator extends AtomProcessor {
     private String parent = "Ozone";
+
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         HashSet<String> h = new HashSet<>();

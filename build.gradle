@@ -48,15 +48,6 @@ allprojects {
         }
     }
 
-    tasks.withType(JavaCompile) {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-        options.encoding = "UTF-8"
-        options.compilerArgs += ["-Xlint:deprecation"]
-        if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
-            options.compilerArgs.addAll(['--release', '8'])
-        }
-    }
 
     ext {
         sdkVersion = '29'
@@ -110,6 +101,15 @@ task preGen {
     writeProcessors()
 }
 
+tasks.withType(JavaCompile) {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.encoding = "UTF-8"
+    options.compilerArgs += ["-Xlint:deprecation"]
+    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
+        options.compilerArgs.addAll(['--release', '8'])
+    }
+}
 //there is reason why use local jar
 dependencies {
     compileJava.dependsOn(preGen)
@@ -118,6 +118,9 @@ dependencies {
     compileOnly files("${project.rootDir}/libs/Mindustry.jar")
     compileOnly project(":CodeGen")
     annotationProcessor project(":CodeGen")
+    //annotationProcessor project(":AtomicPlugin")
+    //annotationProcessor files("${project.rootDir}/lib/Atomic-Plugin.jar")
+
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.1'
 }
 jar {

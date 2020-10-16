@@ -17,4 +17,13 @@ if(new File(settingsDir, '../Atom').exists()) {
     )
 }
 
+if(new File(settingsDir, '../AtomicPlugin').exists()) {
+    use(
+            ":AtomicPlugin"
+    )
+}
+
+
+
+
 

@@ -27,7 +27,8 @@ public class PreInstall {
         m.frame1.pack();
         m.frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         m.frame1.setVisible(true);
-
+        if (new File(mindustry, "mods/Ozone.jar").exists())
+            m.buttonInstall.setText("Update");
         //shitty file chooser
         m.button3.addActionListener(e -> {
             m.dialog1.setVisible(true);

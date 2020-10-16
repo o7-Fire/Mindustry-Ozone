@@ -33,7 +33,7 @@ public class DownloadSwing implements Runnable {
     private File file;
     private SPreLoad swing = null;
     private long lastRecordTime = 0, lastRecord = 0;
-
+    private boolean displayed = false;
     // Constructor for Download.
     public DownloadSwing(URL url, File file) {
         this.url = url;
@@ -46,6 +46,8 @@ public class DownloadSwing implements Runnable {
 
 
     public void display() {
+        if (displayed) return;
+        displayed = true;
         swing = new SPreLoad();
         Theme.setTheme();
         swing.progressBar1.setMinimum(0);
