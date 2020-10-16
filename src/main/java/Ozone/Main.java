@@ -50,8 +50,16 @@ public class Main {
         Events.on(EventType.ClientLoadEvent.class, s -> {
             if (Settings.colorPatch)
                 Core.settings.getBoolOnce("ozoneEpilepsyWarning", () -> {
-                    Vars.ui.showConfirm("[blue]Ozone-[red]Warning", "A very small percentage of people may experience a seizure when exposed to certain visual images, including flashing lights or patterns that may appear in video games.", () -> {
-                    });
+                    Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning",
+                            "A very small percentage of people may experience a seizure when exposed to certain visual images, " +
+                                    "including flashing lights or patterns that may appear in video games.",
+                            "Accept", "Decline", () -> {
+                            }, () -> {
+                                Settings.colorPatch = false;
+                                Core.settings.put("ozone.colorPatch", false);
+                                Core.settings.forceSave();
+                                Interface.restart();
+                            });
                 });
         });
 
