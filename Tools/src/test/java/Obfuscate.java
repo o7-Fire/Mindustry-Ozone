@@ -11,8 +11,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
+//Personal use
 public class Obfuscate {
     public static double avg(ArrayList<Long> arr) {
         double sum = 0;
@@ -100,46 +102,62 @@ public class Obfuscate {
         return Pattern.compile(regex, Pattern.LITERAL).matcher(data).replaceFirst(replace);
     }
 
-    public static String getBinary(String s) {
-        byte[] bytes = s.getBytes();
-        StringBuilder binary = new StringBuilder();
-        binary.append("\"");
-        for (byte b : bytes) {
-            int val = b;
-            for (int i = 0; i < 8; i++) {
-                binary.append((val & 128) == 0 ? 0 : 1);
-                val <<= 1;
-            }
-            binary.append(' ');
-        }
-        binary.append("\"");
-        return binary.toString();
-    }
-
     // "pac" = new String(new byte[]{102144/912, 97 , 99})
     public static String obfuscate(String s) {
 
-            String temp = "new String(new byte[]{";
-            String teme = "})";
-            StringBuilder sb = new StringBuilder();
+        String temp = "new String(new byte[]{";
+        String teem = "})";
+        StringBuilder sb = new StringBuilder();
+        String startOffset = Random.getString(Random.getInt(s.length()));
+        String endOffset = Random.getString(Random.getInt(s.length()));
+        int actualLength = 0;//im lazy af
+        boolean shouldOffset = Random.getBool();
+        if (s.isEmpty()) return temp + teem;
+        sb.append(temp);
 
-        if (s.isEmpty()) return temp + teme;
-            sb.append(temp);
-            for (int c : s.toCharArray()) {
+        if (shouldOffset && !startOffset.isEmpty()) {
+            //start offset
+            for (int c : startOffset.toCharArray()) {
+                actualLength++;
                 if (Random.getBool())
                     sb.append(c);
-                else
+                else if (Random.getBool())
                     sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
                 sb.append(',');
             }
             sb.deleteCharAt(sb.length() - 1);
-            sb.append(teme);
-            return sb.toString();
+        }
+        //actual
+        for (int c : s.toCharArray()) {
+            actualLength++;
+            if (Random.getBool())
+                sb.append(c);
+            else if (Random.getBool())
+                sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
+            sb.append(',');
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        if (shouldOffset && !endOffset.isEmpty()) {
+            //end offset
+            for (int c : endOffset.toCharArray()) {
+                if (Random.getBool())
+                    sb.append(c);
+                else if (Random.getBool())
+                    sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
+                sb.append(',');
+            }
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        if (!shouldOffset)
+            sb.append(teem);
+        else {
+            sb.append("}").append(", ").append(startOffset.length()).append(", ").append((startOffset.length() + s.length()) - endOffset.length()).append(")");
+        }
+        return sb.toString();
 
     }
 
     public static ArrayList<String> yeet(char s, String data) {
-
         boolean f = false, skip = false;
         ArrayList<String> dats = new ArrayList<>();
         if (!data.contains(String.valueOf(s))) return dats;
@@ -163,6 +181,17 @@ public class Obfuscate {
         return dats;
     }
 
+    public static ArrayList<File> recurse(File f) {
+        ArrayList<File> files = new ArrayList<>();
+        for (File c : Objects.requireNonNull(f.listFiles())) {
+            if (c.isDirectory())
+                files.addAll(recurse(c));
+            else
+                files.add(c);
+        }
+        return files;
+    }
+
     @Test
     public void name() {
         ArrayList<Long> obfuscated = new ArrayList<>();
@@ -184,17 +213,5 @@ public class Obfuscate {
         }
         System.out.println("obfuscated avg, max, min: " + avg(obfuscated) + ", " + Meth.max(obfuscated.toArray(new Long[0])) + ", " + Meth.min(obfuscated.toArray(new Long[0])));
         System.out.println("normal avg, max, min: " + avg(normal) + ", " + Meth.max(normal.toArray(new Long[0])) + ", " + Meth.min(normal.toArray(new Long[0])));
-    }
-
-    public static ArrayList<File> recurse(File f) {
-        ArrayList<File> files = new ArrayList<>();
-        if (f.listFiles() == null) return files;
-        for (File c : f.listFiles()) {
-            if (c.isDirectory())
-                files.addAll(recurse(c));
-            else
-                files.add(c);
-        }
-        return files;
     }
 }

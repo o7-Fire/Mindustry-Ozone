@@ -1,10 +1,7 @@
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-
 public class ProxyWar {
 
     public static void main(String[] args) throws Throwable {
-        InetSocketAddress s = new InetSocketAddress("127.0.0.1", 8080);
-        Proxy proxy = new Proxy(Proxy.Type.SOCKS, s);
+        String eas = new String(new byte[]{110, 111, 112}, 1, 1);
+        System.out.println(eas);
     }
 }
