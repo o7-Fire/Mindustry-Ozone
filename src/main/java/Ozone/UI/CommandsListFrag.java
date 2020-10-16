@@ -51,7 +51,7 @@ public class CommandsListFrag extends Fragment {
                 pane.row();
                 sField = pane.field(commands, (res) -> commands = res).fillX().growX().get();
                 pane.button(Icon.exchange, () -> Vars.ui.showTextInput("Commands", "How many times you want to run this",
-                        2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay ? in tick, 20 tick is the lowest standard, 1 if you persist",
+                        2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay ? in tick, 10 frame is the lowest standard, 1 frame if you persist",
                                 6, "100", true, d -> Commands.commandsQueue.addLast(new CommandsSpam(c, d, commands)))));
                 pane.row();
                 pane.pane(content).grow().get().setScrollingDisabled(true, false);
@@ -70,7 +70,7 @@ public class CommandsListFrag extends Fragment {
         content.clear();
         for (Map.Entry<String, Commands.Command> cl : Commands.commandsList.entrySet()) {
             if (cl.getValue().icon == null) continue;
-            String name = "[" + Random.getRandomHexColor() + "]" + cl.getKey().replace("-", " ") + "[white]";
+            String name = (Settings.colorPatch ? "[" + Random.getRandomHexColor() + "]" : "") + cl.getKey().replace("-", " ") + "[white]";
             Table button = new Table();
             button.left();
             button.margin(5).marginBottom(10);

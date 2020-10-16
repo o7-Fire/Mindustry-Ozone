@@ -57,7 +57,6 @@ public class Main {
                                 Settings.colorPatch = false;
                                 Core.settings.put("ozone.colorPatch", false);
                                 Core.settings.forceSave();
-                                Interface.restart();
                             });
                 });
         });
