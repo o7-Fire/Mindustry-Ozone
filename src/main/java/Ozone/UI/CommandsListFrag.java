@@ -4,7 +4,6 @@ import Atom.Utility.Random;
 import Garbage.Settings;
 import Ozone.Commands.Commands;
 import Ozone.Commands.Task.CommandsSpam;
-import Ozone.Commands.Task.Task;
 import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -14,7 +13,6 @@ import arc.scene.event.Touchable;
 import arc.scene.ui.TextField;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
-import arc.struct.Queue;
 import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.gen.Icon;
@@ -31,7 +29,6 @@ public class CommandsListFrag extends Fragment {
     public boolean visible = false;
     private Table logs = new Table().marginRight(30f).marginLeft(20f);
     private Table content = new Table().marginRight(30f).marginLeft(20f);
-    private Queue<Task> commandsTask = new Queue<>();
     private float h = 70F;
     private TextField sField;
     private String commands = "";
@@ -45,11 +42,7 @@ public class CommandsListFrag extends Fragment {
             cont.update(() -> {
                 if (!(net.active() && !state.is(GameState.State.menu))) {
                     visible = false;
-                    commandsTask.clear();
                 }
-                if (commandsTask.isEmpty()) return;
-                if (!commandsTask.first().isCompleted()) commandsTask.first().update();
-                else commandsTask.removeFirst().taskCompleted();
             });
 
 
@@ -59,7 +52,7 @@ public class CommandsListFrag extends Fragment {
                 sField = pane.field(commands, (res) -> commands = res).fillX().growX().get();
                 pane.button(Icon.exchange, () -> Vars.ui.showTextInput("Commands", "How many times you want to run this",
                         2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay ? in tick, 20 tick is the lowest standard, 1 if you persist",
-                                6, "100", true, d -> commandsTask.addLast(new CommandsSpam(c, d, commands)))));
+                                6, "100", true, d -> Commands.commandsQueue.addLast(new CommandsSpam(c, d, commands)))));
                 pane.row();
                 pane.pane(content).grow().get().setScrollingDisabled(true, false);
                 pane.row();

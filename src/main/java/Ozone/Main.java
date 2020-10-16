@@ -47,6 +47,14 @@ public class Main {
     }
 
     private static void initEvent() {
+        Events.on(EventType.ClientLoadEvent.class, s -> {
+            if (Settings.colorPatch)
+                Core.settings.getBoolOnce("ozoneEpilepsyWarning", () -> {
+                    Vars.ui.showConfirm("[blue]Ozone-[red]Warning", "A very small percentage of people may experience a seizure when exposed to certain visual images, including flashing lights or patterns that may appear in video games.", () -> {
+                    });
+                });
+        });
+
         Events.on(EventType.PlayerJoin.class, s -> {
 
         });

@@ -3,9 +3,14 @@ package Ozone;
 
 import Ozone.Patch.ImprovisedKeybinding;
 import arc.Events;
+import arc.backend.sdl.jni.SDL;
 import arc.struct.ObjectMap;
 import mindustry.Vars;
+import mindustry.desktop.DesktopLauncher;
 import mindustry.game.EventType;
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class Interface {
     protected static final ObjectMap<String, String> bundle = new ObjectMap<>();
@@ -29,6 +34,34 @@ public class Interface {
 
     public synchronized static void registerWords(String key) {
         bundle.put(key, key);
+    }
+
+    public static void restart() {
+        SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "You need to restart mindustry");
+        //try restart
+        try {
+            //get JRE or something
+            final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+            //get Mindustry Jar
+            final File currentJar = new File(DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+
+            //it is a jar ?
+            if (!currentJar.getName().endsWith(".jar"))
+                throw new RuntimeException(currentJar.getAbsolutePath() + " is not a jar");
+
+            //java -jar path/to/Mindustry.jar
+            ArrayList<String> command = new ArrayList<>();
+            command.add(javaBin);
+            command.add("-jar");
+            command.add(currentJar.getPath());
+
+            ProcessBuilder builder = new ProcessBuilder(command);
+            builder.start();
+        } catch (Throwable ignored) {
+            //mmm android
+        }
+        //exit is priority
+        System.exit(0);
     }
 }
 

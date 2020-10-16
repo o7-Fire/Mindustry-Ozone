@@ -6,17 +6,21 @@ import Atom.Utility.Utility;
 import Garbage.Settings;
 import Ozone.Commands.Task.DestructBlock;
 import Ozone.Commands.Task.Move;
+import Ozone.Commands.Task.Task;
 import Ozone.Manifest;
 import arc.Core;
+import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.Colors;
 import arc.scene.style.TextureRegionDrawable;
 import arc.struct.OrderedMap;
+import arc.struct.Queue;
 import arc.struct.Seq;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.ai.Astar;
 import mindustry.content.Blocks;
+import mindustry.game.EventType;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Icon;
@@ -36,10 +40,19 @@ public class Commands {
     public static final HashMap<String, Command> commandsList = new HashMap<>();
     private static boolean init = false;
     private volatile static boolean falseVote = false;
-
+    public static final Queue<Task> commandsQueue = new Queue<>();
     public static void init() {
         if (init) return;
         init = true;
+        Events.run(EventType.Trigger.update, () -> {
+            if (commandsQueue.isEmpty()) return;
+            commandsQueue.first().update();
+            if (commandsQueue.first().isCompleted())
+                commandsQueue.removeFirst();
+        });
+        Events.run(EventType.WorldLoadEvent.class, () -> {
+
+        });
 
         commandsList.put("help", new Command(Commands::help, "help"));
         commandsList.put("chaos-kick", new Command(Commands::chaosKick, "chaosKick"));
