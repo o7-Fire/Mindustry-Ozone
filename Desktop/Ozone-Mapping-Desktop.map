@@ -114,10 +114,10 @@ Ozone.Commands.Task.Task -> g:
     void setTick(int) -> a
     boolean tick() -> d
     boolean isCompleted() -> a
-    void update() -> b
-Ozone.Desktop.Pre.DownloadSwing -> h:
-    java.net.URL url -> b
-    java.util.concurrent.atomic.AtomicInteger downloaded -> a
+                          void update() -> b
+         DownloadSwing -> h:
+         java.net.URL url -> b
+                      java.util.concurrent.atomic.AtomicInteger downloaded -> a
     int size -> c
     int status -> d
     java.io.File file -> e
@@ -125,28 +125,34 @@ Ozone.Desktop.Pre.DownloadSwing -> h:
     long lastRecordTime -> g
     long lastRecord -> h
     boolean displayed -> i
-    void <init>(java.net.URL,java.io.File) -> <init>
-    void display() -> a
-    int getSize() -> b
-    int getStatus() -> c
-    void run() -> run
-    void <clinit>() -> <clinit>
-Ozone.Desktop.Pre.PreInstall -> i:
-    void <init>() -> <init>
-    void install(Ozone.Desktop.Swing.Main) -> a
-    void lambda$install$4(Ozone.Desktop.Swing.Main,java.awt.event.ActionEvent) -> a
-    void lambda$install$3(Ozone.Desktop.Pre.DownloadSwing,Ozone.Desktop.Swing.Main,java.io.File) -> a
-    void lambda$install$2(Ozone.Desktop.Pre.DownloadSwing,Ozone.Desktop.Swing.Main) -> a
-    void lambda$install$1(java.awt.event.ActionEvent) -> a
-    void lambda$install$0(Ozone.Desktop.Swing.Main,java.awt.event.ActionEvent) -> b
-Ozone.Desktop.Pre.Preload -> j:
-    boolean init -> a
-    boolean checkLibrary(java.lang.String,java.io.File) -> a
-    void incites(java.io.File,java.lang.String,java.lang.Object) -> a
-    void <clinit>() -> <clinit>
-Ozone.Desktop.Swing.Main -> k:
-    javax.swing.JDialog dialog1 -> a
-    javax.swing.JFileChooser fileChooser1 -> b
+                       void <init>(java.net.URL,java.io.File) -> <init>
+                                                                  void display() -> a
+                                                                  int getSize() -> b
+                                                                      int getStatus() -> c
+                                                                                      void run() -> run
+                  void <clinit>() -> <clinit>
+                                            PreInstall -> i:
+                                            void <init>() -> <init>
+                                                       void install(Ozone.Desktop.Swing.Main) -> a
+                                                                                              void lambda$install$ 4
+                                                                                              (Ozone.Desktop.Swing.Main,java.awt.event.ActionEvent)
+                  -> a
+                  void lambda$install$ 3(DownloadSwing,Ozone.Desktop.Swing.Main,java.io.File) -> a
+                                                                                              void lambda$install$ 2
+                                                                                              (DownloadSwing,Ozone.Desktop.Swing.Main)
+                  -> a
+                  void lambda$install$ 1(java.awt.event.ActionEvent) -> a
+                                                                     void lambda$install$ 0
+                                                                     (Ozone.Desktop.Swing.Main,java.awt.event.ActionEvent)
+                  -> b
+                  Preload -> j:
+                  boolean init -> a
+                               boolean checkLibrary(java.lang.String,java.io.File) -> a
+                               void incites(java.io.File,java.lang.String,java.lang.Object) -> a
+                                    void <clinit>() -> <clinit>
+                                                  Ozone.Desktop.Swing.Main -> k:
+                                                                javax.swing.JDialog dialog1 -> a
+                                                                           javax.swing.JFileChooser fileChooser1 -> b
     javax.swing.JFrame frame1 -> c
     javax.swing.JLabel label1 -> j
     javax.swing.JLabel label4 -> d

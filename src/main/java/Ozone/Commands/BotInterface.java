@@ -47,6 +47,7 @@ public class BotInterface {
                 Vars.ui.scriptfrag.addMessage("Ozone-AI DriveY: " + vec.y);
             }
         }
+        Vars.player.unit().moveAt(new Vec2(100, 100));
         Vars.player.unit().moveAt(vec);
     }
 
