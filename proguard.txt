@@ -1,4 +1,0 @@
--keep class !Ozone.** { *; }
--printmapping Ozone-Mapping.txt
--keepattributes Signature
--optimizations !code/simplification/arithmetic

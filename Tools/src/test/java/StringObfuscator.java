@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 //Personal use
 public class StringObfuscator {
-    public static final boolean test = true;
+    public static final boolean test = false;
 
     public static double avg(ArrayList<Long> arr) {
         double sum = 0;

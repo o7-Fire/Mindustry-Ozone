@@ -43,8 +43,8 @@ task jarAndroid(dependsOn: jar) {
 
 }
 task proguard(dependsOn: jarAndroid, type: proguard.gradle.ProGuardTask) {
-    configuration "${project.rootDir}/proguard.txt"
-
+    printmapping "Ozone-Mapping-Desktop.map"
+    keep 'class !Ozone.** { *; }'
     // Automatically handle the Java version of this build.
     if (System.getProperty('java.version').startsWith('1.')) {
         // Before Java 9, the runtime classes were packaged in a single jar file.
