@@ -29,8 +29,8 @@ public class Obfuscate {
 
     public static void main(String[] args) throws Throwable {
         if (test) {
-            File test = new File("Tools/src/test/java/ProxyWar.java");
-            writeFile(test, obfuscate(test));
+            File victim = new File("Tools/src/test/java/ProxyWar.java");
+            writeFile(victim, obfuscate(victim));
             return;
         }
         File root = new File("src/main/java/Ozone/");
@@ -84,7 +84,7 @@ public class Obfuscate {
                         "\n" + "Original: " + node.getValue() +
                         "\n" + "Detailed node: " + node.toString());
         });
-        return f.toString();
+        return compilationUnit.toString();
     }
 
     // "pac" = new String(new byte[]{102144/912, 97 , 99})
