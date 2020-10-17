@@ -1,8 +1,7 @@
 package Main;
 
-import Ozone.Pre.PreInstall;
-import Ozone.Swing.Main;
-import Ozone.Swing.Theme;
+import Ozone.Desktop.Pre.PreInstall;
+import Ozone.Desktop.Swing.Main;
 
 import java.io.File;
 
@@ -14,7 +13,7 @@ public class h {
     public static Main m;
 
     public static void main(String[] args) {
-        Theme.setTheme();
+        Main.setTheme();
         try {
             if (System.getProperty("os.name").toUpperCase().contains("WIN"))
                 mindustry = new File(System.getenv("AppData") + "/Mindustry");//windows

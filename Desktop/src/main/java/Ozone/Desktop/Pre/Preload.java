@@ -1,4 +1,4 @@
-package Ozone.Pre;
+package Ozone.Desktop.Pre;
 
 
 import arc.backend.sdl.jni.SDL;

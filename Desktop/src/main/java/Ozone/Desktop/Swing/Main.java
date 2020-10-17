@@ -2,8 +2,12 @@
  * Created by JFormDesigner on Sat Sep 26 01:19:52 CEST 2020
  */
 
-package Ozone.Swing;
+package Ozone.Desktop.Swing;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -16,6 +20,36 @@ import java.awt.*;
 public class Main extends JPanel {
     public Main() {
         initComponents();
+    }
+
+    public static void setTheme() {
+        try {
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+            return;
+        } catch (Throwable ignored) {
+        }
+        try {
+            UIManager.setLookAndFeel(new FlatDarculaLaf());
+            return;
+        } catch (Throwable ignored) {
+        }
+        try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            return;
+        } catch (Throwable ignored) {
+        }
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+            return;
+        } catch (Throwable ignored) {
+        }
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            return;
+        } catch (Throwable ignored) {
+        }
+
+
     }
 
     private void initComponents() {

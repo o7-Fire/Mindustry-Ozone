@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Sat Sep 26 05:18:24 CEST 2020
  */
 
-package Ozone.Swing;
+package Ozone.Desktop.Swing;
 
 import net.miginfocom.swing.MigLayout;
 

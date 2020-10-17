@@ -21,16 +21,14 @@ Main.Ozone -> Main.Ozone:
     void <clinit>() -> <clinit>
 Main.h -> Main.h:
     java.io.File mindustry -> mindustry
-    Ozone.Swing.Main m -> m
+    Ozone.Desktop.Swing.Main m -> m
     void <init>() -> <init>
     void main(java.lang.String[]) -> main
-    void second() -> second
-    void triple() -> triple
 MainBackup.OzoneBackup -> MainBackup.OzoneBackup:
     void <init>() -> <init>
     void init() -> init
     void loadContent() -> loadContent
-Ozone.Commands.BotInterface -> a.a.a:
+Ozone.Commands.BotInterface -> a:
     arc.struct.Queue taskQueue -> a
     boolean init -> b
     void init() -> a
@@ -43,7 +41,7 @@ Ozone.Commands.BotInterface -> a.a.a:
     boolean samePos(arc.math.geom.Position,arc.math.geom.Position,boolean) -> a
     void reset() -> d
     void <clinit>() -> <clinit>
-Ozone.Commands.Commands -> a.a.b:
+Ozone.Commands.Commands -> b:
     java.util.HashMap commandsList -> a
     boolean init -> c
     boolean falseVote -> d
@@ -71,7 +69,7 @@ Ozone.Commands.Commands -> a.a.b:
     void lambda$init$1() -> c
     void lambda$init$0() -> d
     void <clinit>() -> <clinit>
-Ozone.Commands.Commands$Command -> a.a.c:
+Ozone.Commands.Commands$Command -> c:
     java.util.function.Consumer method -> a
     java.lang.String description -> b
     arc.scene.style.TextureRegionDrawable icon -> c
@@ -80,15 +78,14 @@ Ozone.Commands.Commands$Command -> a.a.c:
     boolean passable(mindustry.world.Tile) -> a
     float isSafe(mindustry.world.Tile) -> b
     double distanceTo(arc.math.geom.Position,arc.math.geom.Position) -> a
-    void setTheme() -> a
-Ozone.Commands.Task.CommandsSpam -> a.a.a.a:
+Ozone.Commands.Task.CommandsSpam -> d:
     int howManyTimes -> a
     int currentCycle -> b
     java.lang.String commands -> c
     void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
     boolean isCompleted() -> a
     void update() -> b
-Ozone.Commands.Task.DestructBlock -> a.a.a.b:
+Ozone.Commands.Task.DestructBlock -> e:
     boolean half -> a
     int x -> b
     int y -> c
@@ -96,7 +93,7 @@ Ozone.Commands.Task.DestructBlock -> a.a.a.b:
     boolean isCompleted() -> a
     void update() -> b
     boolean lambda$update$0(mindustry.entities.units.BuildPlan) -> a
-Ozone.Commands.Task.Move -> a.a.a.c:
+Ozone.Commands.Task.Move -> f:
     arc.math.geom.Vec2 destPos -> a
     arc.math.geom.Vec2 destTilePos -> b
     mindustry.world.Tile destTile -> c
@@ -107,7 +104,7 @@ Ozone.Commands.Task.Move -> a.a.a.c:
     void taskCompleted() -> c
     boolean isCompleted() -> a
     void update() -> b
-Ozone.Commands.Task.Task -> a.a.a.d:
+Ozone.Commands.Task.Task -> g:
     java.util.ArrayList onTaskCompleted -> a
     int tick -> b
     int currentTick -> c
@@ -118,7 +115,55 @@ Ozone.Commands.Task.Task -> a.a.a.d:
     boolean tick() -> d
     boolean isCompleted() -> a
     void update() -> b
-Ozone.Interface -> a.a:
+Ozone.Desktop.Pre.DownloadSwing -> h:
+    java.net.URL url -> b
+    java.util.concurrent.atomic.AtomicInteger downloaded -> a
+    int size -> c
+    int status -> d
+    java.io.File file -> e
+    Ozone.Desktop.Swing.SPreLoad swing -> f
+    long lastRecordTime -> g
+    long lastRecord -> h
+    boolean displayed -> i
+    void <init>(java.net.URL,java.io.File) -> <init>
+    void display() -> a
+    int getSize() -> b
+    int getStatus() -> c
+    void run() -> run
+    void <clinit>() -> <clinit>
+Ozone.Desktop.Pre.PreInstall -> i:
+    void <init>() -> <init>
+    void install(Ozone.Desktop.Swing.Main) -> a
+    void lambda$install$4(Ozone.Desktop.Swing.Main,java.awt.event.ActionEvent) -> a
+    void lambda$install$3(Ozone.Desktop.Pre.DownloadSwing,Ozone.Desktop.Swing.Main,java.io.File) -> a
+    void lambda$install$2(Ozone.Desktop.Pre.DownloadSwing,Ozone.Desktop.Swing.Main) -> a
+    void lambda$install$1(java.awt.event.ActionEvent) -> a
+    void lambda$install$0(Ozone.Desktop.Swing.Main,java.awt.event.ActionEvent) -> b
+Ozone.Desktop.Pre.Preload -> j:
+    boolean init -> a
+    boolean checkLibrary(java.lang.String,java.io.File) -> a
+    void incites(java.io.File,java.lang.String,java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+Ozone.Desktop.Swing.Main -> k:
+    javax.swing.JDialog dialog1 -> a
+    javax.swing.JFileChooser fileChooser1 -> b
+    javax.swing.JFrame frame1 -> c
+    javax.swing.JLabel label1 -> j
+    javax.swing.JLabel label4 -> d
+    javax.swing.JButton button3 -> e
+    javax.swing.JLabel labelStatus -> f
+    javax.swing.JProgressBar progressBar1 -> g
+    javax.swing.JButton buttonInstall -> h
+    javax.swing.JButton buttonExit -> i
+    void <init>() -> <init>
+    void setTheme() -> a
+Ozone.Desktop.Swing.SPreLoad -> l:
+    java.awt.Frame frame1 -> a
+    javax.swing.JLabel label1 -> b
+    javax.swing.JLabel label2 -> c
+    javax.swing.JProgressBar progressBar1 -> d
+    void <init>() -> <init>
+Ozone.Interface -> m:
     arc.struct.ObjectMap bundle -> a
     arc.struct.ObjectMap keybindings -> b
     void registerKeybinding(Ozone.Patch.ImprovisedKeybinding,java.lang.Runnable) -> a
@@ -126,30 +171,23 @@ Ozone.Interface -> a.a:
     void registerWords(java.lang.String) -> a
     void restart() -> a
     void <clinit>() -> <clinit>
-Ozone.Main -> a.b:
+Ozone.Main -> n:
+    Ozone.UI.OzoneMenu menu -> a
+    Ozone.UI.CommandsListFrag commFrag -> b
     void init() -> a
-    void loadSettings() -> b
-    void patch() -> c
+    void patch() -> b
     void lambda$initEvent$8(mindustry.game.EventType$ConfigEvent) -> a
     void lambda$initEvent$7(mindustry.game.EventType$PlayerLeave) -> a
     void lambda$initEvent$6(mindustry.game.EventType$BlockBuildBeginEvent) -> a
     void lambda$initEvent$5(mindustry.game.EventType$BlockDestroyEvent) -> a
     void lambda$initEvent$4(mindustry.game.EventType$PlayerJoin) -> a
     void lambda$initEvent$3(mindustry.game.EventType$ClientLoadEvent) -> a
-    void lambda$initEvent$2() -> d
-    void lambda$initEvent$1() -> e
-    void lambda$initEvent$0() -> f
-Ozone.Main$1 -> a.c:
+    void lambda$initEvent$2() -> c
+    void lambda$initEvent$1() -> d
+    void lambda$initEvent$0() -> e
+Ozone.Main$1 -> o:
     void <init>() -> <init>
-Ozone.Manifest -> a.d:
-    java.lang.String atomHash -> f
-    java.lang.String atomFile -> a
-    java.lang.String libs -> b
-    java.lang.String atomDownloadLink -> c
-    Ozone.UI.OzoneMenu menu -> d
-    Ozone.UI.CommandsListFrag commFrag -> e
-    void <clinit>() -> <clinit>
-Ozone.Patch.ChatFragment -> a.b.a:
+Ozone.Patch.ChatFragment -> p:
     arc.struct.Seq messages -> a
     float fadetime -> b
     boolean shown -> c
@@ -182,11 +220,11 @@ Ozone.Patch.ChatFragment -> a.b.a:
     void lambda$toggle$2(java.lang.String) -> a
     void lambda$new$1() -> b
     boolean lambda$new$0() -> c
-Ozone.Patch.ChatFragment$1 -> a.b.b:
+Ozone.Patch.ChatFragment$1 -> q:
     Ozone.Patch.ChatFragment this$0 -> a
     void <init>(Ozone.Patch.ChatFragment) -> <init>
     void build(arc.scene.Group) -> build
-Ozone.Patch.ChatFragment$AntiSpam -> a.b.c:
+Ozone.Patch.ChatFragment$AntiSpam -> r:
     int maxRepeatingChar -> c
     long rateLimit -> d
     java.lang.String lastMessage -> a
@@ -197,19 +235,19 @@ Ozone.Patch.ChatFragment$AntiSpam -> a.b.c:
     void setLastMessage(java.lang.String) -> a
     java.lang.String filter(java.lang.String) -> b
     void <clinit>() -> <clinit>
-Ozone.Patch.ChatFragment$ChatMessage -> a.b.d:
+Ozone.Patch.ChatFragment$ChatMessage -> s:
     java.lang.String message -> a
     java.lang.String formattedMessage -> b
     void <init>(java.lang.String,java.lang.String) -> <init>
     void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
-Ozone.Patch.DesktopInput -> a.b.e:
+Ozone.Patch.DesktopInput -> t:
     float xav -> a
     float yav -> b
     void <init>() -> <init>
     void buildPlacementUI(arc.scene.ui.layout.Table) -> buildPlacementUI
     void updateMovement(mindustry.gen.Unit) -> updateMovement
     void lambda$buildPlacementUI$0() -> a
-Ozone.Patch.ImprovisedKeybinding -> a.b.f:
+Ozone.Patch.ImprovisedKeybinding -> u:
     java.lang.String name -> a
     java.lang.String category -> b
     arc.KeyBinds$KeybindValue value -> c
@@ -217,94 +255,40 @@ Ozone.Patch.ImprovisedKeybinding -> a.b.f:
     java.lang.String name() -> name
     arc.KeyBinds$KeybindValue defaultValue(arc.input.InputDevice$DeviceType) -> defaultValue
     java.lang.String category() -> category
-Ozone.Patch.ImprovisedKeybinding$mode -> a.b.g:
+Ozone.Patch.ImprovisedKeybinding$mode -> v:
     Ozone.Patch.ImprovisedKeybinding$mode down -> b
     Ozone.Patch.ImprovisedKeybinding$mode release -> c
     Ozone.Patch.ImprovisedKeybinding$mode tap -> a
     void <init>(java.lang.String,int) -> <init>
     void <clinit>() -> <clinit>
-Ozone.Patch.SettingsDialog -> a.b.h:
+Ozone.Patch.SettingsDialog -> w:
     void <init>() -> <init>
     void lambda$new$0(java.lang.reflect.Field,boolean) -> a
-Ozone.Patch.SettingsDialog$1 -> a.b.i:
+Ozone.Patch.SettingsDialog$1 -> x:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Patch.SettingsDialog$2 -> a.b.j:
+Ozone.Patch.SettingsDialog$2 -> y:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Patch.SettingsDialog$3 -> a.b.k:
+Ozone.Patch.SettingsDialog$3 -> z:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Patch.SettingsDialog$4 -> a.b.l:
+Ozone.Patch.SettingsDialog$4 -> A:
     java.lang.reflect.Field val$f -> a
     void <init>(Ozone.Patch.SettingsDialog,java.lang.reflect.Field) -> <init>
     void add(arc.scene.ui.SettingsDialog$SettingsTable) -> add
     void lambda$add$1(java.lang.reflect.Field,java.lang.String) -> a
     java.lang.CharSequence lambda$add$0(java.lang.reflect.Field) -> a
-Ozone.Patch.Translation -> a.b.m:
-    void patch() -> a
-DownloadSwing -> a.c.a:
-    java.net.URL url -> b
-    java.util.concurrent.atomic.AtomicInteger downloaded -> a
-    int size -> c
-    int status -> d
-    java.io.File file -> e
-    Ozone.Swing.SPreLoad swing -> f
-    long lastRecordTime -> g
-    long lastRecord -> h
-    boolean displayed -> i
-    void <init>(java.net.URL,java.io.File) -> <init>
-    void display() -> a
-    int getSize() -> b
-    int getStatus() -> c
-    void run() -> run
-    void <clinit>() -> <clinit>
-PreInstall -> a.c.b:
-    java.lang.String AtomHash -> a
-    java.lang.String atomFile -> b
-    java.lang.String libs -> c
-    java.lang.String AtomDownload -> d
-    void <init>() -> <init>
-    void install(Ozone.Swing.Main) -> a
-    void lambda$install$4(Ozone.Swing.Main,java.awt.event.ActionEvent) -> a
-    void lambda$install$3(DownloadSwing,Ozone.Swing.Main,java.io.File) -> a
-    void lambda$install$2(DownloadSwing,Ozone.Swing.Main) -> a
-    void lambda$install$1(java.awt.event.ActionEvent) -> a
-    void lambda$install$0(Ozone.Swing.Main,java.awt.event.ActionEvent) -> b
-    void <clinit>() -> <clinit>
-Preload -> a.c.c:
-    boolean init -> a
-    boolean checkLibrary(java.lang.String,java.io.File) -> a
-    void incites(java.io.File,java.lang.String,java.lang.Object) -> a
-    void <clinit>() -> <clinit>
-Ozone.Swing.Main -> a.d.a:
-    javax.swing.JDialog dialog1 -> a
-    javax.swing.JFileChooser fileChooser1 -> b
-    javax.swing.JFrame frame1 -> c
-    javax.swing.JLabel label1 -> j
-    javax.swing.JLabel label4 -> d
-    javax.swing.JButton button3 -> e
-    javax.swing.JLabel labelStatus -> f
-    javax.swing.JProgressBar progressBar1 -> g
-    javax.swing.JButton buttonInstall -> h
-    javax.swing.JButton buttonExit -> i
-    void <init>() -> <init>
-Ozone.Swing.SPreLoad -> a.d.b:
-    java.awt.Frame frame1 -> a
-    javax.swing.JLabel label1 -> b
-    javax.swing.JLabel label2 -> c
-    javax.swing.JProgressBar progressBar1 -> d
-    void <init>() -> <init>
-Ozone.UI.CommandsListFrag -> a.e.a:
+Ozone.UI.CommandsListFrag -> B:
     boolean visible -> a
     arc.scene.ui.layout.Table content -> b
     float h -> c
@@ -327,10 +311,10 @@ Ozone.UI.CommandsListFrag -> a.e.a:
     void lambda$build$2(java.lang.String) -> c
     void lambda$build$1() -> d
     boolean lambda$build$0() -> e
-Ozone.UI.CommandsListFrag$1 -> a.e.b:
+Ozone.UI.CommandsListFrag$1 -> C:
     void <init>(Ozone.UI.CommandsListFrag) -> <init>
     void draw() -> draw
-Ozone.UI.OzoneMenu -> a.e.c:
+Ozone.UI.OzoneMenu -> D:
     arc.scene.ui.TextField commandsField -> a
     java.lang.String commands -> b
     void <init>(java.lang.String,arc.scene.ui.Dialog$DialogStyle) -> <init>

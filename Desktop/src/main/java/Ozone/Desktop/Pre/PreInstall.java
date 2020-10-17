@@ -1,6 +1,6 @@
-package Ozone.Pre;
+package Ozone.Desktop.Pre;
 
-import Ozone.Swing.Main;
+import Ozone.Desktop.Swing.Main;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,5 +1,5 @@
+import Ozone.Desktop.Pre.DownloadSwing;
 import Ozone.Manifest;
-import Ozone.Pre.DownloadSwing;
 
 import java.io.File;
 import java.net.MalformedURLException;
