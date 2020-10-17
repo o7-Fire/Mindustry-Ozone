@@ -27,7 +27,7 @@ public class Obfuscate {
         return sum / arr.size();
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Throwable {
         if (test) {
             File test = new File("Tools/src/test/java/ProxyWar.java");
             writeFile(test, obfuscate(test));
