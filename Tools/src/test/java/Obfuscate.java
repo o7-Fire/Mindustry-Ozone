@@ -4,10 +4,10 @@ import Atom.Time.Countdown;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
-import com.google.googlejavaformat.java.FormatterException;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 
 //Personal use
 public class Obfuscate {
+    public static final boolean test = true;
     public static double avg(ArrayList<Long> arr) {
         double sum = 0;
         for (long l : arr) {
@@ -27,6 +28,11 @@ public class Obfuscate {
     }
 
     public static void main(String[] args) throws Exception {
+        if (test) {
+            File test = new File("Tools/src/test/java/ProxyWar.java");
+            writeFile(test, obfuscate(test));
+            return;
+        }
         File root = new File("src/main/java/Ozone/");
         File desktop = new File("Desktop/src/main/java/Ozone/");
         File android = new File("Android/src/main/java/Ozone/");
@@ -45,35 +51,40 @@ public class Obfuscate {
         obfuscate(droid);
     }
 
-    public static void obfuscate(List<File> files) throws IOException, FormatterException {
-        "dont //remove this idiot".length();//"does it"//
+    public static void obfuscate(List<File> files) throws IOException {
         for (File f : files) {
-            String extension = "";
-            int i = f.getName().lastIndexOf('.');
-            if (i > 0) {
-                extension = f.getName().substring(i + 1);
-            }
-            if (!extension.equals("java")) continue;
-            CompilationUnit compilationUnit = StaticJavaParser.parse(f);
-            compilationUnit.findAll(StringLiteralExpr.class).forEach(node -> {
-                if (!node.replace(StaticJavaParser.parseExpression(obfuscate(node.getValue()))))
-                    throw new RuntimeException("Holy shit cant do shit " +
-                            "\n" + "File: " + f.getAbsolutePath() +
-                            "\n" + "Obfuscated: " + obfuscate(node.getValue()) +
-                            "\n" + "Original: " + node.getValue() +
-                            "\n" + "Detailed node: " + node.toString());
-            });
+            if (!getExtension(f).equals("java")) continue;
             System.out.println(f.getAbsolutePath());
-            FileWriter f2 = new FileWriter(f, false);
-            f2.write(compilationUnit.toString());
-            f2.close();
-
+            writeFile(f, obfuscate(f));
         }
-
     }
 
-    public static String replace(String regex, String replace, String data) {
-        return Pattern.compile(regex, Pattern.LITERAL).matcher(data).replaceFirst(replace);
+    public static String getExtension(File f) {
+        String extension = "";
+        int i = f.getName().lastIndexOf('.');
+        if (i > 0) {
+            extension = f.getName().substring(i + 1);
+        }
+        return extension;
+    }
+
+    public static void writeFile(File f, String data) throws IOException {
+        FileWriter f2 = new FileWriter(f, false);
+        f2.write(data);
+        f2.close();
+    }
+
+    public static String obfuscate(File f) throws FileNotFoundException {
+        CompilationUnit compilationUnit = StaticJavaParser.parse(f);
+        compilationUnit.findAll(StringLiteralExpr.class).forEach(node -> {
+            if (!node.replace(StaticJavaParser.parseExpression(obfuscate(node.getValue()))))
+                throw new RuntimeException("Holy shit cant do shit " +
+                        "\n" + "File: " + f.getAbsolutePath() +
+                        "\n" + "Obfuscated: " + obfuscate(node.getValue()) +
+                        "\n" + "Original: " + node.getValue() +
+                        "\n" + "Detailed node: " + node.toString());
+        });
+        return f.toString();
     }
 
     // "pac" = new String(new byte[]{102144/912, 97 , 99})
