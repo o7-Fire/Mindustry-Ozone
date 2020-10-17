@@ -32,3 +32,5 @@ jobs:
         path: |
           Android/build/libs/Ozone-Android.jar
           Desktop/build/libs/Ozone-Desktop.jar
+    - name: username
+      run: $USER
