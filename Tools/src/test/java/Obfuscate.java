@@ -140,12 +140,12 @@ public class Obfuscate {
         else {
             sb.append("}").append(", ");
             if (Random.getBool())
-                sb.append("Math.round(Math.sqrt(").append(offset * offset).append("))");
+                sb.append("(int)Math.round(Math.sqrt(").append(offset * offset).append("))");
             else
                 sb.append(offset);
             sb.append(", ");
             if (Random.getBool())
-                sb.append("Math.round(Math.sqrt(").append(length * length).append("))");
+                sb.append("(int)Math.round(Math.sqrt(").append(length * length).append("))");
             else
                 sb.append(length);
             sb.append(")");
