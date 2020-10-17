@@ -1,15 +1,13 @@
 package Atom.Annotation;
 
 
-import lombok.Data;
-
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+
 public class StringObfuscator extends AtomProcessor {
     private String parent = "Ozone";
 
