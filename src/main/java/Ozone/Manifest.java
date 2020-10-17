@@ -4,6 +4,10 @@ import Atom.Annotation.ObfuscatorEntryPoint;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 @ObfuscatorEntryPoint
 public class Manifest {
     public final static String atomHash = "cfa7716a8e";
@@ -12,5 +16,13 @@ public class Manifest {
     public static OzoneMenu menu;
     public static CommandsListFrag commFrag;
     public static String currentServer = "";
+    public static ArrayList<Class<?>> settings = new ArrayList<>();
 
+    public static ArrayList<Field> getSettings() {
+        ArrayList<Field> f = new ArrayList<>();
+        //must static class
+        for (Class<?> c : settings)
+            f.addAll(Arrays.asList(c.getDeclaredFields()));
+        return f;
+    }
 }

@@ -1,5 +1,8 @@
 package Ozone.Patch;
 
+import Ozone.Event.Internal;
+import arc.Events;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,5 +49,6 @@ public class Translation {
         }
         for (String s : singlet1) registerWords(s, "[" + s + "]");
         for (String s : normalSinglet) registerWords(s);
+        Events.fire(Internal.Init.TranslationRegister);
     }
 }

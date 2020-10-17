@@ -7,6 +7,7 @@ import Garbage.Settings;
 import Ozone.Commands.Task.DestructBlock;
 import Ozone.Commands.Task.Move;
 import Ozone.Commands.Task.Task;
+import Ozone.Event.Internal;
 import Ozone.Interface;
 import Ozone.Main;
 import Ozone.Manifest;
@@ -70,8 +71,7 @@ public class Commands {
         register("task-clear", new Command(Commands::taskClear));
         register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
         register("javac", new Command(Commands::javac));
-
-
+        Events.fire(Internal.Init.CommandsRegister);
         Main.patchTranslation();
         for (Map.Entry<String, Command> c : commandsList.entrySet())
             c.getValue().description = getTranslation(c.getKey());

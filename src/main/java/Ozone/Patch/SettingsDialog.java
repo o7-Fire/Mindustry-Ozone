@@ -1,7 +1,7 @@
 package Ozone.Patch;
 
 import Atom.Reflect.Reflect;
-import Garbage.Settings;
+import Ozone.Manifest;
 import arc.Core;
 import arc.util.Log;
 import mindustry.Vars;
@@ -17,8 +17,7 @@ public class SettingsDialog extends SettingsMenuDialog {
             Log.errTag("Ozone", "Can't patch settings");
             return;
         }
-        Field[] set = Settings.class.getDeclaredFields();
-        for (Field f : set) {
+        for (Field f : Manifest.getSettings()) {
             try {
                 if (boolean.class.equals(f.getType())) {
                     gameTable.checkPref("ozone." + f.getName(), f.getBoolean(null), s -> {

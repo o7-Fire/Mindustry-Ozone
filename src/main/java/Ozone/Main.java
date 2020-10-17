@@ -4,6 +4,7 @@ import Atom.Utility.Random;
 import Garbage.Settings;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
+import Ozone.Event.Internal;
 import Ozone.Patch.ChatFragment;
 import Ozone.Patch.DesktopInput;
 import Ozone.Patch.SettingsDialog;
@@ -84,9 +85,10 @@ public class Main {
     }
 
     protected static void loadSettings() {
+        Manifest.settings.add(Settings.class);
+        Events.fire(Internal.Init.SettingsRegister);
         Core.settings.put("crashreport", false);
-        Field[] set = Settings.class.getDeclaredFields();
-        for (Field f : set) {
+        for (Field f : Manifest.getSettings()) {
             try {
                 if (boolean.class.equals(f.getType())) {
                     f.setBoolean(null, Core.settings.getBool("ozone." + f.getName(), f.getBoolean(null)));
@@ -110,6 +112,7 @@ public class Main {
     protected static void patch() {
         try {
             Log.infoTag("Ozone", "Patching");
+            Events.fire(Internal.Init.PatchRegister);
             Translation.patch();
             Time.mark();
             patchTranslation();
