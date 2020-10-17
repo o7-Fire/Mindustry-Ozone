@@ -112,15 +112,7 @@ public class Main {
             Log.infoTag("Ozone", "Patching");
             Translation.patch();
             Time.mark();
-            ObjectMap<String, String> modified = Core.bundle.getProperties();
-            for (ObjectMap.Entry<String, String> s : Interface.bundle) {
-                modified.put(s.key, s.value);
-            }
-            if (Settings.colorPatch)
-                for (String s : Core.bundle.getKeys()) {
-                    modified.put(s, getRandomHexColor() + modified.get(s) + "[white]");
-                }
-            Core.bundle.setProperties(modified);
+            patchTranslation();
             Log.infoTag("Ozone", "Patching translation done: " + Time.elapsed());
             Log.infoTag("Ozone", "Patching DesktopInput");
             Vars.control.input = new DesktopInput();
@@ -138,6 +130,18 @@ public class Main {
             Log.infoTag("Ozone", "Patch failed");
             Log.err(t);
         }
+    }
+
+    public static void patchTranslation() {
+        ObjectMap<String, String> modified = Core.bundle.getProperties();
+        for (ObjectMap.Entry<String, String> s : Interface.bundle) {
+            modified.put(s.key, s.value);
+        }
+        if (Settings.colorPatch)
+            for (String s : Core.bundle.getKeys()) {
+                modified.put(s, getRandomHexColor() + modified.get(s) + "[white]");
+            }
+        Core.bundle.setProperties(modified);
     }
 
     protected static void initUI() {

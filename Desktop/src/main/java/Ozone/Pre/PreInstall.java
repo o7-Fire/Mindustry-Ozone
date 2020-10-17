@@ -1,4 +1,4 @@
-package Ozone.Desktop.Pre;
+package Ozone.Pre;
 
 import Ozone.Desktop.Swing.Main;
 

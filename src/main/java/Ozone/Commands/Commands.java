@@ -7,6 +7,8 @@ import Garbage.Settings;
 import Ozone.Commands.Task.DestructBlock;
 import Ozone.Commands.Task.Move;
 import Ozone.Commands.Task.Task;
+import Ozone.Interface;
+import Ozone.Main;
 import Ozone.Manifest;
 import arc.Core;
 import arc.Events;
@@ -28,6 +30,7 @@ import mindustry.gen.Player;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 
+import javax.tools.ToolProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,19 +57,47 @@ public class Commands {
 
         });
 
-        commandsList.put("help", new Command(Commands::help, "help"));
-        commandsList.put("chaos-kick", new Command(Commands::chaosKick, "chaosKick"));
-        commandsList.put("task-move", new Command(Commands::taskMove, "taskMove"));
-        commandsList.put("info-pos", new Command(Commands::infoPos, "infoPos", Icon.move));
-        commandsList.put("info-pathfinding", new Command(Commands::infoPathfinding, "infoPathfinding"));
-        commandsList.put("random-kick", new Command(Commands::randomKick, "randomKick", Icon.hammer));
-        commandsList.put("info-unit", new Command(Commands::infoUnit, "infoUnit", Icon.units));
-        commandsList.put("force-exit", new Command(Commands::forceExit, "forceExit"));
-        commandsList.put("task-deconstruct", new Command(Commands::taskDeconstruct, "taskDeconstruct"));
-        commandsList.put("send-colorize", new Command(Commands::sendColorize, "sendColorize"));
-        commandsList.put("task-clear", new Command(Commands::taskClear, "taskClear"));
-        commandsList.put("shuffle-sorter", new Command(Commands::shuffleSorter, "shuffleSorter", Icon.rotate));
+        register("help", new Command(Commands::help));
+        register("chaos-kick", new Command(Commands::chaosKick));
+        register("task-move", new Command(Commands::taskMove));
+        register("info-pos", new Command(Commands::infoPos, Icon.move));
+        register("info-pathfinding", new Command(Commands::infoPathfinding));
+        register("random-kick", new Command(Commands::randomKick, Icon.hammer));
+        register("info-unit", new Command(Commands::infoUnit, Icon.units));
+        register("force-exit", new Command(Commands::forceExit));
+        register("task-deconstruct", new Command(Commands::taskDeconstruct));
+        register("send-colorize", new Command(Commands::sendColorize));
+        register("task-clear", new Command(Commands::taskClear));
+        register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
+        register("javac", new Command(Commands::javac));
+
+
+        Main.patchTranslation();
+        for (Map.Entry<String, Command> c : commandsList.entrySet())
+            c.getValue().description = getTranslation(c.getKey());
         Log.infoTag("Ozone", "Commands Center Initialized");
+    }
+
+    public static void javac(ArrayList<String> arg) {
+        if (Vars.mobile) {
+            tellUser("lol mobile, you is joking right");
+            return;
+        }
+        if (ToolProvider.getSystemJavaCompiler() == null) {
+            tellUser("javac is not detected, are you sure using JDK ?");
+            return;
+        }
+
+    }
+
+    public static void register(String name, Command command) {
+        register(name, command, null);
+    }
+
+    public static void register(String name, Command command, String description) {
+        if (description != null)
+            Interface.registerWords("ozone.commands." + name, description);
+        commandsList.put(name, command);
     }
 
     public static void shuffleSorter(ArrayList<String> s) {
@@ -312,8 +343,14 @@ public class Commands {
 
     public static class Command {
         public final Consumer<ArrayList<String>> method;
-        public final String description;
+        public String description;
         public final TextureRegionDrawable icon;
+
+
+        public Command(Consumer<ArrayList<String>> method) {
+            this.method = method;
+            icon = null;
+        }
 
         public Command(Consumer<ArrayList<String>> method, String description) {
             this.method = method;
@@ -328,5 +365,9 @@ public class Commands {
         }
 
 
+        public Command(Consumer<ArrayList<String>> method, TextureRegionDrawable icon) {
+            this.method = method;
+            this.icon = icon;
+        }
     }
 }

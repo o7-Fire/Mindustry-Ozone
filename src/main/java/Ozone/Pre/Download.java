@@ -1,9 +1,5 @@
-package Ozone.Desktop.Pre;
+package Ozone.Pre;
 
-import Ozone.Desktop.Swing.Main;
-import Ozone.Desktop.Swing.SPreLoad;
-
-import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -12,7 +8,7 @@ import java.net.URL;
 import java.util.concurrent.atomic.AtomicInteger;
 
 //probably will be relocated to Atom library
-public class DownloadSwing implements Runnable {
+public class Download implements Runnable {
 
     // These are the status names.
     public static final String[] STATUSES = {"Downloading",
@@ -31,11 +27,10 @@ public class DownloadSwing implements Runnable {
     private int size; // size of download in bytes
     private int status; // current status of download
     private File file;
-    private SPreLoad swing = null;
     private long lastRecordTime = 0, lastRecord = 0;
-    private boolean displayed = false;
+
     // Constructor for Download.
-    public DownloadSwing(URL url, File file) {
+    public Download(URL url, File file) {
         this.url = url;
         size = -1;
         downloaded = new AtomicInteger();
@@ -44,47 +39,6 @@ public class DownloadSwing implements Runnable {
 
     }
 
-
-    public void display() {
-        if (displayed) return;
-        displayed = true;
-        swing = new SPreLoad();
-        Main.setTheme();
-        swing.progressBar1.setMinimum(0);
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        int width = gd.getDisplayMode().getWidth();
-        int height = gd.getDisplayMode().getHeight();
-        swing.frame1.setSize(Math.round(width / 1.3F), height / 3);
-        swing.label2.setText("Connecting....");
-        swing.label1.setText("Downloading: " + url.toString());
-        swing.frame1.pack();
-        swing.progressBar1.setMaximum(100);
-        swing.frame1.setVisible(true);
-    }
-
-    private void setMax() {
-        if (swing == null) return;
-        swing.progressBar1.setMaximum(getSize());
-        if (getSize() < 10000000)
-            swing.label2.setText((getSize() / 1000) / 1000F + " KB");
-        else
-            swing.label2.setText((getSize() / 1000000) / 1000F + " MB");
-        swing.frame1.pack();
-    }
-
-    private void updateStatus() {
-        if (swing == null) return;
-        if ((System.currentTimeMillis() - lastRecordTime) > 900) {
-            if (lastRecord != 0) {
-                float down = downloaded.get() - lastRecord;
-                down = down / 100000;
-                swing.label2.setText(down + " Mb/Second");
-            }
-            lastRecord = downloaded.get();
-            lastRecordTime = System.currentTimeMillis();
-        }
-        swing.progressBar1.setValue(downloaded.get());
-    }
 
     // Get this download's size.
     public int getSize() {
@@ -157,13 +111,11 @@ public class DownloadSwing implements Runnable {
             if (size == -1) {
                 size = contentLength;
                 stateChanged();
-                setMax();
             }
 
 
             stream = connection.getInputStream();
             while (status == DOWNLOADING) {
-                updateStatus();
                 byte[] buffer;
                 if (size - downloaded.get() > MAX_BUFFER_SIZE) {
                     buffer = new byte[MAX_BUFFER_SIZE];
@@ -204,7 +156,7 @@ public class DownloadSwing implements Runnable {
                 } catch (Exception e) {
                 }
             }
-            swing.frame1.setVisible(false);
+
         }
     }
 
