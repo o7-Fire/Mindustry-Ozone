@@ -1,14 +1,15 @@
 import Atom.Meth;
 import Atom.Random;
 import Atom.Time.Countdown;
-import com.google.googlejavaformat.java.Formatter;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.google.googlejavaformat.java.FormatterException;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,7 +54,19 @@ public class Obfuscate {
                 extension = f.getName().substring(i + 1);
             }
             if (!extension.equals("java")) continue;
-            List<String> formattedS = new ArrayList<>(Arrays.asList(new Formatter().formatSource(new String(Files.readAllBytes(f.toPath()))).split("\n")));
+
+            CompilationUnit compilationUnit = StaticJavaParser.parse(f);
+            compilationUnit.findAll(StringLiteralExpr.class).forEach(node -> {
+                if (!node.replace(StaticJavaParser.parseExpression(obfuscate(node.getValue()))))
+                    throw new RuntimeException("Holy shit cant do shit: \n"
+                            + "Obfuscated: " + obfuscate(node.getValue()) +
+                            "\n" + "Original: " + node.getValue() + "" +
+                            "\n" + "Detailed node: " + node.toString());
+            });
+            /*
+            String removedComment = compilationUnit.toString();
+            //List<String> formattedS = new ArrayList<>(Arrays.asList(new Formatter().formatSource(new String(Files.readAllBytes(f.toPath()))).split("\n")));
+            List<String> formattedS = new ArrayList<>(Arrays.asList(removedComment.split("\n")));
             StringBuilder sb = new StringBuilder();
             for (String s : formattedS) {
                 s = s.trim();
@@ -82,14 +95,11 @@ public class Obfuscate {
                 System.out.println(sb.toString());
                 System.out.println("ERRRRRRRRRRRRRRRRRR");
             }
+            */
             System.out.println(f.getAbsolutePath());
-            try {
-                FileWriter f2 = new FileWriter(f, false);
-                f2.write(g);
-                f2.close();
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
+            FileWriter f2 = new FileWriter(f, false);
+            f2.write(compilationUnit.toString());
+            f2.close();
 
         }
 
@@ -175,7 +185,9 @@ public class Obfuscate {
     }
 
     public static ArrayList<String> yeet(char s, String data) {
+
         ArrayList<String> dats = new ArrayList<>();
+        if (!data.contains(String.valueOf(s))) return dats;
         try {
             Pattern pattern = Pattern.compile("([\"'])(?:(?=(\\\\?))\\2.)*?\\1");
             dats.addAll(Arrays.asList(pattern.split(data)));
@@ -185,7 +197,7 @@ public class Obfuscate {
         dats.clear();
         boolean f = false, skip = false;
 
-        if (!data.contains(String.valueOf(s))) return dats;
+
         StringBuilder sb = new StringBuilder();
         for (char c : data.toCharArray()) {
             if (!skip)
