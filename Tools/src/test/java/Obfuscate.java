@@ -45,7 +45,7 @@ public class Obfuscate {
     }
 
     public static void obfuscate(List<File> files) throws IOException, FormatterException {
-        "dont //remove this idiot".length();
+        "dont //remove this idiot".length();//"does it"//
         for (File f : files) {
             String extension = "";
             int i = f.getName().lastIndexOf('.');
@@ -58,14 +58,7 @@ public class Obfuscate {
             for (String s : formattedS) {
                 s = s.trim();
                 if (s.isEmpty()) continue;
-                if (s.contains("//")) {
-                    if (s.startsWith("//")) continue;
-                    int loc = s.indexOf("//");
-                    while (itIsSurrounded('"', loc, s))
-                        loc = s.indexOf("//", loc);
-                    if (loc != -1)
-                        s = replace(s.substring(loc), "", s);
-                }
+                if (s.startsWith("//")) continue;
                 ArrayList<String> ar = yeet('"', s);
                 if (ar.isEmpty()) {
                     sb.append(s).append("\n");
@@ -182,8 +175,16 @@ public class Obfuscate {
     }
 
     public static ArrayList<String> yeet(char s, String data) {
-        boolean f = false, skip = false;
         ArrayList<String> dats = new ArrayList<>();
+        try {
+            Pattern pattern = Pattern.compile("([\"'])(?:(?=(\\\\?))\\2.)*?\\1");
+            dats.addAll(Arrays.asList(pattern.split(data)));
+            return dats;
+        } catch (Throwable t) {
+        }
+        dats.clear();
+        boolean f = false, skip = false;
+
         if (!data.contains(String.valueOf(s))) return dats;
         StringBuilder sb = new StringBuilder();
         for (char c : data.toCharArray()) {
