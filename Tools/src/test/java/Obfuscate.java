@@ -58,9 +58,10 @@ public class Obfuscate {
             CompilationUnit compilationUnit = StaticJavaParser.parse(f);
             compilationUnit.findAll(StringLiteralExpr.class).forEach(node -> {
                 if (!node.replace(StaticJavaParser.parseExpression(obfuscate(node.getValue()))))
-                    throw new RuntimeException("Holy shit cant do shit: \n"
-                            + "Obfuscated: " + obfuscate(node.getValue()) +
-                            "\n" + "Original: " + node.getValue() + "" +
+                    throw new RuntimeException("Holy shit cant do shit " +
+                            "\n" + "File: " + f.getAbsolutePath() +
+                            "\n" + "Obfuscated: " + obfuscate(node.getValue()) +
+                            "\n" + "Original: " + node.getValue() +
                             "\n" + "Detailed node: " + node.toString());
             });
             /*
