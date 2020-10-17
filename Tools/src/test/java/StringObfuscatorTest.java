@@ -1,4 +1,4 @@
-public class ProxyWar {
+public class StringObfuscatorTest {
 
     public static void main(String[] args) throws Throwable {
         String s = "gabe itch";

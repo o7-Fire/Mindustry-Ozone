@@ -17,8 +17,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 //Personal use
-public class Obfuscate {
+public class StringObfuscator {
     public static final boolean test = true;
+
     public static double avg(ArrayList<Long> arr) {
         double sum = 0;
         for (long l : arr) {
@@ -29,7 +30,7 @@ public class Obfuscate {
 
     public static void main(String[] args) throws Throwable {
         if (test) {
-            File victim = new File("Tools/src/test/java/ProxyWar.java");
+            File victim = new File("Tools/src/test/java/StringObfuscatorTest.java");
             writeFile(victim, obfuscate(victim));
             return;
         }
