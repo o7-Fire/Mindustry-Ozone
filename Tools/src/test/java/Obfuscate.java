@@ -96,6 +96,8 @@ public class Obfuscate {
         String startOffset = Random.getString(Random.getInt(s.length()));
         String endOffset = Random.getString(Random.getInt(s.length()));
         boolean shouldOffset = Random.getBool();
+        int offset = 0;
+        int length = 0;
         if (s.isEmpty()) return temp + teem;
         sb.append(temp);
 
@@ -107,6 +109,7 @@ public class Obfuscate {
                 else
                     sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
                 sb.append(',');
+                offset++;
             }
         }
         //aa,
@@ -117,6 +120,7 @@ public class Obfuscate {
             else
                 sb.append("(byte)Math.round(Math.sqrt(").append(c * c).append("))");
             sb.append(',');
+            length++;
         }
         //aa,bb,
         if (shouldOffset && !endOffset.isEmpty()) {
@@ -134,7 +138,17 @@ public class Obfuscate {
         if (!shouldOffset)
             sb.append(teem);
         else {
-            sb.append("}").append(", ").append(startOffset.length()).append(", ").append((startOffset.length() + s.length()) - endOffset.length()).append(")");
+            sb.append("}").append(", ");
+            if (Random.getBool())
+                sb.append("Math.round(Math.sqrt(").append(offset * offset).append("))");
+            else
+                sb.append(offset);
+            sb.append(", ");
+            if (Random.getBool())
+                sb.append("Math.round(Math.sqrt(").append(length * length).append("))");
+            else
+                sb.append(length);
+            sb.append(")");
         }
         return sb.toString();
 
