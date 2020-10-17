@@ -54,7 +54,6 @@ public class Obfuscate {
                 extension = f.getName().substring(i + 1);
             }
             if (!extension.equals("java")) continue;
-
             CompilationUnit compilationUnit = StaticJavaParser.parse(f);
             compilationUnit.findAll(StringLiteralExpr.class).forEach(node -> {
                 if (!node.replace(StaticJavaParser.parseExpression(obfuscate(node.getValue()))))
@@ -64,39 +63,6 @@ public class Obfuscate {
                             "\n" + "Original: " + node.getValue() +
                             "\n" + "Detailed node: " + node.toString());
             });
-            /*
-            String removedComment = compilationUnit.toString();
-            //List<String> formattedS = new ArrayList<>(Arrays.asList(new Formatter().formatSource(new String(Files.readAllBytes(f.toPath()))).split("\n")));
-            List<String> formattedS = new ArrayList<>(Arrays.asList(removedComment.split("\n")));
-            StringBuilder sb = new StringBuilder();
-            for (String s : formattedS) {
-                s = s.trim();
-                if (s.isEmpty()) continue;
-                if (s.startsWith("//")) continue;
-                ArrayList<String> ar = yeet('"', s);
-                if (ar.isEmpty()) {
-                    sb.append(s).append("\n");
-                    continue;
-                }
-                for (String sa : ar) {
-                    String mod = (obfuscate(sa));
-                    String org = ("\"" + sa + "\"");
-                    s = replace(org, mod, s);
-                    System.out.println(mod);
-                    System.out.println(org);
-                    System.out.println("\n");
-                }
-                sb.append(s);
-            }
-            String g = sb.toString();
-            try {
-                g = new Formatter().formatSource(sb.toString());
-            } catch (Throwable t) {
-                t.printStackTrace();
-                System.out.println(sb.toString());
-                System.out.println("ERRRRRRRRRRRRRRRRRR");
-            }
-            */
             System.out.println(f.getAbsolutePath());
             FileWriter f2 = new FileWriter(f, false);
             f2.write(compilationUnit.toString());
@@ -104,28 +70,6 @@ public class Obfuscate {
 
         }
 
-    }
-
-    // public static s = "gabe//itch";
-    // "oh//no";//"yet"
-    public static boolean itIsSurrounded(char o, int current, String data) {
-        ArrayList<Integer> openingIndex = new ArrayList<>();
-        int i = 0;
-        while (i != -1) {
-            i = data.indexOf(o, i);
-            if (i != -1)
-                openingIndex.add(i);
-        }
-        boolean yes = false;
-        for (int s : openingIndex) {
-            if (s < current) yes = false;
-            if (yes) {
-                if (s > current) return true;
-            } else {
-                if (s < current) yes = true;
-            }
-        }
-        return false;
     }
 
     public static String replace(String regex, String replace, String data) {
