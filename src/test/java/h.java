@@ -1,4 +1,4 @@
-import Ozone.Pre.Download;
+import Ozone.Desktop.Pre.Download;
 
 import java.io.File;
 import java.net.URL;

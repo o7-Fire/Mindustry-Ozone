@@ -1,7 +1,7 @@
 package Main;
 
+import Ozone.Desktop.Pre.PreInstall;
 import Ozone.Desktop.Swing.Main;
-import Ozone.Pre.PreInstall;
 
 import java.io.File;
 

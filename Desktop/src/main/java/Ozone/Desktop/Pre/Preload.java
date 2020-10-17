@@ -1,4 +1,4 @@
-package Ozone.Pre;
+package Ozone.Desktop.Pre;
 
 
 import arc.backend.sdl.jni.SDL;
@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
 
 import static Ozone.Interface.restart;
 
@@ -21,8 +22,7 @@ public class Preload {
     private static volatile boolean init = false;
 
 
-
-    public static boolean checkLibrary(String AtomDownload, File atom) {
+    public static boolean checkAtomic(String AtomDownload, File atom) {
         //try to download if doesn't exists
         if (!atom.exists())
             try {
@@ -63,7 +63,7 @@ public class Preload {
         if (!(clz.getClass().getClassLoader() instanceof URLClassLoader))
             throw new RuntimeException(clz + " Classloader is not URLClassloader, how it could be ???");
         //check library needed to load Ozone
-        if (!checkLibrary(AtomDownload, atom))
+        if (!checkAtomic(AtomDownload, atom))
             throw new FileNotFoundException("Atom Library can't be downloaded/not found");
         //Inform users
         Log.infoTag("Ozone", "Loading library");
@@ -71,8 +71,22 @@ public class Preload {
         //good ol reflection
         Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
         method.setAccessible(true);
-        method.invoke(clz.getClass().getClassLoader(), atom.toURI().toURL());
+        for (File lib : Objects.requireNonNull(atom.getParentFile().listFiles())) {
+            if (!getExtension(lib).equals("jar")) return;
+            Log.infoTag("Ozone", "Loading: " + lib.getAbsolutePath());
+            method.invoke(clz.getClass().getClassLoader(), lib.toURI().toURL());
+        }
+
         Log.infoTag("Ozone", "Library loaded by using java.net.URLClassLoader.addURL(java.net.URL)");
         //shit we did it without any error
+    }
+
+    public static String getExtension(File f) {
+        String extension = "";
+        int i = f.getName().lastIndexOf('.');
+        if (i > 0) {
+            extension = f.getName().substring(i + 1);
+        }
+        return extension;
     }
 }

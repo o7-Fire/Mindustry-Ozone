@@ -3,19 +3,21 @@ package Ozone.Patch;
 import Ozone.Event.Internal;
 import arc.Events;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import static Ozone.Interface.registerWords;
 
 public class Translation {
+    public static final ArrayList<String> normalSinglet = new ArrayList<>(Arrays.asList("Run"));
+    public static final ArrayList<String> singlet1 = new ArrayList<>(Arrays.asList("String", "Integer", "Float", "Long", "Boolean", "Commands"));
+    public static final HashMap<String, String> settings = new HashMap<>();
+    public static final HashMap<String, String> commands = new HashMap<>();
+    public static final HashMap<String, String> keyBinds = new HashMap<>();
 
     public static void patch() {
-        String[] normalSinglet = {"Run"};
-        String[] singlet1 = {"String", "Integer", "Float", "Long", "Boolean", "Commands"};
-        HashMap<String, String> settings = new HashMap<>();
-        HashMap<String, String> commands = new HashMap<>();
-        HashMap<String, String> keyBinds = new HashMap<>();
         settings.put("antiSpam", "[Broken]Enable Anti-Spam");
         settings.put("debugMode", "Enable Debug Mode");
         settings.put("colorPatch", "Enable Colorized Text");

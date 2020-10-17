@@ -1,8 +1,9 @@
 package Main;
 
+import Ozone.Desktop.Patch.DesktopPatcher;
+import Ozone.Desktop.Pre.Preload;
 import Ozone.Main;
 import Ozone.Manifest;
-import Ozone.Pre.Preload;
 import arc.Core;
 import arc.Events;
 import arc.util.Log;
@@ -33,7 +34,7 @@ public class Ozone extends Mod {
     public Mod mainMod = null;
 
     public Ozone() {
-        //gay spy, actually no
+        //gay spy, actually no no no yes
         if (Core.settings != null) {
             Core.settings.put("crashreport", false);
             Core.settings.manualSave();
@@ -85,9 +86,10 @@ public class Ozone extends Mod {
     @Override
     public void init() {
         //Library loaded properly ?
-        if (libraryURLLoaded)
+        if (libraryURLLoaded) {
+            DesktopPatcher.register();
             Main.init();
-        else if (libraryExists && mainMod != null) {//hmmm seem to use method 2
+        } else if (libraryExists && mainMod != null) {//hmmm seem to use method 2
             //alternative
             mainMod.init();
         }

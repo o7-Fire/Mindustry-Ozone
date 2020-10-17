@@ -31,7 +31,6 @@ import mindustry.gen.Player;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 
-import javax.tools.ToolProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -70,7 +69,6 @@ public class Commands {
         register("send-colorize", new Command(Commands::sendColorize));
         register("task-clear", new Command(Commands::taskClear));
         register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
-        register("javac", new Command(Commands::javac));
         Events.fire(Internal.Init.CommandsRegister);
         Main.patchTranslation();
         for (Map.Entry<String, Command> c : commandsList.entrySet())
@@ -78,17 +76,7 @@ public class Commands {
         Log.infoTag("Ozone", "Commands Center Initialized");
     }
 
-    public static void javac(ArrayList<String> arg) {
-        if (Vars.mobile) {
-            tellUser("lol mobile, you is joking right");
-            return;
-        }
-        if (ToolProvider.getSystemJavaCompiler() == null) {
-            tellUser("javac is not detected, are you sure using JDK ?");
-            return;
-        }
 
-    }
 
     public static void register(String name, Command command) {
         register(name, command, null);
