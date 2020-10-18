@@ -93,6 +93,8 @@ public class PreInstall {
                 DownloadSwing download = new DownloadSwing(new URL(AtomDownload), atom);
                 download.display();
                 download.run();
+                m.labelStatus.setText("Installed");
+                
             } catch (Throwable g) {
                 g.printStackTrace();
                 m.labelStatus.setText(g.toString());
