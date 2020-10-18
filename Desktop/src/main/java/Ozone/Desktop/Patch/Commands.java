@@ -1,6 +1,7 @@
 package Ozone.Desktop.Patch;
 
 import Atom.Manifest;
+import Atom.Struct.Stream;
 import Atom.Utility.Utility;
 import Garbage.Settings;
 import Ozone.Desktop.Pre.DownloadSwing;
@@ -116,7 +117,7 @@ public class Commands {
         String code = Utility.joiner(arg.toArray(new String[0]), " ");
         Thread th = new Thread(() -> {
             try {
-                Atom.Runtime.Compiler.runLine(code, System.out);
+                Atom.Runtime.Compiler.runLine(code, Stream.getReader(s -> Log.infoTag("javac", s)));
             } catch (Throwable t) {
                 t.printStackTrace();
                 Log.errTag("Compiler", t.toString());
