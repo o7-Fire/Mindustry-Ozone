@@ -207,7 +207,6 @@ public class Main {
 
         String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
         String[] stags = {"&lc&fb[D]", "&lg&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
-
         Log.setLogger((level, text) -> {
             String result = text;
             String rawText = Log.format(stags[level.ordinal()] + " [" + Utility.getDate() + "]" + "&fr " + text);
