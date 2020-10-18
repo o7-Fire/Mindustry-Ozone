@@ -20,11 +20,12 @@ public class DesktopPatcher {
             if (need == 0) return;
             if (!Vars.disableUI) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("Additional library need to be downloaded (restart required)").append("\n");
+                sb.append("Additional library need to be downloaded").append("\n");
                 Manifest.library.forEach(library -> {
                     if (library.downloaded()) return;
                     sb.append("-").append(library.name).append(library.version).append("\n");
                 });
+                sb.append("(restart required)");
                 Vars.ui.showCustomConfirm("Download", sb.toString(), "Download", "Later", () -> {
                     for (Manifest.Library library : Manifest.library) {
                         try {
