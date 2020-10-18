@@ -3,7 +3,9 @@ package Ozone.Desktop.Patch;
 import Atom.Manifest;
 import Ozone.Desktop.Pre.DownloadSwing;
 import Ozone.Event.Internal;
+import Ozone.Interface;
 import arc.Events;
+import arc.util.Log;
 import mindustry.Vars;
 import mindustry.game.EventType;
 
@@ -18,26 +20,26 @@ public class DesktopPatcher {
             if (need == 0) return;
             if (!Vars.disableUI) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("Additional library need to be downloaded").append("\n");
+                sb.append("Additional library need to be downloaded (restart required)").append("\n");
                 Manifest.library.forEach(library -> {
                     if (library.downloaded()) return;
                     sb.append("-").append(library.name).append(library.version).append("\n");
                 });
                 Vars.ui.showCustomConfirm("Download", sb.toString(), "Download", "Later", () -> {
-                    Manifest.library.forEach(library -> {
-                        Thread e = new Thread(() -> {
-                            try {
-                                DownloadSwing d = new DownloadSwing(new URL(library.link), library.jar);
-                                d.display();
-                                d.run();
-                            } catch (Throwable t) {
-                                Vars.ui.showErrorMessage("Failed to download " + library.name + "\n" + t.toString());
-                                t.printStackTrace();
+                    for (Manifest.Library library : Manifest.library) {
+                        try {
+                            DownloadSwing d = new DownloadSwing(new URL(library.link), library.jar);
+                            d.display();
+                            d.run();
+                            if (library.jar.exists()) {
+                                Log.infoTag("Ozone", library.name + ":" + library.version + " downloaded");
                             }
-                        });
-                        e.setDaemon(true);
-                        e.start();
-                    });
+                        } catch (Throwable t) {
+                            Vars.ui.showErrorMessage("Failed to download " + library.name + "\n" + t.toString());
+                            t.printStackTrace();
+                        }
+                    }
+                    Interface.restart();
                 }, () -> {
                 });
             }
