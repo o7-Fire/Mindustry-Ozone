@@ -11,6 +11,8 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 //have you load library today ?
 public class Preload {
@@ -62,11 +64,14 @@ public class Preload {
         //good ol reflection
         Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
         method.setAccessible(true);
-        method.invoke(clz.getClass().getClassLoader(), atom.toURI().toURL());
         Class<?> manifest = Class.forName("Atom.Manifest");
         Method list = manifest.getDeclaredMethod("getLibs");
-        for (File lib : (File[]) list.invoke(null)) {
-            if (!getExtension(lib).equals("jar")) return;
+        ArrayList<File> libs = new ArrayList<>();
+        libs.add(atom);
+        libs.addAll(Arrays.asList((File[]) list.invoke(null)));
+        for (File lib : libs) {
+            if (!lib.exists()) continue;
+            if (!getExtension(lib).equals("jar")) continue;
             Log.infoTag("Ozone", "Loading: " + lib.getAbsolutePath());
             method.invoke(clz.getClass().getClassLoader(), lib.toURI().toURL());
         }
