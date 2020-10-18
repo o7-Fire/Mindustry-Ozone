@@ -111,7 +111,7 @@ public class Main {
                     s.unit.y());
         });
         Events.on(EventType.UnitChangeEvent.class, s -> {
-            Log.debug("Ozone-@: player @ changing into @ at @,@",
+            Log.debug("Ozone-@: Player @ changing into @ at @,@",
                     s.getClass().getSimpleName(),
                     s.player.name(),
                     s.unit.getClass().getSimpleName(),
@@ -119,31 +119,45 @@ public class Main {
                     s.unit.y());
         });
         Events.on(EventType.UnitDestroyEvent.class, s -> {
-            Log.debug("Ozone-@: A @ destroyed at @,@",
-                    s.getClass().getSimpleName(),
-                    s.unit.getClass().getSimpleName(),
-                    s.unit.x(),
-                    s.unit.y());
+            if (s.unit.getPlayer() != null)
+                Log.debug("Ozone-@: Player @ destroyed at @,@",
+                        s.getClass().getSimpleName(),
+                        s.unit.getPlayer().name(),
+                        s.unit.x(),
+                        s.unit.y());
+            else
+                Log.debug("Ozone-@: A @ destroyed at @,@",
+                        s.getClass().getSimpleName(),
+                        s.unit.getClass().getSimpleName(),
+                        s.unit.x(),
+                        s.unit.y());
         });
         Events.on(EventType.UnitDrownEvent.class, s -> {
-            Log.debug("Ozone-@: A @ drowned at @,@",
-                    s.getClass().getSimpleName(),
-                    s.unit.getClass().getSimpleName(),
-                    s.unit.x(),
-                    s.unit.y());
+            if (s.unit.getPlayer() != null)
+                Log.debug("Ozone-@: Player @ drowned at @,@",
+                        s.getClass().getSimpleName(),
+                        s.unit.getPlayer().name(),
+                        s.unit.x(),
+                        s.unit.y());
+            else
+                Log.debug("Ozone-@: A @ drowned at @,@",
+                        s.getClass().getSimpleName(),
+                        s.unit.getClass().getSimpleName(),
+                        s.unit.x(),
+                        s.unit.y());
         });
 
         Events.on(EventType.BlockBuildEndEvent.class, s -> {
             if (s.unit.getPlayer() == null) return;//boring
             if (s.breaking)
-                Log.debug("Ozone-@: @ successfully deconstructed @ with configuration \"@\" on team @",
+                Log.debug("Ozone-@: \"@\" successfully deconstructed @ with configuration @ on team @",
                         s.getClass().getSimpleName(),
                         s.unit.getPlayer().name(),
                         s.tile.toString(),
                         s.config,
                         s.team);
             else
-                Log.debug("Ozone-@: @ successfully constructed @ with configuration \"@\" on team @",
+                Log.debug("Ozone-@: \"@\" successfully constructed @ with configuration @ on team @",
                         s.getClass().getSimpleName(),
                         s.unit.getPlayer().name(),
                         s.tile.toString(),
@@ -152,7 +166,7 @@ public class Main {
         });
         Events.on(EventType.PlayerJoin.class, s -> {
             if (s.player == null) return;
-            Log.debug("Ozone-@: @",
+            Log.debug("Ozone-@: \"@\" join",
                     s.getClass().getSimpleName(),
                     s.player.name());
         });
@@ -168,19 +182,20 @@ public class Main {
                         s.tile.toString(),
                         s.team);
             else
-                Log.debug("Ozone-@: someone begin breaking @ at team @",
+                Log.debug("Ozone-@: Someone begin breaking @ at team @",
                         s.getClass().getSimpleName(),
                         s.tile.toString(),
                         s.team);
         });
         Events.on(EventType.PlayerLeave.class, s -> {
-            if (s.player == null) return;//bruh
-            Log.debug("Ozone-@: @",
+            if (s.player == null) return;//boring
+            Log.debug("Ozone-@: \"@\" leave",
                     s.getClass().getSimpleName(),
                     s.player.name());
         });
         Events.on(EventType.ConfigEvent.class, s -> {
-            Log.debug("Ozone-@: @ has been changed to @ by player @",
+            if (s.player == null) return;//boring
+            Log.debug("Ozone-@: @ has been changed to @ by player \"@\"",
                     s.getClass().getSimpleName(),
                     s.tile.tile.toString(),
                     s.value,
@@ -195,7 +210,7 @@ public class Main {
 
         Log.setLogger((level, text) -> {
             String result = text;
-            String rawText = Log.format(stags[level.ordinal()] + "[" + Utility.getDate() + "]" + "&fr " + text);
+            String rawText = Log.format(stags[level.ordinal()] + " [" + Utility.getDate() + "]" + "&fr " + text);
             System.out.println(rawText);
 
             result = tags[level.ordinal()] + " " + result;

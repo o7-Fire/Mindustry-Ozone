@@ -12,6 +12,7 @@ import mindustry.net.Net;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 @ObfuscatorEntryPoint
 public class Manifest {
@@ -22,7 +23,7 @@ public class Manifest {
     public static CommandsListFrag commFrag;
     public static ArrayList<Class<?>> settings = new ArrayList<>();
     public static String lastServer = "";
-
+    public static final String date = new Date().toString();
 
     public static String getCurrentServerIP() {
         if (!Vars.net.active()) return lastServer;
