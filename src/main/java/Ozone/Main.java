@@ -1,6 +1,7 @@
 package Ozone;
 
 import Atom.Utility.Random;
+import Atom.Utility.Utility;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
 import Ozone.Event.Internal;
@@ -14,7 +15,9 @@ import Settings.Core;
 import arc.Events;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
+import arc.util.ColorCodes;
 import arc.util.Log;
+import arc.util.OS;
 import arc.util.Time;
 import mindustry.Vars;
 import mindustry.game.EventType;
@@ -24,6 +27,8 @@ import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 
 import java.lang.reflect.Field;
+
+import static mindustry.Vars.*;
 
 public class Main {
 
@@ -47,6 +52,7 @@ public class Main {
     }
 
     private static void initEvent() {
+        Vars.loadLogger();
         Events.on(EventType.ClientLoadEvent.class, s -> {
             arc.Core.settings.getBoolOnce("ozoneEpilepsyWarning", () -> {
                 Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning",
@@ -104,12 +110,12 @@ public class Main {
                     s.unit.y());
         });
         Events.on(EventType.UnitChangeEvent.class, s -> {
-            Log.debug("Ozone-@: A @ changed at @,@ with player @",
+            Log.debug("Ozone-@: player @ changing into @ at @,@",
                     s.getClass().getSimpleName(),
+                    s.player.name(),
                     s.unit.getClass().getSimpleName(),
                     s.unit.x(),
-                    s.unit.y(),
-                    s.player.name());
+                    s.unit.y());
         });
         Events.on(EventType.UnitDestroyEvent.class, s -> {
             Log.debug("Ozone-@: A @ destroyed at @,@",
@@ -156,7 +162,7 @@ public class Main {
         });
         Events.on(EventType.BlockBuildBeginEvent.class, s -> {
             if (s.breaking)
-                Log.debug("Ozone-@: someone begin build @ at team @",
+                Log.debug("Ozone-@: someone begin building @ at team @",
                         s.getClass().getSimpleName(),
                         s.tile.toString(),
                         s.team);
@@ -173,11 +179,38 @@ public class Main {
                     s.player.name());
         });
         Events.on(EventType.ConfigEvent.class, s -> {
-            Log.debug("Ozone-@: @ has been changed to @ by",
+            Log.debug("Ozone-@: @ has been changed to @ by player @",
                     s.getClass().getSimpleName(),
                     s.tile.tile.toString(),
-                    s.value, s.player.name());
+                    s.value,
+                    s.player.name());
         });
+    }
+
+    private static void setOzoneLogger() {
+
+        String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
+        String[] stags = {"&lc&fb[D]", "&lg&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
+
+        Log.setLogger((level, text) -> {
+            String result = text;
+            String rawText = Log.format(stags[level.ordinal()] + "[" + Utility.getDate() + "]" + "&fr " + text);
+            System.out.println(rawText);
+
+            result = tags[level.ordinal()] + " " + result;
+
+            if (!headless) {
+                if (!OS.isWindows) {
+                    for (String code : ColorCodes.values) {
+                        result = result.replace(code, "");
+                    }
+                }
+
+                ui.scriptfrag.addMessage(Log.removeCodes(result));
+            }
+        });
+
+        loadedLogger = true;
     }
 
     public static void update() {
