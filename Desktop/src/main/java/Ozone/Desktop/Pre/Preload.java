@@ -11,11 +11,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.Objects;
-
-import static Ozone.Interface.restart;
 
 //have you load library today ?
 public class Preload {
@@ -32,18 +28,14 @@ public class Preload {
                 SDL.SDL_ShowSimpleMessageBox(64, "Ozone", atom.getAbsolutePath() + " doesn't exists. Click OK to continue");
                 //how to download a file synchronously
                 URL jitpack = new URL(AtomDownload);
-                File temp = new File(atom.getParent(), "/" + System.currentTimeMillis() + ".temp");
-                DownloadSwing download = new DownloadSwing(jitpack, temp);
+                DownloadSwing download = new DownloadSwing(jitpack, atom);
                 download.display();
                 download.run();
-                Files.copy(temp.toPath(), atom.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                temp.deleteOnExit();
                 //its exists
                 if (atom.exists()) {
                     SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "Atom library has been downloaded: " + atom.getAbsolutePath());
-                    //Q: Why restart ???
-                    //A: its just cool to restart
-                    restart();
+                } else {
+                    throw new FileNotFoundException(atom.getAbsolutePath() + " reason: idk i have no idea, prob a bug");
                 }
                 //if its reach to here, then its must not exists and there no internet connection ? wtf
             } catch (Throwable t) {

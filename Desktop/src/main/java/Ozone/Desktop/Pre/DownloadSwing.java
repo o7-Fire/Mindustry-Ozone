@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.concurrent.atomic.AtomicInteger;
 
 //probably will be relocated to Atom library
@@ -131,7 +132,8 @@ public class DownloadSwing implements Runnable {
 
         InputStream stream = null;
         FileOutputStream outputStream = null;
-        File temp = new File(file.getParentFile(), this.toString());
+        File temp = new File(file.getParentFile(), this.toString() + System.currentTimeMillis() + ".temp");
+        temp.deleteOnExit();
         try {
             outputStream = new FileOutputStream(temp);
             // Open connection to URL.
@@ -207,7 +209,7 @@ public class DownloadSwing implements Runnable {
                 }
             }
             try {
-                Files.copy(temp.toPath(), file.toPath());
+                Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (Throwable t) {
 
             }
