@@ -4,6 +4,7 @@ import Atom.Manifest;
 import Atom.Utility.Utility;
 import Garbage.Settings;
 import Ozone.Desktop.Pre.DownloadSwing;
+import arc.util.Log;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -113,7 +114,12 @@ public class Commands {
             availableLib();
         }
         String code = Utility.joiner(arg.toArray(new String[0]), " ");
-
+        try {
+            Atom.Runtime.Compiler.runLine(code, System.out);
+        } catch (Throwable t) {
+            Log.errTag("Compiler", t.toString());
+            tellUser(t.getMessage());
+        }
     }
 
     protected static void availableLib() {
