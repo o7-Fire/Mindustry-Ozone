@@ -1,9 +1,9 @@
-package Garbage;
+package Settings;
 
-public class Settings {
+public class Core {
 
     public static boolean colorPatch = false, debugMode = false;
-    public static boolean antiSpam = false, logMessage = false;
+    public static boolean antiSpam = false;
     public static String commandsPrefix = ",";
 
 }

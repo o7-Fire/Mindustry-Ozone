@@ -3,8 +3,8 @@ package Ozone.Desktop.Patch;
 import Atom.Manifest;
 import Atom.Struct.Stream;
 import Atom.Utility.Utility;
-import Garbage.Settings;
 import Ozone.Desktop.Pre.DownloadSwing;
+import Settings.Core;
 import arc.util.Log;
 import mindustry.Vars;
 
@@ -45,7 +45,7 @@ public class Commands {
 
     public static void library(ArrayList<String> arg) {
         if (arg.isEmpty()) {
-            tellUser("send help:  \"" + Settings.commandsPrefix + "library help\"");
+            tellUser("send help:  \"" + Core.commandsPrefix + "library help\"");
             return;
         }
         if (arg.size() == 1) {
@@ -87,7 +87,7 @@ public class Commands {
             }
         }
         tellUser("No such commands");
-        tellUser("send help:  \"" + Settings.commandsPrefix + "library help\"");
+        tellUser("send help:  \"" + Core.commandsPrefix + "library help\"");
     }
 
     public static void downloadLib(Manifest.Library s) {
@@ -115,7 +115,7 @@ public class Commands {
         if (Manifest.library.stream().anyMatch(s -> s.name.contains(requiredLibrary))) {
             if (!Manifest.library.stream().filter(s -> s.name.contains(requiredLibrary)).findFirst().get().downloaded()) {
                 tellUser(requiredLibrary + " is not yet downloaded");
-                tellUser("use \"" + Settings.commandsPrefix + "library download all\"");
+                tellUser("use \"" + Core.commandsPrefix + "library download all\"");
                 return;
             }
         } else {

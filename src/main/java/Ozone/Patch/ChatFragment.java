@@ -3,9 +3,8 @@ package Ozone.Patch;
 
 import Atom.Time.Countdown;
 import Atom.Utility.Utility;
-import Garbage.Settings;
 import Ozone.Commands.Commands;
-import arc.Core;
+import Settings.Core;
 import arc.Input;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -133,8 +132,8 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
 
     @Override
     public void draw() {
-        float opacity = Core.settings.getInt("chatopacity") / 100f;
-        float textWidth = Math.min(Core.graphics.getWidth() / 1.5f, Scl.scl(700f));
+        float opacity = arc.Core.settings.getInt("chatopacity") / 100f;
+        float textWidth = Math.min(arc.Core.graphics.getWidth() / 1.5f, Scl.scl(700f));
 
         Draw.color(shadowColor);
 
@@ -206,10 +205,10 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
                     chatfield.setText(text);
                     sendMessage();
                     hide();
-                    Core.input.setOnscreenKeyboardVisible(false);
+                    arc.Core.input.setOnscreenKeyboardVisible(false);
                 };
                 input.canceled = this::hide;
-                Core.input.getTextInput(input);
+                arc.Core.input.getTextInput(input);
             } else {
                 chatfield.fireClick();
             }
@@ -250,7 +249,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
     @Override
     public void addMessage(String message, String sender) {
         ChatMessage cm = new ChatMessage(message, sender);
-        if (Settings.antiSpam) {
+        if (Core.antiSpam) {
             if (antiSpam.containsKey(sender)) {
                 AntiSpam victim = antiSpam.get(sender);
                 ChatMessage message1 = messages.get(0);

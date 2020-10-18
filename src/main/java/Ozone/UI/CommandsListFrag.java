@@ -1,10 +1,9 @@
 package Ozone.UI;
 
 import Atom.Utility.Random;
-import Garbage.Settings;
 import Ozone.Commands.Commands;
 import Ozone.Commands.Task.CommandsSpam;
-import arc.Core;
+import Settings.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
@@ -58,7 +57,7 @@ public class CommandsListFrag extends Fragment {
                 pane.row();
                 pane.table(menu -> {
                     menu.defaults().growX().height(50f).fillY();
-                    menu.button(Core.bundle.get("close"), this::toggle);
+                    menu.button(arc.Core.bundle.get("close"), this::toggle);
                 }).margin(0f).pad(15f).growX();
 
             }).touchable(Touchable.enabled).margin(14f);
@@ -70,7 +69,7 @@ public class CommandsListFrag extends Fragment {
         content.clear();
         for (Map.Entry<String, Commands.Command> cl : Commands.commandsList.entrySet()) {
             if (cl.getValue().icon == null) continue;
-            String name = (Settings.colorPatch ? "[" + Random.getRandomHexColor() + "]" : "") + cl.getKey().replace("-", " ") + "[white]";
+            String name = (Core.colorPatch ? "[" + Random.getRandomHexColor() + "]" : "") + cl.getKey().replace("-", " ") + "[white]";
             Table button = new Table();
             button.left();
             button.margin(5).marginBottom(10);
@@ -95,7 +94,7 @@ public class CommandsListFrag extends Fragment {
                 button.label(() -> name);
                 button.button(Icon.settings, Styles.clearPartiali, () -> ui.showConfirm(name, "are you sure want to run commands: " + name, () -> {
                     String com = cl.getKey();
-                    Commands.call(Settings.commandsPrefix + com);
+                    Commands.call(Core.commandsPrefix + com);
                 }));
 
             } catch (Throwable a) {
@@ -103,7 +102,7 @@ public class CommandsListFrag extends Fragment {
             }
             content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
             content.row();
-            if (Settings.colorPatch)
+            if (Core.colorPatch)
                 content.image().height(4f).color(Color.valueOf(Random.getRandomHexColor())).growX();
             else
                 content.image().height(4f).color(Color.gray).growX();
@@ -121,7 +120,7 @@ public class CommandsListFrag extends Fragment {
             rebuild();
         } else {
             sField.clearText();
-            Core.scene.setKeyboardFocus(null);
+            arc.Core.scene.setKeyboardFocus(null);
         }
     }
 

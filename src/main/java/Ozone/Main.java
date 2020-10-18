@@ -1,7 +1,6 @@
 package Ozone;
 
 import Atom.Utility.Random;
-import Garbage.Settings;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
 import Ozone.Event.Internal;
@@ -11,7 +10,7 @@ import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
-import arc.Core;
+import Settings.Core;
 import arc.Events;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
@@ -49,17 +48,17 @@ public class Main {
 
     private static void initEvent() {
         Events.on(EventType.ClientLoadEvent.class, s -> {
-                Core.settings.getBoolOnce("ozoneEpilepsyWarning", () -> {
-                    Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning",
-                            "A very small percentage of people may experience a seizure when exposed to certain visual images, " +
-                                    "including flashing lights or patterns that may appear on certain UI element in the game.",
-                            "Accept", "Decline", () -> {
-                            }, () -> {
-                                Settings.colorPatch = false;
-                                Core.settings.put("ozone.colorPatch", false);
-                                Core.settings.forceSave();
-                            });
-                });
+            arc.Core.settings.getBoolOnce("ozoneEpilepsyWarning", () -> {
+                Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning",
+                        "A very small percentage of people may experience a seizure when exposed to certain visual images, " +
+                                "including flashing lights or patterns that may appear on certain UI element in the game.",
+                        "Accept", "Decline", () -> {
+                        }, () -> {
+                            Core.colorPatch = false;
+                            arc.Core.settings.put("ozone.colorPatch", false);
+                            arc.Core.settings.forceSave();
+                        });
+            });
         });
 
         Events.on(EventType.PlayerJoin.class, s -> {
@@ -85,21 +84,21 @@ public class Main {
     }
 
     protected static void loadSettings() {
-        Manifest.settings.add(Settings.class);
+        Manifest.settings.add(Core.class);
         Events.fire(Internal.Init.SettingsRegister);
-        Core.settings.put("crashreport", false);
+        arc.Core.settings.put("crashreport", false);
         for (Field f : Manifest.getSettings()) {
             try {
                 if (boolean.class.equals(f.getType())) {
-                    f.setBoolean(null, Core.settings.getBool("ozone." + f.getName(), f.getBoolean(null)));
+                    f.setBoolean(null, arc.Core.settings.getBool("ozone." + f.getName(), f.getBoolean(null)));
                 } else if (String.class.equals(f.getType())) {
-                    f.set(null, Core.settings.getString("ozone." + f.getName(), (String) f.get(null)));
+                    f.set(null, arc.Core.settings.getString("ozone." + f.getName(), (String) f.get(null)));
                 } else if (int.class.equals(f.getType())) {
-                    f.setInt(null, Core.settings.getInt("ozone." + f.getName(), f.getInt(null)));
+                    f.setInt(null, arc.Core.settings.getInt("ozone." + f.getName(), f.getInt(null)));
                 } else if (long.class.equals(f.getType())) {
-                    f.setLong(null, Core.settings.getLong("ozone." + f.getName()));
+                    f.setLong(null, arc.Core.settings.getLong("ozone." + f.getName()));
                 } else if (float.class.equals(f.getType())) {
-                    f.setFloat(null, Core.settings.getFloat("ozone." + f.getName(), f.getFloat(null)));
+                    f.setFloat(null, arc.Core.settings.getFloat("ozone." + f.getName(), f.getFloat(null)));
                 }
             } catch (Throwable t) {
                 Log.errTag("Ozone-Settings", "Couldn't load settings for: ozone." + f.getName());
@@ -122,12 +121,12 @@ public class Main {
             Log.infoTag("Ozone", "Patching Settings");
             Vars.ui.settings = new SettingsDialog();
             Log.infoTag("Ozone", "Patching ChatFragment");
-            Core.scene.root.removeChild(Vars.ui.chatfrag);
+            arc.Core.scene.root.removeChild(Vars.ui.chatfrag);
             Vars.ui.chatfrag = new ChatFragment();
             Vars.ui.chatfrag.container().build(Vars.ui.hudGroup);
             Vars.enableConsole = true;
             Log.infoTag("Ozone", "Patching Complete");
-            if (Settings.debugMode) Log.setLogLevel(Log.LogLevel.debug);
+            if (Core.debugMode) Log.setLogLevel(Log.LogLevel.debug);
             Log.debug("Ozone-Debug", "Debugs, peoples, debugs");
         } catch (Throwable t) {
             Log.infoTag("Ozone", "Patch failed");
@@ -136,15 +135,15 @@ public class Main {
     }
 
     public static void patchTranslation() {
-        ObjectMap<String, String> modified = Core.bundle.getProperties();
+        ObjectMap<String, String> modified = arc.Core.bundle.getProperties();
         for (ObjectMap.Entry<String, String> s : Interface.bundle) {
             modified.put(s.key, s.value);
         }
-        if (Settings.colorPatch)
-            for (String s : Core.bundle.getKeys()) {
+        if (Core.colorPatch)
+            for (String s : arc.Core.bundle.getKeys()) {
                 modified.put(s, getRandomHexColor() + modified.get(s) + "[white]");
             }
-        Core.bundle.setProperties(modified);
+        arc.Core.bundle.setProperties(modified);
     }
 
     protected static void initUI() {
@@ -157,7 +156,7 @@ public class Main {
             }
         };
         Manifest.commFrag = new CommandsListFrag();
-        Manifest.menu = new OzoneMenu(Core.bundle.get("ozone.hud"), ozoneStyle);
+        Manifest.menu = new OzoneMenu(arc.Core.bundle.get("ozone.hud"), ozoneStyle);
         Manifest.commFrag.build(Vars.ui.hudGroup);
 
     }

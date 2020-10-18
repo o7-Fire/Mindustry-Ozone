@@ -1,7 +1,7 @@
 package Ozone.Commands.Task;
 
-import Garbage.Settings;
 import Ozone.Commands.Commands;
+import Settings.Core;
 import mindustry.Vars;
 
 //not finished
@@ -19,7 +19,7 @@ public class CommandsSpam extends Task {
                 delays = 0;
             else
                 delays = Integer.parseInt(delay);
-            if (!Commands.call(Settings.commandsPrefix + commands)) {
+            if (!Commands.call(Core.commandsPrefix + commands)) {
                 currentCycle = 1;
                 howManyTimes = 1;
                 Vars.ui.showErrorMessage(commands + " is not a valid commands");
@@ -41,6 +41,6 @@ public class CommandsSpam extends Task {
         if (tick()) return;
         if (currentCycle > howManyTimes) return;
         currentCycle++;
-        Commands.call(Settings.commandsPrefix + commands);
+        Commands.call(Core.commandsPrefix + commands);
     }
 }

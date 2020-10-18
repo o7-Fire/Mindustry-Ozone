@@ -1,9 +1,10 @@
-Garbage.Settings -> Garbage.Settings:
-    boolean colorPatch -> colorPatch
-    boolean debugMode -> debugMode
-    boolean antiSpam -> antiSpam
-    java.lang.String commandsPrefix -> commandsPrefix
-    void <init>() -> <init>
-    void <clinit>() -> <clinit>
+Settings.Core -> Settings.Core:
+        boolean colorPatch -> colorPatch
+                           boolean debugMode -> debugMode
+                           boolean antiSpam -> antiSpam
+                                            java.lang.String commandsPrefix -> commandsPrefix
+                                                                             void <init>() -> <init>
+                                                                                              void <clinit>() -
+> <clinit>
 Main.Ozone -> Main.Ozone:
-    void <init>() -> <init>
+                  void <init>() -> <init>

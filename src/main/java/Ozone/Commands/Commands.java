@@ -3,14 +3,13 @@ package Ozone.Commands;
 import Atom.Time.Countdown;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
-import Garbage.Settings;
 import Ozone.Commands.Task.DestructBlock;
 import Ozone.Commands.Task.Move;
 import Ozone.Commands.Task.Task;
 import Ozone.Event.Internal;
 import Ozone.Interface;
 import Ozone.Manifest;
-import arc.Core;
+import Settings.Core;
 import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.Colors;
@@ -209,12 +208,12 @@ public class Commands {
     }
 
     public static String getTranslation(String name) {
-        return Core.bundle.get("ozone.commands." + name);
+        return arc.Core.bundle.get("ozone.commands." + name);
     }
 
     public static boolean call(String message) {
-        if (!message.startsWith(Settings.commandsPrefix)) return false;
-        message = message.substring(Settings.commandsPrefix.length());
+        if (!message.startsWith(Core.commandsPrefix)) return false;
+        message = message.substring(Core.commandsPrefix.length());
         if (message.isEmpty()) return false;
         ArrayList<String> mesArg = new ArrayList<>(Arrays.asList(message.split(" ")));
         if (!commandsList.containsKey(mesArg.get(0).toLowerCase())) {

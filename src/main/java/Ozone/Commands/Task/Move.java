@@ -13,13 +13,11 @@ import static Ozone.Commands.BotInterface.samePos;
 import static Ozone.Commands.BotInterface.setMov;
 import static Ozone.Commands.Pathfinding.distanceTo;
 
-//TODO relocate these method
 public class Move extends Task {
     private final Vec2 destPos, destTilePos;
     private final float airTolerance = 1.2f, landTolerance = 0.04f;
-    private Tile destTile = null;
+    private Tile destTile;
     private Seq<Tile> pathfindingCache = new Seq<>();
-    private Vec2 vec = new Vec2();
     private boolean alreadyOverlay = false;
 
     public Move(float x, float y) {
