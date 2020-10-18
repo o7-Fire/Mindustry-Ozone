@@ -61,21 +61,23 @@ public class Main {
             });
         });
 
+        Events.on(EventType.ClientPreConnectEvent.class, s -> {
+            Log.debug("Ozone-PreConnectEvent @:@ = @", s.host.address, s.host.port, s.host.name);
+        });
         Events.on(EventType.PlayerJoin.class, s -> {
-
+            Log.debug("Ozone-PlayerJoin: @", s.player.name());
         });
         Events.on(EventType.BlockDestroyEvent.class, s -> {
-
+            Log.debug("Ozone-BlockDestroyEvent @", s.tile.toString());
         });
         Events.on(EventType.BlockBuildBeginEvent.class, s -> {
-
+            Log.debug("Ozone-BlockBuildBeginEvent @", s.tile.toString());
         });
         Events.on(EventType.PlayerLeave.class, s -> {
-
+            Log.debug("Ozone-PlayerLeave: @", s.player.name());
         });
         Events.on(EventType.ConfigEvent.class, s -> {
-
-            Log.infoTag("ConfigEvent", s.tile.toString() + " has been changed");
+            Log.debug("ConfigEvent @ has been changed to @ by", s.tile.toString(), s.value, s.player.name());
         });
     }
 

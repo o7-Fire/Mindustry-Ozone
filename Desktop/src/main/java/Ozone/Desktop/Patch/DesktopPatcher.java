@@ -4,6 +4,7 @@ import Atom.Manifest;
 import Ozone.Desktop.Pre.DownloadSwing;
 import Ozone.Event.Internal;
 import Ozone.Interface;
+import Settings.Desktop;
 import arc.Events;
 import arc.util.Log;
 import mindustry.Vars;
@@ -13,6 +14,7 @@ import java.net.URL;
 
 public class DesktopPatcher {
     public static void register() {
+        Ozone.Manifest.settings.add(Desktop.class);
         Events.run(Internal.Init.CommandsRegister, Commands::Init);
         Events.run(Internal.Init.TranslationRegister, Translation::Init);
         Events.on(EventType.ClientLoadEvent.class, s -> {
@@ -45,5 +47,6 @@ public class DesktopPatcher {
                 });
             }
         });
+
     }
 }

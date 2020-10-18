@@ -4,6 +4,7 @@ package Ozone.Patch;
 import Atom.Time.Countdown;
 import Atom.Utility.Utility;
 import Ozone.Commands.Commands;
+import Ozone.Manifest;
 import Settings.Core;
 import arc.Input;
 import arc.graphics.Color;
@@ -317,7 +318,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
         public final String message;
         public final String formattedMessage;
         public final Instant date;
-
+        public final String server;
         public ChatMessage(String message, String sender) {
             this.message = message;
             this.sender = sender;
@@ -327,7 +328,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
             } else {
                 this.formattedMessage = "[coral][[" + sender + "[coral]]:[white] " + message;
             }
-
+            server = Manifest.getCurrentServerIP();
         }
 
         public ChatMessage(String message, String sender, String antiSpam) {
@@ -339,7 +340,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
             } else {
                 this.formattedMessage = "[royal][AntiSpam][white]" + antiSpam + "\n[coral][[" + sender + "[coral]]:[white] " + message;
             }
-
+            server = Manifest.getCurrentServerIP();
         }
     }
 }
