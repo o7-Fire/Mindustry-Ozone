@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 @ObfuscatorEntryPoint
 public class Manifest {
-    public final static String atomHash = "6b64cd89bb";
+    public final static String atomHash = "4fbf85cc19";
     public final static String atomFile = "Atomic-" + atomHash + ".jar", libs = "libs";
     public final static String atomDownloadLink = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/" + atomHash + "/Atomic-Library-" + atomHash + ".jar";
     public static OzoneMenu menu;
