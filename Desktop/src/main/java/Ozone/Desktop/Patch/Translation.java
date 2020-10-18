@@ -10,6 +10,6 @@ public class Translation {
         init = true;
         commands.put("javac", "run single line of java code");
         commands.put("library", "manage runtime library");
-        commands.put("debug", "System.out.println(\"yeet\"");
+        commands.put("debug", "System.out.println(\"yeet\")");
     }
 }

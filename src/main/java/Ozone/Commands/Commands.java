@@ -14,6 +14,7 @@ import arc.Core;
 import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.Colors;
+import arc.math.geom.Vec2;
 import arc.scene.style.TextureRegionDrawable;
 import arc.struct.OrderedMap;
 import arc.struct.Queue;
@@ -39,7 +40,7 @@ import java.util.function.Consumer;
 
 public class Commands {
 
-    public static final HashMap<String, Command> commandsList = new HashMap<>();
+    public static HashMap<String, Command> commandsList = new HashMap<>();
     private static boolean init = false;
     private volatile static boolean falseVote = false;
     public static final Queue<Task> commandsQueue = new Queue<>();
@@ -68,13 +69,55 @@ public class Commands {
         register("send-colorize", new Command(Commands::sendColorize));
         register("task-clear", new Command(Commands::taskClear));
         register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
+        register("super-bullet", new Command(Commands::superBullet));
         Events.fire(Internal.Init.CommandsRegister);
-        for (Map.Entry<String, Command> c : commandsList.entrySet())
-            c.getValue().description = getTranslation(c.getKey());
+        for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet())
+            c.getValue().description = Commands.getTranslation(c.getKey());
         Log.infoTag("Ozone", "Commands Center Initialized");
+        Log.infoTag("Ozone", commandsList.size() + " commands loaded");
     }
 
 
+    //Anuked suggestion
+    public static void superBullet(ArrayList<String> s) {
+        if (s.size() < 3) {
+            tellUser("superBullet x(Target-X-Coordinate-Tile) y(Target-Y-Coordinate-Tile) s(Second, how long the effect lasted)");
+            return;
+        }
+        try {
+            int x = Integer.parseInt(s.get(0));
+            int y = Integer.parseInt(s.get(1));
+            int sec = Integer.parseInt(s.get(2));
+            long start = System.currentTimeMillis();
+            if (Vars.world.tile(x, y) == null) {
+                tellUser("Null tile");
+                return;
+            }
+            float lastX = Vars.player.getX();
+            float lastY = Vars.player.getY();
+            Task task = new Task() {
+                @Override
+                public boolean isCompleted() {
+                    return System.currentTimeMillis() - start > sec * 1000 || !Vars.net.active();
+                }
+
+                @Override
+                public void update() {
+                    Vec2 vec = new Vec2();
+                    Tile tile = Vars.world.tile(110, 160);
+                    vec.trns(Vars.player.unit().angleTo(tile), Vars.player.unit().type().speed * 1000);
+                    Vars.player.unit().moveAt(vec, 100F);
+                    Vars.player.x = lastX;
+                    Vars.player.y = lastY;
+
+                }
+            };
+            Commands.commandsQueue.addLast(task);
+        } catch (NumberFormatException f) {
+            tellUser("Failed to parse integer, are you sure that argument was integer ?");
+            Vars.ui.showException(f);
+        }
+    }
 
     public static void register(String name, Command command) {
         register(name, command, null);
@@ -83,7 +126,10 @@ public class Commands {
     public static void register(String name, Command command, String description) {
         if (description != null)
             Interface.registerWords("ozone.commands." + name, description);
-        commandsList.put(name, command);
+        if (commandsList.get(name) == null)
+            commandsList.put(name, command);
+        else
+            commandsList.replace(name, command);
     }
 
     public static void shuffleSorter(ArrayList<String> s) {
@@ -178,7 +224,7 @@ public class Commands {
         Command comm = commandsList.get(mesArg.get(0).toLowerCase());
         ArrayList<String> args;
         if (mesArg.size() > 1) {
-            message = message.substring(mesArg.get(0).length());
+            message = message.substring(mesArg.get(0).length() + 1);
             args = new ArrayList<>(Arrays.asList(message.split(" ")));
         } else {
             args = new ArrayList<>();
@@ -262,7 +308,7 @@ public class Commands {
 
     public static void infoPos(ArrayList<String> a) {
         tellUser("Player x,y: " + Vars.player.x + ", " + Vars.player.y);
-        tellUser("Player tile x,y: " + Vars.player.tileX() + ", " + Vars.player.tileY());
+        tellUser("Tile x,y: " + Vars.player.tileX() + ", " + Vars.player.tileY());
     }
 
     public static void help(ArrayList<String> a) {

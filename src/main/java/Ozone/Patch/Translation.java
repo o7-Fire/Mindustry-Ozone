@@ -29,17 +29,18 @@ public class Translation {
         registerWords("ozone.javaEditor.run", "Run");
         registerWords("ozone.commandsUI", "Commands GUI");
         commands.put("help", "help desk");
-        commands.put("chaosKick", "vote everyone everytime everywhere");
-        commands.put("taskMove", "move using current unit with pathfinding algorithm");
-        commands.put("infoPos", "get current info pos");
-        commands.put("infoPathfinding", "get Pathfinding overlay");
-        commands.put("forceExit", "you want to crash ?");
-        commands.put("taskDeconstruct", "deconstruct your block with AI");
-        commands.put("sendColorize", "send Colorized text");
-        commands.put("infoUnit", "get current unit info");
-        commands.put("randomKick", "random kick someone");
-        commands.put("shuffleSorter", "shufleelelelel Da Sorter And Everything");
+        commands.put("chaos-kick", "vote everyone everytime everywhere");
+        commands.put("task-move", "move using current unit with pathfinding algorithm");
+        commands.put("info-pos", "get current info pos");
+        commands.put("info-pathfinding", "get Pathfinding overlay");
+        commands.put("force-exit", "you want to crash ?");
+        commands.put("task-deconstruct", "deconstruct your block with AI");
+        commands.put("send-colorize", "send Colorized text");
+        commands.put("info-unit", "get current unit info");
+        commands.put("random-kick", "random kick someone");
+        commands.put("shuffle-sorter", "shufleelelelel Da Sorter And Everything");
         commands.put("javac", "run single line of code, like \nVars.player.unit().moveAt(new Vec2(100, 100));");
+        commands.put("task-clear", "clear all bot task");
         Events.fire(Internal.Init.TranslationRegister);
         for (Map.Entry<String, String> s : commands.entrySet()) {
             registerWords("ozone.commands." + s.getKey(), s.getValue());

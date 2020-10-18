@@ -6,7 +6,9 @@ import Atom.Utility.Utility;
 import Garbage.Settings;
 import Ozone.Desktop.Pre.DownloadSwing;
 import arc.util.Log;
+import mindustry.Vars;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -29,6 +31,12 @@ public class Commands {
         register("javac", new Command(Commands::javac));
         register("library", new Command(Commands::library));
         register("debug", new Command(Commands::debug));
+        register("info-pos", new Command(Commands::infoPos));
+    }
+
+    public static void infoPos(ArrayList<String> arg) {
+        tellUser("Mouse x,y: " + Vars.player.mouseX + ", " + Vars.player.mouseY);
+        Ozone.Commands.Commands.infoPos(arg);
     }
 
     public static void debug(ArrayList<String> arg) {
@@ -114,10 +122,15 @@ public class Commands {
             tellUser("Cant find " + requiredLibrary + " in Manifest.library");
             availableLib();
         }
+
         String code = Utility.joiner(arg.toArray(new String[0]), " ");
         Thread th = new Thread(() -> {
             try {
                 Atom.Runtime.Compiler.runLine(code, Stream.getReader(s -> Log.infoTag("javac", s)));
+            } catch (FileNotFoundException fail) {
+                tellUser("Failed to compile or IOException Problem");
+                fail.printStackTrace();
+                Log.errTag("Compiler", fail.toString());
             } catch (Throwable t) {
                 t.printStackTrace();
                 Log.errTag("Compiler", t.toString());
