@@ -17,9 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 //probably will be relocated to Atom library
 public class DownloadSwing implements Runnable {
 
-    // These are the status names.
-    public static final String[] STATUSES = {"Downloading",
-            "Paused", "Complete", "Cancelled", "Error"};
+
     // These are the status codes.
     public static final int DOWNLOADING = 0;
     public static final int PAUSED = 1;
@@ -36,8 +34,11 @@ public class DownloadSwing implements Runnable {
     private File file;
     private SPreLoad swing = null;
     public JProgressBar progressBar = null;
+    public JLabel label = null;
+    public JFrame frame = null;
     private long lastRecordTime = 0, lastRecord = 0;
     private boolean displayed = false;
+
     // Constructor for Download.
     public DownloadSwing(URL url, File file) {
         this.url = url;
@@ -48,6 +49,15 @@ public class DownloadSwing implements Runnable {
 
     }
 
+    public void display(JFrame frame) {
+        this.frame = frame;
+    }
+
+    public void display(JLabel label) {
+        this.label = label;
+        this.label.setText("Connecting...." + url.toString());
+        if (frame != null) frame.pack();
+    }
 
     public void display(JProgressBar progressBar) {
         this.progressBar = progressBar;
@@ -55,7 +65,10 @@ public class DownloadSwing implements Runnable {
         this.progressBar.setMaximum(100);
         this.progressBar.setValue(0);
         this.progressBar.setVisible(true);
+        if (frame != null) frame.pack();
+
     }
+
 
     public void display() {
         if (displayed) return;
@@ -78,62 +91,49 @@ public class DownloadSwing implements Runnable {
     private void setMax() {
         if (progressBar != null)
             progressBar.setMaximum(getSize());
-        if (swing == null) return;
-        swing.progressBar1.setMaximum(getSize());
-        if (getSize() < 10000000)
-            swing.label2.setText((getSize() / 1000) / 1000F + " KB");
-        else
-            swing.label2.setText((getSize() / 1000000) / 1000F + " MB");
-        swing.frame1.pack();
+        if (swing != null) {
+            swing.progressBar1.setMaximum(getSize());
+            if (getSize() < 10000000)
+                swing.label2.setText(file.getName() + " " + (getSize() / 1000) / 1000F + " KB");
+            else
+                swing.label2.setText(file.getName() + " " + (getSize() / 1000000) / 1000F + " MB");
+            swing.frame1.pack();
+        }
+        if (label != null) {
+            if (getSize() < 10000000)
+                label.setText(file.getName() + " " + (getSize() / 1000) / 1000F + " KB");
+            else
+                label.setText(file.getName() + " " + (getSize() / 1000000) / 1000F + " MB");
+        }
+        if (frame != null) frame.pack();
+
     }
 
     private void updateStatus() {
         if (progressBar != null)
             progressBar.setValue(downloaded.get());
-        if (swing == null) return;
-        if ((System.currentTimeMillis() - lastRecordTime) > 900) {
+
+
+        if ((System.currentTimeMillis() - lastRecordTime) > 800) {
             if (lastRecord != 0) {
                 float down = downloaded.get() - lastRecord;
                 down = down / 100000;
-                swing.label2.setText(down + " Mb/Second");
+                if (swing != null)
+                    swing.label2.setText(down + " Mb/Second");
+                if (label != null)
+                    label.setText(down + " Mb/Second");
             }
             lastRecord = downloaded.get();
             lastRecordTime = System.currentTimeMillis();
         }
-        swing.progressBar1.setValue(downloaded.get());
+        if (swing != null)
+            swing.progressBar1.setValue(downloaded.get());
+        if (frame != null) frame.pack();
     }
 
     // Get this download's size.
     public int getSize() {
         return size;
-    }
-
-    // Get this download's progress.
-    public float getProgress() {
-        return ((float) downloaded.get() / size) * 100;
-    }
-
-    // Get this download's status.
-    public int getStatus() {
-        return status;
-    }
-
-    // Pause this download.
-    public void pause() {
-        status = PAUSED;
-        stateChanged();
-    }
-
-    // Resume this download.
-    public void resume() {
-        status = DOWNLOADING;
-        stateChanged();
-    }
-
-    // Cancel this download.
-    public void cancel() {
-        status = CANCELLED;
-        stateChanged();
     }
 
     // Mark this download as having an error.
@@ -228,7 +228,10 @@ public class DownloadSwing implements Runnable {
             } catch (Throwable t) {
 
             }
-            swing.frame1.setVisible(false);
+            if (swing != null)
+                swing.frame1.setVisible(false);
+            if (frame != null) frame.pack();
+
         }
     }
 

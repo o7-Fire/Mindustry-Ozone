@@ -91,18 +91,25 @@ public class PreInstall {
                 }
                 return;
             }
-            try {
-                DownloadSwing download = new DownloadSwing(new URL(Manifest.atomDownloadLink), atom);
-                download.display(m.progressBar1);
-                m.frame1.pack();
-                download.run();
-                m.labelStatus.setText("Installed");
-                m.progressBar1.setVisible(false);
-                m.frame1.pack();
-            } catch (Throwable g) {
-                g.printStackTrace();
-                m.labelStatus.setText(g.toString());
-            }
+            Thread t = new Thread(() -> {
+                try {
+                    DownloadSwing download = new DownloadSwing(new URL(Manifest.atomDownloadLink), atom);
+                    download.display(m.frame1);
+                    download.display(m.progressBar1);
+                    download.display(m.labelStatus);
+                    m.frame1.pack();
+                    download.run();
+                    m.labelStatus.setText("Installed");
+                    m.progressBar1.setVisible(false);
+                    m.frame1.pack();
+                } catch (Throwable g) {
+                    g.printStackTrace();
+                    m.labelStatus.setText(g.toString());
+                    m.frame1.pack();
+                }
+            });
+            t.setDaemon(true);
+            t.start();
             m.frame1.pack();
         });
     }
