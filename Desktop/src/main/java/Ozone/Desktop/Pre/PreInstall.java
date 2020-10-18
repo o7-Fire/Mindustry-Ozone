@@ -1,6 +1,7 @@
 package Ozone.Desktop.Pre;
 
 import Ozone.Desktop.Swing.Main;
+import Ozone.Manifest;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +14,6 @@ import java.nio.file.StandardCopyOption;
 import static Main.h.mindustry;
 
 public class PreInstall {
-    public final static String AtomHash = "a2961d4c26", atomFile = "Atomic-" + AtomHash + ".jar", libs = "libs";
-    public final static String AtomDownload = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/Atomic/" + AtomHash + "/Atomic-" + AtomHash + ".jar";
 
     public static void install(Main m) {
         m.label4.setText(mindustry.getAbsolutePath());
@@ -59,12 +58,12 @@ public class PreInstall {
                 return;
             }
             //mods/libs
-            File library = new File(mods, libs);
+            File library = new File(mods, Manifest.libs);
             //mods/Ozone.jar
             File ozone = new File(mods, "Ozone.jar");
             library.mkdirs();
             //mods/libs/Atomic-AtomHash.jar
-            File atom = new File(library, atomFile);
+            File atom = new File(library, Manifest.atomFile);
             if (ozone.exists()) {
                 try {
                     m.labelStatus.setText("Updating");
@@ -90,11 +89,11 @@ public class PreInstall {
                 return;
             }
             try {
-                DownloadSwing download = new DownloadSwing(new URL(AtomDownload), atom);
+                DownloadSwing download = new DownloadSwing(new URL(Manifest.atomDownloadLink), atom);
                 download.display();
                 download.run();
                 m.labelStatus.setText("Installed");
-                
+
             } catch (Throwable g) {
                 g.printStackTrace();
                 m.labelStatus.setText(g.toString());
