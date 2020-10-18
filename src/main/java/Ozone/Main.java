@@ -65,6 +65,7 @@ public class Main {
                             arc.Core.settings.forceSave();
                         });
             });
+            setOzoneLogger();
         });
 
         Events.on(EventType.ClientPreConnectEvent.class, s -> {
