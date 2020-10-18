@@ -77,6 +77,7 @@ public class Preload {
         }
 
         Log.infoTag("Ozone", "Library loaded by using java.net.URLClassLoader.addURL(java.net.URL)");
+        Log.infoTag("Ozone", "Ignore that warning if you see it");
         //shit we did it without any error
     }
 
