@@ -9,8 +9,15 @@ public class UpdateLibrary {
     public static void main(String[] args) throws MalformedURLException {
         File atomic = new File("libs/Atomic.jar");
         atomic.delete();
-        DownloadSwing download = new DownloadSwing(new URL(Manifest.atomDownloadLink), atomic);
-        download.display();
-        download.run();
+        while (!atomic.exists()) {
+            try {
+                DownloadSwing download = new DownloadSwing(new URL(Manifest.atomDownloadLink), atomic);
+                download.display();
+                download.run();
+            } catch (Throwable t) {
+                t.printStackTrace();
+                atomic.delete();
+            }
+        }
     }
 }

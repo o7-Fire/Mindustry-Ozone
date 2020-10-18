@@ -104,10 +104,10 @@ public class PreInstall {
                     try {
                         while (download.getSize() == -1) Thread.sleep(10);
                         m.progressBar1.setMaximum(download.getSize());
-                        while (download.getStatus() != Download.DOWNLOADING) Thread.sleep(10);
+                        while (download.getStatus() != DownloadSwing.DOWNLOADING) Thread.sleep(10);
                         m.labelStatus.setText("Downloading: " + AtomDownload);
                         m.frame1.pack();
-                        while (download.getStatus() == Download.DOWNLOADING) {
+                        while (download.getStatus() == DownloadSwing.DOWNLOADING) {
                             Thread.sleep(10);
                             m.progressBar1.setValue(download.downloaded.get());
                             m.frame1.pack();
