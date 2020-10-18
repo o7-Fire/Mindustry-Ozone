@@ -40,6 +40,7 @@ public class Translation {
         commands.put("randomKick", "random kick someone");
         commands.put("shuffleSorter", "shufleelelelel Da Sorter And Everything");
         commands.put("javac", "run single line of code, like \nVars.player.unit().moveAt(new Vec2(100, 100));");
+        Events.fire(Internal.Init.TranslationRegister);
         for (Map.Entry<String, String> s : commands.entrySet()) {
             registerWords("ozone.commands." + s.getKey(), s.getValue());
         }
@@ -51,6 +52,6 @@ public class Translation {
         }
         for (String s : singlet1) registerWords(s, "[" + s + "]");
         for (String s : normalSinglet) registerWords(s);
-        Events.fire(Internal.Init.TranslationRegister);
+
     }
 }

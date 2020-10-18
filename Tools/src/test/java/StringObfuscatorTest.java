@@ -18,4 +18,8 @@ public class StringObfuscatorTest {
 
 
     }
+
+    public static class gae {
+
+    }
 }

@@ -9,7 +9,6 @@ import Ozone.Commands.Task.Move;
 import Ozone.Commands.Task.Task;
 import Ozone.Event.Internal;
 import Ozone.Interface;
-import Ozone.Main;
 import Ozone.Manifest;
 import arc.Core;
 import arc.Events;
@@ -70,7 +69,6 @@ public class Commands {
         register("task-clear", new Command(Commands::taskClear));
         register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
         Events.fire(Internal.Init.CommandsRegister);
-        Main.patchTranslation();
         for (Map.Entry<String, Command> c : commandsList.entrySet())
             c.getValue().description = getTranslation(c.getKey());
         Log.infoTag("Ozone", "Commands Center Initialized");
@@ -169,18 +167,19 @@ public class Commands {
 
     public static boolean call(String message) {
         if (!message.startsWith(Settings.commandsPrefix)) return false;
-        String[] arg = message.replaceFirst(",", "").split(" ");
-        if (!commandsList.containsKey(arg[0].toLowerCase())) {
+        message = message.substring(Settings.commandsPrefix.length());
+        if (message.isEmpty()) return false;
+        ArrayList<String> mesArg = new ArrayList<>(Arrays.asList(message.split(" ")));
+        if (!commandsList.containsKey(mesArg.get(0).toLowerCase())) {
             tellUser("Commands not found");
             help(new ArrayList<>());
-            return false;
+            return true;
         }
-        Command comm = commandsList.get(arg[0].toLowerCase());
+        Command comm = commandsList.get(mesArg.get(0).toLowerCase());
         ArrayList<String> args;
-        if (message.contains(" ")) {
-            message = message.replaceFirst(arg[0], "").replaceFirst(" ", "");
-            arg = message.split(" ");
-            args = new ArrayList<>(Arrays.asList(arg));
+        if (mesArg.size() > 1) {
+            message = message.substring(mesArg.get(0).length());
+            args = new ArrayList<>(Arrays.asList(message.split(" ")));
         } else {
             args = new ArrayList<>();
         }
