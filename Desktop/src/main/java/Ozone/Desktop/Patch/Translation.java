@@ -9,5 +9,7 @@ public class Translation {
         if (init) return;
         init = true;
         commands.put("javac", "run single line of java code");
+        commands.put("library", "manage runtime library");
+        commands.put("debug", "System.out.println(\"yeet\"");
     }
 }

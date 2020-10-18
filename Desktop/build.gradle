@@ -56,7 +56,7 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     libraryjars "${project.rootDir}/libs/"
     libraryjars "${project.rootDir}/lib/"
 
-    repackageclasses ''
+    repackageclasses 'Ozone'
     injars "$buildDir/libs/Ozone.jar"
     outjars "$buildDir/libs/Ozone-Desktop.jar"
 }

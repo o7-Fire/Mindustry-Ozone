@@ -26,6 +26,11 @@ public class Commands {
         });
         register("javac", new Command(Commands::javac));
         register("library", new Command(Commands::library));
+        register("debug", new Command(Commands::debug));
+    }
+
+    public static void debug(ArrayList<String> arg) {
+        tellUser("The code mason, what do they mean");
     }
 
     public static void library(ArrayList<String> arg) {
