@@ -32,8 +32,8 @@ public class DesktopInput extends mindustry.input.DesktopInput {
         boolean ground = unit.isGrounded();
         float strafePenalty = ground ? 1.0F : Mathf.lerp(1.0F, unit.type().strafePenalty, Angles.angleDist(unit.vel().angle(), unit.rotation()) / 180.0F);
         float baseSpeed = unit.type().speed;
-        if (unit instanceof Commanderc && ((Commanderc) unit).isCommanding()) {
-            baseSpeed = ((Commanderc) unit).minFormationSpeed() * 0.95F;
+        if (unit.isCommanding()) {
+            baseSpeed = unit.minFormationSpeed() * 0.95F;
         }
 
         float speed = baseSpeed * Mathf.lerp(1.0F, unit.type().canBoost ? unit.type().boostMultiplier : 1.0F, unit.elevation) * strafePenalty;
@@ -84,7 +84,7 @@ public class DesktopInput extends mindustry.input.DesktopInput {
             }
         }
 
-        if (unit instanceof Commanderc && Core.input.keyTap(Binding.command)) {
+        if (Core.input.keyTap(Binding.command)) {
             Call.unitCommand(Vars.player);
         }
     }

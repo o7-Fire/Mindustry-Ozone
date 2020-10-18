@@ -14,7 +14,6 @@ import arc.Core;
 import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.Colors;
-import arc.math.geom.Vec2;
 import arc.scene.style.TextureRegionDrawable;
 import arc.struct.OrderedMap;
 import arc.struct.Queue;
@@ -69,7 +68,7 @@ public class Commands {
         register("send-colorize", new Command(Commands::sendColorize));
         register("task-clear", new Command(Commands::taskClear));
         register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
-        register("super-bullet", new Command(Commands::superBullet));
+        //register("super-bullet", new Command(Commands::superBullet));
         Events.fire(Internal.Init.CommandsRegister);
         for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet())
             c.getValue().description = Commands.getTranslation(c.getKey());
@@ -78,6 +77,7 @@ public class Commands {
     }
 
 
+    /*
     //Anuked suggestion
     public static void superBullet(ArrayList<String> s) {
         if (s.size() < 3) {
@@ -104,7 +104,7 @@ public class Commands {
                 @Override
                 public void update() {
                     Vec2 vec = new Vec2();
-                    Tile tile = Vars.world.tile(110, 160);
+                    Tile tile = Vars.world.tile(x, y);
                     vec.trns(Vars.player.unit().angleTo(tile), Vars.player.unit().type().speed * 1000);
                     Vars.player.unit().moveAt(vec, 100F);
                     Vars.player.x = lastX;
@@ -118,6 +118,7 @@ public class Commands {
             Vars.ui.showException(f);
         }
     }
+     */
 
     public static void register(String name, Command command) {
         register(name, command, null);
