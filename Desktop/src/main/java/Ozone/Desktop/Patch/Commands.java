@@ -114,12 +114,18 @@ public class Commands {
             availableLib();
         }
         String code = Utility.joiner(arg.toArray(new String[0]), " ");
-        try {
-            Atom.Runtime.Compiler.runLine(code, System.out);
-        } catch (Throwable t) {
-            Log.errTag("Compiler", t.toString());
-            tellUser(t.toString());
-        }
+        Thread th = new Thread(() -> {
+            try {
+                Atom.Runtime.Compiler.runLine(code, System.out);
+            } catch (Throwable t) {
+                t.printStackTrace();
+                Log.errTag("Compiler", t.toString());
+                tellUser(t.toString());
+            }
+        });
+        th.setDaemon(true);
+        th.start();
+
     }
 
     protected static void availableLib() {
