@@ -47,7 +47,7 @@ public class PreInstall {
         //Install Button
         m.buttonInstall.addActionListener(e -> {
             m.labelStatus.setVisible(true);
-            m.progressBar1.setVisible(true);
+            m.progressBar1.setVisible(false);
             m.labelStatus.setText("Scanning");
             m.frame1.pack();
             //mods
@@ -91,39 +91,11 @@ public class PreInstall {
             }
             try {
                 DownloadSwing download = new DownloadSwing(new URL(AtomDownload), atom);
-                new Thread(() -> {
-                    try {
-                        download.run();
-                    } catch (Throwable g) {
-                        g.printStackTrace();
-                        m.labelStatus.setText(g.getMessage());
-                    }
-                }).start();
-                m.progressBar1.setMinimum(0);
-                new Thread(() -> {
-                    try {
-                        while (download.getSize() == -1) Thread.sleep(10);
-                        m.progressBar1.setMaximum(download.getSize());
-                        while (download.getStatus() != DownloadSwing.DOWNLOADING) Thread.sleep(10);
-                        m.labelStatus.setText("Downloading: " + AtomDownload);
-                        m.frame1.pack();
-                        while (download.getStatus() == DownloadSwing.DOWNLOADING) {
-                            Thread.sleep(10);
-                            m.progressBar1.setValue(download.downloaded.get());
-                            m.frame1.pack();
-                        }
-                        m.progressBar1.setVisible(false);
-                        m.labelStatus.setText("Copying: " + PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile() + " to: " + ozone.getAbsolutePath());
-                        Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                        m.labelStatus.setText("Installed");
-                        m.frame1.pack();
-
-                    } catch (Throwable g) {
-                        g.printStackTrace();
-                    }
-                }).start();
+                download.display();
+                download.run();
             } catch (Throwable g) {
                 g.printStackTrace();
+                m.labelStatus.setText(g.toString());
             }
         });
     }
