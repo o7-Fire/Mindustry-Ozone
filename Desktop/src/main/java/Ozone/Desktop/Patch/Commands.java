@@ -118,7 +118,7 @@ public class Commands {
             Atom.Runtime.Compiler.runLine(code, System.out);
         } catch (Throwable t) {
             Log.errTag("Compiler", t.toString());
-            tellUser(t.getMessage());
+            tellUser(t.toString());
         }
     }
 
