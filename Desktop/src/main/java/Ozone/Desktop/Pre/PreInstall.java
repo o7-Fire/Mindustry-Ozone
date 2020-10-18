@@ -46,7 +46,7 @@ public class PreInstall {
         //Install Button
         m.buttonInstall.addActionListener(e -> {
             m.labelStatus.setVisible(true);
-            m.progressBar1.setVisible(false);
+            m.progressBar1.setVisible(true);
             m.labelStatus.setText("Scanning");
             m.frame1.pack();
             //mods
@@ -71,6 +71,7 @@ public class PreInstall {
                     Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 } catch (Throwable t) {
                     m.labelStatus.setText(t.getMessage());
+                    m.frame1.pack();
                 }
             }
             if (atom.exists() && ozone.exists()) {
@@ -83,21 +84,26 @@ public class PreInstall {
                 try {
                     Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     m.labelStatus.setText("Finished");
+                    m.frame1.pack();
                 } catch (IOException ioException) {
                     m.labelStatus.setText(ioException.getMessage());
+                    m.frame1.pack();
                 }
                 return;
             }
             try {
                 DownloadSwing download = new DownloadSwing(new URL(Manifest.atomDownloadLink), atom);
-                download.display();
+                download.display(m.progressBar1);
+                m.frame1.pack();
                 download.run();
                 m.labelStatus.setText("Installed");
-
+                m.progressBar1.setVisible(false);
+                m.frame1.pack();
             } catch (Throwable g) {
                 g.printStackTrace();
                 m.labelStatus.setText(g.toString());
             }
+            m.frame1.pack();
         });
     }
 }

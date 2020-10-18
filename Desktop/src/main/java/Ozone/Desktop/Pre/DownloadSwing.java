@@ -3,6 +3,7 @@ package Ozone.Desktop.Pre;
 import Ozone.Desktop.Swing.Main;
 import Ozone.Desktop.Swing.SPreLoad;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,6 +35,7 @@ public class DownloadSwing implements Runnable {
     private int status; // current status of download
     private File file;
     private SPreLoad swing = null;
+    public JProgressBar progressBar = null;
     private long lastRecordTime = 0, lastRecord = 0;
     private boolean displayed = false;
     // Constructor for Download.
@@ -46,6 +48,14 @@ public class DownloadSwing implements Runnable {
 
     }
 
+
+    public void display(JProgressBar progressBar) {
+        this.progressBar = progressBar;
+        this.progressBar.setMinimum(0);
+        this.progressBar.setMaximum(100);
+        this.progressBar.setValue(0);
+        this.progressBar.setVisible(true);
+    }
 
     public void display() {
         if (displayed) return;
@@ -62,9 +72,12 @@ public class DownloadSwing implements Runnable {
         swing.frame1.pack();
         swing.progressBar1.setMaximum(100);
         swing.frame1.setVisible(true);
+        swing.frame1.pack();
     }
 
     private void setMax() {
+        if (progressBar != null)
+            progressBar.setMaximum(getSize());
         if (swing == null) return;
         swing.progressBar1.setMaximum(getSize());
         if (getSize() < 10000000)
@@ -75,6 +88,8 @@ public class DownloadSwing implements Runnable {
     }
 
     private void updateStatus() {
+        if (progressBar != null)
+            progressBar.setValue(downloaded.get());
         if (swing == null) return;
         if ((System.currentTimeMillis() - lastRecordTime) > 900) {
             if (lastRecord != 0) {
