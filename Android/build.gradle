@@ -11,8 +11,10 @@ ext {
         sdkPlatform = new File(sdkPlatform).listFiles()[new File(sdkPlatform).listFiles().length-1].getAbsolutePath()
         sdkD8 = new File(sdkD8).listFiles()[new File(sdkD8).listFiles().length-1].getAbsolutePath() + "/d8"
     }catch(ignored){}
-    if(new File(sdkRoot+'/build-tools/30.0.2/d8').exists())
-        sdkD8 = sdkRoot+'/build-tools/30.0.2/d8'
+    if(new File(sdkRoot+'/build-tools/30.0.2/d8').exists()) {
+        sdkD8 = new File(sdkRoot+'/build-tools/30.0.2/d8').getAbsolutePath()
+        sdkPlatform = new File("${sdkRoot}/platforms/30.0.2").getAbsolutePath()
+    }
     sdkJar = "$sdkPlatform/android.jar"
     println "Android SDK: $sdkRoot"
     println "Android SDK Exists: true"
