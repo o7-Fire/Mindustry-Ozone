@@ -5,8 +5,7 @@ import Atom.Utility.Utility;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
 import Ozone.Event.Internal;
-import Ozone.Patch.ChatFragment;
-import Ozone.Patch.DesktopInput;
+import Ozone.Patch.ChatOzoneFragment;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
 import Ozone.UI.CommandsListFrag;
@@ -120,9 +119,10 @@ public class Main {
         });
         Events.on(EventType.UnitDestroyEvent.class, s -> {
             if (s.unit.getPlayer() != null)
-                Log.debug("Ozone-@: Player @ destroyed at @,@",
+                Log.debug("Ozone-@: Player \"@\" destroyed with @ at @,@",
                         s.getClass().getSimpleName(),
                         s.unit.getPlayer().name(),
+                        s.unit.getClass().getSimpleName(),
                         s.unit.x(),
                         s.unit.y());
             else
@@ -134,9 +134,10 @@ public class Main {
         });
         Events.on(EventType.UnitDrownEvent.class, s -> {
             if (s.unit.getPlayer() != null)
-                Log.debug("Ozone-@: Player @ drowned at @,@",
+                Log.debug("Ozone-@: Player \"@\" drowned with @ at @,@",
                         s.getClass().getSimpleName(),
                         s.unit.getPlayer().name(),
+                        s.unit.getClass().getSimpleName(),
                         s.unit.x(),
                         s.unit.y());
             else
@@ -265,13 +266,11 @@ public class Main {
             Time.mark();
             patchTranslation();
             Log.infoTag("Ozone", "Patching translation done: " + Time.elapsed());
-            Log.infoTag("Ozone", "Patching DesktopInput");
-            Vars.control.input = new DesktopInput();
             Log.infoTag("Ozone", "Patching Settings");
             Vars.ui.settings = new SettingsDialog();
             Log.infoTag("Ozone", "Patching ChatFragment");
             arc.Core.scene.root.removeChild(Vars.ui.chatfrag);
-            Vars.ui.chatfrag = new ChatFragment();
+            Vars.ui.chatfrag = new ChatOzoneFragment();
             Vars.ui.chatfrag.container().build(Vars.ui.hudGroup);
             Vars.enableConsole = true;
             Log.infoTag("Ozone", "Patching Complete");

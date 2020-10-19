@@ -1,4 +1,4 @@
-package Ozone.Patch;
+package Ozone.Desktop.Patch;
 
 import Ozone.Manifest;
 import arc.Core;

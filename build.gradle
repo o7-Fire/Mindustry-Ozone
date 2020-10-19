@@ -52,7 +52,7 @@ allprojects {
     ext {
 
         mindustryVersion = "v109"
-        atomHash = "722b231cb6"
+        atomHash = "fe1b50cdb9"
 
 
         writeProcessors = {

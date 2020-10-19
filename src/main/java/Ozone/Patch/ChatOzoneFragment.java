@@ -24,6 +24,7 @@ import mindustry.Vars;
 import mindustry.gen.Call;
 import mindustry.input.Binding;
 import mindustry.ui.Fonts;
+import mindustry.ui.fragments.ChatFragment;
 import mindustry.ui.fragments.Fragment;
 
 import java.io.Serializable;
@@ -34,10 +35,10 @@ import static arc.Core.input;
 import static arc.Core.scene;
 import static mindustry.Vars.*;
 
-public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
+public class ChatOzoneFragment extends ChatFragment {
 
     private static final int messagesShown = 10;
-    private Seq<ChatMessage> messages = new Seq<>();
+    public static Seq<ChatMessage> messages = new Seq<>();
     private float fadetime;
     private boolean shown = false;
     private TextField chatfield;
@@ -53,12 +54,12 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
     private Fragment container = new Fragment() {
         @Override
         public void build(Group parent) {
-            scene.add(ChatFragment.this);
+            scene.add(ChatOzoneFragment.this);
         }
     };
     private HashMap<String, AntiSpam> antiSpam = new HashMap<>();
 
-    public ChatFragment() {
+    public ChatOzoneFragment() {
         setFillParent(true);
         font = Fonts.def;
 
@@ -103,7 +104,6 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
     }
 
     public void clearMessages() {
-        messages.clear();
         history.clear();
         history.insert(0, "");
     }
@@ -319,10 +319,13 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
         public final String formattedMessage;
         public final Instant date;
         public final String server;
+        public final int id;
+
         public ChatMessage(String message, String sender) {
             this.message = message;
             this.sender = sender;
             this.date = Instant.now();
+            id = messages.size;
             if (sender == null) {
                 this.formattedMessage = message;
             } else {
@@ -335,6 +338,7 @@ public class ChatFragment extends mindustry.ui.fragments.ChatFragment {
             this.message = message;
             this.sender = sender;
             this.date = Instant.now();
+            id = messages.size;
             if (sender == null) {
                 this.formattedMessage = message;
             } else {

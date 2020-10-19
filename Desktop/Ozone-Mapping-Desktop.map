@@ -620,7 +620,7 @@ Main.Ozone -> Main.Ozone:
                                                                                                               this$ 0
                                                                                                    -> a
                                                                                                    void <init>
-                                                                                                   (Ozone.Patch.ChatFragment)
+                                                                                                   (Ozone.Patch.ChatOzoneFragment)
                                                                                                    -> <init>
                                                                                                       void build
                                                                                                       (arc.scene.Group)
