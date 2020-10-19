@@ -2,20 +2,43 @@ apply plugin: 'java'
 ext {
     sdkRoot = System.getenv("ANDROID_HOME")
     if(sdkRoot == null)return
-    sdkRoot = System.getenv("ANDROID_HOME")
-    sdkPlatform = "${sdkRoot}/platforms"
+    sdkRoot = new File(sdkRoot).absolutePath
+    sdkPlatform = sdkRoot+'/platforms/'
     sdkD8 = sdkRoot+'/build-tools/'
     try{
-        for(File f : new File(sdkD8).listFiles())
-            println f.name
-        sdkPlatform = new File(sdkPlatform).listFiles()[new File(sdkPlatform).listFiles().length-1].getAbsolutePath()
-        sdkD8 = new File(sdkD8).listFiles()[new File(sdkD8).listFiles().length-1].getAbsolutePath() + "/d8"
+        int max = 0;
+        String ver = "";
+        for(File f : new File(sdkPlatform).listFiles()){
+            String s = f.name;
+            int i = Integer.parseInt(s.substring(s.lastIndexOf("-") + 1))
+            if(i > max){
+                max = i;
+                ver = s;
+            }
+        }
+        sdkPlatform = new File(sdkPlatform + ver).absolutePath
+
     }catch(ignored){}
-    if(new File(sdkRoot+'/build-tools/30.0.2/d8').exists()) {
-        sdkD8 = new File(sdkRoot+'/build-tools/30.0.2/d8').getAbsolutePath()
-        sdkPlatform = new File("${sdkRoot}/platforms/30.0.2").getAbsolutePath()
-    }
-    sdkJar = "$sdkPlatform/android.jar"
+    try{
+        int max = 0;
+        String ver = "";
+        for(File f : new File(sdkD8).listFiles()){
+            String s = f.name;
+            int i = Integer.parseInt(s.substring(0, s.indexOf('.')));
+            if(i > max){
+                max = i;
+                ver = s;
+            }
+        }
+        sdkD8 = new File(sdkD8 + ver + "/d8").absolutePath;
+
+    }catch(ignored){}
+
+    //if(new File(sdkRoot+'/build-tools/30.0.2/d8').exists()) {
+    //    sdkD8 = new File(sdkRoot+'/build-tools/30.0.2/d8').getAbsolutePath()
+    //    sdkPlatform = new File("${sdkRoot}/platforms/30.0.2").getAbsolutePath()
+    //}
+    sdkJar = sdkPlatform + "/android.jar"
     println "Android SDK: $sdkRoot"
     println "Android SDK Exists: true"
     println "Android.jar: $sdkJar"

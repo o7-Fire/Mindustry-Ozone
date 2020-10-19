@@ -18,7 +18,7 @@ import static Ozone.Commands.Commands.*;
 public class Commands {
     private static final LinkedHashMap<Integer, Manifest.Library> libs = new LinkedHashMap<>();
     private static volatile boolean init = false;
-
+    private static int i = 0;
     public static void Init() {
         if (init) return;
         init = true;
@@ -40,7 +40,17 @@ public class Commands {
     }
 
     public static void debug(ArrayList<String> arg) {
-        tellUser("The code mason, what do they mean");
+        if (i == 5) {
+            tellUser("pls dont");
+        } else if (i == 10)
+            tellUser("stop pls");
+        else if (i == 20) {
+            tellUser("wtf ???");
+            i = 0;
+        } else {
+            tellUser("The code mason, what do they mean");
+        }
+        i++;
     }
 
     public static void library(ArrayList<String> arg) {

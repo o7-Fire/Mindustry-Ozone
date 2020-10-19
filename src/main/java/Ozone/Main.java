@@ -111,7 +111,7 @@ public class Main {
                     s.unit.y());
         });
         Events.on(EventType.UnitChangeEvent.class, s -> {
-            Log.debug("Ozone-@: Player @ changing into @ at @,@",
+            Log.debug("Ozone-@: Player \"@\" changing into @ at @,@",
                     s.getClass().getSimpleName(),
                     s.player.name(),
                     s.unit.getClass().getSimpleName(),
