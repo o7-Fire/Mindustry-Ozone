@@ -177,12 +177,12 @@ public class Main {
         });
         Events.on(EventType.BlockBuildBeginEvent.class, s -> {
             if (s.breaking)
-                Log.debug("Ozone-@: someone begin breaking at @ at team @",
+                Log.debug("Ozone-@: someone begin breaking at @ on team @",
                         s.getClass().getSimpleName(),
                         s.tile.toString(),
                         s.team);
             else
-                Log.debug("Ozone-@: Someone begin building @ at team @",
+                Log.debug("Ozone-@: Someone begin building at @ on team @",
                         s.getClass().getSimpleName(),
                         s.tile.toString(),
                         s.team);
