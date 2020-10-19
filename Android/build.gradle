@@ -57,12 +57,22 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     // Automatically handle the Java version of this build.
     if (System.getProperty('java.version').startsWith('1.')) {
         // Before Java 9, the runtime classes were packaged in a single jar file.
-        libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
+        //libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
     } else {
         // As of Java 9, the runtime classes are packaged in modular jmod files.
-        libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+        //libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
     }
-    libraryjars "$sdkJar"
+    HashMap<String, String> s = new HashMap<>()
+    for(String e : configurations.runtimeClasspath.asList()) {
+        s.put(e,e)
+    }
+    for(String e : configurations.compileClasspath.asList()) {
+        s.put(e,e)
+    }
+    for(Map.Entry<String,String> e : s.entrySet()){
+        println e.key
+        libraryjars e.key
+    }
     //libraryjars "${project.rootDir}/libs"
     injars "$buildDir/libs/Ozone.jar"
     outjars "$buildDir/libs/Ozone-Android.jar"
@@ -70,17 +80,15 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
 //Android jar dexxed
 task jarAndroid(dependsOn: proguard) {
     doLast {
-        //collect dependencies needed for desugaring
-        def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File("$sdkJar")])
-        def dependencies = files.collect{ "--classpath $it.path" }.join(" ")
-        println "runtimeClasspath:"
-        for(String e : configurations.runtimeClasspath.asList())
-            println e
-
-        println sdkD8
-        //dex and desugar files - this requires d8 in your PATH
-        def targetJar = new File("$buildDir/libs/Ozone-Android.jar").getAbsolutePath()
-        targetJar = "'" + targetJar + "'"
-        doExec("${sdkD8} $dependencies --min-api 14 $targetJar")
+        try {
+            //collect dependencies needed for desugaring
+            def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File("$sdkJar")])
+            def dependencies = files.collect { "--classpath $it.path" }.join(" ")
+            println sdkD8
+            //dex and desugar files - this requires d8 in your PATH
+            def targetJar = new File("$buildDir/libs/Ozone-Android.jar").getAbsolutePath()
+            targetJar = "'" + targetJar + "'"
+            doExec("${sdkD8} $dependencies --min-api 14 $targetJar")
+        }catch(ignored){}
     }
 }
