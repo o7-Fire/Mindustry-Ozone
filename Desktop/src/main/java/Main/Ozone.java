@@ -33,6 +33,11 @@ public class Ozone extends Mod {
     public URLClassLoader classloader;
     public Mod mainMod = null;
 
+    static {
+        Manifest.atomType = "Desktop";
+        Manifest.atomDownloadLink += Manifest.atomType + "/" + Manifest.atomHash + "/" + Manifest.atomType + "-" + Manifest.atomHash + ".jar";
+    }
+
     public Ozone() {
         //gay spy, actually no no no yes
         if (Core.settings != null) {

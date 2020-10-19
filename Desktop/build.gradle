@@ -17,11 +17,22 @@ jar {
         attributes 'Main-Class': 'Main.h'
     }
 }
+repositories {
+    mavenCentral()
+    maven { url 'https://www.jitpack.io' }
+    flatDir {
+        dirs 'libs'
+    }
+    flatDir {
+        dirs 'lib'
+    }
+}
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation rootProject
-    compileOnly files("${project.rootDir}/libs/Atomic.jar")
-    compileOnly files("${project.rootDir}/libs/Mindustry.jar")
+    //compileOnly files("${project.rootDir}/libs/Atomic.jar")
+    //compileOnly files("${project.rootDir}/libs/Mindustry.jar")
+    compileOnly "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
     implementation files("${project.rootDir}/lib/flatlaf-0.42.jar")
     implementation files("${project.rootDir}/lib/miglayout-core.jar")
     implementation files("${project.rootDir}/lib/miglayout-swing.jar")

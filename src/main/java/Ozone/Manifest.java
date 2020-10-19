@@ -1,6 +1,5 @@
 package Ozone;
 
-import Atom.Annotation.ObfuscatorEntryPoint;
 import Atom.Reflect.Reflect;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
@@ -14,11 +13,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-@ObfuscatorEntryPoint
 public class Manifest {
-    public final static String atomHash = "066c360bfa";
-    public final static String atomFile = "Atomic-" + atomHash + ".jar", libs = "libs";
-    public final static String atomDownloadLink = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/" + atomHash + "/Atomic-Library-" + atomHash + ".jar";
+    public static final String atomHash = "bdf20a1954";
+    public static final String atomFile = "Atomic-" + atomHash + ".jar", libs = "libs";
+    public static String atomType = "Core";
+    public static String atomDownloadLink = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/";
     public static OzoneMenu menu;
     public static CommandsListFrag commFrag;
     public static ArrayList<Class<?>> settings = new ArrayList<>();

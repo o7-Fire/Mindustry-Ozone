@@ -50,9 +50,8 @@ allprojects {
 
 
     ext {
-        MindustryHash = "v109"
-        atomHash = "cfa7716a8e"
-
+        mindustryVersion = "v109"
+        atomHash = "bdf20a1954"
         writeProcessors = {
             new File(rootDir, "CodeGen/src/main/resources/META-INF/services/").mkdirs()
             def processorFile = new File(rootDir, "CodeGen/src/main/resources/META-INF/services/javax.annotation.processing.Processor")
@@ -103,6 +102,9 @@ allprojects {
     dependencies {
         compileJava.dependsOn(preGen)
         testImplementation 'junit:junit:4.12'
+        compileOnly "com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"
+        compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+        compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
         //compileOnly files("${project.rootDir}/libs/Atomic.jar")
         //compileOnly files("${project.rootDir}/libs/Mindustry.jar")
         //compileOnly project(":CodeGen")
