@@ -50,90 +50,80 @@ allprojects {
 
 
     ext {
-        sdkVersion = '29'
-        sdkRoot = System.getenv("ANDROID_HOME")
-        doExec = { cmd ->
-            def proc = cmd.execute(null, new File("$buildDir/libs"))
-            proc.waitForProcessOutput(System.out, System.err)
-        }
-    }
-}
+        MindustryHash = "v109"
+        atomHash = "cfa7716a8e"
 
-ext {
+        writeProcessors = {
+            new File(rootDir, "CodeGen/src/main/resources/META-INF/services/").mkdirs()
+            def processorFile = new File(rootDir, "CodeGen/src/main/resources/META-INF/services/javax.annotation.processing.Processor")
+            def pluginFile = new File(rootDir, "CodeGen/src/main/resources/META-INF/services/com.sun.source.util.Plugin")
+            def processorText = new StringBuilder()
+            def pluginText = new StringBuilder()
+            def files = new File(rootDir, "CodeGen/src/main/java")
+            files.eachFileRecurse(groovy.io.FileType.FILES) { file ->
+                if (file.name.endsWith(".java") && !file.text.contains("abstract class")) {
+                    if ((file.text.contains(" extends AtomProcessor") || (file.text.contains(" extends AbstractProcessor")))) {
+                        processorText.append(file.path.substring(files.path.length() + 1)).append("\n")
+                    } else if ((file.text.contains(" extends AtomPlugin") || (file.text.contains(" implements Plugin")))) {
+                        pluginText.append(file.path.substring(files.path.length() + 1)).append("\n")
+                    }
 
-    MindustryHash = "v105"
-    atomHash = "cfa7716a8e"
-
-    writeProcessors = {
-        new File(rootDir, "CodeGen/src/main/resources/META-INF/services/").mkdirs()
-        def processorFile = new File(rootDir, "CodeGen/src/main/resources/META-INF/services/javax.annotation.processing.Processor")
-        def pluginFile = new File(rootDir, "CodeGen/src/main/resources/META-INF/services/com.sun.source.util.Plugin")
-        def processorText = new StringBuilder()
-        def pluginText = new StringBuilder()
-        def files = new File(rootDir, "CodeGen/src/main/java")
-        files.eachFileRecurse(groovy.io.FileType.FILES) { file ->
-            if (file.name.endsWith(".java")&& !file.text.contains("abstract class")) {
-                if ((file.text.contains(" extends AtomProcessor") || (file.text.contains(" extends AbstractProcessor")))) {
-                    processorText.append(file.path.substring(files.path.length() + 1)).append("\n")
-                }else if((file.text.contains(" extends AtomPlugin") || (file.text.contains(" implements Plugin")))){
-                    pluginText.append(file.path.substring(files.path.length() + 1)).append("\n")
                 }
-
             }
+            pluginFile.text = pluginText.toString().replace(".java", "").replace("/", ".").replace("\\", ".")
+            processorFile.text = processorText.toString().replace(".java", "").replace("/", ".").replace("\\", ".")
         }
-        pluginFile.text =  pluginText.toString().replace(".java", "").replace("/", ".").replace("\\", ".")
-        processorFile.text = processorText.toString().replace(".java", "").replace("/", ".").replace("\\", ".")
+
     }
 
-}
+    repositories {
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+        flatDir {
+            dirs 'libs'
+        }
+        flatDir {
+            dirs 'lib'
+        }
+    }
+    task preGen {
+        writeProcessors()
+    }
 
-repositories {
-    mavenCentral()
-    maven { url 'https://www.jitpack.io' }
-    flatDir {
-        dirs 'libs'
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+        options.encoding = "UTF-8"
+        options.compilerArgs += ["-Xlint:deprecation"]
+        if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
+            options.compilerArgs.addAll(['--release', '8'])
+        }
     }
-    flatDir {
-        dirs 'lib'
-    }
-}
-task preGen {
-    writeProcessors()
-}
-
-tasks.withType(JavaCompile) {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-    options.encoding = "UTF-8"
-    options.compilerArgs += ["-Xlint:deprecation"]
-    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
-        options.compilerArgs.addAll(['--release', '8'])
-    }
-}
 //there is reason why use local jar
-dependencies {
-    compileJava.dependsOn(preGen)
-    testImplementation 'junit:junit:4.12'
-    compileOnly files("${project.rootDir}/libs/Atomic.jar")
-    compileOnly files("${project.rootDir}/libs/Mindustry.jar")
-    compileOnly project(":CodeGen")
-    annotationProcessor project(":CodeGen")
-    //annotationProcessor project(":AtomicPlugin")
-    //annotationProcessor files("${project.rootDir}/lib/Atomic-Plugin.jar")
-    compileOnly 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'
-    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.1'
-}
-jar {
-    archiveFileName = "Ozone.jar"
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    dependencies {
+        compileJava.dependsOn(preGen)
+        testImplementation 'junit:junit:4.12'
+        //compileOnly files("${project.rootDir}/libs/Atomic.jar")
+        //compileOnly files("${project.rootDir}/libs/Mindustry.jar")
+        //compileOnly project(":CodeGen")
+        //annotationProcessor project(":CodeGen")
+        //annotationProcessor project(":AtomicPlugin")
+        //annotationProcessor files("${project.rootDir}/lib/Atomic-Plugin.jar")
+        compileOnly 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'
+        spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.1'
     }
-}
+    jar {
+        archiveFileName = "Ozone.jar"
+        from {
+            configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        }
+    }
 
-task deploy(type: Jar) {
-    dependsOn ":Android:proguard"
-    dependsOn ":Desktop:proguard"
+    task deploy(type: Jar) {
+        dependsOn ":Android:jarAndroid"
+        dependsOn ":Desktop:proguard"
 
-    from { [zipTree("Desktop/build/libs/Ozone-Desktop.jar"), zipTree("Android/build/libs/Ozone-Android.jar")] }
+        from { [zipTree("Desktop/build/libs/Ozone-Desktop.jar"), zipTree("Android/build/libs/Ozone-Android.jar")] }
 
+    }
 }

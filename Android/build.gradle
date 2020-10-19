@@ -1,15 +1,36 @@
 apply plugin: 'java'
-
+ext {
+    sdkRoot = System.getenv("ANDROID_HOME")
+    if(sdkRoot == null)return
+    sdkPlatform = "${sdkRoot}/platforms"
+    sdkPlatform = new File(sdkPlatform).listFiles()[new File(sdkPlatform).listFiles().length - 1].getAbsolutePath()
+    sdkD8 = sdkRoot + '/build-tools/'
+    sdkD8 = new File(sdkD8).listFiles()[new File(sdkD8).listFiles().length - 1].getAbsolutePath() + "/d8"
+    sdkJar = "$sdkPlatform/android.jar"
+    println "Android SDK: $sdkRoot"
+    println "Android SDK Exists: true"
+    println "Android.jar: $sdkJar"
+    println "Android.jar Exists: " + new File(sdkJar).exists()
+    println "SDK D8: $sdkD8"
+    println "SDK D8 Exists: " + new File(sdkD8).exists()
+    doExec = { cmd ->
+        println "Executing: \"" + cmd + "\""
+        println ""
+        def proc = cmd.execute()
+        def bout = new StringBuffer()
+        proc.waitForProcessOutput(bout, bout)
+        println "```\n" + bout.toString() + "\n```"
+    }
+}
 //heck loading Atomic library is complicated in android
 dependencies {
     compileOnly fileTree(dir: "libs", include: ["*.jar"])
     testImplementation 'junit:junit:4.12'
-    compileOnly files("$sdkRoot/platforms/android-$sdkVersion/android.jar")
+    compileOnly files("$sdkJar")
     implementation rootProject
     compileOnly files("${project.rootDir}/libs/Atomic.jar")
     compileOnly files("${project.rootDir}/libs/Mindustry.jar")
-    println "Android SDK: $sdkRoot"
-    println "Android SDK Version: $sdkVersion"
+
 }
 
 jar {
@@ -29,21 +50,9 @@ tasks.withType(JavaCompile) {
         options.compilerArgs.addAll(['--release', '8'])
     }
 }
-//Android jar dexxed
-task jarAndroid(dependsOn: jar) {
 
-    doLast {
-        //collect dependencies needed for desugaring
-        def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File("$sdkRoot/platforms/android-$sdkVersion/android.jar")])
-        def dependencies = files.collect { "--classpath $it.path" }.join(" ")
-
-        //dex and desugar files - this requires d8 in your PATH
-        //doExec("d8 $dependencies --min-api 14 --output ${project.archivesBaseName}Android.jar ${project.archivesBaseName}.jar")
-    }
-
-}
-task proguard(dependsOn: jarAndroid, type: proguard.gradle.ProGuardTask) {
-    printmapping "Ozone-Mapping-Desktop.map"
+task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
+    printmapping "Ozone-Mapping-Android.map"
     keep 'class !Ozone.** { *; }'
     // Automatically handle the Java version of this build.
     if (System.getProperty('java.version').startsWith('1.')) {
@@ -53,8 +62,25 @@ task proguard(dependsOn: jarAndroid, type: proguard.gradle.ProGuardTask) {
         // As of Java 9, the runtime classes are packaged in modular jmod files.
         libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
     }
-    libraryjars "$sdkRoot/platforms/android-$sdkVersion/android.jar"
-    libraryjars "${project.rootDir}/libs"
+    libraryjars "$sdkJar"
+    //libraryjars "${project.rootDir}/libs"
     injars "$buildDir/libs/Ozone.jar"
     outjars "$buildDir/libs/Ozone-Android.jar"
+}
+//Android jar dexxed
+task jarAndroid(dependsOn: proguard) {
+    doLast {
+        //collect dependencies needed for desugaring
+        def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File("$sdkJar")])
+        def dependencies = files.collect{ "--classpath $it.path" }.join(" ")
+        println "runtimeClasspath:"
+        for(String e : configurations.runtimeClasspath.asList())
+            println e
+
+        println sdkD8
+        //dex and desugar files - this requires d8 in your PATH
+        def targetJar = new File("$buildDir/libs/Ozone-Android.jar").getAbsolutePath()
+        targetJar = "'" + targetJar + "'"
+        doExec("${sdkD8} $dependencies --min-api 14 $targetJar")
+    }
 }

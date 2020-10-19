@@ -13,15 +13,13 @@ def use = { ... names ->
 if(new File(settingsDir, '../Atom').exists()) {
     use(
             ":Atom",
-            ":Atom:Atomic"
+            ":Atom:Atomic",
+            ":Atom:Android",
+            ":Atom:Desktop"
     )
 }
 
-if(new File(settingsDir, '../AtomicPlugin').exists()) {
-    use(
-            ":AtomicPlugin"
-    )
-}
+
 
 
 

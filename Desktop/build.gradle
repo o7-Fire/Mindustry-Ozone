@@ -25,6 +25,12 @@ dependencies {
     implementation files("${project.rootDir}/lib/flatlaf-0.42.jar")
     implementation files("${project.rootDir}/lib/miglayout-core.jar")
     implementation files("${project.rootDir}/lib/miglayout-swing.jar")
+    println "$project.name: runtimeClasspath:"
+    for(String e : project.configurations.runtimeClasspath.asList())
+        println e
+    println "$project.name: compileClasspath:"
+    for(String e : project.configurations.compileClasspath.asList())
+        println e
 }
 
 tasks.withType(JavaCompile) {
@@ -51,10 +57,14 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
         libraryjars "${System.getProperty('java.home')}/jmods/java.logging.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
         libraryjars "${System.getProperty('java.home')}/jmods/java.compiler.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
     }
-    if(System.getProperty("user.name") == "runner")
-        libraryjars gradle.gradleHomeDir, jarfilter: '!**.jar', filter: '!module-info.class'
-    libraryjars "${project.rootDir}/libs/"
-    libraryjars "${project.rootDir}/lib/"
+    //if(System.getProperty("user.name") == "runner")
+      //libraryjars gradle.gradleHomeDir, jarfilter: '!**.jar', filter: '!module-info.class'
+    for(String e : configurations.runtimeClasspath.asList())
+        libraryjars e , jarfilter: '!**.jar', filter: '!module-info.class'
+    for(String e : configurations.compileClasspath.asList())
+        libraryjars e , jarfilter: '!**.jar', filter: '!module-info.class'
+    //libraryjars "${project.rootDir}/libs/"
+    //libraryjars "${project.rootDir}/lib/"
 
     repackageclasses 'Ozone'
     injars "$buildDir/libs/Ozone.jar"
