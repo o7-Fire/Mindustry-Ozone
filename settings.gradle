@@ -1,4 +1,4 @@
-include ':Android'
+include 'Android'
 include 'CodeGen'
 include 'Tools'
 include 'Desktop'
@@ -9,7 +9,7 @@ def use = { ... names ->
         project(name).projectDir = new File(settingsDir, "../${name.substring(1).replace(":", "/")}")
     }
 }
-
+/*
 if(new File(settingsDir, '../Atom').exists()) {
     use(
             ":Atom",
@@ -19,9 +19,6 @@ if(new File(settingsDir, '../Atom').exists()) {
     )
 }
 
-
-
-
-
+ */
 
 

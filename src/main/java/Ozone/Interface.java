@@ -6,7 +6,6 @@ import arc.Events;
 import arc.backend.sdl.jni.SDL;
 import arc.struct.ObjectMap;
 import mindustry.Vars;
-import mindustry.desktop.DesktopLauncher;
 import mindustry.game.EventType;
 
 import java.io.File;
@@ -43,7 +42,7 @@ public class Interface {
             //get JRE or something
             final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
             //get Mindustry Jar
-            final File currentJar = new File(DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            final File currentJar = new File(Vars.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 
             //it is a jar ?
             if (!currentJar.getName().endsWith(".jar"))
