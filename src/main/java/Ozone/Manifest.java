@@ -14,10 +14,11 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class Manifest {
-    public static final String atomHash = "bdf20a1954";
+    public static final String atomHash = "722b231cb6";
     public static final String atomFile = "Atomic-" + atomHash + ".jar", libs = "libs";
-    public static String atomType = "Core";
-    public static String atomDownloadLink = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/";
+    public static final String jitpack = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/";
+    public static String atomType = "Atomic";
+    public static final String atomDownloadLink = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/" + Manifest.atomType + "/" + Manifest.atomHash + "/" + Manifest.atomType + "-" + Manifest.atomHash + ".jar";
     public static OzoneMenu menu;
     public static CommandsListFrag commFrag;
     public static ArrayList<Class<?>> settings = new ArrayList<>();

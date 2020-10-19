@@ -26,30 +26,33 @@ public class Main extends JPanel {
         try {
             UIManager.setLookAndFeel(new FlatDarkLaf());
             return;
-        } catch (Throwable ignored) {
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
         try {
             UIManager.setLookAndFeel(new FlatDarculaLaf());
             return;
-        } catch (Throwable ignored) {
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
             return;
-        } catch (Throwable ignored) {
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
             return;
-        } catch (Throwable ignored) {
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             return;
-        } catch (Throwable ignored) {
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
-
-
     }
 
     private void initComponents() {
@@ -106,7 +109,7 @@ public class Main extends JPanel {
                 "[]"));
 
             //---- label1 ----
-            label1.setText("Mindustry 106");
+            label1.setText("Mindustry 109");
             frame1ContentPane.add(label1, "cell 0 0 2 1");
 
             //---- label4 ----

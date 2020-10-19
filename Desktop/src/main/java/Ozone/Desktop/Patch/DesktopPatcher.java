@@ -25,20 +25,20 @@ public class DesktopPatcher {
                 sb.append("Additional library need to be downloaded").append("\n");
                 Manifest.library.forEach(library -> {
                     if (library.downloaded()) return;
-                    sb.append("-").append(library.name).append(library.version).append("\n");
+                    sb.append("-").append(library.getName()).append("\n");
                 });
                 sb.append("(restart required)");
                 Vars.ui.showCustomConfirm("Download", sb.toString(), "Download", "Later", () -> {
                     for (Manifest.Library library : Manifest.library) {
                         try {
-                            DownloadSwing d = new DownloadSwing(new URL(library.link), library.jar);
+                            DownloadSwing d = new DownloadSwing(new URL(library.getDownloadURL()), library.getJar());
                             d.display();
                             d.run();
-                            if (library.jar.exists()) {
-                                Log.infoTag("Ozone", library.name + ":" + library.version + " downloaded");
+                            if (library.getJar().exists()) {
+                                Log.infoTag("Ozone", library.getName() + " downloaded");
                             }
                         } catch (Throwable t) {
-                            Vars.ui.showErrorMessage("Failed to download " + library.name + "\n" + t.toString());
+                            Vars.ui.showErrorMessage("Failed to download " + library.getName() + "\n" + t.toString());
                             t.printStackTrace();
                         }
                     }

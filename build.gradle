@@ -52,7 +52,7 @@ allprojects {
     ext {
 
         mindustryVersion = "v109"
-        atomHash = "831b3731c9"
+        atomHash = "722b231cb6"
 
 
         writeProcessors = {
@@ -133,4 +133,7 @@ jar {
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
+}
+task gay{
+    dependsOn jar
 }

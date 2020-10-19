@@ -60,7 +60,7 @@ public class Commands {
                 availableLib();
                 return;
             } else if (arg.get(0).equalsIgnoreCase("purge")) {
-                Manifest.library.forEach(s -> s.jar.deleteOnExit());
+                Manifest.library.forEach(s -> s.getJar().deleteOnExit());
                 tellUser("Restart to delete all library");
                 return;
             }
@@ -93,11 +93,11 @@ public class Commands {
     public static void downloadLib(Manifest.Library s) {
         Thread e = new Thread(() -> {
             try {
-                DownloadSwing d = new DownloadSwing(new URL(s.link), s.jar);
+                DownloadSwing d = new DownloadSwing(new URL(s.getDownloadURL()), s.getJar());
                 d.display();
                 d.run();
             } catch (Throwable t) {
-                tellUser("Failed to download " + s.name);
+                tellUser("Failed to download " + s.getName());
                 tellUser(t.toString());
                 t.printStackTrace();
             }
@@ -112,8 +112,8 @@ public class Commands {
             tellUser("no javac detected, are you sure using JDK ?");
             return;
         }
-        if (Manifest.library.stream().anyMatch(s -> s.name.contains(requiredLibrary))) {
-            if (!Manifest.library.stream().filter(s -> s.name.contains(requiredLibrary)).findFirst().get().downloaded()) {
+        if (Manifest.library.stream().anyMatch(s -> s.getName().contains(requiredLibrary))) {
+            if (!Manifest.library.stream().filter(s -> s.getName().contains(requiredLibrary)).findFirst().get().downloaded()) {
                 tellUser(requiredLibrary + " is not yet downloaded");
                 tellUser("use \"" + Core.commandsPrefix + "library download all\"");
                 return;
@@ -145,7 +145,7 @@ public class Commands {
     protected static void availableLib() {
         tellUser("Available library: ");
         libs.forEach((i, l) -> {
-            tellUser(i + ". " + l.name + l.version);
+            tellUser(i + ". " + l.getName());
             tellUser("Downloaded = " + l.downloaded());
         });
     }

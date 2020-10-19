@@ -1,6 +1,5 @@
 package Ozone.Desktop.Pre;
 
-import Ozone.Desktop.Swing.Main;
 import Ozone.Desktop.Swing.SPreLoad;
 
 import javax.swing.*;
@@ -74,7 +73,6 @@ public class DownloadSwing implements Runnable {
         if (displayed) return;
         displayed = true;
         swing = new SPreLoad();
-        Main.setTheme();
         swing.progressBar1.setMinimum(0);
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
@@ -206,6 +204,7 @@ public class DownloadSwing implements Runnable {
                 stateChanged();
             }
         } catch (Exception e) {
+            temp.delete();
             throw new RuntimeException(e);
         } finally {
             // Close file.
@@ -224,7 +223,8 @@ public class DownloadSwing implements Runnable {
                 }
             }
             try {
-                Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                if (temp.exists())
+                    Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (Throwable t) {
 
             }

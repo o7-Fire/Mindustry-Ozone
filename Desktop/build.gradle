@@ -9,6 +9,7 @@ repositories {
 }
 //Desktop jar with installer and separated library
 jar {
+    dependsOn ":gay"
     archiveFileName = "Ozone.jar"
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }

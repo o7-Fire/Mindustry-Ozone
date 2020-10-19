@@ -34,7 +34,7 @@ dependencies {
 }
 
 jar {
-    dependsOn ":jar"
+    dependsOn ":gay"
     archiveFileName = "Ozone.jar"
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
