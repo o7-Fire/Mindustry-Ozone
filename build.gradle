@@ -50,8 +50,11 @@ allprojects {
 
 
     ext {
+
         mindustryVersion = "v109"
-        atomHash = "bdf20a1954"
+        atomHash = "831b3731c9"
+
+
         writeProcessors = {
             new File(rootDir, "CodeGen/src/main/resources/META-INF/services/").mkdirs()
             def processorFile = new File(rootDir, "CodeGen/src/main/resources/META-INF/services/javax.annotation.processing.Processor")

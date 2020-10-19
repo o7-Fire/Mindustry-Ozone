@@ -28,8 +28,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     compileOnly files("$sdkJar")
     implementation rootProject
-    compileOnly files("${project.rootDir}/libs/Atomic.jar")
-    compileOnly files("${project.rootDir}/libs/Mindustry.jar")
+    //compileOnly files("${project.rootDir}/libs/Atomic.jar")
+    //compileOnly files("${project.rootDir}/libs/Mindustry.jar")
 
 }
 
