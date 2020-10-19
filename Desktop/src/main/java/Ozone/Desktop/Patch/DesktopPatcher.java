@@ -1,15 +1,14 @@
 package Ozone.Desktop.Patch;
 
-import Atom.File.SerializeData;
 import Atom.Manifest;
 import Ozone.Desktop.Pre.DownloadSwing;
 import Ozone.Event.Internal;
 import Ozone.Interface;
-import Ozone.Patch.ChatOzoneFragment;
 import Settings.Desktop;
 import arc.Events;
 import arc.util.Log;
 import mindustry.Vars;
+import mindustry.core.GameState;
 import mindustry.game.EventType;
 
 import java.net.URL;
@@ -55,17 +54,14 @@ public class DesktopPatcher {
             }
             if (Desktop.logMessage) {
                 if (Ozone.Desktop.Manifest.messageLog.exists()) {//try to load
-                    try {
-                        for (Object co : SerializeData.dataArrayIn(Ozone.Desktop.Manifest.messageLog).get()) {
-                            ChatOzoneFragment.ChatMessage cm = (ChatOzoneFragment.ChatMessage) co;
-                            ChatOzoneFragment.messages.add(cm);
-                        }
-                    } catch (Throwable t) {
-                        Log.errTag("Ozone-MessageLogger", "Cant load " + Ozone.Desktop.Manifest.messageLog.getAbsolutePath());
-                        Log.errTag("Ozone-MessageLogger", t.toString());
-                        t.printStackTrace();
-                    }
+                    Ozone.Desktop.Manifest.tryLoadLogMessage();
                 }
+            }
+
+        });
+        Events.on(EventType.StateChangeEvent.class, stateChangeEvent -> {
+            if (stateChangeEvent.from.equals(GameState.State.playing) && stateChangeEvent.to.equals(GameState.State.menu)) {
+                Ozone.Desktop.Manifest.trySaveLogMessage();
             }
         });
 
