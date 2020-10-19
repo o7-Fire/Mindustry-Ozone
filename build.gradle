@@ -104,6 +104,7 @@ allprojects {
         testImplementation 'junit:junit:4.12'
         compileOnly "com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"
         compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+        compileOnly"com.github.Anuken.Arc:backend-sdl:$mindustryVersion"
         compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
         //compileOnly files("${project.rootDir}/libs/Atomic.jar")
         //compileOnly files("${project.rootDir}/libs/Mindustry.jar")

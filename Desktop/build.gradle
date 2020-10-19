@@ -33,6 +33,7 @@ dependencies {
     //compileOnly files("${project.rootDir}/libs/Atomic.jar")
     //compileOnly files("${project.rootDir}/libs/Mindustry.jar")
     compileOnly "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
+    compileOnly "com.github.Anuken.Mindustry:desktop:$mindustryVersion"
     implementation files("${project.rootDir}/lib/flatlaf-0.42.jar")
     implementation files("${project.rootDir}/lib/miglayout-core.jar")
     implementation files("${project.rootDir}/lib/miglayout-swing.jar")
