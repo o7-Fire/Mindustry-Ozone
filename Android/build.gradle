@@ -6,6 +6,8 @@ ext {
     sdkPlatform = "${sdkRoot}/platforms"
     sdkD8 = sdkRoot+'/build-tools/'
     try{
+        for(File f : new File(sdkD8).listFiles())
+            println f.name
         sdkPlatform = new File(sdkPlatform).listFiles()[new File(sdkPlatform).listFiles().length-1].getAbsolutePath()
         sdkD8 = new File(sdkD8).listFiles()[new File(sdkD8).listFiles().length-1].getAbsolutePath() + "/d8"
     }catch(ignored){}
@@ -78,8 +80,8 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
         println e.key
         libraryjars e.key
     }
-    dontwarn("java.lang.**")
-    dontwarn("java.util.**")
+    dontwarn("java.**")//bruh
+
     //libraryjars "${project.rootDir}/libs"
     injars "$buildDir/libs/Ozone.jar"
     outjars "$buildDir/libs/Ozone-Android.jar"
