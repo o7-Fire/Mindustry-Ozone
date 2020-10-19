@@ -73,6 +73,7 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
         println e.key
         libraryjars e.key
     }
+    dontwarn("java.**")
     //libraryjars "${project.rootDir}/libs"
     injars "$buildDir/libs/Ozone.jar"
     outjars "$buildDir/libs/Ozone-Android.jar"
