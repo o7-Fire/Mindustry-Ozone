@@ -31,8 +31,10 @@ import java.lang.reflect.Field;
 import static mindustry.Vars.*;
 
 public class Main {
-
+    private static boolean init = false;
     public static void init() {
+        if (init) return;
+        init = true;
         Log.infoTag("Ozone", "Hail o7");
         loadSettings();
         patch();
@@ -200,12 +202,19 @@ public class Main {
                     s.player.name());
         });
         Events.on(EventType.ConfigEvent.class, s -> {
-            if (s.player == null) return;//boring
-            Log.debug("Ozone-@: @ has been changed to @ by player \"@\"",
-                    s.getClass().getSimpleName(),
-                    s.tile.tile.toString(),
-                    s.value,
-                    s.player.name());
+            if (s.player != null)
+                Log.debug("Ozone-@: @ has been changed from @ to @ by player \"@\"",
+                        s.getClass().getSimpleName(),
+                        s.tile.tile.toString(),
+                        s.tile.block().lastConfig,
+                        s.value,
+                        s.player.name());
+            else
+                Log.debug("Ozone-@: @ has been changed from @ to @ by unknown",
+                        s.getClass().getSimpleName(),
+                        s.tile.tile.toString(),
+                        s.tile.block(),
+                        s.value);
         });
     }
 

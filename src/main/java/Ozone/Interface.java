@@ -69,6 +69,7 @@ public class Interface {
         System.exit(0);
     }
 
+
     public static Future<Tile> getTile(Filter<Tile> filter) {
         if (!Vars.state.getState().equals(GameState.State.playing)) return null;
         return Pool.submit(() -> {
