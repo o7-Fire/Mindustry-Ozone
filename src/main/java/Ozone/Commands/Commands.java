@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -164,6 +165,15 @@ public class Commands {
             @Override
             public void update() {
                 if (!f.isDone()) return;
+                if (completed) return;
+                completed = true;
+                try {
+                    Tile t = f.get();
+                    if (t == null) return;
+                    t.build.configure(Random.getRandom(Vars.content.items().toArray()));
+                } catch (InterruptedException | ExecutionException e) {
+                    Log.errTag("Ozone-Executor", "Failed to get tile:\n" + e.toString());
+                }
             }
         });
 

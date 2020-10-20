@@ -65,11 +65,12 @@ public class Preload {
         Log.infoTag("Ozone", "Loading library");
         //add Atom to URL classloader to be used
         //good ol reflection
-        Log.infoTag("Ozone", "Loading: " + atom.getAbsolutePath());
-        Log.infoTag("Ozone", "Loading: " + Ozone.desktopAtomic.getAbsolutePath());
+
         Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
         Log.infoTag("Ozone", "wArNiNg: An IlLeGaL rEfLeCtIvE aCcEsS oPeRaTiOn HaS oCcUrReD");
         method.setAccessible(true);
+        Log.infoTag("Ozone", "Loading: " + atom.getAbsolutePath());
+        Log.infoTag("Ozone", "Loading: " + Ozone.desktopAtomic.getAbsolutePath());
         method.invoke(clz.getClass().getClassLoader(), atom.toURI().toURL());
         method.invoke(clz.getClass().getClassLoader(), Ozone.desktopAtomic.toURI().toURL());
         Class.forName("Atom.DesktopManifest");
