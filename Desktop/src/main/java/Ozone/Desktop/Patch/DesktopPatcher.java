@@ -2,13 +2,13 @@ package Ozone.Desktop.Patch;
 
 import Atom.Manifest;
 import Ozone.Desktop.Pre.DownloadSwing;
+import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Ozone.Interface;
 import Settings.Desktop;
 import arc.Events;
 import arc.util.Log;
 import mindustry.Vars;
-import mindustry.core.GameState;
 import mindustry.game.EventType;
 
 import java.net.URL;
@@ -56,13 +56,9 @@ public class DesktopPatcher {
                 if (Ozone.Desktop.Manifest.messageLog.exists()) {//try to load
                     Ozone.Desktop.Manifest.tryLoadLogMessage();
                 }
+                Events.run(EventExtended.Connect.Disconnected, Ozone.Desktop.Manifest::trySaveLogMessage);
             }
 
-        });
-        Events.on(EventType.StateChangeEvent.class, stateChangeEvent -> {
-            if (stateChangeEvent.from.equals(GameState.State.playing) && stateChangeEvent.to.equals(GameState.State.menu)) {
-                Ozone.Desktop.Manifest.trySaveLogMessage();
-            }
         });
 
     }
