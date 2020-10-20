@@ -190,8 +190,8 @@ public class ChatOzoneFragment extends ChatFragment {
         String message = this.chatfield.getText();
         this.clearChatInput();
         if (!message.replace(" ", "").isEmpty()) {
-            if (Commands.call(message)) return;
             history.insert(1, message);
+            if (Commands.call(message)) return;
             Call.sendChatMessage(message);
         }
     }
