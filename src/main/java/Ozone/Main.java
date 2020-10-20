@@ -120,6 +120,7 @@ public class Main {
                     s.unit.y());
         });
         Events.on(EventType.UnitChangeEvent.class, s -> {
+            if (Vars.state.getState().equals(GameState.State.menu)) return;//spammy af
             Log.debug("Ozone-@: Player \"@\" changing into @ at @,@",
                     s.getClass().getSimpleName(),
                     s.player.name(),
