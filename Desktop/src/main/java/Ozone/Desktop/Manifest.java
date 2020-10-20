@@ -7,7 +7,8 @@ import arc.util.Log;
 import java.io.File;
 
 public class Manifest {
-    public static File messageLog = new File("MessageLogArr.dat");
+    public static File messageLogFolder = new File("/Ozone");
+    public static File messageLog = new File(messageLogFolder, "MessageLogArr.dat");
     public static File messageLogBackup = new File("BackupMessageLogArr.dat");
 
     public static void tryLoadLogMessage() {

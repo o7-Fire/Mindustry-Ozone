@@ -4,6 +4,7 @@
 ## Java
 Tools/build
 *.class
+/Ozone/
 *.war
 *.ear
 hs_err_pid*
@@ -123,3 +124,16 @@ CodeGen/build/tmp/compileJava/source-classes-mapping.txt
 CodeGen/build/tmp/jar/MANIFEST.MF
 /tool/
 /Atomic/
+Android/src/main/java/Ozone/
+Android/src/main/resources/
+CodeGen/src/main/resources/META-INF/services/com.sun.source.util.Plugin
+CodeGen/src/test/
+Desktop/src/main/resources/
+Desktop/src/test/
+Tools/src/main/resources/
+Tools/src/test/resources/
+config/logs/
+config/maps/
+config/mods/
+config/settings.bin
+src/test/resources/
