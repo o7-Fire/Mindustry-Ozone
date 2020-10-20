@@ -7,6 +7,8 @@ Tools/build
 /Ozone/
 *.war
 *.ear
+src/main/resources/Manifest.properties
+src/main/resources/META-INF
 hs_err_pid*
 crash-report-*
 Android/build
@@ -100,13 +102,7 @@ nb-configuration.xml
 /local.properties
 .gradle/
 gradle-app.setting
-/build/
-/android/build/
-/core/build/
-/desktop/build/
-/html/build/
-/ios/build/
-/ios-moe/build/
+
 
 ## OS Specific
 .DS_Store
