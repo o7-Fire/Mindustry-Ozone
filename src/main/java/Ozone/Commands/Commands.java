@@ -28,11 +28,14 @@ import mindustry.gen.Icon;
 import mindustry.gen.Player;
 import mindustry.world.Block;
 import mindustry.world.Tile;
+import mindustry.world.blocks.distribution.Sorter;
+import mindustry.world.blocks.sandbox.ItemSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -65,9 +68,8 @@ public class Commands {
         register("send-colorize", new Command(Commands::sendColorize));
         register("task-clear", new Command(Commands::taskClear));
         register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
-        register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
-
-        register("shuffle-configurable", new Command(Commands::shuffleSorter, Icon.rotate));
+        register("message-log", new Command(Commands::messageLog, Icon.rotate));
+        register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
         //register("super-bullet", new Command(Commands::superBullet));
         Events.fire(Internal.Init.CommandsRegister);
         for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet())
@@ -76,6 +78,14 @@ public class Commands {
         Log.infoTag("Ozone", commandsList.size() + " commands loaded");
     }
 
+
+    public static void shuffleConfigurable(ArrayList<String> arg) {
+
+    }
+
+    public static void messageLog(ArrayList<String> arg) {
+
+    }
 
     /*
     //Anuked suggestion
@@ -134,6 +144,28 @@ public class Commands {
     }
 
     public static void shuffleSorter(ArrayList<String> s) {
+        Future<Tile> f = Interface.getTile(tile -> {
+            if (tile.build == null)
+                return false;
+            return tile.build.interactable(Vars.player.team()) && (tile.build.block() instanceof Sorter || tile.block() instanceof ItemSource);
+        });
+        if (f == null) {
+            tellUser("whoops cant find block");
+            return;
+        }
+        commandsQueue.add(new Task() {
+            boolean completed = false;
+
+            @Override
+            public boolean isCompleted() {
+                return completed;
+            }
+
+            @Override
+            public void update() {
+                if (!f.isDone()) return;
+            }
+        });
 
     }
 

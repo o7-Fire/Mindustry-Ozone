@@ -28,6 +28,8 @@ import mindustry.ui.fragments.ChatFragment;
 import mindustry.ui.fragments.Fragment;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import static arc.Core.input;
@@ -344,6 +346,20 @@ public class ChatOzoneFragment extends ChatFragment {
                 this.formattedMessage = "[royal][AntiSpam][white]" + antiSpam + "\n[coral][[" + sender + "[coral]]:[white] " + message;
             }
             server = Manifest.getCurrentServerIP();
+        }
+
+        @Override
+        public String toString() {
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
+            Date resulted = new Date(date);
+            return "ChatMessage{" + '\n' +
+                    "sender='" + sender + '\n' +
+                    ", message='" + message + '\n' +
+                    ", formattedMessage='" + formattedMessage + '\n' +
+                    ", date=" + sdf.format(resulted) + '\n' +
+                    ", server='" + server + '\n' +
+                    ", id=" + id + '\n' +
+                    '}';
         }
     }
 }

@@ -38,9 +38,11 @@ public class Translation {
         commands.put("send-colorize", "send Colorized text");
         commands.put("info-unit", "get current unit info");
         commands.put("random-kick", "random kick someone");
-        commands.put("shuffle-sorter", "shufleelelelel Da Sorter And Everything");
+        commands.put("shuffle-sorter", "shuffle every block that look like sorter, note: item source too");
         commands.put("javac", "run single line of code, like \nVars.player.unit().moveAt(new Vec2(100, 100));");
         commands.put("task-clear", "clear all bot task");
+        commands.put("message-log", "see message log, recommend to export it instead");
+        commands.put("shuffle-configurable", "shuffle every configurable block, literally almost everything");
         Events.fire(Internal.Init.TranslationRegister);
         for (Map.Entry<String, String> s : commands.entrySet()) {
             registerWords("ozone.commands." + s.getKey(), s.getValue());
