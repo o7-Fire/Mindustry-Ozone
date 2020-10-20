@@ -69,7 +69,7 @@ public class Main {
         });
 
         Events.on(EventType.ClientPreConnectEvent.class, s -> {
-            Log.debug("Ozone-@ @:@ = @",
+            Log.debug("Ozone-@: @:@ = @",
                     s.getClass().getSimpleName(),
                     s.host.address,
                     s.host.port,

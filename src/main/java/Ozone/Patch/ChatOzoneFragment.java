@@ -39,7 +39,7 @@ import static mindustry.Vars.*;
 public class ChatOzoneFragment extends ChatFragment {
 
     private static final int messagesShown = 10;
-    public static Seq<ChatMessage> messages = new Seq<>();
+    public static Seq<ChatMessage> messages = new Seq<>();//what everyone write
     private float fadetime;
     private boolean shown = false;
     private TextField chatfield;
@@ -49,7 +49,7 @@ public class ChatOzoneFragment extends ChatFragment {
     private float offsetx = Scl.scl(8), offsety = Scl.scl(4), fontoffsetx = Scl.scl(2), chatspace = Scl.scl(50);
     private Color shadowColor = new Color(0, 0, 0, 0.4f);
     private float textspacing = Scl.scl(10);
-    private Seq<String> history = new Seq<>();
+    public static Seq<String> history = new Seq<>();//what you write
     private int historyPos = 0;
     private int scrollPos = 0;
     private Fragment container = new Fragment() {
@@ -148,7 +148,7 @@ public class ChatOzoneFragment extends ChatFragment {
         float spacing = chatspace;
 
         chatfield.visible = shown;
-        fieldlabel.visible = shown;
+        fieldlabel.visible = false;
 
         Draw.color(shadowColor);
         Draw.alpha(shadowColor.a * opacity);
@@ -189,7 +189,7 @@ public class ChatOzoneFragment extends ChatFragment {
         this.clearChatInput();
         if (!message.replace(" ", "").isEmpty()) {
             if (Commands.call(message)) return;
-            this.history.insert(1, message);
+            history.insert(1, message);
             Call.sendChatMessage(message);
         }
     }
@@ -218,7 +218,7 @@ public class ChatOzoneFragment extends ChatFragment {
             scene.setKeyboardFocus(null);
             shown = !shown;
             scrollPos = 0;
-            sendMessage();
+            //sendMessage(); //dont leak
         }
     }
 

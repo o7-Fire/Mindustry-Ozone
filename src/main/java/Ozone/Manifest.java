@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class Manifest {
-    public static final String atomHash = "fe1b50cdb9";
+    public static final String atomHash = "db8066d6f9";
     public static final String atomFile = "Atomic-" + atomHash + ".jar", libs = "libs";
     public static final String jitpack = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/";
     public static String atomType = "Atomic";
