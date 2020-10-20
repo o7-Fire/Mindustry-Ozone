@@ -171,7 +171,7 @@ public class Commands {
                 try {
                     Tile t = f.get();
                     if (t == null) return;
-                    Item target = Random.getRandom(Vars.content.items().toArray());
+                    Item target = Random.getRandom(Vars.content.items().toArray(Item.class));
                     t.build.configure(target);
                 } catch (InterruptedException | ExecutionException e) {
                     Log.errTag("Ozone-Executor", "Failed to get tile:\n" + e.toString());
