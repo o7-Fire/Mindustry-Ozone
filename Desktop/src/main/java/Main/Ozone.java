@@ -37,11 +37,10 @@ public class Ozone extends Mod {
     public static final File desktopAtomic = new File(library, "Atomic-" + type + "-" + Manifest.atomHash + ".jar");
 
     public Ozone() {
-        //gay spy, actually no no no yes
-        if (Core.settings != null) {
-            Core.settings.put("crashreport", false);
-            Core.settings.manualSave();
-        }
+        //gay spy
+        //legit 100%
+        if (Core.settings != null) Core.settings.put("crashreport", false);
+
 
         //just in case
         library.mkdirs();
