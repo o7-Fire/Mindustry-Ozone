@@ -1,8 +1,6 @@
 package Ozone.Patch;
 
 
-import Atom.Time.Countdown;
-import Atom.Utility.Utility;
 import Ozone.Commands.Commands;
 import Ozone.Manifest;
 import Settings.Core;
@@ -30,7 +28,6 @@ import mindustry.ui.fragments.Fragment;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import static arc.Core.input;
 import static arc.Core.scene;
@@ -58,9 +55,7 @@ public class ChatOzoneFragment extends ChatFragment {
             scene.add(ChatOzoneFragment.this);
         }
     };
-    private HashMap<String, AntiSpam> antiSpam = new HashMap<>();
-    private static String last = "";
-    private static int lastIndex = 0;
+
 
     public ChatOzoneFragment() {
         setFillParent(true);
@@ -254,43 +249,28 @@ public class ChatOzoneFragment extends ChatFragment {
 
     @Override
     public void addMessage(String message, String sender) {
-        ChatMessage cm = new ChatMessage(message, sender);
         if (Core.antiSpam) {
-            if (message.equalsIgnoreCase(last)) {
-                lastIndex++;
-                cm = new ChatMessage(message, sender, "Spam Last Message " + lastIndex);
-                messages.set(0, cm);
-                last = message;
-                return;
-            }
-            if (antiSpam.containsKey(sender)) {
-                AntiSpam victim = antiSpam.get(sender);
-                ChatMessage message1 = messages.get(0);
-                String filter = victim.filter(message);
-                if (!filter.isEmpty()) {
-                    if (message1.message.equals(victim.lastMessage)) messages.remove(0);
-                    messages.insert(0, new ChatMessage(filter, sender, victim.reasons));
-                } else messages.insert(0, cm);
-            } else {
-                antiSpam.put(sender, new AntiSpam(sender));
-                messages.insert(0, cm);
-                fadetime += 1f;
-                fadetime = Math.min(fadetime, messagesShown) + 1f;
-                if (scrollPos > 0) scrollPos++;
-            }
-            antiSpam.get(sender).setLastMessage(cm.message);
-            last = message;
-        } else {
-            messages.insert(0, cm);
-
-            fadetime += 1f;
-            fadetime = Math.min(fadetime, messagesShown) + 1f;
-
-            if (scrollPos > 0) scrollPos++;
+            addMessageAntiSpam(message, sender);
+            return;
         }
+        ChatMessage cm = new ChatMessage(message, sender);
+        messages.insert(0, cm);
+        fadetime += 1f;
+        fadetime = Math.min(fadetime, messagesShown) + 1f;
+        if (scrollPos > 0) scrollPos++;
 
     }
 
+    public void addMessageAntiSpam(String message, String sender) {
+        if (sender == null) sender = message.substring(0, message.indexOf(']'));
+        ChatMessage cm = new ChatMessage(message, sender);
+        messages.insert(0, cm);
+        fadetime += 1f;
+        fadetime = Math.min(fadetime, messagesShown) + 1f;
+        if (scrollPos > 0) scrollPos++;
+    }
+
+    /*
     //TODO dont do this
     private static class AntiSpam {
         public static int maxRepeatingChar = 100;
@@ -327,6 +307,7 @@ public class ChatOzoneFragment extends ChatFragment {
             return message;
         }
     }
+     */
 
     public static class ChatMessage implements Serializable {
         public final String sender;
