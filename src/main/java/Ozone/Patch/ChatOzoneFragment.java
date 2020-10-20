@@ -308,7 +308,7 @@ public class ChatOzoneFragment extends ChatFragment {
             }
             if (message.equalsIgnoreCase(lastMessage)) {
                 reasons = "Spam Last Message: " + lastMessageTimes;
-            } else if ((System.currentTimeMillis() - lastMessageSent) > rateLimit) {
+            } else if ((System.currentTimeMillis() - lastMessageSent) < rateLimit) {
                 reasons = "Too Fast: " + Countdown.result(lastMessageSent);
             } else reasons = "";
 
