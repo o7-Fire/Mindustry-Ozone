@@ -23,6 +23,7 @@ public class Manifest {
         ObjectMap<String, String> Manifest = new ObjectMap<>();
         PropertiesUtils.load(Manifest, new InputStreamReader(Manifest.class.getResourceAsStream("/Manifest.properties")));
         atomHash = Manifest.get("AtomHash");
+
     }
 
     public static final String atomFile = "Atomic-" + atomHash + ".jar", libs = "libs";

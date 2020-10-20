@@ -46,7 +46,7 @@ public class PreInstall {
         //Install Button
         m.buttonInstall.addActionListener(e -> {
             m.labelStatus.setVisible(true);
-            m.progressBar1.setVisible(true);
+            //m.progressBar1.setVisible(true);
             m.labelStatus.setText("Scanning");
             m.frame1.pack();
             //mods
@@ -62,6 +62,16 @@ public class PreInstall {
             //mods/Ozone.jar
             File ozone = new File(mods, "Ozone.jar");
             library.mkdirs();
+            try {
+                Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                m.labelStatus.setText("Finished");
+                m.frame1.pack();
+                if (ozone.exists()) return;
+            } catch (IOException ioException) {
+                m.labelStatus.setText(ioException.getMessage());
+                m.frame1.pack();
+                return;
+            }
             //mods/libs/Atomic-AtomHash.jar
             File atom = new File(library, Manifest.atomFile);
             if (ozone.exists()) {
