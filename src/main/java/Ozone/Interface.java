@@ -70,7 +70,7 @@ public class Interface {
     }
 
     public static Future<Tile> getTile(Filter<Tile> filter) {
-        if (!Vars.state.equals(GameState.State.playing)) return null;
+        if (!Vars.state.getState().equals(GameState.State.playing)) return null;
         return Pool.submit(() -> {
             ArrayList<Tile> list = new ArrayList<>();
             for (Tile t : Vars.world.tiles) {
