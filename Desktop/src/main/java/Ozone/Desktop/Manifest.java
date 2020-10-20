@@ -9,7 +9,7 @@ import java.io.File;
 public class Manifest {
     public static File messageLogFolder = new File(Atom.Manifest.currentFolder, "Ozone/");
     public static File messageLog = new File(messageLogFolder, "MessageLogArr.dat");
-    public static File messageLogBackup = new File("BackupMessageLogArr.dat");
+    public static File messageLogBackup = new File(messageLogFolder, "BackupMessageLogArr.dat");
 
     public static void tryLoadLogMessage() {
         try {
