@@ -1,15 +1,21 @@
 package Ozone;
 
 
+import Atom.Struct.Filter;
+import Atom.Utility.Pool;
+import Atom.Utility.Random;
 import Ozone.Patch.ImprovisedKeybinding;
 import arc.Events;
 import arc.backend.sdl.jni.SDL;
 import arc.struct.ObjectMap;
 import mindustry.Vars;
+import mindustry.core.GameState;
 import mindustry.game.EventType;
+import mindustry.world.Tile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.Future;
 
 public class Interface {
     protected static final ObjectMap<String, String> bundle = new ObjectMap<>();
@@ -61,6 +67,18 @@ public class Interface {
         }
         //exit is priority
         System.exit(0);
+    }
+
+    public static Future<Tile> getTile(Filter<Tile> filter) {
+        if (!Vars.state.equals(GameState.State.playing)) return null;
+        return Pool.submit(() -> {
+            ArrayList<Tile> list = new ArrayList<>();
+            for (Tile t : Vars.world.tiles) {
+                if (!filter.accept(t)) continue;
+                list.add(t);
+            }
+            return Random.getRandom(list);
+        });
     }
 }
 

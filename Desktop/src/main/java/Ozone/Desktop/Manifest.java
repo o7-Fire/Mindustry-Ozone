@@ -12,8 +12,9 @@ public class Manifest {
 
     public static void tryLoadLogMessage() {
         try {
-            messageLog.deleteOnExit();
+            Log.infoTag("Ozone-MessageLogger", "Loading messageLog");
             for (Object co : SerializeData.dataArrayIn(messageLog).get()) {
+                if (!(co instanceof ChatOzoneFragment.ChatMessage)) continue;
                 ChatOzoneFragment.ChatMessage cm = (ChatOzoneFragment.ChatMessage) co;
                 ChatOzoneFragment.messages.add(cm);
                 ChatOzoneFragment.messages.sort(chatMessage -> chatMessage.id);
@@ -27,6 +28,7 @@ public class Manifest {
 
     public static void trySaveLogMessage() {
         try {
+            Log.infoTag("Ozone-MessageLogger", "Saving messageLog");
             SerializeData.dataOut(new SerializeData.DataArray<>(ChatOzoneFragment.messages.toArray()), messageLog);
             SerializeData.dataOut(new SerializeData.DataArray<>(ChatOzoneFragment.messages.toArray()), messageLogBackup);
         } catch (Throwable t) {

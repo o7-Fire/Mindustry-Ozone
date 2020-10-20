@@ -28,7 +28,6 @@ import mindustry.ui.fragments.ChatFragment;
 import mindustry.ui.fragments.Fragment;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.HashMap;
 
 import static arc.Core.input;
@@ -317,14 +316,14 @@ public class ChatOzoneFragment extends ChatFragment {
         public final String sender;
         public final String message;
         public final String formattedMessage;
-        public final Instant date;
+        public final long date;
         public final String server;
         public final int id;
 
         public ChatMessage(String message, String sender) {
             this.message = message;
             this.sender = sender;
-            this.date = Instant.now();
+            this.date = System.currentTimeMillis();
             id = messages.size;
             if (sender == null) {
                 this.formattedMessage = message;
@@ -337,7 +336,7 @@ public class ChatOzoneFragment extends ChatFragment {
         public ChatMessage(String message, String sender, String antiSpam) {
             this.message = message;
             this.sender = sender;
-            this.date = Instant.now();
+            this.date = System.currentTimeMillis();
             id = messages.size;
             if (sender == null) {
                 this.formattedMessage = message;

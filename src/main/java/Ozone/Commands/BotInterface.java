@@ -22,7 +22,6 @@ public class BotInterface {
         if (init) return;
         init = true;
         Events.run(EventType.Trigger.update, BotInterface::update);
-        Events.run(EventType.WorldLoadEvent.class, BotInterface::reset);
     }
 
     private static void update() {
@@ -96,7 +95,7 @@ public class BotInterface {
             return pos1.getX() == pos2.getX() && pos1.getY() == pos2.getY();
     }
 
-    static void reset() {
+    public static void reset() {
         taskQueue.clear();
     }
 

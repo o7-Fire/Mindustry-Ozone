@@ -19,6 +19,7 @@ import arc.util.Log;
 import arc.util.OS;
 import arc.util.Time;
 import mindustry.Vars;
+import mindustry.core.GameState;
 import mindustry.game.EventType;
 import mindustry.gen.Tex;
 import mindustry.graphics.Pal;
@@ -101,6 +102,10 @@ public class Main {
         Events.on(EventType.StateChangeEvent.class, s -> {
             Log.debug("Ozone-@: State changed from @ to @",
                     s.getClass().getSimpleName(), s.from, s.to);
+            if (s.from.equals(GameState.State.playing) && s.to.equals(GameState.State.menu)) {
+                BotInterface.reset();
+                Commands.commandsQueue.clear();
+            }
         });
         Events.on(EventType.UnitCreateEvent.class, s -> {
             Log.debug("Ozone-@: A @ created at @,@",

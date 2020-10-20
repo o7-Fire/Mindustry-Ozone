@@ -42,6 +42,7 @@ public class Commands {
     private static boolean init = false;
     private volatile static boolean falseVote = false;
     public static final Queue<Task> commandsQueue = new Queue<>();
+
     public static void init() {
         if (init) return;
         init = true;
@@ -50,9 +51,6 @@ public class Commands {
             commandsQueue.first().update();
             if (commandsQueue.first().isCompleted())
                 commandsQueue.removeFirst();
-        });
-        Events.run(EventType.WorldLoadEvent.class, () -> {
-
         });
 
         register("help", new Command(Commands::help));
@@ -67,6 +65,9 @@ public class Commands {
         register("send-colorize", new Command(Commands::sendColorize));
         register("task-clear", new Command(Commands::taskClear));
         register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
+        register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
+
+        register("shuffle-configurable", new Command(Commands::shuffleSorter, Icon.rotate));
         //register("super-bullet", new Command(Commands::superBullet));
         Events.fire(Internal.Init.CommandsRegister);
         for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet())
@@ -133,7 +134,7 @@ public class Commands {
     }
 
     public static void shuffleSorter(ArrayList<String> s) {
-        //TODO find random sorter block
+
     }
 
     public static void taskClear(ArrayList<String> s) {

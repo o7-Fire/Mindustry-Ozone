@@ -18,7 +18,7 @@ public class Translation {
     public static final HashMap<String, String> keyBinds = new HashMap<>();
 
     public static void patch() {
-        settings.put("antiSpam", "[Broken]Enable Anti-Spam");
+        settings.put("antiSpam", "Enable Anti-Spam");
         settings.put("debugMode", "Enable Debug Mode");
         settings.put("colorPatch", "Enable Colorized Text");
         settings.put("commandsPrefix", "Commands Prefix");
