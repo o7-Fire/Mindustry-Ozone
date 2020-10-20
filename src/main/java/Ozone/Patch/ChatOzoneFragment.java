@@ -59,6 +59,8 @@ public class ChatOzoneFragment extends ChatFragment {
         }
     };
     private HashMap<String, AntiSpam> antiSpam = new HashMap<>();
+    private static String last = "";
+    private static int lastIndex = 0;
 
     public ChatOzoneFragment() {
         setFillParent(true);
@@ -254,6 +256,13 @@ public class ChatOzoneFragment extends ChatFragment {
     public void addMessage(String message, String sender) {
         ChatMessage cm = new ChatMessage(message, sender);
         if (Core.antiSpam) {
+            if (message.equalsIgnoreCase(last)) {
+                lastIndex++;
+                cm = new ChatMessage(message, sender, "Spam Last Message " + lastIndex);
+                messages.set(0, cm);
+                last = message;
+                return;
+            }
             if (antiSpam.containsKey(sender)) {
                 AntiSpam victim = antiSpam.get(sender);
                 ChatMessage message1 = messages.get(0);
@@ -270,6 +279,7 @@ public class ChatOzoneFragment extends ChatFragment {
                 if (scrollPos > 0) scrollPos++;
             }
             antiSpam.get(sender).setLastMessage(cm.message);
+            last = message;
         } else {
             messages.insert(0, cm);
 
@@ -278,6 +288,7 @@ public class ChatOzoneFragment extends ChatFragment {
 
             if (scrollPos > 0) scrollPos++;
         }
+
     }
 
     private static class AntiSpam {
