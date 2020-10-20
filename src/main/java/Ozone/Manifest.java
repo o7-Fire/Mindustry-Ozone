@@ -4,17 +4,27 @@ import Atom.Reflect.Reflect;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
 import arc.net.Client;
+import arc.struct.ObjectMap;
+import arc.util.io.PropertiesUtils;
 import mindustry.Vars;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
 
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
 public class Manifest {
-    public static final String atomHash = "db8066d6f9";
+    public static final String atomHash;
+
+    static {
+        ObjectMap<String, String> Manifest = new ObjectMap<>();
+        PropertiesUtils.load(Manifest, new InputStreamReader(Manifest.class.getResourceAsStream("/Manifest.properties")));
+        atomHash = Manifest.get("AtomHash");
+    }
+
     public static final String atomFile = "Atomic-" + atomHash + ".jar", libs = "libs";
     public static final String jitpack = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/";
     public static String atomType = "Atomic";

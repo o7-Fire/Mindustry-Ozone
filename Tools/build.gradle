@@ -11,8 +11,9 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testImplementation 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'
-    testImplementation files("${project.rootDir}/libs/Atomic.jar")
     testImplementation group: 'com.google.googlejavaformat', name: 'google-java-format', version: '1.7'
     implementation project(":Desktop")
+    testCompile "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
+    testCompile "com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"
     implementation rootProject
 }
