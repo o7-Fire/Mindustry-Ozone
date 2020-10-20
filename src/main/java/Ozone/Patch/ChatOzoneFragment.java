@@ -291,6 +291,7 @@ public class ChatOzoneFragment extends ChatFragment {
 
     }
 
+    //TODO dont do this
     private static class AntiSpam {
         public static int maxRepeatingChar = 100;
         public static long rateLimit = 300;
@@ -349,15 +350,12 @@ public class ChatOzoneFragment extends ChatFragment {
         }
 
         public ChatMessage(String message, String sender, String antiSpam) {
+            if (sender == null) sender = "null";
             this.message = message;
             this.sender = sender;
             this.date = System.currentTimeMillis();
             id = messages.size;
-            if (sender == null) {
-                this.formattedMessage = message;
-            } else {
-                this.formattedMessage = "[royal][AntiSpam][white]" + antiSpam + "\n[coral][[" + sender + "[coral]]:[white] " + message;
-            }
+            this.formattedMessage = "[royal][AntiSpam][white]" + antiSpam + "\n[coral][[" + sender + "[coral]]:[white] " + message;
             server = Manifest.getCurrentServerIP();
         }
 
