@@ -26,6 +26,7 @@ import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Icon;
 import mindustry.gen.Player;
+import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Sorter;
@@ -170,7 +171,8 @@ public class Commands {
                 try {
                     Tile t = f.get();
                     if (t == null) return;
-                    t.build.configure(Random.getRandom(Vars.content.items().toArray()));
+                    Item target = Random.getRandom(Vars.content.items().toArray());
+                    t.build.configure(target);
                 } catch (InterruptedException | ExecutionException e) {
                     Log.errTag("Ozone-Executor", "Failed to get tile:\n" + e.toString());
                 }

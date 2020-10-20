@@ -48,7 +48,7 @@ public class ChatOzoneFragment extends ChatFragment {
     private GlyphLayout layout = new GlyphLayout();
     private float offsetx = Scl.scl(8), offsety = Scl.scl(4), fontoffsetx = Scl.scl(2), chatspace = Scl.scl(50);
     private Color shadowColor = new Color(0, 0, 0, 0.4f);
-    private float textspacing = Scl.scl(10);
+    private float textspacing = Scl.scl(0);
     public static Seq<String> history = new Seq<>();//what you write
     private int historyPos = 0;
     private int scrollPos = 0;
@@ -91,6 +91,9 @@ public class ChatOzoneFragment extends ChatFragment {
                 if (input.keyTap(Binding.chat_history_next) && historyPos > 0) {
                     historyPos--;
                     updateChat();
+                }
+                if (input.keyTap(Binding.chat)) {
+                    sendMessage();
                 }
                 scrollPos = (int) Mathf.clamp(scrollPos + input.axis(Binding.chat_scroll), 0, Math.max(0, messages.size - messagesShown));
             }
