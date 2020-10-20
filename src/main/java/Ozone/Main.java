@@ -4,6 +4,7 @@ import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
+import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Ozone.Patch.ChatOzoneFragment;
 import Ozone.Patch.SettingsDialog;
@@ -69,13 +70,17 @@ public class Main {
             });
             setOzoneLogger();
         });
-
+        Events.run(EventExtended.Connect.Disconnected, () -> {
+            BotInterface.reset();
+            Commands.commandsQueue.clear();
+        });
         Events.on(EventType.ClientPreConnectEvent.class, s -> {
             Log.debug("Ozone-@: @:@ = @",
                     s.getClass().getSimpleName(),
                     s.host.address,
                     s.host.port,
                     s.host.name);
+            Events.fire(EventExtended.Connect.Connected);
         });
         Events.on(EventType.CommandIssueEvent.class, s -> {
             Log.debug("Ozone-@: new issue @ at @",
@@ -104,10 +109,8 @@ public class Main {
         Events.on(EventType.StateChangeEvent.class, s -> {
             Log.debug("Ozone-@: State changed from @ to @",
                     s.getClass().getSimpleName(), s.from, s.to);
-            if (s.from.equals(GameState.State.playing) && s.to.equals(GameState.State.menu)) {
-                BotInterface.reset();
-                Commands.commandsQueue.clear();
-            }
+            if (s.from.equals(GameState.State.playing) && s.to.equals(GameState.State.menu))
+                Events.fire(EventExtended.Connect.Disconnected);
         });
         Events.on(EventType.UnitCreateEvent.class, s -> {
             Log.debug("Ozone-@: A @ created at @,@",

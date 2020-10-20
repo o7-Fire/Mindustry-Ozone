@@ -22,6 +22,7 @@ public class Translation {
         settings.put("debugMode", "Enable Debug Mode");
         settings.put("colorPatch", "Enable Colorized Text");
         settings.put("commandsPrefix", "Commands Prefix");
+        settings.put("worldLog", "Log World Tiles [red][Heavy RAM Usage]");
         registerWords("ozone.menu", "Ozone Menu");
         registerWords("ozone.hud", "Ozone HUD");
         registerWords("ozone.javaEditor", "Java Executor");
