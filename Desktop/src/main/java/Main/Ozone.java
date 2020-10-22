@@ -1,46 +1,25 @@
 package Main;
 
-import Ozone.Manifest;
-import Premain.LibraryLoader;
+import Ozone.Main;
 import arc.Core;
 import arc.util.Log;
 import mindustry.mod.Mod;
 
 import java.io.File;
-import java.net.MalformedURLException;
 
 /**
  * @author Itzbenz
  */
 public class Ozone extends Mod {
-    //get location of this Ozone mods
-    public static File ozone = new File(Ozone.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-    //get Mods directory from mods/Ozone.jar
-    public static File parentFile = ozone.getParentFile();
-    //mods/libs directory
-    public static File library = new File(parentFile, Manifest.libs);
-    //mods/libs/Atomic-AtomHash.jar
-    public static File atom = new File(library, Manifest.atomFile);
-    //public boolean libraryURLLoaded;
-    //public boolean libraryExists;
-    //public URLClassLoader classloader;
-    //public Mod mainMod = null;
-    public static final String type = "Desktop";
-    public static final String desktopAtomicURL = Manifest.jitpack + type + "/" + Manifest.atomHash + "/" + type + "-" + Manifest.atomHash + ".jar";
-    public static final File desktopAtomic = new File(library, "Atomic-" + type + "-" + Manifest.atomHash + ".jar");
-
 
     public Ozone() {
-        if (!(this.getClass().getClassLoader() instanceof LibraryLoader)) {
-            Log.infoTag("Ozone-PreInit", "Classloader is not LibraryLoader");
-            throw new RuntimeException("Classloader is not LibraryLoader");
-        }
         for (File f : Atom.Manifest.getLibs()) {
-            try {
-                ((LibraryLoader) this.getClass().getClassLoader()).addURL(f);
-            } catch (MalformedURLException e) {
-                Log.errTag("Ozone-PreInit", "Can't load: " + f.getAbsolutePath() + "\n" + e.toString());
-            }
+            if (f.exists())
+                try {
+                    Premain.EntryPoint.libraryLoader.addURL(f);
+                } catch (Throwable e) {
+                    Log.errTag("Ozone-PreInit", "Can't load: " + f.getAbsolutePath() + "\n" + e.toString());
+                }
         }
         //gay spy
         //legit 100%
@@ -48,6 +27,16 @@ public class Ozone extends Mod {
             Core.settings.put("crashreport", false);
             Core.settings.put("uiscalechanged", false);//shut
         }
+    }
+
+    @Override
+    public void init() {
+        Main.init();
+    }
+
+    @Override
+    public void loadContent() {
+        Main.loadContent();
     }
 
     /*

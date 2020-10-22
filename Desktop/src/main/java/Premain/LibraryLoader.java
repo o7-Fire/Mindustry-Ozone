@@ -8,6 +8,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class LibraryLoader extends URLClassLoader {
+    static {
+        registerAsParallelCapable();
+    }
+
     public LibraryLoader(URL[] urls, ClassLoader parent) {
         super(urls, parent);
     }
@@ -25,6 +29,15 @@ public class LibraryLoader extends URLClassLoader {
     }
 
     public void addURL(File file) throws MalformedURLException {
-        addURL(file.toURI().toURL());
+        if (file.exists())
+            addURL(file.toURI().toURL());
+        else
+            Log.infoTag("Ozone-LibraryLoader", file.getAbsolutePath() + " doesn't exist");
+    }
+
+    @Override
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
+        //Log.infoTag("Ozone-LibraryLoader", name);
+        return super.loadClass(name);
     }
 }

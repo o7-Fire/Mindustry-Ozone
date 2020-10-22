@@ -24,17 +24,18 @@ public class EntryPoint extends Mod {
     public static final File desktopAtomic = new File(library, "Atomic-" + type + "-" + Manifest.atomHash + ".jar");
     //mods/libs/Atomic-AtomHash.jar
     public static File atom = new File(library, Manifest.atomFile);
-    public static LibraryLoader libraryLoader;
-    public Mod OzoneMod;
+    public static final LibraryLoader libraryLoader = new LibraryLoader(new URL[]{EntryPoint.class.getProtectionDomain().getCodeSource().getLocation()}, ClassLoader.getSystemClassLoader());
+    public Mod OzoneMod = null;
 
     public EntryPoint() {
         try {
-            libraryLoader = new LibraryLoader(new URL[]{this.getClass().getProtectionDomain().getCodeSource().getLocation()}, this.getClass().getClassLoader());
             Preload.checkAtomic(Manifest.atomDownloadLink, atom);
             libraryLoader.addURL(atom);//Atomic Core
             libraryLoader.addURL(desktopAtomic);//Atomic Desktop Extension
-            OzoneMod = (Mod) libraryLoader.loadClass("Main.Ozone").getDeclaredConstructor().newInstance();//Load main mods from LibraryLoader
+            Class<?> ozoneClass = libraryLoader.loadClass("Main.Ozone");
+            OzoneMod = (Mod) ozoneClass.getDeclaredConstructor().newInstance();//Load main mods from LibraryLoader
         } catch (Throwable t) {
+            t.printStackTrace();
             Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showInfoText("Failed to load ozone", "See log for more information"));
             Log.errTag("Ozone-Hook", t.toString());
         }
@@ -42,11 +43,13 @@ public class EntryPoint extends Mod {
 
     @Override
     public void init() {
-        OzoneMod.init();
+        if (OzoneMod != null)
+            OzoneMod.init();
     }
 
     @Override
     public void loadContent() {
-        OzoneMod.loadContent();
+        if (OzoneMod != null)
+            OzoneMod.loadContent();
     }
 }
