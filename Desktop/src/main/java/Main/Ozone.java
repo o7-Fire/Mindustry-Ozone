@@ -1,20 +1,12 @@
 package Main;
 
-import Ozone.Desktop.Patch.DesktopPatcher;
-import Ozone.Desktop.Pre.Preload;
-import Ozone.Main;
 import Ozone.Manifest;
 import arc.Core;
-import arc.Events;
 import arc.util.Log;
-import mindustry.Vars;
-import mindustry.game.EventType;
 import mindustry.mod.Mod;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.net.MalformedURLException;
 
 /**
  * @author Itzbenz
@@ -28,18 +20,37 @@ public class Ozone extends Mod {
     public static File library = new File(parentFile, Manifest.libs);
     //mods/libs/Atomic-AtomHash.jar
     public static File atom = new File(library, Manifest.atomFile);
-    public boolean libraryURLLoaded;
-    public boolean libraryExists;
-    public URLClassLoader classloader;
-    public Mod mainMod = null;
+    //public boolean libraryURLLoaded;
+    //public boolean libraryExists;
+    //public URLClassLoader classloader;
+    //public Mod mainMod = null;
     public static final String type = "Desktop";
     public static final String desktopAtomicURL = Manifest.jitpack + type + "/" + Manifest.atomHash + "/" + type + "-" + Manifest.atomHash + ".jar";
     public static final File desktopAtomic = new File(library, "Atomic-" + type + "-" + Manifest.atomHash + ".jar");
 
+
     public Ozone() {
+        if (!(this.getClass().getClassLoader() instanceof LibraryLoader)) {
+            Log.infoTag("Ozone-PreInit", "Classloader is not LibraryLoader");
+            throw new RuntimeException("Classloader is not LibraryLoader");
+        }
+        for (File f : Atom.Manifest.getLibs()) {
+            try {
+                ((LibraryLoader) this.getClass().getClassLoader()).addURL(f);
+            } catch (MalformedURLException e) {
+                Log.errTag("Ozone-PreInit", "Can't load: " + f.getAbsolutePath() + "\n" + e.toString());
+            }
+        }
         //gay spy
         //legit 100%
-        if (Core.settings != null) Core.settings.put("crashreport", false);
+        if (Core.settings != null) {
+            Core.settings.put("crashreport", false);
+            Core.settings.put("uiscalechanged", false);//shut
+        }
+    }
+
+    /*
+    public Ozone() {
 
 
         //just in case
@@ -81,9 +92,10 @@ public class Ozone extends Mod {
             Log.err(t);
         }
         //sike inform users
-        Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showInfoText("Failed to load ozone", "See log for more information"));
 
     }
+
+
 
     @Override
     public void init() {
@@ -107,5 +119,5 @@ public class Ozone extends Mod {
         }
     }
 
-
+    */
 }

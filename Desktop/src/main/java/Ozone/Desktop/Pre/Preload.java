@@ -1,7 +1,7 @@
 package Ozone.Desktop.Pre;
 
 
-import Main.Ozone;
+import Main.EntryPoint;
 import arc.backend.sdl.jni.SDL;
 import arc.util.Log;
 
@@ -20,19 +20,19 @@ public class Preload {
 
     public static boolean checkAtomic(String AtomDownload, File atom) {
         //try to download if doesn't exists
-        if (atom.exists() && Ozone.desktopAtomic.exists()) return true;
+        if (atom.exists() && EntryPoint.desktopAtomic.exists()) return true;
             try {
                 //Inform user
                 Log.infoTag("Ozone", "Downloading Library");
                 //there is no "no" option
                 SDL.SDL_ShowSimpleMessageBox(64, "Ozone", "Atomic Library doesn't exists/not fully downloaded. Click OK to continue");
-                //how to download a file synchronously
+                //how to download a file synchronously & show Progress
                 URL jitpack = new URL(AtomDownload);
                 DownloadSwing download = new DownloadSwing(jitpack, atom);
                 download.display();
                 download.run();
-                jitpack = new URL(Ozone.desktopAtomicURL);
-                download = new DownloadSwing(jitpack, Ozone.desktopAtomic);
+                jitpack = new URL(EntryPoint.desktopAtomicURL);
+                download = new DownloadSwing(jitpack, EntryPoint.desktopAtomic);
                 download.display();
                 download.run();
                 //its exists
@@ -70,9 +70,9 @@ public class Preload {
         Log.infoTag("Ozone", "wArNiNg: An IlLeGaL rEfLeCtIvE aCcEsS oPeRaTiOn HaS oCcUrReD");
         method.setAccessible(true);
         Log.infoTag("Ozone", "Loading: " + atom.getAbsolutePath());
-        Log.infoTag("Ozone", "Loading: " + Ozone.desktopAtomic.getAbsolutePath());
+        Log.infoTag("Ozone", "Loading: " + EntryPoint.desktopAtomic.getAbsolutePath());
         method.invoke(clz.getClass().getClassLoader(), atom.toURI().toURL());
-        method.invoke(clz.getClass().getClassLoader(), Ozone.desktopAtomic.toURI().toURL());
+        method.invoke(clz.getClass().getClassLoader(), EntryPoint.desktopAtomic.toURI().toURL());
         Class.forName("Atom.DesktopManifest");
         for (File lib : Atom.Manifest.getLibs()) {
             if (!lib.exists()) continue;
