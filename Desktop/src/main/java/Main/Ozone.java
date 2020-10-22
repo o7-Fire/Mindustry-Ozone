@@ -1,6 +1,7 @@
 package Main;
 
 import Ozone.Manifest;
+import Premain.LibraryLoader;
 import arc.Core;
 import arc.util.Log;
 import mindustry.mod.Mod;

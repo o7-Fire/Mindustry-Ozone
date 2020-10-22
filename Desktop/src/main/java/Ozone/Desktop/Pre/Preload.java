@@ -1,7 +1,7 @@
 package Ozone.Desktop.Pre;
 
 
-import Main.EntryPoint;
+import Premain.EntryPoint;
 import arc.backend.sdl.jni.SDL;
 import arc.util.Log;
 
