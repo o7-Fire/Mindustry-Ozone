@@ -1,11 +1,12 @@
 package Main;
 
+import Atom.Manifest;
 import Ozone.Main;
 import arc.Core;
 import arc.util.Log;
 import mindustry.mod.Mod;
 
-import java.io.File;
+import java.net.URL;
 
 /**
  * @author Itzbenz
@@ -13,6 +14,7 @@ import java.io.File;
 public class Ozone extends Mod {
 
     public Ozone() {
+        /*
         for (File f : Atom.Manifest.getLibs()) {
             if (f.exists())
                 try {
@@ -20,7 +22,17 @@ public class Ozone extends Mod {
                 } catch (Throwable e) {
                     Log.errTag("Ozone-PreInit", "Can't load: " + f.getAbsolutePath() + "\n" + e.toString());
                 }
-        }
+
+          }*/
+
+        Manifest.library.forEach(library -> {
+            try {
+                Premain.EntryPoint.libraryLoader.addURL(new URL(library.getDownloadURL()));
+            } catch (Throwable e) {
+                Log.errTag("Ozone-PreInit", "Can't load: " + library.getDownloadURL() + "\n" + e.toString());
+            }
+        });
+
         //gay spy
         //legit 100%
         if (Core.settings != null) {

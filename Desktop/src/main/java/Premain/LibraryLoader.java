@@ -32,7 +32,7 @@ public class LibraryLoader extends URLClassLoader {
         if (file.exists())
             addURL(file.toURI().toURL());
         else
-            Log.infoTag("Ozone-LibraryLoader", file.getAbsolutePath() + " doesn't exist");
+            Log.errTag("Ozone-LibraryLoader", file.getAbsolutePath() + " doesn't exist");
     }
 
 
