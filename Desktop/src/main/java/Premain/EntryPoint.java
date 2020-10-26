@@ -30,8 +30,10 @@ public class EntryPoint extends Mod {
     public EntryPoint() {
         try {
             Preload.checkAtomic(Manifest.atomDownloadLink, atom);
-            libraryLoader.addURL(atom);//Atomic Core
-            libraryLoader.addURL(desktopAtomic);//Atomic Desktop Extension
+            //libraryLoader.addURL(atom);//Atomic Core
+            //libraryLoader.addURL(desktopAtomic);//Atomic Desktop Extension
+            libraryLoader.addURL(new URL(Manifest.atomDownloadLink));//Atomic Core
+            libraryLoader.addURL(new URL(desktopAtomicURL));//Atomic Core
             Class<?> ozoneClass = libraryLoader.loadClass("Main.Ozone");
             OzoneMod = (Mod) ozoneClass.getDeclaredConstructor().newInstance();//Load main mods from LibraryLoader
         } catch (Throwable t) {
