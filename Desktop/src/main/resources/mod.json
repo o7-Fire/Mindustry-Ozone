@@ -1,0 +1,9 @@
+{
+  "name": "Ozone",
+  "author": "Itzbenz",
+  "main": "Premain.EntryPoint",
+  "description": "o7-Fire Ozone Project",
+  "version": 1.0,
+  "minGameVersion": 105,
+  "hidden": true
+}
