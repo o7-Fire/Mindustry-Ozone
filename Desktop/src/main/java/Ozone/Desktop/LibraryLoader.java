@@ -1,5 +1,6 @@
-package Premain;
+package Ozone.Desktop;
 
+import arc.Core;
 import arc.util.Log;
 
 import java.io.File;
@@ -24,7 +25,8 @@ public class LibraryLoader extends URLClassLoader {
     //pretty sure its a bug
     @Override
     public void addURL(URL url) {
-        Log.infoTag("Ozone-LibraryLoader", "Loading: " + url.toString());
+        if (Core.settings.getBool("ozone.debugMode", false))
+            Log.infoTag("Ozone-LibraryLoader", "Loading: " + url.toString());
         super.addURL(url);
     }
 
