@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import static Ozone.Commands.Commands.*;
+import static Settings.Core.debugMode;
 
 public class Commands {
     private static final LinkedHashMap<Integer, Manifest.Library> libs = new LinkedHashMap<>();
@@ -40,6 +41,10 @@ public class Commands {
     }
 
     public static void debug(ArrayList<String> arg) {
+        if (!debugMode) {
+            tellUser("The debug mode mason, what do they mean");
+            return;
+        }
         if (i == 5) {
             tellUser("pls dont");
         } else if (i == 10)

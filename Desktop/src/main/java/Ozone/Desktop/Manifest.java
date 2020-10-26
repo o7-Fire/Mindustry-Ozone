@@ -15,12 +15,7 @@ public class Manifest {
         Log.infoTag("Ozone-MessageLogger", "Loading messageLog");
 
         try {
-            for (Object co : SerializeData.dataArrayIn(messageLog).get()) {
-                if (!(co instanceof ChatOzoneFragment.ChatMessage)) continue;
-                ChatOzoneFragment.ChatMessage cm = (ChatOzoneFragment.ChatMessage) co;
-                ChatOzoneFragment.messages.add(cm);
-                ChatOzoneFragment.messages.sort(chatMessage -> chatMessage.id);
-            }
+            loadMessageLog(messageLog);
             return;
         } catch (Throwable t) {
             Log.errTag("Ozone-MessageLogger", "Cant load " + Ozone.Desktop.Manifest.messageLog.getAbsolutePath());
@@ -30,16 +25,20 @@ public class Manifest {
         Log.infoTag("Ozone-MessageLogger", "Loading messageLogBackup");
 
         try {
-            for (Object co : SerializeData.dataArrayIn(messageLogBackup).get()) {
-                if (!(co instanceof ChatOzoneFragment.ChatMessage)) continue;
-                ChatOzoneFragment.ChatMessage cm = (ChatOzoneFragment.ChatMessage) co;
-                ChatOzoneFragment.messages.add(cm);
-                ChatOzoneFragment.messages.sort(chatMessage -> chatMessage.id);
-            }
+            loadMessageLog(messageLogBackup);
         } catch (Throwable t) {
             Log.errTag("Ozone-MessageLogger", "Cant load " + Manifest.messageLogBackup.getAbsolutePath());
             Log.errTag("Ozone-MessageLogger", t.toString());
             t.printStackTrace();
+        }
+    }
+
+    private static void loadMessageLog(File messageLogBackup) throws java.io.IOException, ClassNotFoundException {
+        for (Object co : SerializeData.dataArrayIn(messageLogBackup).get()) {
+            if (!(co instanceof ChatOzoneFragment.ChatMessage)) continue;
+            ChatOzoneFragment.ChatMessage cm = (ChatOzoneFragment.ChatMessage) co;
+            ChatOzoneFragment.messages.add(cm);
+            ChatOzoneFragment.messages.sort(chatMessage -> chatMessage.id);
         }
     }
 
