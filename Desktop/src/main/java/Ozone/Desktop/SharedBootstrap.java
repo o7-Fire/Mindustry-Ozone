@@ -35,6 +35,7 @@ public class SharedBootstrap {
             options.setRelease("Ozone." + Version.semantic + ":" + "Desktop." + Premain.Version.semantic);
         });
         Sentry.configureScope(SharedBootstrap::registerSentry);
+
     }
 
     public static void classloaderNoParent() {

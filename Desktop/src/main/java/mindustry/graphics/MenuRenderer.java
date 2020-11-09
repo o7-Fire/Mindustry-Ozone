@@ -1,5 +1,6 @@
 package mindustry.graphics;
 
+import Atom.Utility.Random;
 import arc.Core;
 import arc.func.Floatc2;
 import arc.graphics.Camera;
@@ -37,10 +38,29 @@ public class MenuRenderer implements Disposable {
     private CacheBatch batch;
     private float time = 0f;
     private float flyerRot = 45f;
-    private int flyers = Mathf.chance(0.2) ? Mathf.random(35) : Mathf.random(15);
-    private UnitType flyerType = Structs.select(UnitTypes.flare, UnitTypes.flare, UnitTypes.horizon, UnitTypes.mono, UnitTypes.poly, UnitTypes.mega, UnitTypes.zenith);
+    private int flyers = Mathf.chance(0.6) ? Mathf.random(35) : Mathf.random(15);
+    private volatile UnitType flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
+    private boolean random;
 
     public MenuRenderer() {
+        Thread t =
+                new Thread(() -> {
+
+                    while (true) {
+                        try {
+                            if (Random.getBool())
+                                flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
+                            else {
+                                random = Random.getBool();
+                            }
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+
+                        }
+                    }
+                });
+        t.setDaemon(true);
+        t.start();
         Time.mark();
         generate();
         cache();
@@ -58,10 +78,9 @@ public class MenuRenderer implements Disposable {
         Simplex s3 = new Simplex(offset + 2);
         RidgedPerlin rid = new RidgedPerlin(1 + offset, 1);
         Block[] selected = Structs.select(
-                new Block[]{Blocks.sand, Blocks.sandWall},
+                new Block[]{Blocks.sand, Blocks.slag},
                 new Block[]{Blocks.shale, Blocks.shaleWall},
                 new Block[]{Blocks.ice, Blocks.water},
-                new Block[]{Blocks.sand, Blocks.slag},
                 new Block[]{Blocks.shale, Blocks.shaleWall},
                 new Block[]{Blocks.ice, Blocks.water},
                 new Block[]{Blocks.moss, Blocks.sporePine}
@@ -247,7 +266,8 @@ public class MenuRenderer implements Disposable {
     private void drawFlyers() {
         Draw.color(0f, 0f, 0f, 0.4f);
 
-        TextureRegion icon = flyerType.icon(Cicon.full);
+        TextureRegion icon = random ? flyerType.icon(Cicon.full) : Core.atlas.find("logo");
+
 
         float size = Math.max(icon.width, icon.height) * Draw.scl * 1.6f;
 
@@ -262,8 +282,10 @@ public class MenuRenderer implements Disposable {
 
         flyers((x, y) -> {
             float engineOffset = flyerType.engineOffset, engineSize = flyerType.engineSize, rotation = flyerRot;
-
-            Draw.color(Pal.engine);
+            Color p = Pal.engine;
+            if (Settings.Core.colorPatch)
+                p = Color.valueOf(Random.getRandomHexColor());
+            Draw.color(p);
             Fill.circle(x + Angles.trnsx(rotation + 180, engineOffset), y + Angles.trnsy(rotation + 180, engineOffset),
                     engineSize + Mathf.absin(Time.time(), 2f, engineSize / 4f));
 

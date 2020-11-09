@@ -5,4 +5,14 @@ public class EventExtended {
         Disconnected,
         Connected
     }
+
+    public static class Connecting {
+        public String ip;
+        public int port;
+
+        public Connecting(String ip, int port) {
+            this.ip = ip;
+            this.port = port;
+        }
+    }
 }
