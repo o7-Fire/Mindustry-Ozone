@@ -264,7 +264,7 @@ public class Main {
             Vars.enableConsole = true;
             Log.infoTag("Ozone", "Patching Complete");
             if (Core.debugMode) Log.level = (Log.LogLevel.debug);
-            Log.debug("Ozone-Debug", "Debugs, peoples, debugs");
+            Log.debug("Ozone-Debug: @", "Debugs, peoples, debugs");
         } catch (Throwable t) {
             Log.infoTag("Ozone", "Patch failed");
             Log.err(t);

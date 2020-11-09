@@ -1,5 +1,8 @@
 package Ozone.Desktop;
 
+import Ozone.Desktop.Pre.DownloadSwing;
+import Ozone.Pre.Download;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,8 +11,9 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class LibraryLoader extends URLClassLoader {
-
+    public static File cache = new File("lib/");
     static {
+        cache.mkdirs();
         registerAsParallelCapable();
     }
 
@@ -33,6 +37,29 @@ public class LibraryLoader extends URLClassLoader {
     public void addURL(URL url) {
         //if (Ozone.Core.settings.getBool("ozone.debugMode", false))
         //    Log.debug("Ozone-LibraryLoader: @", "Loading: " + url.toString());
+        if (url.getProtocol().startsWith("http")) {
+            File temp = new File(cache, url.getFile().substring(1).replace("/", "."));
+            if (!temp.exists()) {
+                try {
+                    findClass("net.miginfocom.swing.MigLayout");
+                    DownloadSwing d = new DownloadSwing(url, temp);
+                    d.display();
+                    d.run();
+                } catch (Throwable ignored) {
+                    Download d = new Download(url, temp);
+                    d.run();
+                }
+            }
+            if (temp.exists()) {
+                try {
+                    url = temp.toURI().toURL();
+                } catch (MalformedURLException ignored) {
+
+                }
+            }
+
+        }
+
         super.addURL(url);
     }
 

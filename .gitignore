@@ -5,6 +5,7 @@
 Tools/build
 *.class
 /Ozone/
+/lib/
 *.war
 *.ear
 src/main/resources/Manifest.properties

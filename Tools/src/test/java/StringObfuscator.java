@@ -1,6 +1,7 @@
-import Atom.Meth;
-import Atom.Random;
+
 import Atom.Time.Countdown;
+import Atom.Utility.Meth;
+import Atom.Utility.Random;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.StringLiteralExpr;

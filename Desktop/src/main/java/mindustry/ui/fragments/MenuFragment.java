@@ -58,12 +58,13 @@ public class MenuFragment extends Fragment {
             c.name = "menu container";
 
             if (!mobile) {
-                buildDesktop();
-                Events.on(ResizeEvent.class, event -> buildDesktop());
+                //    buildDesktop();
+                //    Events.on(ResizeEvent.class, event -> buildDesktop());
             } else {
-                buildMobile();
-                Events.on(ResizeEvent.class, event -> buildMobile());
+
             }
+            buildMobile();
+            Events.on(ResizeEvent.class, event -> buildMobile());
         });
 
         //info icon

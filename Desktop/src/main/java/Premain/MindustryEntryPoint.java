@@ -15,7 +15,6 @@ public class MindustryEntryPoint {
             SharedBootstrap.loadClasspath();
             SharedBootstrap.loadMods();
             SharedBootstrap.libraryLoader.addURL(new File(args[0]));
-            SharedBootstrap.customBootstrap = true;
             //PrePatcher.init();
             SharedBootstrap.loadMain("Main.OzoneMindustry", args);
         } catch (Throwable t) {

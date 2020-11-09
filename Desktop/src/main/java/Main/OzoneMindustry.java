@@ -1,6 +1,7 @@
 package Main;
 
 import Ozone.Desktop.OzoneLauncher;
+import Ozone.Desktop.SharedBootstrap;
 import arc.Files;
 import arc.backend.sdl.SdlApplication;
 import arc.backend.sdl.SdlConfig;
@@ -15,6 +16,7 @@ public class OzoneMindustry {
 
     public static void main(String[] args) {
         //  new Thread(()-> {
+        SharedBootstrap.customBootstrap = true;
         try {
             Vars.loadLogger();
             new SdlApplication(new OzoneLauncher(args), new SdlConfig() {
