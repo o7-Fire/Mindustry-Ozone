@@ -8,6 +8,7 @@ public class MindustryEntryPoint {
     //Mindustry Only
     public static void main(String[] args) {
         try {
+            SharedBootstrap.classloaderNoParent();
             SharedBootstrap.loadStandalone();
             SharedBootstrap.loadMods();
             SharedBootstrap.customBootstrap = true;

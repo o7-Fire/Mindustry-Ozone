@@ -3,12 +3,10 @@ package Main;
 import Atom.Manifest;
 import Ozone.Desktop.SharedBootstrap;
 import Ozone.Main;
-import Ozone.Watcher.Version;
 import Premain.EntryPoint;
 import arc.Core;
 import arc.struct.ObjectMap;
 import arc.util.Log;
-import arc.util.OS;
 import arc.util.io.PropertiesUtils;
 import io.sentry.Sentry;
 import mindustry.desktop.DesktopLauncher;
@@ -28,8 +26,7 @@ public class Ozone extends Mod {
         if (!SharedBootstrap.customBootstrap)
             startTheRealOne();
         Sentry.configureScope(scope -> {
-            scope.setContexts("Ozone.Version", Premain.Version.semantic);
-            scope.setContexts("Ozone.Watcher.Version", Version.semantic);
+            SharedBootstrap.registerSentry(scope);
             try {
                 ObjectMap<String, String> Manifest = new ObjectMap<>();
                 PropertiesUtils.load(Manifest, new InputStreamReader(Manifest.class.getResourceAsStream("/Manifest.properties")));
@@ -38,7 +35,6 @@ public class Ozone extends Mod {
                 scope.setContexts("Atomic.Version", EntryPoint.desktopAtomicURL);
             }
             scope.setContexts("Mindustry.Version", mindustry.core.Version.combined());
-            scope.setContexts("Operating.System", System.getProperty("os.name") + "x" + (OS.is64Bit ? "64" : "32") + " " + System.getProperty("sun.arch.data.model"));
         });
         Manifest.library.forEach(library -> {
             try {

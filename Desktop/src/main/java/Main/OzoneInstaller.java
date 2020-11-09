@@ -13,7 +13,7 @@ public class OzoneInstaller {
     public static Main m;
 
     public static void main(String[] args) {
-        Main.setTheme();
+//        Main.setTheme();
         try {
             if (System.getProperty("os.name").toUpperCase().contains("WIN"))
                 mindustry = new File(System.getenv("AppData") + "/Mindustry");//windows

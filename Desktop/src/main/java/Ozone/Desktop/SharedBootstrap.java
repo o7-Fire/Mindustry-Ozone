@@ -2,7 +2,7 @@ package Ozone.Desktop;
 
 import Ozone.Manifest;
 import Ozone.Watcher.Version;
-import arc.util.OS;
+import io.sentry.Scope;
 import io.sentry.Sentry;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,7 +12,7 @@ import java.net.URL;
 import static Premain.EntryPoint.desktopAtomicURL;
 
 public class SharedBootstrap {
-    public static final LibraryLoader libraryLoader = new LibraryLoader(new URL[]{SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation()}, ClassLoader.getSystemClassLoader());
+    public static LibraryLoader libraryLoader;
     public static final String[] StandaloneLibrary = new String[]{
             "https://repo1.maven.org/maven2/com/miglayout/miglayout-core/5.2/miglayout-core-5.2.jar",
             "https://repo1.maven.org/maven2/com/miglayout/miglayout-swing/5.2/miglayout-swing-5.2.jar",
@@ -26,11 +26,18 @@ public class SharedBootstrap {
             options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
             options.setRelease("Ozone." + Version.semantic + ":" + "Desktop." + Premain.Version.semantic);
         });
-        Sentry.configureScope(scope -> {
-            scope.setContexts("Premain.Version", Premain.Version.semantic);
-            scope.setContexts("Ozone.Watcher.Version", Version.semantic);
-            scope.setContexts("Operating.System", System.getProperty("os.name") + "x" + (OS.is64Bit ? "64" : "32") + " " + System.getProperty("sun.arch.data.model"));
-        });
+        Sentry.configureScope(SharedBootstrap::registerSentry);
+    }
+
+    public static void classloaderNoParent() {
+        SharedBootstrap.libraryLoader = new LibraryLoader(new URL[]{SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation()}, null);
+    }
+
+    public static Scope registerSentry(Scope scope) {
+        scope.setContexts("Ozone.Version", Premain.Version.semantic);
+        scope.setContexts("Ozone.Watcher.Version", Version.semantic);
+        scope.setContexts("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
+        return scope;
     }
 
     public static void loadMods() throws MalformedURLException {
