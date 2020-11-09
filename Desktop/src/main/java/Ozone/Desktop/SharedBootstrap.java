@@ -43,7 +43,9 @@ public class SharedBootstrap {
 
     public static Scope registerSentry(Scope scope) {
         scope.setContexts("Ozone.Version", Premain.Version.semantic);
-        scope.setContexts("Ozone.Watcher.Version", Version.semantic);
+        scope.setContexts("Ozone.Desktop.Version", Version.semantic);
+        scope.setContexts("Ozone.Mindustry.Version", Propertied.h.getOrDefault("MindustryVersion", "Idk"));
+        scope.setContexts("Atomic.Version", Propertied.h.getOrDefault("AtomHash", "Snapshot"));
         scope.setContexts("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
         return scope;
     }

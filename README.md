@@ -6,6 +6,7 @@
 * Java 14/8 (JDK 14 preferable)
 * 4 thread CPU
 * 4 GB of RAM for bots operation
+* GPU doesn't matter, unless you use improvised shader
 
 # Build 
 * 0.Install JDK 14
@@ -16,9 +17,12 @@
 
 # Install
 * 0.Download `Ozone.jar`
-* 1.Install Java
+* 1.Install **Java 14**
 * 2.Run Ozone installation by opening `Ozone.jar` with java
 * 3.Run Mindustry
+* 4.fuck its crash
+* 5.you are a failure, can't even install a simple mods
+* 6.nvm its show up again
 
 # Feature
 > Fun tools

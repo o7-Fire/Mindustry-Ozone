@@ -1,18 +1,8 @@
 package Main;
 
-import Atom.Manifest;
-import Ozone.Desktop.SharedBootstrap;
 import Ozone.Main;
-import Premain.EntryPoint;
 import arc.Core;
-import arc.struct.ObjectMap;
-import arc.util.Log;
-import arc.util.io.PropertiesUtils;
-import io.sentry.Sentry;
 import mindustry.mod.Mod;
-
-import java.io.InputStreamReader;
-import java.net.URL;
 
 /**
  * @author Itzbenz
@@ -20,16 +10,9 @@ import java.net.URL;
 public class Ozone extends Mod {
 
     public Ozone() {
-
+        /*
         Sentry.configureScope(scope -> {
             SharedBootstrap.registerSentry(scope);
-            try {
-                ObjectMap<String, String> Manifest = new ObjectMap<>();
-                PropertiesUtils.load(Manifest, new InputStreamReader(Manifest.class.getResourceAsStream("/Manifest.properties")));
-                scope.setContexts("Atomic.Version", Manifest.get("AtomHash").substring(0));
-            } catch (Throwable ignored) {
-                scope.setContexts("Atomic.Version", EntryPoint.desktopAtomicURL);
-            }
             scope.setContexts("Mindustry.Version", mindustry.core.Version.combined());
         });
         Manifest.library.forEach(library -> {
@@ -40,6 +23,8 @@ public class Ozone extends Mod {
             }
         });
 
+
+         */
         //gay spy
         //legit 100%
         if (Core.settings != null) {

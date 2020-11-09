@@ -14,6 +14,7 @@ public class OzoneMindustry {
     public static long start = System.currentTimeMillis() / 1000;
 
     public static void main(String[] args) {
+        //  new Thread(()-> {
         try {
             Vars.loadLogger();
             new SdlApplication(new OzoneLauncher(args), new SdlConfig() {
@@ -30,6 +31,8 @@ public class OzoneMindustry {
             var2.printStackTrace();
             handleCrash(var2);
         }
+        // }).start();
+
     }
 
     static void handleCrash(Throwable e) {

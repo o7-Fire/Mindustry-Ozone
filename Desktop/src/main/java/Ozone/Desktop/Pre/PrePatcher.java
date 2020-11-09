@@ -14,6 +14,7 @@ public class PrePatcher {
     static LibraryLoader cl = SharedBootstrap.libraryLoader;
 
     public static void init() throws IOException {
+        if (patchable.length == 1) return;
         for (String s : patchable) {
             patch(s);
         }
