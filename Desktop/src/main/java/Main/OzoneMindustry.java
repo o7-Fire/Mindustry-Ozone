@@ -7,9 +7,7 @@ import arc.backend.sdl.SdlConfig;
 import arc.backend.sdl.jni.SDL;
 import arc.func.Cons;
 import arc.util.Strings;
-import io.sentry.Sentry;
 import mindustry.Vars;
-import mindustry.net.CrashSender;
 
 //basically its a patcher
 public class OzoneMindustry {
@@ -42,23 +40,24 @@ public class OzoneMindustry {
             });
             badGPU = true;
         }
-
+     /*
         boolean finalBadGPU = badGPU;
+
         CrashSender.send(e, (file) -> {
-            Sentry.startSession();
             Throwable fc = Strings.getFinalCause(e);
             if (!finalBadGPU) {
                 dialog.get(() -> {
                     message("A crash has occured. It has been saved in:\n" + file.getAbsolutePath() + "\n" + fc.getClass().getSimpleName().replace("Exception", "") + (fc.getMessage() == null ? "" : ":\n" + fc.getMessage()));
                 });
             }
-
         });
+
+         */
         SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_ERROR, "Oh Nein", e.toString());
         throw new RuntimeException(e);
     }
 
     private static void message(String message) {
-        SDL.SDL_ShowSimpleMessageBox(16, "oh no", message);
+        SDL.SDL_ShowSimpleMessageBox(16, "oh nein", message);
     }
 }
