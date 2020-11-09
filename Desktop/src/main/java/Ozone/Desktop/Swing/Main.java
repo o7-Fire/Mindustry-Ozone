@@ -109,7 +109,7 @@ public class Main extends JPanel {
                 "[]"));
 
             //---- label1 ----
-            label1.setText("Mindustry 109");
+            label1.setText("Mindustry");
             frame1ContentPane.add(label1, "cell 0 0 2 1");
 
             //---- label4 ----

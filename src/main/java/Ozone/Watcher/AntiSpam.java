@@ -72,10 +72,15 @@ public class AntiSpam {
     }
 
     public enum Reason {
-        Duplicate,
-        MaxDataPerSecond,
-        NotEnoughData,
-        Nothing
+        Duplicate("Duplicate Message/Spam"),
+        MaxDataPerSecond("Ratelimit Reached"),
+        NotEnoughData("Unknown/Null"),
+        Nothing("Nothing");
+        String description;
+
+        Reason(String description) {
+            this.description = description;
+        }
     }
 
 }

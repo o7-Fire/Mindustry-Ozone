@@ -47,10 +47,10 @@ public class OzoneMenu extends BaseDialog {
     public void setup() {
         cont.top();
         cont.clear();
-        //   cont.button(Core.bundle.get("ozone.javaEditor"), Icon.pencil, () -> {
-        //      Core.app.post(this::hide);
+        //   cont.button(Ozone.Core.bundle.get("ozone.javaEditor"), Icon.pencil, () -> {
+        //      Ozone.Core.app.post(this::hide);
         //     Manifest.commFrag.toggle();
-        // }).size(Core.graphics.getWidth() / 6, Core.graphics.getHeight() / 12);
+        // }).size(Ozone.Core.graphics.getWidth() / 6, Ozone.Core.graphics.getHeight() / 12);
         cont.row();
         cont.button(arc.Core.bundle.get("ozone.commandsUI"), Icon.commandRally, () -> {
             arc.Core.app.post(this::hide);

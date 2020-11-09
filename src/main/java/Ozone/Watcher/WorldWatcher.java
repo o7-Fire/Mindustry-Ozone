@@ -1,5 +1,6 @@
 package Ozone.Watcher;
 
+import Atom.Struct.History;
 import Ozone.Event.EventExtended;
 import Ozone.Patch.TileLog;
 import Settings.Core;
@@ -7,10 +8,10 @@ import arc.Events;
 import arc.util.Log;
 import mindustry.game.EventType;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class WorldWatcher {
-    public static final ArrayList<TileLog> tilesLog = new ArrayList<>();
+    public static final LinkedHashMap<Long, History<TileLog>> tilesLog = new LinkedHashMap<>();
     private static boolean init = false;
     private static int currentTilesUpdate = 0;
     private static boolean pause = true;

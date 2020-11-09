@@ -1,14 +1,12 @@
 package Ozone.Desktop;
 
-import arc.Core;
-import arc.util.Log;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
 public class LibraryLoader extends URLClassLoader {
+
     static {
         registerAsParallelCapable();
     }
@@ -25,16 +23,15 @@ public class LibraryLoader extends URLClassLoader {
     //pretty sure its a bug
     @Override
     public void addURL(URL url) {
-        if (Core.settings.getBool("ozone.debugMode", false))
-            Log.infoTag("Ozone-LibraryLoader", "Loading: " + url.toString());
+        //if (Ozone.Core.settings.getBool("ozone.debugMode", false))
+        //    Log.debug("Ozone-LibraryLoader: @", "Loading: " + url.toString());
         super.addURL(url);
     }
 
     public void addURL(File file) throws MalformedURLException {
         if (file.exists())
             addURL(file.toURI().toURL());
-        else
-            Log.errTag("Ozone-LibraryLoader", file.getAbsolutePath() + " doesn't exist");
+        //else Log.errTag("Ozone-LibraryLoader", file.getAbsolutePath() + " doesn't exist");
     }
 
 

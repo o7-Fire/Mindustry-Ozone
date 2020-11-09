@@ -1,11 +1,22 @@
 package Main;
 
 import Atom.Manifest;
+import Ozone.Desktop.SharedBootstrap;
 import Ozone.Main;
+import Ozone.Watcher.Version;
+import Premain.EntryPoint;
 import arc.Core;
+import arc.struct.ObjectMap;
 import arc.util.Log;
+import arc.util.OS;
+import arc.util.io.PropertiesUtils;
+import io.sentry.Sentry;
+import mindustry.desktop.DesktopLauncher;
 import mindustry.mod.Mod;
 
+import java.io.File;
+import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
 import java.net.URL;
 
 /**
@@ -14,20 +25,24 @@ import java.net.URL;
 public class Ozone extends Mod {
 
     public Ozone() {
-        /*
-        for (File f : Atom.Manifest.getLibs()) {
-            if (f.exists())
-                try {
-                    Premain.EntryPoint.libraryLoader.addURL(f);
-                } catch (Throwable e) {
-                    Log.errTag("Ozone-PreInit", "Can't load: " + f.getAbsolutePath() + "\n" + e.toString());
-                }
-
-          }*/
-
+        if (!SharedBootstrap.customBootstrap)
+            startTheRealOne();
+        Sentry.configureScope(scope -> {
+            scope.setContexts("Ozone.Desktop.Version", Ozone.Desktop.Version.semantic);
+            scope.setContexts("Ozone.Watcher.Version", Version.semantic);
+            try {
+                ObjectMap<String, String> Manifest = new ObjectMap<>();
+                PropertiesUtils.load(Manifest, new InputStreamReader(Manifest.class.getResourceAsStream("/Manifest.properties")));
+                scope.setContexts("Atomic.Version", Manifest.get("AtomHash").substring(0));
+            } catch (Throwable ignored) {
+                scope.setContexts("Atomic.Version", EntryPoint.desktopAtomicURL);
+            }
+            scope.setContexts("Mindustry.Version", mindustry.core.Version.combined());
+            scope.setContexts("Operating.System", System.getProperty("os.name") + "x" + (OS.is64Bit ? "64" : "32") + " " + System.getProperty("sun.arch.data.model"));
+        });
         Manifest.library.forEach(library -> {
             try {
-                Premain.EntryPoint.libraryLoader.addURL(new URL(library.getDownloadURL()));
+                SharedBootstrap.libraryLoader.addURL(new URL(library.getDownloadURL()));
             } catch (Throwable e) {
                 Log.errTag("Ozone-PreInit", "Can't load: " + library.getDownloadURL() + "\n" + e.toString());
             }
@@ -38,6 +53,30 @@ public class Ozone extends Mod {
         if (Core.settings != null) {
             Core.settings.put("crashreport", false);
             Core.settings.put("uiscalechanged", false);//shut
+        }
+    }
+
+    public static void startTheRealOne() {
+        StringBuilder cli = new StringBuilder();
+        boolean unix = !System.getProperty("os.name").toUpperCase().contains("WIN");
+        char se = unix ? ':' : ';';
+        try {
+            cli.append(System.getProperty("java.home")).append(File.separator).append("bin").append(File.separator).append("java ");
+            for (String jvmArg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+                cli.append(jvmArg).append(" ");
+            }
+            cli.append("-cp ");
+            cli.append(Ozone.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+            cli.append(se);
+            cli.append(DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+            cli.append(" ");
+            cli.append("Premain.MindustryEntryPoint");
+            //cli.append(ManagementFactory.getRuntimeMXBean().getClassPath()).append(" ");
+            Runtime.getRuntime().exec(cli.toString());
+            System.exit(0);
+
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -121,6 +121,8 @@ public class Commands {
         e.start();
     }
 
+
+    //todo dont do shit check
     public static void javac(ArrayList<String> arg) {
         String requiredLibrary = "com.github.javaparser-javaparser-core";
         if (!Manifest.javacExists()) {

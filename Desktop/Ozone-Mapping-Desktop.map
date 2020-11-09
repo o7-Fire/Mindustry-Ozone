@@ -21,7 +21,7 @@ Main.Ozone -> Main.Ozone:
          void loadContent() -> loadContent
                           void lambda$new$ 0(mindustry.game.EventType$ClientLoadEvent) -> lambda$new$ 0
                                             void <clinit>() -> <clinit>
-                                                  Main.h -> Main.h:
+                                                  Main.OzoneInstaller -> Main.OzoneInstaller:
                                                       java.io.File mindustry -> mindustry
                                                            Ozone.Desktop.Swing.Main m -> m
                                                                         void <init>() -> <init>
@@ -1032,7 +1032,7 @@ Main.Ozone -> Main.Ozone:
     java.lang.CharSequence lambda$setup$ 2() -> c
                                        void lambda$setup$ 1() -> d
                                                    void lambda$new$ 0(arc.input.KeyCode) -> a
-                                                              Settings.Core -> Settings.Core:
+                                                              Settings.Ozone.Core -> Settings.Ozone.Core:
                                                                        boolean colorPatch -> colorPatch
                                                                                            boolean debugMode ->
                                                                                            debugMode

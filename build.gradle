@@ -51,9 +51,8 @@ allprojects {
 
     ext {
 
-        mindustryVersion = "v109"
-        atomHash = "0438f28f51"
-
+        mindustryVersion = "v112"
+        atomHash = "f126e32661"
         def atomMeta = new File(rootDir, "src/main/resources/Manifest.properties")
         def props = new Properties()
         try{atomMeta.createNewFile()}catch(ignored){}//what a beautiful catch block
@@ -101,15 +100,7 @@ allprojects {
         writeProcessors()
     }
 
-    tasks.withType(JavaCompile) {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-        options.encoding = "UTF-8"
-        options.compilerArgs += ["-Xlint:deprecation"]
-        if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
-            options.compilerArgs.addAll(['--release', '8'])
-        }
-    }
+
 //there is reason why use local jar
     dependencies {
         compileJava.dependsOn(preGen)
@@ -141,6 +132,15 @@ jar {
     archiveFileName = "Ozone.jar"
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+tasks.withType(JavaCompile) {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.encoding = "UTF-8"
+    options.compilerArgs += ["-Xlint:deprecation"]
+    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
+        options.compilerArgs.addAll(['--release', '8'])
     }
 }
 task gay{

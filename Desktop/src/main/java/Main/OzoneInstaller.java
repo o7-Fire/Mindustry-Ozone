@@ -8,7 +8,7 @@ import java.io.File;
 /**
  * @author Itzbenz
  */
-public class h {
+public class OzoneInstaller {
     public static File mindustry;
     public static Main m;
 
@@ -23,7 +23,11 @@ public class h {
             mindustry = new File("mindustry/");//i gave up "yeet"//
         }
         m = new Main();
+        try {
+            m.label1.setText("Mindustry " + new String(OzoneInstaller.class.getClassLoader().getResourceAsStream("Manifest.properties").readAllBytes()).split("\n")[3].split("=")[1]);
+        } catch (Throwable ignored) {
 
+        }
         PreInstall.install(m);
     }
 

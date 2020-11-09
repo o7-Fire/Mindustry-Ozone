@@ -1,17 +1,15 @@
 package Ozone.Desktop.Pre;
 
 import Ozone.Desktop.Swing.Main;
-import Ozone.Manifest;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-import static Main.h.mindustry;
+import static Main.OzoneInstaller.mindustry;
 
 public class PreInstall {
 
@@ -19,6 +17,16 @@ public class PreInstall {
         m.label4.setText(mindustry.getAbsolutePath());
         m.labelStatus.setVisible(false);
         m.progressBar1.setVisible(false);
+        /*
+        try {
+            for (String s : new String(PreInstall.class.getClassLoader().getResourceAsStream("Manifest.properties").readAllBytes()).split("\n"))
+                if(s.startsWith("MindustryVersion"))
+                    m.label1.setText("Mindustry " +s.substring(s.indexOf("=") + 1));
+        }catch (Throwable ignored){
+
+        }
+
+         */
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
@@ -58,10 +66,10 @@ public class PreInstall {
                 return;
             }
             //mods/libs
-            File library = new File(mods, Manifest.libs);
+            //File library = new File(mods, Manifest.libs);
             //mods/Ozone.jar
             File ozone = new File(mods, "Ozone.jar");
-            library.mkdirs();
+            //library.mkdirs();
             try {
                 Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 m.labelStatus.setText("Finished");
@@ -72,8 +80,9 @@ public class PreInstall {
                 m.frame1.pack();
                 return;
             }
+                /*
             //mods/libs/Atomic-AtomHash.jar
-            File atom = new File(library, Manifest.atomFile);
+            //File atom = new File(library, Manifest.atomFile);
             if (ozone.exists()) {
                 try {
                     m.labelStatus.setText("Updating");
@@ -84,6 +93,7 @@ public class PreInstall {
                     m.frame1.pack();
                 }
             }
+
             if (atom.exists() && ozone.exists()) {
                 m.labelStatus.setText("Atom already downloaded & Ozone already updated");
                 m.progressBar1.setVisible(false);
@@ -101,6 +111,8 @@ public class PreInstall {
                 }
                 return;
             }
+
+
             Thread t = new Thread(() -> {
                 try {
                     DownloadSwing download = new DownloadSwing(new URL(Manifest.atomDownloadLink), atom);
@@ -120,7 +132,10 @@ public class PreInstall {
             });
             t.setDaemon(true);
             t.start();
+            */
             m.frame1.pack();
         });
+
+
     }
 }

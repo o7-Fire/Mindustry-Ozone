@@ -1,20 +1,9 @@
 package Ozone.Desktop.Pre;
 
 
-import Premain.EntryPoint;
-import arc.backend.sdl.jni.SDL;
-import arc.util.Log;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-
 //have you load library today ?
 public class Preload {
+    /*
     private static volatile boolean init = false;
 
 
@@ -94,4 +83,6 @@ public class Preload {
         }
         return extension;
     }
+
+     */
 }

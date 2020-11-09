@@ -1,7 +1,6 @@
 package Ozone;
 
 import Atom.Utility.Random;
-import Atom.Utility.Utility;
 import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
 import Ozone.Event.EventExtended;
@@ -15,10 +14,7 @@ import Settings.Core;
 import arc.Events;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
-import arc.util.ColorCodes;
 import arc.util.Log;
-import arc.util.OS;
-import arc.util.Time;
 import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.game.EventType;
@@ -28,8 +24,6 @@ import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 
 import java.lang.reflect.Field;
-
-import static mindustry.Vars.*;
 
 public class Main {
     private static boolean init = false;
@@ -68,7 +62,7 @@ public class Main {
                             arc.Core.settings.forceSave();
                         });
             });
-            setOzoneLogger();
+           // setOzoneLogger();
         });
         Events.run(EventExtended.Connect.Disconnected, () -> {
             BotInterface.reset();
@@ -222,34 +216,7 @@ public class Main {
         });
     }
 
-    private static void setOzoneLogger() {
 
-        String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
-        String[] stags = {"&lc&fb[D]", "&lg&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
-        Log.setLogger((level, text) -> {
-            String result = text;
-            String rawText = Log.format(stags[level.ordinal()] + " [" + Utility.getDate() + "]" + "&fr " + text);
-            System.out.println(rawText);
-
-            result = tags[level.ordinal()] + " " + result;
-
-            if (!headless) {
-                if (!OS.isWindows) {
-                    for (String code : ColorCodes.values) {
-                        result = result.replace(code, "");
-                    }
-                }
-
-                ui.scriptfrag.addMessage(Log.removeCodes(result));
-            }
-        });
-
-        loadedLogger = true;
-    }
-
-    public static void update() {
-
-    }
 
     protected static void loadSettings() {
         Manifest.settings.add(Core.class);
@@ -280,25 +247,30 @@ public class Main {
         try {
             Log.infoTag("Ozone", "Patching");
             Events.fire(Internal.Init.PatchRegister);
-            Translation.patch();
-            Time.mark();
+            Translation.register();
+            //Countdown.start();
             patchTranslation();
-            Log.infoTag("Ozone", "Patching translation done: " + Time.elapsed());
-            Log.infoTag("Ozone", "Patching Settings");
+            //Countdown.stop();
+            //Log.infoTag("Ozone", "Patching translation done: " + Countdown.result());
+            //Log.infoTag("Ozone", "Patching Settings");
             Vars.ui.settings = new SettingsDialog();
-            Log.infoTag("Ozone", "Patching ChatFragment");
+            //Log.infoTag("Ozone", "Patching ChatFragment");
             arc.Core.scene.root.removeChild(Vars.ui.chatfrag);
+            //ui.menuGroup.getChildren().forEach(Element::remove);//brrrrrrr
+            //ui.menufrag = new MenuFragment();
+            //ui.menufrag.build(ui.menuGroup);
             Vars.ui.chatfrag = new ChatOzoneFragment();
             Vars.ui.chatfrag.container().build(Vars.ui.hudGroup);
             Vars.enableConsole = true;
             Log.infoTag("Ozone", "Patching Complete");
-            if (Core.debugMode) Log.setLogLevel(Log.LogLevel.debug);
+            if (Core.debugMode) Log.level = (Log.LogLevel.debug);
             Log.debug("Ozone-Debug", "Debugs, peoples, debugs");
         } catch (Throwable t) {
             Log.infoTag("Ozone", "Patch failed");
             Log.err(t);
         }
     }
+
 
     public static void patchTranslation() {
         ObjectMap<String, String> modified = arc.Core.bundle.getProperties();
@@ -324,7 +296,6 @@ public class Main {
         Manifest.commFrag = new CommandsListFrag();
         Manifest.menu = new OzoneMenu(arc.Core.bundle.get("ozone.hud"), ozoneStyle);
         Manifest.commFrag.build(Vars.ui.hudGroup);
-
     }
 
     public static String getRandomHexColor() {

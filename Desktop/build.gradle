@@ -15,7 +15,7 @@ jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
     manifest {
-        attributes 'Main-Class': 'Main.h'
+        attributes 'Main-Class': 'Premain.InstallerEntryPoint'
     }
 }
 repositories {
@@ -35,20 +35,18 @@ dependencies {
     //compileOnly files("${project.rootDir}/libs/Mindustry.jar")
     compileOnly "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
     compileOnly "com.github.Anuken.Mindustry:desktop:$mindustryVersion"
-    implementation files("${project.rootDir}/lib/flatlaf-0.42.jar")
-    implementation files("${project.rootDir}/lib/miglayout-core.jar")
-    implementation files("${project.rootDir}/lib/miglayout-swing.jar")
+    implementation 'io.sentry:sentry:3.1.0'
+    compileOnly files("${project.rootDir}/lib/flatlaf-0.42.jar")
+    compileOnly files("${project.rootDir}/lib/miglayout-core.jar")
+    compileOnly files("${project.rootDir}/lib/miglayout-swing.jar")
 
 }
 
 tasks.withType(JavaCompile) {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 14
+    targetCompatibility = 14
     options.encoding = "UTF-8"
     options.compilerArgs += ["-Xlint:deprecation"]
-    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
-        options.compilerArgs.addAll(['--release', '8'])
-    }
 }
 //Obfuscated Desktop jar
 task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
