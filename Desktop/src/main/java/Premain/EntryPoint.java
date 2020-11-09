@@ -2,12 +2,12 @@ package Premain;
 
 import Main.Ozone;
 import Ozone.Desktop.SharedBootstrap;
-import arc.backend.sdl.jni.SDL;
 import arc.util.Log;
 import mindustry.desktop.DesktopLauncher;
 import mindustry.mod.Mod;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
 //Mindustry only
@@ -81,11 +81,15 @@ public class EntryPoint extends Mod {
             cli.append(" ");
             cli.append("Premain.MindustryEntryPoint").append(" ").append(DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().getFile());
             //cli.append(ManagementFactory.getRuntimeMXBean().getClassPath()).append(" ");
-            Process p = Runtime.getRuntime().exec(cli.toString());
-            SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_INFORMATION, "Rebooting", "Brb\n-Ozone");
-
+            new Thread(() -> {
+                try {
+                    Runtime.getRuntime().exec(cli.toString()).waitFor();
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+            //Thread.sleep(9000);
             System.exit(0);
-
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }

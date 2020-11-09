@@ -1,6 +1,5 @@
 package Ozone.Desktop;
 
-import Ozone.Desktop.Pre.DownloadSwing;
 import Ozone.Pre.Download;
 
 import java.io.File;
@@ -42,10 +41,8 @@ public class LibraryLoader extends URLClassLoader {
             if (!temp.exists()) {
                 try {
                     findClass("net.miginfocom.swing.MigLayout");
-                    DownloadSwing d = new DownloadSwing(url, temp);
-                    d.display();
-                    d.run();
-                } catch (Throwable ignored) {
+                    loadClass("Main.Download").getMethod("main", URL.class, File.class).invoke(null, url, temp);
+                } catch (Throwable t) {
                     Download d = new Download(url, temp);
                     d.run();
                 }

@@ -4,6 +4,7 @@ import arc.Core;
 import arc.func.Boolp;
 import arc.func.Floatp;
 import arc.fx.FxProcessor;
+import arc.fx.filters.VignettingFilter;
 import arc.graphics.Color;
 import arc.graphics.Gl;
 import arc.graphics.Mesh;
@@ -45,7 +46,7 @@ public class LoadRenderer implements Disposable {
 
     {
         //vignetting is probably too much
-        //fx.addEffect(new VignettingFilter(false));
+        fx.addEffect(new VignettingFilter(false));
         //fx.addEffect(new BloomFilter());
 
         bars = new Bar[]{

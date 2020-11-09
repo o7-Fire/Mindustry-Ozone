@@ -1,5 +1,6 @@
 package Main;
 
+import Ozone.Desktop.Patch.DesktopPatcher;
 import Ozone.Main;
 import arc.Core;
 import mindustry.mod.Mod;
@@ -15,16 +16,9 @@ public class Ozone extends Mod {
             SharedBootstrap.registerSentry(scope);
             scope.setContexts("Mindustry.Version", mindustry.core.Version.combined());
         });
-        Manifest.library.forEach(library -> {
-            try {
-                SharedBootstrap.libraryLoader.addURL(new URL(library.getDownloadURL()));
-            } catch (Throwable e) {
-                Log.errTag("Ozone-PreInit", "Can't load: " + library.getDownloadURL() + "\n" + e.toString());
-            }
-        });
+          */
 
 
-         */
         //gay spy
         //legit 100%
         if (Core.settings != null) {
@@ -36,6 +30,7 @@ public class Ozone extends Mod {
 
     @Override
     public void init() {
+        DesktopPatcher.register();
         Main.init();
     }
 

@@ -1,5 +1,6 @@
 package mindustry.ui.fragments;
 
+import Atom.Utility.Random;
 import arc.Core;
 import arc.Events;
 import arc.graphics.Color;
@@ -58,13 +59,18 @@ public class MenuFragment extends Fragment {
             c.name = "menu container";
 
             if (!mobile) {
-                //    buildDesktop();
-                //    Events.on(ResizeEvent.class, event -> buildDesktop());
+                if (Random.getBool()) {
+                    buildDesktop();
+                    Events.on(ResizeEvent.class, event -> buildDesktop());
+                } else {
+                    buildMobile();
+                    Events.on(ResizeEvent.class, event -> buildMobile());
+                }
             } else {
-
+                buildMobile();
+                Events.on(ResizeEvent.class, event -> buildMobile());
             }
-            buildMobile();
-            Events.on(ResizeEvent.class, event -> buildMobile());
+
         });
 
         //info icon

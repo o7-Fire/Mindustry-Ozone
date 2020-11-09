@@ -1,17 +1,13 @@
 package Ozone.Desktop.Patch;
 
-import Atom.Manifest;
-import Ozone.Desktop.Pre.DownloadSwing;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
-import Ozone.Interface;
 import Settings.Desktop;
+import arc.Core;
 import arc.Events;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.game.EventType;
-
-import java.net.URL;
 
 public class DesktopPatcher {
 
@@ -24,9 +20,15 @@ public class DesktopPatcher {
             Vars.control.input = new DesktopInput();
         });
         Events.on(EventType.ClientLoadEvent.class, s -> {
+            Core.settings.getBoolOnce("CrashReportv1", () -> {
+                Vars.ui.showConfirm("Anonymous Data", "We collect your anonymous data (crash-log), no turning back", () -> {
+                });
+            });
+            /*
             long need = Manifest.library.stream().filter(library -> !library.downloaded()).count();
             if (need == 0) return;
             if (!Vars.disableUI) {
+
                 StringBuilder sb = new StringBuilder();
                 sb.append("Additional library need to be downloaded").append("\n");
                 Manifest.library.forEach(library -> {
@@ -52,6 +54,8 @@ public class DesktopPatcher {
                 }, () -> {
                 });
             }
+
+             */
             if (Desktop.logMessage) {
                 if (Ozone.Desktop.Manifest.messageLog.exists()) {//try to load
                     Ozone.Desktop.Manifest.tryLoadLogMessage();

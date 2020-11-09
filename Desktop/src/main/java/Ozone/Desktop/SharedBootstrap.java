@@ -21,7 +21,7 @@ public class SharedBootstrap {
                     "https://repo1.maven.org/maven2/com/miglayout/miglayout-swing/5.2/miglayout-swing-5.2.jar",
                     "https://repo1.maven.org/maven2/com/formdev/flatlaf/0.43/flatlaf-0.43.jar")
     ), ModsLibrary = new ArrayList<>();
-    private static boolean mods, standalone, classpath;
+    private static boolean mods, standalone, classpath, atomic;
     public static boolean customBootstrap;
 
     static {
@@ -50,11 +50,20 @@ public class SharedBootstrap {
         return scope;
     }
 
-    public static void loadMods() throws MalformedURLException {
+    protected static void loadAtomic() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        if (atomic) throw new IllegalStateException("Atom dependency already loaded");
+        atomic = true;
+        ArrayList<String> se = (ArrayList<String>) libraryLoader.loadClass("Main.LoadAtom").getMethod("main", String[].class).invoke(null, (Object) new String[0]);
+        for (String s : se)
+            libraryLoader.addURL(new URL(s));
+    }
+
+    public static void loadMods() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         if (mods) throw new IllegalStateException("Mods dependency already loaded");
         mods = true;
         for (String s : ModsLibrary)
             libraryLoader.addURL(new URL(s));
+        loadAtomic();
         //libraryLoader.addURL(new URL(Manifest.atomDownloadLink));//Atomic Ozone.Core
         //libraryLoader.addURL(new URL(desktopAtomicURL));//Atomic Ozone.Core
 
@@ -72,6 +81,8 @@ public class SharedBootstrap {
     }
 
     public static void loadClasspath() throws MalformedURLException {
+        if (classpath) throw new IllegalStateException("Classpath dependency already loaded");
+        classpath = true;
         for (String s : System.getProperty("java.class.path").split(System.getProperty("os.name").toUpperCase().contains("WIN") ? ";" : ":"))
             libraryLoader.addURL(new File(s));
     }
