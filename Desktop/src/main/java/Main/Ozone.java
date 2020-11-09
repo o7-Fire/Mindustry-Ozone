@@ -28,7 +28,7 @@ public class Ozone extends Mod {
         if (!SharedBootstrap.customBootstrap)
             startTheRealOne();
         Sentry.configureScope(scope -> {
-            scope.setContexts("Ozone.Desktop.Version", Ozone.Desktop.Version.semantic);
+            scope.setContexts("Ozone.Version", Premain.Version.semantic);
             scope.setContexts("Ozone.Watcher.Version", Version.semantic);
             try {
                 ObjectMap<String, String> Manifest = new ObjectMap<>();

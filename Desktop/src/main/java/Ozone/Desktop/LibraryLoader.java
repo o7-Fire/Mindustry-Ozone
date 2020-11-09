@@ -1,6 +1,8 @@
 package Ozone.Desktop;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -9,6 +11,12 @@ public class LibraryLoader extends URLClassLoader {
 
     static {
         registerAsParallelCapable();
+    }
+
+
+    public void defineClass(String name, InputStream is) throws IOException {
+        byte[] h = is.readAllBytes();
+        defineClass(name, h, 0, h.length);
     }
 
     public LibraryLoader(URL[] urls, ClassLoader parent) {

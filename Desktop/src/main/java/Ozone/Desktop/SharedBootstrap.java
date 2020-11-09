@@ -1,6 +1,5 @@
 package Ozone.Desktop;
 
-import Main.Ozone;
 import Ozone.Manifest;
 import Ozone.Watcher.Version;
 import arc.util.OS;
@@ -25,10 +24,10 @@ public class SharedBootstrap {
     static {
         Sentry.init(options -> {
             options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
-            options.setRelease("Ozone." + Version.semantic + ":" + "Desktop." + Ozone.Desktop.Version.semantic);
+            options.setRelease("Ozone." + Version.semantic + ":" + "Desktop." + Premain.Version.semantic);
         });
         Sentry.configureScope(scope -> {
-            scope.setContexts("Ozone.Desktop.Version", Ozone.Desktop.Version.semantic);
+            scope.setContexts("Premain.Version", Premain.Version.semantic);
             scope.setContexts("Ozone.Watcher.Version", Version.semantic);
             scope.setContexts("Operating.System", System.getProperty("os.name") + "x" + (OS.is64Bit ? "64" : "32") + " " + System.getProperty("sun.arch.data.model"));
         });

@@ -1,5 +1,6 @@
 package Premain;
 
+import Ozone.Desktop.Pre.PrePatcher;
 import Ozone.Desktop.SharedBootstrap;
 import io.sentry.Sentry;
 
@@ -10,6 +11,7 @@ public class MindustryEntryPoint {
             SharedBootstrap.loadStandalone();
             SharedBootstrap.loadMods();
             SharedBootstrap.customBootstrap = true;
+            PrePatcher.init();
             SharedBootstrap.loadMain("Main.OzoneMindustry", args);
         } catch (Throwable t) {
             Sentry.captureException(t);
