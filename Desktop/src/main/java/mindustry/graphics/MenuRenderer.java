@@ -38,7 +38,7 @@ public class MenuRenderer implements Disposable {
     private CacheBatch batch;
     private float time = 0f;
     private float flyerRot = 45f;
-    private int flyers = Mathf.chance(0.6) ? Mathf.random(35) : Mathf.random(15);
+    private int flyers = Mathf.random(15, 35);
     private volatile UnitType flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
     private boolean random;
 
@@ -79,10 +79,10 @@ public class MenuRenderer implements Disposable {
         RidgedPerlin rid = new RidgedPerlin(1 + offset, 1);
         Block[] selected = Structs.select(
                 new Block[]{Blocks.sand, Blocks.slag},
-                new Block[]{Blocks.shale, Blocks.shaleWall},
+                new Block[]{Blocks.shale, Blocks.slag},
                 new Block[]{Blocks.ice, Blocks.water},
-                new Block[]{Blocks.shale, Blocks.shaleWall},
-                new Block[]{Blocks.ice, Blocks.water},
+                new Block[]{Blocks.shale, Blocks.slag},
+                new Block[]{Blocks.ice, Blocks.darkMetal},
                 new Block[]{Blocks.moss, Blocks.sporePine}
         );
         Block[] selected2 = Structs.select(
@@ -266,8 +266,7 @@ public class MenuRenderer implements Disposable {
     private void drawFlyers() {
         Draw.color(0f, 0f, 0f, 0.4f);
 
-        TextureRegion icon = random ? flyerType.icon(Cicon.full) : Core.atlas.find("logo");
-
+        TextureRegion icon = random ? flyerType.icon(Cicon.full) : Core.atlas.find("shell");
 
         float size = Math.max(icon.width, icon.height) * Draw.scl * 1.6f;
 
