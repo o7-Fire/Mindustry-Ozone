@@ -9,13 +9,11 @@ import arc.func.Cons;
 import arc.util.Strings;
 import mindustry.Vars;
 
-import java.net.MalformedURLException;
-
 //basically its a patcher
 public class OzoneMindustry {
     public static long start = System.currentTimeMillis() / 1000;
 
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) {
         try {
             Vars.loadLogger();
             new SdlApplication(new OzoneLauncher(args), new SdlConfig() {
