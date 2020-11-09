@@ -15,13 +15,14 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 public class Manifest {
     public static final String atomHash;
 
     static {
         ObjectMap<String, String> Manifest = new ObjectMap<>();
-        PropertiesUtils.load(Manifest, new InputStreamReader(Manifest.class.getResourceAsStream("/Manifest.properties")));
+        PropertiesUtils.load(Manifest, new InputStreamReader(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("Manifest.properties"))));
         atomHash = Manifest.get("AtomHash");
 
     }

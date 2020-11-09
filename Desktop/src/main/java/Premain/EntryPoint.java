@@ -1,5 +1,6 @@
 package Premain;
 
+import Main.Ozone;
 import Ozone.Desktop.LibraryLoader;
 import Ozone.Desktop.SharedBootstrap;
 import Ozone.Manifest;
@@ -7,9 +8,12 @@ import arc.Events;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
+import mindustry.desktop.DesktopLauncher;
 import mindustry.game.EventType;
 import mindustry.mod.Mod;
 
+import java.io.File;
+import java.lang.management.ManagementFactory;
 import java.net.URL;
 
 import static Ozone.Desktop.SharedBootstrap.libraryLoader;
@@ -29,8 +33,10 @@ public class EntryPoint extends Mod {
     //public static File atom = new File(library, Manifest.atomFile);
     public Mod OzoneMod = null;
 
-    //Mindustry modloader only
+    //Modlaoder only
     public EntryPoint() {
+        if (!SharedBootstrap.customBootstrap)
+            startTheRealOne();
         try {
             //Preload.checkAtomic(Manifest.atomDownloadLink, atom);
             //libraryLoader.addURL(atom);//Atomic Ozone.Core
@@ -58,4 +64,27 @@ public class EntryPoint extends Mod {
         if (OzoneMod != null)
             OzoneMod.loadContent();
     }
+
+    public static void startTheRealOne() {
+        StringBuilder cli = new StringBuilder();
+        try {
+            cli.append(System.getProperty("java.home")).append(File.separator).append("bin").append(File.separator).append("java ");
+            for (String jvmArg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+                cli.append(jvmArg).append(" ");
+            }
+            cli.append("-cp ");
+            cli.append(Ozone.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+            cli.append(" ");
+            cli.append("Premain.MindustryEntryPoint").append(" ").append(DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+            //cli.append(ManagementFactory.getRuntimeMXBean().getClassPath()).append(" ");
+            Process p = Runtime.getRuntime().exec(cli.toString());
+
+
+            //System.exit(0);
+
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

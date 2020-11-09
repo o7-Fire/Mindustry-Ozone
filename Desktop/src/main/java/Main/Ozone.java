@@ -9,12 +9,9 @@ import arc.struct.ObjectMap;
 import arc.util.Log;
 import arc.util.io.PropertiesUtils;
 import io.sentry.Sentry;
-import mindustry.desktop.DesktopLauncher;
 import mindustry.mod.Mod;
 
-import java.io.File;
 import java.io.InputStreamReader;
-import java.lang.management.ManagementFactory;
 import java.net.URL;
 
 /**
@@ -23,8 +20,7 @@ import java.net.URL;
 public class Ozone extends Mod {
 
     public Ozone() {
-        if (!SharedBootstrap.customBootstrap)
-            startTheRealOne();
+
         Sentry.configureScope(scope -> {
             SharedBootstrap.registerSentry(scope);
             try {
@@ -52,29 +48,6 @@ public class Ozone extends Mod {
         }
     }
 
-    public static void startTheRealOne() {
-        StringBuilder cli = new StringBuilder();
-        boolean unix = !System.getProperty("os.name").toUpperCase().contains("WIN");
-        char se = unix ? ':' : ';';
-        try {
-            cli.append(System.getProperty("java.home")).append(File.separator).append("bin").append(File.separator).append("java ");
-            for (String jvmArg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
-                cli.append(jvmArg).append(" ");
-            }
-            cli.append("-cp ");
-            cli.append(Ozone.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-            cli.append(se);
-            cli.append(DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-            cli.append(" ");
-            cli.append("Premain.MindustryEntryPoint");
-            //cli.append(ManagementFactory.getRuntimeMXBean().getClassPath()).append(" ");
-            Runtime.getRuntime().exec(cli.toString());
-            System.exit(0);
-
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public void init() {

@@ -39,7 +39,7 @@ dependencies {
     compileOnly group: 'com.formdev', name: 'flatlaf', version: '0.43'
     compileOnly group: 'com.miglayout', name: 'miglayout-core', version: '5.2'
     compileOnly group: 'com.miglayout', name: 'miglayout-swing', version: '5.2'
-
+    compileOnly 'com.github.MinnDevelopment:java-discord-rpc:v2.0.1'
 
 }
 

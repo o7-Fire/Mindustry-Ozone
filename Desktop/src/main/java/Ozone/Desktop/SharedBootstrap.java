@@ -1,25 +1,33 @@
 package Ozone.Desktop;
 
-import Ozone.Manifest;
 import Ozone.Watcher.Version;
 import io.sentry.Scope;
 import io.sentry.Sentry;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-import static Premain.EntryPoint.desktopAtomicURL;
 
 public class SharedBootstrap {
     public static LibraryLoader libraryLoader;
-    public static final String[] StandaloneLibrary = new String[]{
-            "https://repo1.maven.org/maven2/com/miglayout/miglayout-core/5.2/miglayout-core-5.2.jar",
-            "https://repo1.maven.org/maven2/com/miglayout/miglayout-swing/5.2/miglayout-swing-5.2.jar",
-            "https://repo1.maven.org/maven2/com/formdev/flatlaf/0.43/flatlaf-0.43.jar"
-    };
+    public static final String jitpack = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/";
+    protected static final ArrayList<String> StandaloneLibrary = new ArrayList<>(
+            Arrays.asList(
+                    "https://repo1.maven.org/maven2/com/miglayout/miglayout-core/5.2/miglayout-core-5.2.jar",
+                    "https://repo1.maven.org/maven2/com/miglayout/miglayout-swing/5.2/miglayout-swing-5.2.jar",
+                    "https://repo1.maven.org/maven2/com/formdev/flatlaf/0.43/flatlaf-0.43.jar")
+    ), ModsLibrary = new ArrayList<>();
+    private static boolean mods, standalone, classpath;
     public static boolean customBootstrap;
-    private static boolean mods, standalone;
+
+    static {
+        ModsLibrary.add(getAtom("Desktop", Propertied.h.getOrDefault("AtomHash", "-SNAPSHOT")));
+        ModsLibrary.add(getAtom("Atomic", Propertied.h.getOrDefault("AtomHash", "-SNAPSHOT")));
+    }
 
     static {
         Sentry.init(options -> {
@@ -43,9 +51,15 @@ public class SharedBootstrap {
     public static void loadMods() throws MalformedURLException {
         if (mods) throw new IllegalStateException("Mods dependency already loaded");
         mods = true;
-        libraryLoader.addURL(new URL(Manifest.atomDownloadLink));//Atomic Ozone.Core
-        libraryLoader.addURL(new URL(desktopAtomicURL));//Atomic Ozone.Core
+        for (String s : ModsLibrary)
+            libraryLoader.addURL(new URL(s));
+        //libraryLoader.addURL(new URL(Manifest.atomDownloadLink));//Atomic Ozone.Core
+        //libraryLoader.addURL(new URL(desktopAtomicURL));//Atomic Ozone.Core
 
+    }
+
+    public static String getAtom(String type, String hash) {
+        return jitpack + type + "/" + hash + "/" + type + "-" + hash + ".jar";
     }
 
     public static void loadStandalone() throws MalformedURLException {
@@ -55,9 +69,15 @@ public class SharedBootstrap {
             libraryLoader.addURL(new URL(s));
     }
 
+    public static void loadClasspath() throws MalformedURLException {
+        for (String s : System.getProperty("java.class.path").split(System.getProperty("os.name").toUpperCase().contains("WIN") ? ";" : ":"))
+            libraryLoader.addURL(new File(s));
+    }
+
     public static void loadMain(String classpath, String[] arg) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         SharedBootstrap.libraryLoader.loadClass(classpath).getMethod("main", String[].class).invoke(null, (Object) arg);
 
     }
+
 
 }
