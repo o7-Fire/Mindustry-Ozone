@@ -23,10 +23,16 @@ public class Propertied {
 
     static {
         try {
-            for (String s : new String(ClassLoader.getSystemResourceAsStream("Manifest.properties").readAllBytes()).split("\n"))
-                if (s.startsWith("#")) continue;
-                else h.put(s.split("=")[0], s.split("=")[1]);
+            h = parse(new String(ClassLoader.getSystemResourceAsStream("Manifest.properties").readAllBytes()));
         }catch (Throwable ignored) {
         }
+    }
+
+    public static HashMap<String, String> parse(String se) {
+        HashMap<String, String> te = new HashMap<>();
+        for (String s : se.split("\n"))
+            if (s.startsWith("#")) continue;
+            else te.put(s.split("=")[0], s.split("=")[1]);
+        return te;
     }
 }
