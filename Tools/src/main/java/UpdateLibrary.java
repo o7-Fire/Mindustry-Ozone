@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-import Ozone.Desktop.Pre.DownloadSwing;
-import Ozone.Manifest;
-
 import java.io.File;
-import java.net.URL;
 
 public class UpdateLibrary {
     public static void main(String[] args) throws Throwable {
@@ -34,15 +30,5 @@ public class UpdateLibrary {
                 }
             }
         }).start();
-        while (!atomic.exists()) {
-            try {
-                DownloadSwing download = new DownloadSwing(new URL(Manifest.atomDownloadLink), atomic);
-                download.display();
-                download.run();
-            } catch (Throwable t) {
-                t.printStackTrace();
-                atomic.delete();
-            }
-        }
     }
 }
