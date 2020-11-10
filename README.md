@@ -4,27 +4,25 @@
 
 # Minimum Requirement
 * Java 14/8 (JDK 14 preferable)
-* 4 thread CPU
-* 4 GB of RAM for bots operation
+* 4+ thread CPU or 2 thread of highly fast CPU
+* 4 GB+ of RAM for bots operation
 * GPU doesn't matter, unless you use improvised shader
 
 # Build 
 * 0.Install JDK 14
-* 1.Download `Mindustry.jar` & `Atomic.jar`
-* 2.Copy it to `libs` folder
-* 3.run `./gradlew jar`
-* 4.you get the mods in `Desktop/build/libs/`
+* 1.run `./gradlew jar`
+* 2.you get the mods in `Desktop/build/libs/`
 
 # Install
-* 0.Download `Ozone.jar`
+* 0.Get `Ozone-Dekstop.jar`
 * 1.Install **Java 14**
-* 2.Run Ozone installation by opening `Ozone.jar` with java
+* 2.Run Ozone installation by opening `Ozone-Desktop.jar` with java `java -jar Ozone-Dekstop.jar`
 * 3.Run Mindustry
 * 4.fuck its crash
 * 5.you are a failure, can't even install a simple mods
 * 6.nvm its show up again
 
-# Feature
+# Feature TODO
 > Fun tools
 * Colorized Text
 * Auto AI
@@ -43,14 +41,5 @@
 * Resource drainer
 * Nuker
 
-
-
-# Goals
-* Maintain Raider and Moderator balance
-> too many moderators and its become oppressive, too many raiders and its become anarchy
-* Part of o7 rearmament programs
-> we must arm ourself and supporting our ally in case of any clashes between faction/server
-* Protecting community from toxic/bad thought and influence
-> too much not good
-* Breaking bad player base habit
-> why are you lazy ?
+#Disclaimer
+It's totally for entertainment purpose, user is fully responsible for using this tools
