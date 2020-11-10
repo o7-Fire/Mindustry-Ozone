@@ -17,5 +17,5 @@
 package Premain;
 
 public class Version {
-    public static final String semantic = "0.4.2";
+    public static final String semantic = "0.5.2";
 }
