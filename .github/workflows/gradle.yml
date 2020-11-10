@@ -18,9 +18,15 @@ jobs:
     - name: Change wrapper permissions
       run: chmod +x ./gradlew
     - name: Build mod jar
-      run: ./gradlew deploy -PgHash="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepo="${{ env.REPOSITORY_NAME }}" -Pbuilder="Github-CI"
+      run: ./gradlew deploy -PgHash="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_ACTION"
     - name: Upload built jar file
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.REPOSITORY_NAME }}
         path: Desktop/build/libs/Ozone-Desktop.jar
+    - name: Upload Manifest
+      uses: actions/upload-artifact@v2
+      with:
+        name: Ozone-Manifest
+        path: src/main/resources/Manifest.properties
+
