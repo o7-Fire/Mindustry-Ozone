@@ -80,7 +80,7 @@ public class EntryPoint extends Mod {
             cli.append("-cp ");
             cli.append(Ozone.class.getProtectionDomain().getCodeSource().getLocation().getFile());
             cli.append(" ");
-            cli.append("Premain.MindustryEntryPoint").append(" ").append(DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+            cli.append(MindustryEntryPoint.class.getTypeName()).append(" ").append(DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().getFile());
             //cli.append(ManagementFactory.getRuntimeMXBean().getClassPath()).append(" ");
             new Thread(() -> {
                 try {
