@@ -56,11 +56,11 @@ allprojects {
         modsBuilder = "java"
         if(project.hasProperty("gHash"))
             githubHash = gHash
-        if(projecct.hasProperty("gBranch"))
+        if(project.hasProperty("gBranch"))
             githubBranch = gBranch
-        if(projecct.hasProperty("gRepo"))
+        if(project.hasProperty("gRepo"))
             githubRepo = gRepo
-        if(projecct.hasProperty("builder"))
+        if(project.hasProperty("builder"))
             modsBuilder = builder
 
         def atomMeta = new File(rootDir, "src/main/resources/Manifest.properties")
