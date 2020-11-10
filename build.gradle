@@ -121,7 +121,7 @@ allprojects {
 
 
     task deploy(type: Jar) {
-        dependsOn ":Android:jarAndroid"
+        //dependsOn ":Android:jarAndroid"
         dependsOn ":Desktop:proguard"
 
         from { [zipTree("Desktop/build/libs/Ozone-Desktop.jar"), zipTree("Android/build/libs/Ozone-Android.jar")] }
