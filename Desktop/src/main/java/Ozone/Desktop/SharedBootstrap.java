@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 
 public class SharedBootstrap {
@@ -61,9 +62,12 @@ public class SharedBootstrap {
     public static Scope registerSentry(Scope scope) {
         scope.setContexts("Ozone.Version", Premain.Version.semantic);
         scope.setContexts("Ozone.Desktop.Version", Version.semantic);
-        scope.setContexts("Ozone.Mindustry.Version", Propertied.h.getOrDefault("MindustryVersion", "Idk"));
-        scope.setContexts("Atomic.Version", Propertied.h.getOrDefault("AtomHash", "Snapshot"));
+        //scope.setContexts("Ozone.Mindustry.Version", Propertied.h.getOrDefault("MindustryVersion", "Idk"));
+        //scope.setContexts("Atomic.Hash", Propertied.h.getOrDefault("AtomHash", "Snapshot"));
         scope.setContexts("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
+        scope.setContexts("Java.Version", System.getProperty("java.version"));
+        for (Map.Entry<String, String> s : Propertied.h.entrySet())
+            scope.setContexts(s.getKey(), s.getValue());
         return scope;
     }
 
