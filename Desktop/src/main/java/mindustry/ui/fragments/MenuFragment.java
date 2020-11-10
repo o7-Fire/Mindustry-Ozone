@@ -92,6 +92,7 @@ public class MenuFragment extends Fragment {
             }));
         }
 
+
         String versionText = ((Version.build == -1) ? "[#fc8140aa]" : "[#ffffffba]") + Version.combined();
         parent.fill((x, y, w, h) -> {
             TextureRegion logo = Core.atlas.find("logo");

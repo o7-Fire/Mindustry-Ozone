@@ -19,6 +19,7 @@ package Ozone.Desktop;
 import Ozone.Watcher.Version;
 import io.sentry.Scope;
 import io.sentry.Sentry;
+import io.sentry.protocol.Contexts;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -66,12 +67,15 @@ public class SharedBootstrap {
         //scope.setContexts("Atomic.Hash", Propertied.h.getOrDefault("AtomHash", "Snapshot"));
         scope.setContexts("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
         scope.setContexts("Java.Version", System.getProperty("java.version"));
-        StringBuilder sb = new StringBuilder();
+        Contexts c = new Contexts();
+        int i = 0;
         for (URL u : libraryLoader.getURLs())
-            sb.append(u.toExternalForm()).append(":");
-        scope.setContexts("Loaded.Library", sb.toString());
+            c.put(String.valueOf(i++), u.toExternalForm());
+        scope.setContexts("Loaded.Library", c);
+        Contexts prop = new Contexts();
         for (Map.Entry<String, String> s : Propertied.h.entrySet())
-            scope.setContexts(s.getKey(), s.getValue());
+            prop.put(s.getKey(), s.getValue());
+        scope.setContexts("properties", prop);
         return scope;
     }
 
@@ -109,6 +113,7 @@ public class SharedBootstrap {
         if (classpath) throw new IllegalStateException("Classpath dependency already loaded");
         classpath = true;
         for (String s : System.getProperty("java.class.path").split(System.getProperty("os.name").toUpperCase().contains("WIN") ? ";" : ":"))
+            //if(s.contains("gson"))continue;else
             libraryLoader.addURL(new File(s));
     }
 

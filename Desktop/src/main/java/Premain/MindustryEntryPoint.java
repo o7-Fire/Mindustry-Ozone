@@ -28,8 +28,8 @@ public class MindustryEntryPoint {
             System.out.println("Initializing Ozone Environment");
             SharedBootstrap.classloaderNoParent();
             SharedBootstrap.loadStandalone();
-            SharedBootstrap.loadClasspath();
             SharedBootstrap.loadMods();
+            SharedBootstrap.loadClasspath();
             SharedBootstrap.libraryLoader.addURL(new File(args[0]));
             //PrePatcher.init();
             SharedBootstrap.loadMain("Main.OzoneMindustry", args);
