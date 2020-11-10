@@ -24,3 +24,9 @@ jobs:
       with:
         name: ${{ env.REPOSITORY_NAME }}
         path: Desktop/build/libs/Ozone-Desktop.jar
+    - name: Upload Manifest
+      uses: actions/upload-artifact@v2
+      with:
+        name: Ozone-Manifest
+        path: src/main/resources/Manifest.properties
+
