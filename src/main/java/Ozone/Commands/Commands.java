@@ -75,6 +75,7 @@ public class Commands {
         });
 
         register("help", new Command(Commands::help));
+        register("kickbypass", new Command(Commands::KickBypass));
         register("chaos-kick", new Command(Commands::chaosKick));
         register("task-move", new Command(Commands::taskMove));
         register("info-pos", new Command(Commands::infoPos, Icon.move));
@@ -159,6 +160,36 @@ public class Commands {
             commandsList.put(name, command);
         else
             commandsList.replace(name, command);
+    }
+
+    private void BypassVoid() {
+        while (true) {
+            if (didBypass) {
+                for (Player target : playerGroup.all()) {
+					if (target.name != player.name) {
+						Call.sendChatMessage("/votekick " + target.name);
+						try {
+							Thread.sleep(200);
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					}
+                }
+            }
+        }
+    }
+    
+    private boolean didBypass = false;
+    private void KickBypass(CommandContext ctx) {
+        if (!didBypass) {
+            didBypass = true;
+            Thread s1 = new Thread(this::BypassVoid);
+            s1.start();
+            reply("kicking started");
+        } else {
+            didBypass = false;
+            reply("kicking ended");
+        }
     }
 
     public static void shuffleSorter(ArrayList<String> s) {
