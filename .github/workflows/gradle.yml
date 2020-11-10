@@ -13,8 +13,6 @@ jobs:
       run: |
         echo "::add-path::${ANDROID_HOME}/build-tools/30.0.1"
         echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}')
-    - name: Android
-      run: ls $ANDROID_HOME/build-tools
     - name: Set up JDK 14
       uses: actions/setup-java@v1
       with:
@@ -22,15 +20,9 @@ jobs:
     - name: Change wrapper permissions
       run: chmod +x ./gradlew
     - name: Build mod jar
-      run: ./gradlew deploy
-    - name: Output Android
-      run: ls Android/build/libs
-    - name: Output Desktop
-      run: ls Desktop/build/libs
+      run: ./gradlew deploy -PgHash="$GITHUB_SHA"
     - name: Upload built jar file
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ env.REPOSITORY_NAME }}
-        path: |
-          Android/build/libs/Ozone-Android.jar
-          Desktop/build/libs/Ozone-Desktop.jar
+        name: ${{ env.REPOSITORY_NAME }} + "-Desktop"
+        path: Desktop/build/libs/Ozone-Desktop.jar
