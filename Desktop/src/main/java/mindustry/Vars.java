@@ -12,7 +12,6 @@ import arc.struct.Seq;
 import arc.struct.StringMap;
 import arc.util.*;
 import arc.util.Log.LogHandler;
-import arc.util.Log.LogLevel;
 import io.sentry.Sentry;
 import mindustry.ai.BaseRegistry;
 import mindustry.ai.BlockIndexer;
@@ -431,8 +430,7 @@ public class Vars implements Loadable {
             String result = text;
             String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
             System.out.println(rawText);
-            if (level == LogLevel.err)
-                Sentry.addBreadcrumb(text);
+            Sentry.addBreadcrumb(text, level.name());
             result = tags[level.ordinal()] + " " + result;
 
             if (!headless && (ui == null || ui.scriptfrag == null)) {

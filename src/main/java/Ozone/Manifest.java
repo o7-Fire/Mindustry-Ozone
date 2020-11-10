@@ -21,6 +21,7 @@ import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
 import arc.net.Client;
 import mindustry.Vars;
+import mindustry.core.Version;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
 
@@ -34,6 +35,10 @@ public class Manifest {
     public static CommandsListFrag commFrag;
     public static ArrayList<Class<?>> settings = new ArrayList<>();
     public static String lastServer = "";
+
+    public static String getMindustryVersion() {
+        return Version.build + (Version.revision == 0 ? "" : "." + Version.revision);
+    }
 
     public static String getCurrentServerIP() {
         if (!Vars.net.active()) return lastServer;

@@ -165,7 +165,7 @@ public class Commands {
     private static volatile boolean didBypass = false;
 
     private static void BypassVoid() {
-        while (true) {
+        while (Vars.net.active()) {
             if (didBypass) {
                 for (Player target : Groups.player) {
                     if (!target.name.equals(Vars.player.name)) {
@@ -182,13 +182,13 @@ public class Commands {
     }
 
     private static void KickBypass(ArrayList ctx) {
+        didBypass = !didBypass;
         if (!didBypass) {
-            didBypass = true;
             Thread s1 = new Thread(Commands::BypassVoid);
+            s1.setDaemon(true);
             s1.start();
             tellUser("kicking started");
         }else {
-            didBypass = false;
             tellUser("kicking ended");
         }
     }

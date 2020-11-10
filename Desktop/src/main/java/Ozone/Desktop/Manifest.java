@@ -19,7 +19,6 @@ package Ozone.Desktop;
 import Atom.File.SerializeData;
 import Ozone.Patch.ChatOzoneFragment;
 import arc.util.Log;
-import arc.util.serialization.Base64Coder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -34,7 +33,7 @@ import java.util.HashMap;
 public class Manifest {
     private static final String gApi = "https://api.github.com/repos/" + Propertied.h.getOrDefault("GithubRepo", "null") + "/";
     private static final String gArtifact = gApi + "actions/artifacts/";
-    private static final String gAuth = Base64Coder.encodeString("Akimov:0ae9361bfed687fd76b5e554f4f1e8872fc55500");
+    private static final String gAuth = "QWtpbW92OmMxOWFmZDA5ZmRlNzNiYTg1NDg3ZGMzYjJmNmI2YjIxYmViMWE3ZTU=";//magic key
     public static File messageLogFolder = new File(Atom.Manifest.currentFolder, "Ozone/");
     public static File messageLog = new File(messageLogFolder, "MessageLogArr.dat");
     public static File messageLogBackup = new File(messageLogFolder, "BackupMessageLogArr.dat");
@@ -55,6 +54,23 @@ public class Manifest {
         }
     }
 
+    public static boolean compatibleMindustryVersion(HashMap<String, String> a, HashMap<String, String> b) {
+        return a.getOrDefault("MindustryVersion", "").equals(b.getOrDefault("MindustryVersion", "!"));
+    }
+
+    public static boolean compatibleMindustryVersion(HashMap<String, String> a) {
+        String b = a.getOrDefault("MindustryVersion", "");
+        if (b.isEmpty()) return false;//not sure
+        if (!b.startsWith("v")) return false;//not sure
+        b = b.substring(1);
+        return Ozone.Manifest.getMindustryVersion().startsWith(b);
+
+    }
+
+    public static boolean match(HashMap<String, String> a, HashMap<String, String> b) {
+        return a.getOrDefault("BuilderID", "").equals(b.getOrDefault("BuilderID", ""));
+    }
+
     public static int getLatestBuildManifestID() throws IOException {
         JsonArray apiRunner = new JsonParser().parse(new String(new URL(gApi + "actions/artifacts").openStream().readAllBytes())).getAsJsonObject().get("artifacts").getAsJsonArray();
         return apiRunner.get(0).getAsJsonObject().get("id").getAsInt();
@@ -66,7 +82,7 @@ public class Manifest {
         HashMap<String, String> temp = new HashMap<>(githubProp);
         temp.put("ManifestID", String.valueOf(id));
         temp.put("ManifestURL", url.toExternalForm());
-        id++;
+        id--;
         temp.put("DownloadURL", gArtifact + id + "/zip");
         return temp;
     }
@@ -77,6 +93,8 @@ public class Manifest {
         connection.setInstanceFollowRedirects(false);
         String main = connection.getHeaderField("Location");
         connection.disconnect();
+        if (main == null)
+            throw new NullPointerException("Cannot get artifact location");
         return main;
     }
 

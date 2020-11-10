@@ -17,5 +17,5 @@
 package Ozone.Watcher;
 
 public class Version {
-    public static final String semantic = "0.6.3";
+    public static final String semantic = "0.6.6";
 }

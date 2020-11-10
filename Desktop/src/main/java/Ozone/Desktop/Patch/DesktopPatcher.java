@@ -16,17 +16,66 @@
 
 package Ozone.Desktop.Patch;
 
+import Ozone.Desktop.Manifest;
+import Ozone.Desktop.Pre.DownloadSwing;
+import Ozone.Desktop.Propertied;
+import Ozone.Desktop.SharedBootstrap;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Settings.Desktop;
 import arc.Core;
 import arc.Events;
+import arc.backend.sdl.jni.SDL;
+import arc.util.Log;
+import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.EventType;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.InvalidPathException;
+import java.util.HashMap;
+
 public class DesktopPatcher {
 
+    public static void checkRelease() {
+        try {
+            HashMap<String, String> release = Manifest.getManifest(Manifest.latestReleaseManifestID);
+            if (!Manifest.compatibleMindustryVersion(release)) return;
+            if (!Manifest.match(release, Propertied.h)) return;
+            Events.on(EventType.ClientLoadEvent.class, s -> {
+                Vars.ui.showConfirm("Ozone-Update", "A new compatible release appeared", () -> {
+                    try {
+                        selfUpdate(release.get("DownloadURL"));
+                    }catch (Throwable i) {
+                        Vars.ui.showException(i);
+                        Sentry.captureException(i);
+                    }
+                });
+            });
+
+        }catch (Throwable i) {
+            Log.errTag("Ozone-Updater", "Failed to get latest release manifest: " + i.toString());
+            Sentry.captureException(i);
+        }
+    }
+
+    public static void selfUpdate(String url) throws MalformedURLException {
+        File jar = new File(SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+        String s = jar.getName();
+        s = s.substring(s.lastIndexOf('.') + 1);
+        if (!s.equals("jar"))
+            throw new InvalidPathException(jar.getAbsolutePath(), "is not a jar file");
+        DownloadSwing d = new DownloadSwing(new URL(url), jar);
+        d.display();
+        d.run();
+        SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_INFORMATION, "Exit", "Relaunch mindustry");
+        System.exit(0);
+    }
+
     public static void register() {
+        checkRelease();
         Ozone.Manifest.settings.add(Desktop.class);
         Events.run(Internal.Init.CommandsRegister, Commands::Init);
         Events.run(Internal.Init.TranslationRegister, Translation::Init);
@@ -35,7 +84,7 @@ public class DesktopPatcher {
         });
         Events.on(EventType.ClientLoadEvent.class, s -> {
             Core.settings.getBoolOnce("CrashReportv1", () -> {
-                Vars.ui.showConfirm("Anonymous Data", "We collect your anonymous data (crash-log), no turning back", () -> {
+                Vars.ui.showConfirm("Anonymous Data", "We collect your anonymous data (crash-log) so we can fix thing, no turning back", () -> {
                 });
             });
             /*

@@ -2,6 +2,9 @@
 package mindustry.ui.fragments;
 
 import Atom.Utility.Random;
+import Ozone.Desktop.Manifest;
+import Ozone.Desktop.Patch.DesktopPatcher;
+import Ozone.Desktop.Propertied;
 import arc.Core;
 import arc.Events;
 import arc.graphics.Color;
@@ -18,7 +21,9 @@ import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.scene.ui.layout.WidgetGroup;
 import arc.util.Align;
+import arc.util.Log;
 import arc.util.Tmp;
+import io.sentry.Sentry;
 import mindustry.core.Version;
 import mindustry.game.EventType.DisposeEvent;
 import mindustry.game.EventType.ResizeEvent;
@@ -28,6 +33,8 @@ import mindustry.graphics.Pal;
 import mindustry.ui.Fonts;
 import mindustry.ui.MobileButton;
 import mindustry.ui.Styles;
+
+import java.util.HashMap;
 
 import static mindustry.Vars.*;
 
@@ -90,6 +97,27 @@ public class MenuFragment extends Fragment {
             }).size(200, 60).name("becheck").update(t -> {
                 t.getLabel().setColor(becontrol.isUpdateAvailable() ? Tmp.c1.set(Color.white).lerp(Pal.accent, Mathf.absin(5f, 1f)) : Color.white);
             }));
+
+        }
+        try {
+            HashMap<String, String> h = Manifest.getManifest(Manifest.latestBuildManifestID);
+            if (Manifest.compatibleMindustryVersion(h, Propertied.h))
+                if (!Manifest.match(h, Propertied.h)) {
+                    parent.fill(c -> c.bottom().right().button("Ozone", Icon.warning, () -> {
+                        ui.showConfirm("Ozone Update", "A new compatible build is exists, do you want to update ?", () -> {
+                            try {
+                                DesktopPatcher.selfUpdate(h.get("DownloadURL"));
+                            }catch (Throwable e) {
+                                Log.err(e);
+                                ui.showException(e);
+                            }
+                        });
+
+                    }).size(200, 60).name("becheck"));
+                }
+        }catch (Throwable e) {
+            Log.err(e);
+            Sentry.captureException(e);
         }
 
 
