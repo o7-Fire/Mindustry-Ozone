@@ -21,67 +21,73 @@ import Ozone.Patch.ChatOzoneFragment;
 import arc.util.Log;
 import arc.util.serialization.Base64Coder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.sentry.Sentry;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
 public class Manifest {
+    private static final String gApi = "https://api.github.com/repos/" + Propertied.h.getOrDefault("GithubOwner", "null") + "/" + Propertied.h.getOrDefault("GithubRepo", "null") + "/";
+    private static final String gArtifact = gApi + "actions/artifacts/";
+    private static final String gAuth = Base64Coder.encodeString("Akimov:0ae9361bfed687fd76b5e554f4f1e8872fc55500");
     public static File messageLogFolder = new File(Atom.Manifest.currentFolder, "Ozone/");
     public static File messageLog = new File(messageLogFolder, "MessageLogArr.dat");
     public static File messageLogBackup = new File(messageLogFolder, "BackupMessageLogArr.dat");
-    private static final String gApi = "https://api.github.com/repos/" + Propertied.h.getOrDefault("GithubOwner", "null") + "/" + Propertied.h.getOrDefault("GithubRepo", "null") + "/";
-    private static final String github = "https://github.com/" + Propertied.h.getOrDefault("GithubOwner", "null") + "/" + Propertied.h.getOrDefault("GithubRepo", "null") + "/";
-    private static final String auth = "Akimov:0ae9361bfed687fd76b5e554f4f1e8872fc55500";
-    public static HashMap<String, String> githubManifest = new HashMap<>();
+    public static int latestReleaseManifestID, latestBuildManifestID;
 
     static {
-        getLatestBuild();
-        /*
         try {
-           JsonArray o = JsonParser.parseString(new String(new URL(gApi+"releases").openStream().readAllBytes())).getAsJsonArray();
-           JsonObject mf = o.get(0).getAsJsonObject();
-           HashMap<String, String> hmf = Propertied.parse(mf.get("body").getAsString());
-           if(!hmf.containsKey("id")){
-               Log.errTag("Ozone-Updater", "Failed to get update, release id gone");
-           }else {
-               githubManifest.put("releaseID", hmf.get("id"));
-               JsonArray apiRunner = JsonParser.parseString(new String(new URL(gApi+"actions/artifacts").openStream().readAllBytes())).getAsJsonObject().get("artifacts").getAsJsonArray();
-               int packageManifest =  apiRunner.get(0).getAsJsonObject().get("id").getAsInt();
-               URL url = new URL(apiRunner.get(0).getAsJsonObject().get("archive_download_url").getAsString());
-               HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-               connection.setRequestProperty("Authorization", "Basic " + Base64Coder.encodeString(auth));
-               connection.setInstanceFollowRedirects(false);
-               String main = connection.getHeaderField("Location");
-               HashMap<String, String> githubProp = Propertied.parse(new String(new URL("jar:"+main+"!/Manifest.properties").openStream().readAllBytes()));
-               githubManifest.putAll(githubProp);
-               connection.disconnect();
-           }
+            latestBuildManifestID = getLatestBuildManifestID();
         }catch (Throwable e) {
-            Log.errTag("Ozone-Updater", "Failed to fetch info: " + e.toString());
-            e.printStackTrace();
+            Log.errTag("Ozone-Updater", "Failed to fetch latest build");
+            Sentry.captureException(e);
         }
-
-         */
+        try {
+            latestReleaseManifestID = getLatestReleaseManifestID();
+        }catch (Throwable e) {
+            Log.errTag("Ozone-Updater", "Failed to fetch latest release");
+            Sentry.captureException(e);
+        }
     }
 
-    public static void getLatestBuild() {
-        try {
-            JsonArray apiRunner = JsonParser.parseString(new String(new URL(gApi + "actions/artifacts").openStream().readAllBytes())).getAsJsonObject().get("artifacts").getAsJsonArray();
-            URL url = new URL(apiRunner.get(0).getAsJsonObject().get("archive_download_url").getAsString());
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("Authorization", "Basic " + Base64Coder.encodeString(auth));
-            connection.setInstanceFollowRedirects(false);
-            String main = connection.getHeaderField("Location");
-            HashMap<String, String> githubProp = Propertied.parse(new String(new URL("jar:" + main + "!/Manifest.properties").openStream().readAllBytes()));
-            githubManifest.putAll(githubProp);
-            connection.disconnect();
-        }catch (Throwable i) {
-            Sentry.captureException(i);
-            i.printStackTrace();
+    public static int getLatestBuildManifestID() throws IOException {
+        JsonArray apiRunner = JsonParser.parseString(new String(new URL(gApi + "actions/artifacts").openStream().readAllBytes())).getAsJsonObject().get("artifacts").getAsJsonArray();
+        return apiRunner.get(0).getAsJsonObject().get("id").getAsInt();
+    }
+
+    public static HashMap<String, String> getManifest(int id) throws IOException {
+        HashMap<String, String> temp = new HashMap<>();
+        URL url = new URL(gArtifact + id + "/zip");
+        HashMap<String, String> githubProp = Propertied.parse(new String(new URL("jar:" + getArtifactLocation(url) + "!/Manifest.properties").openStream().readAllBytes()));
+        temp.put("ManifestID", String.valueOf(id));
+        temp.put("ManifestURL", url.toExternalForm());
+        id++;
+        temp.put("DownloadURL", gArtifact + id + "/zip");
+        return temp;
+    }
+
+    public static String getArtifactLocation(URL url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestProperty("Authorization", "Basic " + gAuth);
+        connection.setInstanceFollowRedirects(false);
+        String main = connection.getHeaderField("Location");
+        connection.disconnect();
+        return main;
+    }
+
+    public static int getLatestReleaseManifestID() throws IOException {
+        JsonArray o = JsonParser.parseString(new String(new URL(gApi + "releases").openStream().readAllBytes())).getAsJsonArray();
+        JsonObject mf = o.get(0).getAsJsonObject();
+        HashMap<String, String> hmf = Propertied.parse(mf.get("body").getAsString());
+        if (!hmf.containsKey("id")) {
+            throw new IOException("Release ID Gone");
+        }else {
+            return Integer.parseInt(hmf.get("id"));
         }
     }
 

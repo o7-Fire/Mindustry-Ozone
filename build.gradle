@@ -83,7 +83,7 @@ allprojects {
             props["GithubHash"] = githubHash
             props["GithubBranch"] = githubBranch
             props["GithubRepo"] = githubRepo
-            props["GithubOwner"] = githubOwner
+            props["GithubInitializer"] = githubOwner
             props["BuilderID"] = modsBuilderID
             props["ModsBuilder"] = modsBuilder
             props["TimeStamp"] = df.format(new Date())
