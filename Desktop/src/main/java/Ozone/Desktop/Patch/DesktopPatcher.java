@@ -32,7 +32,7 @@ import mindustry.Vars;
 import mindustry.game.EventType;
 
 import java.io.File;
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.InvalidPathException;
 import java.util.HashMap;
@@ -61,13 +61,14 @@ public class DesktopPatcher {
         }
     }
 
-    public static void selfUpdate(String url) throws MalformedURLException {
+    public static void selfUpdate(String url) throws IOException {
         File jar = new File(SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation().getFile());
         String s = jar.getName();
         s = s.substring(s.lastIndexOf('.') + 1);
         if (!s.equals("jar"))
             throw new InvalidPathException(jar.getAbsolutePath(), "is not a jar file");
-        DownloadSwing d = new DownloadSwing(new URL(url), jar);
+        ;
+        DownloadSwing d = new DownloadSwing(new URL(Manifest.getArtifactLocation(new URL(url))), jar);
         d.display();
         d.run();
         SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_INFORMATION, "Exit", "Relaunch mindustry");
