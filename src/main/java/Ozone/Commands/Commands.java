@@ -162,33 +162,34 @@ public class Commands {
             commandsList.replace(name, command);
     }
 
-    private void BypassVoid() {
+    private static volatile boolean didBypass = false;
+
+    private static void BypassVoid() {
         while (true) {
             if (didBypass) {
-                for (Player target : playerGroup.all()) {
-					if (target.name != player.name) {
-						Call.sendChatMessage("/votekick " + target.name);
-						try {
-							Thread.sleep(200);
-						} catch (Throwable e) {
-							e.printStackTrace();
-						}
-					}
+                for (Player target : Groups.player) {
+                    if (!target.name.equals(Vars.player.name)) {
+                        Call.sendChatMessage("/votekick " + target.name);
+                        try {
+                            Thread.sleep(200);
+                        }catch (Throwable e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }
     }
-    
-    private boolean didBypass = false;
-    private void KickBypass(CommandContext ctx) {
+
+    private static void KickBypass(ArrayList ctx) {
         if (!didBypass) {
             didBypass = true;
-            Thread s1 = new Thread(this::BypassVoid);
+            Thread s1 = new Thread(Commands::BypassVoid);
             s1.start();
-            reply("kicking started");
-        } else {
+            tellUser("kicking started");
+        }else {
             didBypass = false;
-            reply("kicking ended");
+            tellUser("kicking ended");
         }
     }
 

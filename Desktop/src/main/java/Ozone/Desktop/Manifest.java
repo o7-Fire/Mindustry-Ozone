@@ -56,7 +56,7 @@ public class Manifest {
     }
 
     public static int getLatestBuildManifestID() throws IOException {
-        JsonArray apiRunner = JsonParser.parseString(new String(new URL(gApi + "actions/artifacts").openStream().readAllBytes())).getAsJsonObject().get("artifacts").getAsJsonArray();
+        JsonArray apiRunner = new JsonParser().parse(new String(new URL(gApi + "actions/artifacts").openStream().readAllBytes())).getAsJsonObject().get("artifacts").getAsJsonArray();
         return apiRunner.get(0).getAsJsonObject().get("id").getAsInt();
     }
 
@@ -81,7 +81,7 @@ public class Manifest {
     }
 
     public static int getLatestReleaseManifestID() throws IOException {
-        JsonArray o = JsonParser.parseString(new String(new URL(gApi + "releases").openStream().readAllBytes())).getAsJsonArray();
+        JsonArray o = new JsonParser().parse(new String(new URL(gApi + "releases").openStream().readAllBytes())).getAsJsonArray();
         JsonObject mf = o.get(0).getAsJsonObject();
         HashMap<String, String> hmf = Propertied.parse(mf.get("body").getAsString());
         if (!hmf.containsKey("id")) {
