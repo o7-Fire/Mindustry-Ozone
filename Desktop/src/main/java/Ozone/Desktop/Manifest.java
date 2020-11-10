@@ -32,7 +32,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class Manifest {
-    private static final String gApi = "https://api.github.com/repos/" + Propertied.h.getOrDefault("GithubOwner", "null") + "/" + Propertied.h.getOrDefault("GithubRepo", "null") + "/";
+    private static final String gApi = "https://api.github.com/repos/" + Propertied.h.getOrDefault("GithubRepo", "null") + "/";
     private static final String gArtifact = gApi + "actions/artifacts/";
     private static final String gAuth = Base64Coder.encodeString("Akimov:0ae9361bfed687fd76b5e554f4f1e8872fc55500");
     public static File messageLogFolder = new File(Atom.Manifest.currentFolder, "Ozone/");
@@ -61,9 +61,9 @@ public class Manifest {
     }
 
     public static HashMap<String, String> getManifest(int id) throws IOException {
-        HashMap<String, String> temp = new HashMap<>();
         URL url = new URL(gArtifact + id + "/zip");
         HashMap<String, String> githubProp = Propertied.parse(new String(new URL("jar:" + getArtifactLocation(url) + "!/Manifest.properties").openStream().readAllBytes()));
+        HashMap<String, String> temp = new HashMap<>(githubProp);
         temp.put("ManifestID", String.valueOf(id));
         temp.put("ManifestURL", url.toExternalForm());
         id++;
