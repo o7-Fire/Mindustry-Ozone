@@ -29,7 +29,7 @@ public class OzoneMindustry {
                     this.setWindowIcon(Files.FileType.internal, "icons/path47.png");
                 }
             });
-        } catch (Throwable var2) {
+        }catch (Throwable var2) {
             var2.printStackTrace();
             handleCrash(var2);
         }

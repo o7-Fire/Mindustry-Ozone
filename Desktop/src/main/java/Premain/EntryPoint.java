@@ -54,21 +54,6 @@ public class EntryPoint extends Mod {
          */
     }
 
-
-    @Override
-    public void init() {
-        if (OzoneMod != null)
-            OzoneMod.init();
-    }
-
-    @Override
-    public void loadContent() {
-        if (OzoneMod != null)
-            OzoneMod.loadContent();
-    }
-
-
-
     public static void startTheRealOne() {
         StringBuilder cli = new StringBuilder();
         try {
@@ -84,15 +69,27 @@ public class EntryPoint extends Mod {
             new Thread(() -> {
                 try {
                     Runtime.getRuntime().exec(cli.toString()).waitFor();
-                } catch (InterruptedException | IOException e) {
+                }catch (InterruptedException | IOException e) {
                     e.printStackTrace();
                 }
             }).start();
             //Thread.sleep(9000);
             System.exit(0);
-        } catch (Throwable e) {
+        }catch (Throwable e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void init() {
+        if (OzoneMod != null)
+            OzoneMod.init();
+    }
+
+    @Override
+    public void loadContent() {
+        if (OzoneMod != null)
+            OzoneMod.loadContent();
     }
 
 }

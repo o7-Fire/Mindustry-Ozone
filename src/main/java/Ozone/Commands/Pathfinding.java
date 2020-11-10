@@ -14,7 +14,7 @@ import mindustry.world.Tile;
 import java.lang.reflect.InvocationTargetException;
 
 public class Pathfinding {
-//TODO don't be stupid
+    //TODO don't be stupid
 
     public static boolean passable(Tile t) {
         Unit unit = Vars.player.unit();
@@ -22,9 +22,9 @@ public class Pathfinding {
         if (unit instanceof WaterMovec) {
             if (!t.block().isFloor()) return false;
             if (!t.block().asFloor().isLiquid) return false;
-        } else if (unit instanceof Legsc) {
+        }else if (unit instanceof Legsc) {
             if (!t.passable()) return false;
-        } else if (!unit.isFlying()) {
+        }else if (!unit.isFlying()) {
             if (!t.passable()) return false;
             if (t.build != null) return false;
         }
@@ -49,7 +49,7 @@ public class Pathfinding {
         try {
             if (tile == null) return 0f;//no fuck given
             return pathTile(tile.pos(), Vars.player.unit());
-        } catch (Throwable g) {
+        }catch (Throwable g) {
             Log.debug("Failed to get pathTile for: " + tile.toString() + "\n" + g.toString());
             float danger = 0f;
             for (int i = 0; i < 4; i++) {

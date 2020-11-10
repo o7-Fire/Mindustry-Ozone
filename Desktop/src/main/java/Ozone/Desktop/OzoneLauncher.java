@@ -50,12 +50,12 @@ public class OzoneLauncher extends ClientLauncher {
             if (Vars.net.active() && Groups.player.size() > 1) {
                 gamePlayersSuffix = " | " + Groups.player.size() + " Players";
             }
-        } else {
+        }else {
             if (ui.editor != null && ui.editor.isShown()) {
                 uiState = "In Editor";
-            } else if (ui.planet != null && ui.planet.isShown()) {
+            }else if (ui.planet != null && ui.planet.isShown()) {
                 uiState = "In Launch Selection";
-            } else {
+            }else {
                 uiState = "In Menu";
             }
         }
@@ -69,7 +69,7 @@ public class OzoneLauncher extends ClientLauncher {
                 if (state.rules.waves) {
                     presence.largeImageText = "Wave " + state.wave;
                 }
-            } else {
+            }else {
                 presence.state = uiState;
             }
 

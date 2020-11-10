@@ -77,7 +77,7 @@ public interface Platform {
             uuid = new String(Base64Coder.encode(result));
             Core.settings.put("uuid", uuid);
             return uuid;
-        } else {
+        }else {
             return uuid;
         }
     }
@@ -91,20 +91,20 @@ public interface Platform {
                 Vars.ui.loadAnd(() -> {
                     try {
                         writer.write(file);
-                    } catch (Throwable var3) {
+                    }catch (Throwable var3) {
                         Vars.ui.showException(var3);
                         Log.err(var3);
                     }
 
                 });
             });
-        } else {
+        }else {
             Vars.ui.loadAnd(() -> {
                 try {
                     Fi result = Core.files.local(name + "." + extension);
                     writer.write(result);
                     Vars.platform.shareFile(result);
-                } catch (Throwable var4) {
+                }catch (Throwable var4) {
                     Vars.ui.showException(var4);
                     Log.err(var4);
                 }
@@ -120,7 +120,7 @@ public interface Platform {
         }, open, (file) -> {
             if (!open) {
                 cons.get(file.parent().child(file.nameWithoutExtension() + "." + extension));
-            } else {
+            }else {
                 cons.get(file);
             }
 
@@ -130,7 +130,7 @@ public interface Platform {
     default void showMultiFileChooser(Cons<Fi> cons, String... extensions) {
         if (Vars.mobile) {
             this.showFileChooser(true, extensions[0], cons);
-        } else {
+        }else {
             (new FileChooser("@open", (file) -> {
                 return Structs.contains(extensions, file.extension().toLowerCase());
             }, true, cons)).show();

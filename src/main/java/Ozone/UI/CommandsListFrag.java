@@ -97,7 +97,7 @@ public class CommandsListFrag extends Fragment {
                     Commands.call(Core.commandsPrefix + com);
                 }));
 
-            } catch (Throwable a) {
+            }catch (Throwable a) {
                 ui.showException(a);
             }
             content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
@@ -118,7 +118,7 @@ public class CommandsListFrag extends Fragment {
         visible = !visible;
         if (visible) {
             rebuild();
-        } else {
+        }else {
             sField.clearText();
             arc.Core.scene.setKeyboardFocus(null);
         }

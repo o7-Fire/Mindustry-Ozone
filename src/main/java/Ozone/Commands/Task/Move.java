@@ -76,7 +76,7 @@ public class Move extends Task {
             if (pathfindingCache.isEmpty()) return;
             destTile = pathfindingCache.get(0);
             destTile.setOverlay(Blocks.dirt);
-        } else {
+        }else {
             if (samePos(destTile, destTilePos, true)) {
                 setMov(destTilePos);
                 return;

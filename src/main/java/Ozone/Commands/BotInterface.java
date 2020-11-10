@@ -56,15 +56,15 @@ public class BotInterface {
             for (int i = 0; i < range; i++) {
                 tiles.add(Vars.world.tile(tile.x + 1 + i, tile.y));
             }
-        } else if (rotation == 1) {
+        }else if (rotation == 1) {
             for (int i = 0; i < range; i++) {
                 tiles.add(Vars.world.tile(tile.x, tile.y + 1 + i));
             }
-        } else if (rotation == 2) {
+        }else if (rotation == 2) {
             for (int i = 0; i < range; i++) {
                 tiles.add(Vars.world.tile(tile.x - 1 - i, tile.y));
             }
-        } else if (rotation == 3) {
+        }else if (rotation == 3) {
             for (int i = 0; i < range; i++) {
                 tiles.add(Vars.world.tile(tile.x, tile.y - 1 - i));
             }

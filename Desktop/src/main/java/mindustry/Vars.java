@@ -367,7 +367,7 @@ public class Vars implements Loadable {
                 String code = stra[i];
                 if (code.contains("_")) {
                     locales[i] = new Locale(code.split("_")[0], code.split("_")[1]);
-                } else {
+                }else {
                     locales[i] = new Locale(code);
                 }
             }
@@ -436,7 +436,7 @@ public class Vars implements Loadable {
 
             if (!headless && (ui == null || ui.scriptfrag == null)) {
                 logBuffer.add(result);
-            } else if (!headless) {
+            }else if (!headless) {
                 if (!OS.isWindows) {
                     for (String code : ColorCodes.values) {
                         result = result.replace(code, "");
@@ -467,12 +467,12 @@ public class Vars implements Loadable {
                 try {
                     writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " + Log.removeColors(text) + "\n");
                     writer.flush();
-                } catch (IOException e) {
+                }catch (IOException e) {
                     e.printStackTrace();
                     //ignore it
                 }
             };
-        } catch (Exception e) {
+        }catch (Exception e) {
             //handle log file not being found
             Log.err(e);
         }
@@ -509,7 +509,7 @@ public class Vars implements Loadable {
             if (!headless) {
                 Time.run(10f, () -> ui.showInfo("Note: You have successfully loaded an external translation bundle."));
             }
-        } catch (Throwable e) {
+        }catch (Throwable e) {
             //no external bundle found
 
             Fi handle = Core.files.internal("bundles/bundle");
@@ -517,12 +517,12 @@ public class Vars implements Loadable {
             String loc = settings.getString("locale");
             if (loc.equals("default")) {
                 locale = Locale.getDefault();
-            } else {
+            }else {
                 Locale lastLocale;
                 if (loc.contains("_")) {
                     String[] split = loc.split("_");
                     lastLocale = new Locale(split[0], split[1]);
-                } else {
+                }else {
                     lastLocale = new Locale(loc);
                 }
 

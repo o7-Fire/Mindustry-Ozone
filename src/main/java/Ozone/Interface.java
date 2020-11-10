@@ -62,7 +62,7 @@ public class Interface {
 
             ProcessBuilder builder = new ProcessBuilder(command);
             builder.start();
-        } catch (Throwable ignored) {
+        }catch (Throwable ignored) {
             //mmm android
         }
         //exit is priority

@@ -20,6 +20,7 @@ public class Commands {
     private static final LinkedHashMap<Integer, Manifest.Library> libs = new LinkedHashMap<>();
     private static volatile boolean init = false;
     private static int i = 0;
+
     public static void Init() {
         if (init) return;
         init = true;
@@ -47,12 +48,12 @@ public class Commands {
         }
         if (i == 5) {
             tellUser("pls dont");
-        } else if (i == 10)
+        }else if (i == 10)
             tellUser("stop pls");
         else if (i == 20) {
             tellUser("wtf ???");
             i = 0;
-        } else {
+        }else {
             tellUser("The code mason, what do they mean");
         }
         i++;
@@ -71,21 +72,21 @@ public class Commands {
                 tellUser("library list");
                 tellUser("library purge");
                 return;
-            } else if (arg.get(0).equalsIgnoreCase("list")) {
+            }else if (arg.get(0).equalsIgnoreCase("list")) {
                 availableLib();
                 return;
-            } else if (arg.get(0).equalsIgnoreCase("purge")) {
+            }else if (arg.get(0).equalsIgnoreCase("purge")) {
                 Manifest.library.forEach(s -> s.getJar().deleteOnExit());
                 tellUser("Restart to delete all library");
                 return;
             }
 
-        } else if (arg.size() == 2) {
+        }else if (arg.size() == 2) {
             if (arg.get(0).equalsIgnoreCase("download")) {
                 if (arg.get(1).equalsIgnoreCase("all")) {
                     Manifest.library.forEach(Commands::downloadLib);
                     return;
-                } else {
+                }else {
                     try {
                         int index = Integer.parseInt(arg.get(1));
                         if (libs.get(index) == null) {
@@ -94,7 +95,7 @@ public class Commands {
                             return;
                         }
                         downloadLib(libs.get(index));
-                    } catch (NumberFormatException n) {
+                    }catch (NumberFormatException n) {
                         tellUser("Failed to parse init: " + arg.get(1));
                         return;
                     }
@@ -111,7 +112,7 @@ public class Commands {
                 DownloadSwing d = new DownloadSwing(new URL(s.getDownloadURL()), s.getJar());
                 d.display();
                 d.run();
-            } catch (Throwable t) {
+            }catch (Throwable t) {
                 tellUser("Failed to download " + s.getName());
                 tellUser(t.toString());
                 t.printStackTrace();
@@ -135,7 +136,7 @@ public class Commands {
                 tellUser("use \"" + Core.commandsPrefix + "library download all\"");
                 return;
             }
-        } else {
+        }else {
             tellUser("Cant find " + requiredLibrary + " in Manifest.library");
             availableLib();
         }
@@ -144,11 +145,11 @@ public class Commands {
         Thread th = new Thread(() -> {
             try {
                 Atom.Runtime.Compiler.runLine(code, Stream.getReader(s -> Log.infoTag("javac", s)));
-            } catch (FileNotFoundException fail) {
+            }catch (FileNotFoundException fail) {
                 tellUser("Failed to compile or IOException Problem");
                 fail.printStackTrace();
                 Log.errTag("Compiler", fail.toString());
-            } catch (Throwable t) {
+            }catch (Throwable t) {
                 t.printStackTrace();
                 Log.errTag("Compiler", t.toString());
                 tellUser(t.toString());

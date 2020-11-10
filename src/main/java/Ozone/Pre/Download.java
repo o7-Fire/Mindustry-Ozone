@@ -20,6 +20,7 @@ public class Download implements Runnable {
     private File file;
     private long lastRecordTime = 0, lastRecord = 0;
     private boolean displayed = false;
+
     // Constructor for Download.
     public Download(URL url, File file) {
         this.url = url;
@@ -73,7 +74,7 @@ public class Download implements Runnable {
                 byte[] buffer;
                 if (size - downloaded.get() > MAX_BUFFER_SIZE) {
                     buffer = new byte[MAX_BUFFER_SIZE];
-                } else {
+                }else {
                     buffer = new byte[size - downloaded.get()];
                 }
 
@@ -87,14 +88,14 @@ public class Download implements Runnable {
                 downloaded.addAndGet(read);
             }
 
-        } catch (Exception e) {
+        }catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
+        }finally {
             // Close file.
             if (outputStream != null) {
                 try {
                     outputStream.close();
-                } catch (Exception e) {
+                }catch (Exception e) {
                 }
             }
 
@@ -102,13 +103,13 @@ public class Download implements Runnable {
             if (stream != null) {
                 try {
                     stream.close();
-                } catch (Exception e) {
+                }catch (Exception e) {
                 }
             }
 
             try {
                 Files.copy(temp.toPath(), file.toPath());
-            } catch (IOException e) {
+            }catch (IOException e) {
                 e.printStackTrace();
             }
         }

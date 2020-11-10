@@ -50,11 +50,11 @@ public class Version {
             try {
                 build = Integer.parseInt(split[0]);
                 revision = Integer.parseInt(split[1]);
-            } catch (Throwable e) {
+            }catch (Throwable e) {
                 e.printStackTrace();
                 build = -1;
             }
-        } else {
+        }else {
             build = Strings.canParseInt(map.get("build")) ? Integer.parseInt(map.get("build")) : -1;
         }
     }

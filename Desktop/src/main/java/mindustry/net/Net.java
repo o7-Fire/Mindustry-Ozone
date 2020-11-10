@@ -60,11 +60,11 @@ public class Net {
             Core.app.post(() -> {
                 this.showError(new IOException("mismatch"));
             });
-        } else if (e instanceof ClosedChannelException) {
+        }else if (e instanceof ClosedChannelException) {
             Core.app.post(() -> {
                 this.showError(new IOException("alreadyconnected"));
             });
-        } else {
+        }else {
             Core.app.post(() -> {
                 this.showError(e);
             });
@@ -85,31 +85,31 @@ public class Net {
             if (!(e instanceof BufferUnderflowException) && !(e instanceof BufferOverflowException)) {
                 if (error.equals("mismatch")) {
                     error = Core.bundle.get("error.mismatch");
-                } else if (!error.contains("port out of range") && !error.contains("invalid argument") && (!error.contains("invalid") || !error.contains("address")) && !Strings.neatError(e).contains("address associated")) {
+                }else if (!error.contains("port out of range") && !error.contains("invalid argument") && (!error.contains("invalid") || !error.contains("address")) && !Strings.neatError(e).contains("address associated")) {
                     if (!error.contains("connection refused") && !error.contains("route to host") && !type.contains("unknownhost")) {
                         if (type.contains("timeout")) {
                             error = Core.bundle.get("error.timedout");
-                        } else if (!error.equals("alreadyconnected") && !error.contains("connection is closed")) {
+                        }else if (!error.equals("alreadyconnected") && !error.contains("connection is closed")) {
                             if (!error.isEmpty()) {
                                 error = Core.bundle.get("error.any");
                                 isError = true;
                             }
-                        } else {
+                        }else {
                             error = Core.bundle.get("error.alreadyconnected");
                         }
-                    } else {
+                    }else {
                         error = Core.bundle.get("error.unreachable");
                     }
-                } else {
+                }else {
                     error = Core.bundle.get("error.invalidaddress");
                 }
-            } else {
+            }else {
                 error = Core.bundle.get("error.io");
             }
 
             if (isError) {
                 Vars.ui.showException("@error.any", e);
-            } else {
+            }else {
                 Vars.ui.showText("", Core.bundle.format("connectfail", new Object[]{error}));
             }
 
@@ -148,7 +148,7 @@ public class Net {
             this.active = true;
             this.server = false;
             Events.fire(new EventExtended.Connecting(ip, port));
-        } catch (IOException var5) {
+        }catch (IOException var5) {
             this.showError(var5);
         }
 
@@ -215,7 +215,7 @@ public class Net {
                 NetConnection con = (NetConnection) var3.next();
                 con.send(object, mode);
             }
-        } else {
+        }else {
             this.provider.sendClient(object, mode);
         }
 
@@ -250,7 +250,7 @@ public class Net {
         StreamBegin b;
         if (object instanceof StreamBegin && (b = (StreamBegin) object) == (StreamBegin) object) {
             this.streams.put(b.id, this.currentStream = new StreamBuilder(b));
-        } else {
+        }else {
             StreamChunk c;
             if (object instanceof StreamChunk && (c = (StreamChunk) object) == (StreamChunk) object) {
                 StreamBuilder builder = (StreamBuilder) this.streams.get(c.id);
@@ -264,19 +264,19 @@ public class Net {
                     this.handleClientReceived(builder.build());
                     this.currentStream = null;
                 }
-            } else if (this.clientListeners.get(object.getClass()) != null) {
+            }else if (this.clientListeners.get(object.getClass()) != null) {
                 if (this.clientLoaded || object instanceof Packet && ((Packet) object).isImportant()) {
                     if (this.clientListeners.get(object.getClass()) != null) {
                         ((Cons) this.clientListeners.get(object.getClass())).get(object);
                     }
 
                     Pools.free(object);
-                } else if (object instanceof Packet && ((Packet) object).isUnimportant()) {
+                }else if (object instanceof Packet && ((Packet) object).isUnimportant()) {
                     Pools.free(object);
-                } else {
+                }else {
                     this.packetQueue.add(object);
                 }
-            } else {
+            }else {
                 Log.err("Unhandled packet type: '@'!", new Object[]{object});
             }
         }
@@ -290,7 +290,7 @@ public class Net {
             }
 
             Pools.free(object);
-        } else {
+        }else {
             Log.err("Unhandled packet type: '@'!", new Object[]{object.getClass()});
         }
 

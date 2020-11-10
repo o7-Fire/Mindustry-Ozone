@@ -17,7 +17,7 @@ public class Manifest {
         try {
             loadMessageLog(messageLog);
             return;
-        } catch (Throwable t) {
+        }catch (Throwable t) {
             Log.errTag("Ozone-MessageLogger", "Cant load " + Ozone.Desktop.Manifest.messageLog.getAbsolutePath());
             Log.errTag("Ozone-MessageLogger", t.toString());
             t.printStackTrace();
@@ -26,7 +26,7 @@ public class Manifest {
 
         try {
             loadMessageLog(messageLogBackup);
-        } catch (Throwable t) {
+        }catch (Throwable t) {
             Log.errTag("Ozone-MessageLogger", "Cant load " + Manifest.messageLogBackup.getAbsolutePath());
             Log.errTag("Ozone-MessageLogger", t.toString());
             t.printStackTrace();
@@ -47,14 +47,14 @@ public class Manifest {
 
         try {
             SerializeData.dataOut(new SerializeData.DataArray<>(ChatOzoneFragment.messages.toArray()), messageLog);
-        } catch (Throwable t) {
+        }catch (Throwable t) {
             Log.errTag("Ozone-MessageLogger", "Cant save " + Ozone.Desktop.Manifest.messageLog.getAbsolutePath());
             Log.errTag("Ozone-MessageLogger", t.toString());
             t.printStackTrace();
         }
         try {
             SerializeData.dataOut(new SerializeData.DataArray<>(ChatOzoneFragment.messages.toArray()), messageLogBackup);
-        } catch (Throwable t) {
+        }catch (Throwable t) {
             Log.errTag("Ozone-MessageLogger", "Cant save " + Manifest.messageLogBackup.getAbsolutePath());
             Log.errTag("Ozone-MessageLogger", t.toString());
             t.printStackTrace();

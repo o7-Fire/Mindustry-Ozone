@@ -28,13 +28,13 @@ public class DownloadSwing implements Runnable {
     private static final int MAX_BUFFER_SIZE = 1024;
     private final URL url; // download URL
     public AtomicInteger downloaded; // number of bytes downloaded
+    public JProgressBar progressBar = null;
+    public JLabel label = null;
+    public JFrame frame = null;
     private int size; // size of download in bytes
     private int status; // current status of download
     private File file;
     private SPreLoad swing = null;
-    public JProgressBar progressBar = null;
-    public JLabel label = null;
-    public JFrame frame = null;
     private long lastRecordTime = 0, lastRecord = 0;
     private boolean displayed = false;
 
@@ -184,7 +184,7 @@ public class DownloadSwing implements Runnable {
                 byte[] buffer;
                 if (size - downloaded.get() > MAX_BUFFER_SIZE) {
                     buffer = new byte[MAX_BUFFER_SIZE];
-                } else {
+                }else {
                     buffer = new byte[size - downloaded.get()];
                 }
 
@@ -203,15 +203,15 @@ public class DownloadSwing implements Runnable {
                 status = COMPLETE;
                 stateChanged();
             }
-        } catch (Exception e) {
+        }catch (Exception e) {
             temp.delete();
             throw new RuntimeException(e);
-        } finally {
+        }finally {
             // Close file.
             if (outputStream != null) {
                 try {
                     outputStream.close();
-                } catch (Exception e) {
+                }catch (Exception e) {
                 }
             }
 
@@ -219,13 +219,13 @@ public class DownloadSwing implements Runnable {
             if (stream != null) {
                 try {
                     stream.close();
-                } catch (Exception e) {
+                }catch (Exception e) {
                 }
             }
             try {
                 if (temp.exists())
                     Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (Throwable t) {
+            }catch (Throwable t) {
 
             }
             if (swing != null)

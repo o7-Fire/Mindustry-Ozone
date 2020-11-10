@@ -17,7 +17,7 @@ public class MindustryEntryPoint {
             SharedBootstrap.libraryLoader.addURL(new File(args[0]));
             //PrePatcher.init();
             SharedBootstrap.loadMain("Main.OzoneMindustry", args);
-        } catch (Throwable t) {
+        }catch (Throwable t) {
             t.printStackTrace();
             Sentry.captureException(t);
         }

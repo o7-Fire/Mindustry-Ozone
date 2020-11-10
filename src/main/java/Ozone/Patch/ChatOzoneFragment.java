@@ -37,6 +37,7 @@ public class ChatOzoneFragment extends ChatFragment {
 
     private static final int messagesShown = 10;
     public static Seq<ChatMessage> messages = new Seq<>();//what everyone write
+    public static Seq<String> history = new Seq<>();//what you write
     private float fadetime;
     private boolean shown = false;
     private TextField chatfield;
@@ -46,7 +47,6 @@ public class ChatOzoneFragment extends ChatFragment {
     private float offsetx = Scl.scl(8), offsety = Scl.scl(4), fontoffsetx = Scl.scl(2), chatspace = Scl.scl(50);
     private Color shadowColor = new Color(0, 0, 0, 0.4f);
     private float textspacing = Scl.scl(8);
-    public static Seq<String> history = new Seq<>();//what you write
     private int historyPos = 0;
     private int scrollPos = 0;
     private Fragment container = new Fragment() {
@@ -165,7 +165,7 @@ public class ChatOzoneFragment extends ChatFragment {
             if (!shown && fadetime - i < 1f && fadetime - i >= 0f) {
                 font.getCache().setAlphas((fadetime - i) * opacity);
                 Draw.color(0, 0, 0, shadowColor.a * (fadetime - i) * opacity);
-            } else {
+            }else {
                 font.getCache().setAlphas(opacity);
             }
 
@@ -210,10 +210,10 @@ public class ChatOzoneFragment extends ChatFragment {
                 };
                 input.canceled = this::hide;
                 arc.Core.input.getTextInput(input);
-            } else {
+            }else {
                 chatfield.fireClick();
             }
-        } else {
+        }else {
             scene.setKeyboardFocus(null);
             shown = !shown;
             scrollPos = 0;
@@ -324,7 +324,7 @@ public class ChatOzoneFragment extends ChatFragment {
             id = messages.size;
             if (sender == null) {
                 this.formattedMessage = message;
-            } else {
+            }else {
                 this.formattedMessage = "[coral][[" + sender + "[coral]]:[white] " + message;
             }
             server = Manifest.getCurrentServerIP();

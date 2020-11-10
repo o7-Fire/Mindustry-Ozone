@@ -39,7 +39,7 @@ public abstract class Task {
         if (currentTick < tick) {
             currentTick++;
             return true;
-        } else {
+        }else {
             currentTick = 0;
             return false;
         }

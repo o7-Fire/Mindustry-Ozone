@@ -43,10 +43,10 @@ import java.util.function.Consumer;
 
 public class Commands {
 
+    public static final Queue<Task> commandsQueue = new Queue<>();
     public static HashMap<String, Command> commandsList = new HashMap<>();
     private static boolean init = false;
     private volatile static boolean falseVote = false;
-    public static final Queue<Task> commandsQueue = new Queue<>();
 
     public static void init() {
         if (init) return;
@@ -173,7 +173,7 @@ public class Commands {
                     if (t == null) return;
                     Item target = Random.getRandom(Vars.content.items().toArray(Item.class));
                     t.build.configure(target);
-                } catch (InterruptedException | ExecutionException e) {
+                }catch (InterruptedException | ExecutionException e) {
                     Log.errTag("Ozone-Executor", "Failed to get tile:\n" + e.toString());
                 }
             }
@@ -204,10 +204,10 @@ public class Commands {
             for (char c : text.toCharArray()) {
                 if (c != ' ') {
                     sb.append(Random.getRandom(colorss)).append(c);
-                } else
+                }else
                     sb.append(c);
             }
-        } else {
+        }else {
             for (char c : text.toCharArray()) {
                 if (c != ' ')
                     sb.append("[").append(Random.getRandomHexColor()).append("]").append(c);
@@ -238,7 +238,7 @@ public class Commands {
             }
             long start = System.currentTimeMillis();
             BotInterface.addTask(new DestructBlock(x, y, half), a -> tellUser("Completed in " + Countdown.result(start, TimeUnit.SECONDS)));
-        } catch (NumberFormatException f) {
+        }catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");
             Vars.ui.showException(f);
         }
@@ -271,7 +271,7 @@ public class Commands {
         if (mesArg.size() > 1) {
             message = message.substring(mesArg.get(0).length() + 1);
             args = new ArrayList<>(Arrays.asList(message.split(" ")));
-        } else {
+        }else {
             args = new ArrayList<>();
         }
         comm.method.accept(args);
@@ -325,7 +325,7 @@ public class Commands {
             Seq<Tile> tiles;
             try {
                 tiles = Astar.pathfind(source, target, h -> 0, Tile::passable);
-            } catch (Throwable t) {
+            }catch (Throwable t) {
                 tellUser("Pathfinding failed");
                 tellUser(t.toString());
                 return;
@@ -341,7 +341,7 @@ public class Commands {
                     t.setOverlay(Blocks.dirtWall);
             }
             tellUser("to clear pathfinding overlay use /sync");
-        } catch (NumberFormatException f) {
+        }catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");
             Vars.ui.showException(f);
         }
@@ -382,7 +382,7 @@ public class Commands {
             long start = System.currentTimeMillis();
             BotInterface.addTask(new Move(x, y), a -> tellUser("Reached in " + Countdown.result(start, TimeUnit.SECONDS)));
             toggleUI();
-        } catch (NumberFormatException f) {
+        }catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");
             Vars.ui.showException(f);
         }
@@ -399,14 +399,14 @@ public class Commands {
                             Call.sendChatMessage("/votekick " + target.name);
                             try {
                                 Thread.sleep(200);
-                            } catch (Throwable ignored) {
+                            }catch (Throwable ignored) {
                             }
                         }
                     }
             });
             s1.start();
             tellUser("kicking started");
-        } else {
+        }else {
             tellUser("kicking ended");
         }
     }
@@ -421,8 +421,8 @@ public class Commands {
 
     public static class Command {
         public final Consumer<ArrayList<String>> method;
-        public String description;
         public final TextureRegionDrawable icon;
+        public String description;
 
 
         public Command(Consumer<ArrayList<String>> method) {

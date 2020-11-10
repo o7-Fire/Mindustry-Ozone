@@ -13,6 +13,12 @@ import java.awt.*;
  * @author Itzbenz
  */
 public class SPreLoad extends JFrame {
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    public Frame frame1;
+    public JLabel label1;
+    public JLabel label2;
+    public JProgressBar progressBar1;
+
     public SPreLoad() {
         initComponents();
     }
@@ -31,14 +37,14 @@ public class SPreLoad extends JFrame {
             frame1.setTitle("Downloading");
             frame1.setEnabled(false);
             frame1.setLayout(new MigLayout(
-                "fill,hidemode 3",
-                // columns
-                "[fill]" +
-                "[fill]",
-                // rows
-                "[]" +
-                "[]" +
-                "[]"));
+                    "fill,hidemode 3",
+                    // columns
+                    "[fill]" +
+                            "[fill]",
+                    // rows
+                    "[]" +
+                            "[]" +
+                            "[]"));
 
             //---- label1 ----
             label1.setText("Downloading");
@@ -53,11 +59,5 @@ public class SPreLoad extends JFrame {
         }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
-
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    public Frame frame1;
-    public JLabel label1;
-    public JLabel label2;
-    public JProgressBar progressBar1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

@@ -23,9 +23,9 @@ public class CommandsSpam extends Task {
                 currentCycle = 1;
                 howManyTimes = 1;
                 Vars.ui.showErrorMessage(commands + " is not a valid commands");
-            } else this.commands = commands;
+            }else this.commands = commands;
             setTick(delays);
-        } catch (NumberFormatException c) {
+        }catch (NumberFormatException c) {
             Vars.ui.showException(c);
             currentCycle = 1;
         }

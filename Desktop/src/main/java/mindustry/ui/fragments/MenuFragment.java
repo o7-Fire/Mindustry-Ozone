@@ -62,11 +62,11 @@ public class MenuFragment extends Fragment {
                 if (Random.getBool()) {
                     buildDesktop();
                     Events.on(ResizeEvent.class, event -> buildDesktop());
-                } else {
+                }else {
                     buildMobile();
                     Events.on(ResizeEvent.class, event -> buildMobile());
                 }
-            } else {
+            }else {
                 buildMobile();
                 Events.on(ResizeEvent.class, event -> buildMobile());
             }
@@ -77,7 +77,7 @@ public class MenuFragment extends Fragment {
         if (mobile) {
             parent.fill(c -> c.bottom().left().button("", Styles.infot, ui.about::show).size(84, 45).name("info"));
             parent.fill(c -> c.bottom().right().button("", Styles.discordt, ui.discord::show).size(84, 45).name("discord"));
-        } else if (becontrol.active()) {
+        }else if (becontrol.active()) {
             parent.fill(c -> c.bottom().right().button("@be.check", Icon.refresh, () -> {
                 ui.loadfrag.show();
                 becontrol.checkUpdate(result -> {
@@ -146,7 +146,7 @@ public class MenuFragment extends Fragment {
                 //if(platform.canDonate()) table.add(donate);
                 if (!ios) table.add(exit);
             }).colspan(4);
-        } else {
+        }else {
             container.marginTop(0f);
             container.add(play);
             container.add(maps);
@@ -214,7 +214,7 @@ public class MenuFragment extends Fragment {
     private void checkPlay(Runnable run) {
         if (!mods.hasContentErrors()) {
             run.run();
-        } else {
+        }else {
             ui.showInfo("@mod.noerrorplay");
         }
     }
@@ -242,7 +242,7 @@ public class MenuFragment extends Fragment {
                 if (currentMenu == out[0]) {
                     currentMenu = null;
                     fadeOutMenu();
-                } else {
+                }else {
                     if (b.submenu != null) {
                         currentMenu = out[0];
                         submenu.clearChildren();
@@ -251,7 +251,7 @@ public class MenuFragment extends Fragment {
                         submenu.add().height((Core.graphics.getHeight() - out[0].getY(Align.topLeft)) / Scl.scl(1f));
                         submenu.row();
                         buttons(submenu, b.submenu);
-                    } else {
+                    }else {
                         currentMenu = null;
                         fadeOutMenu();
                         b.runnable.run();

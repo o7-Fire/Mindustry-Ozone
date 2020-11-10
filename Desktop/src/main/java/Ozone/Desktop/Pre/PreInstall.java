@@ -75,7 +75,7 @@ public class PreInstall {
                 m.labelStatus.setText("Finished");
                 m.frame1.pack();
                 if (ozone.exists()) return;
-            } catch (IOException ioException) {
+            }catch (IOException ioException) {
                 m.labelStatus.setText(ioException.getMessage());
                 m.frame1.pack();
                 return;

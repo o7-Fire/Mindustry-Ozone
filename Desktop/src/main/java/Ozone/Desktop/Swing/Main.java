@@ -19,6 +19,18 @@ import java.awt.*;
  * @author Itzbenz
  */
 public class Main extends JPanel {
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    public JDialog dialog1;
+    public JFileChooser fileChooser1;
+    public JFrame frame1;
+    public JLabel label1;
+    public JLabel label4;
+    public JButton button3;
+    public JLabel labelStatus;
+    public JProgressBar progressBar1;
+    public JButton buttonInstall;
+    public JButton buttonExit;
+
     public Main() {
         initComponents();
     }
@@ -27,31 +39,31 @@ public class Main extends JPanel {
         try {
             UIManager.setLookAndFeel(new FlatDarkLaf());
             return;
-        } catch (Throwable t) {
+        }catch (Throwable t) {
             t.printStackTrace();
         }
         try {
             UIManager.setLookAndFeel(new FlatDarculaLaf());
             return;
-        } catch (Throwable t) {
+        }catch (Throwable t) {
             t.printStackTrace();
         }
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
             return;
-        } catch (Throwable t) {
+        }catch (Throwable t) {
             t.printStackTrace();
         }
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
             return;
-        } catch (Throwable t) {
+        }catch (Throwable t) {
             t.printStackTrace();
         }
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             return;
-        } catch (Throwable t) {
+        }catch (Throwable t) {
             t.printStackTrace();
         }
     }
@@ -76,17 +88,17 @@ public class Main extends JPanel {
             dialog1.setTitle("Select Mindustry Directory");
             Container dialog1ContentPane = dialog1.getContentPane();
             dialog1ContentPane.setLayout(new MigLayout(
-                "hidemode 3",
-                // columns
-                "[fill]" +
-                "[fill]" +
-                "[fill]" +
-                "[fill]",
-                // rows
-                "[]" +
-                "[]" +
-                "[]" +
-                "[]"));
+                    "hidemode 3",
+                    // columns
+                    "[fill]" +
+                            "[fill]" +
+                            "[fill]" +
+                            "[fill]",
+                    // rows
+                    "[]" +
+                            "[]" +
+                            "[]" +
+                            "[]"));
             dialog1ContentPane.add(fileChooser1, "cell 0 0 4 3");
             dialog1.pack();
             dialog1.setLocationRelativeTo(dialog1.getOwner());
@@ -98,16 +110,16 @@ public class Main extends JPanel {
             frame1.setTitle("Ozone Installer v0.4");
             Container frame1ContentPane = frame1.getContentPane();
             frame1ContentPane.setLayout(new MigLayout(
-                "fill,hidemode 3",
-                // columns
-                "[fill]" +
-                "[fill]",
-                // rows
-                "[]" +
-                "[]" +
-                "[]" +
-                "[]" +
-                "[]"));
+                    "fill,hidemode 3",
+                    // columns
+                    "[fill]" +
+                            "[fill]",
+                    // rows
+                    "[]" +
+                            "[]" +
+                            "[]" +
+                            "[]" +
+                            "[]"));
 
             //---- label1 ----
             label1.setText("Mindustry");
@@ -138,17 +150,5 @@ public class Main extends JPanel {
         }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
-
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    public JDialog dialog1;
-    public JFileChooser fileChooser1;
-    public JFrame frame1;
-    public JLabel label1;
-    public JLabel label4;
-    public JButton button3;
-    public JLabel labelStatus;
-    public JProgressBar progressBar1;
-    public JButton buttonInstall;
-    public JButton buttonExit;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

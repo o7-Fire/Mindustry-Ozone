@@ -11,16 +11,12 @@ import java.net.URLClassLoader;
 
 public class LibraryLoader extends URLClassLoader {
     public static File cache = new File("lib/");
+
     static {
         cache.mkdirs();
         registerAsParallelCapable();
     }
 
-
-    public void defineClass(String name, InputStream is) throws IOException {
-        byte[] h = is.readAllBytes();
-        defineClass(name, h, 0, h.length);
-    }
 
     public LibraryLoader(URL[] urls, ClassLoader parent) {
         super(urls, parent);
@@ -28,6 +24,11 @@ public class LibraryLoader extends URLClassLoader {
 
     public LibraryLoader(URL[] urls) {
         super(urls);
+    }
+
+    public void defineClass(String name, InputStream is) throws IOException {
+        byte[] h = is.readAllBytes();
+        defineClass(name, h, 0, h.length);
     }
 
     //Fuck you java reflection illegal access
@@ -42,7 +43,7 @@ public class LibraryLoader extends URLClassLoader {
                 try {
                     findClass("net.miginfocom.swing.MigLayout");
                     loadClass("Main.Download").getMethod("main", URL.class, File.class).invoke(null, url, temp);
-                } catch (Throwable t) {
+                }catch (Throwable t) {
                     Download d = new Download(url, temp);
                     d.run();
                 }
@@ -50,7 +51,7 @@ public class LibraryLoader extends URLClassLoader {
             if (temp.exists()) {
                 try {
                     url = temp.toURI().toURL();
-                } catch (MalformedURLException ignored) {
+                }catch (MalformedURLException ignored) {
 
                 }
             }

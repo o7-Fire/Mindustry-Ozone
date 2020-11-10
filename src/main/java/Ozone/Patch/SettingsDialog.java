@@ -24,12 +24,12 @@ public class SettingsDialog extends SettingsMenuDialog {
                         try {
                             f.set(null, s);
                             Core.settings.put("ozone." + f.getName(), s);
-                        } catch (IllegalAccessException e) {
+                        }catch (IllegalAccessException e) {
                             Vars.ui.showException(e);
                         }
                     });
                     gameTable.row();
-                } else if (String.class.equals(f.getType())) {
+                }else if (String.class.equals(f.getType())) {
                     gameTable.pref(new SettingsTable.Setting() {
                         @Override
                         public void add(SettingsTable settingsTable) {
@@ -39,18 +39,18 @@ public class SettingsDialog extends SettingsMenuDialog {
                                     try {
                                         f.set(null, s);
                                         Core.settings.put("ozone." + f.getName(), s);
-                                    } catch (Throwable e) {
+                                    }catch (Throwable e) {
                                         Vars.ui.showException(e);
                                     }
                                 }).pad(6.0F).left();
                                 settingsTable.row();
-                            } catch (Throwable e) {
+                            }catch (Throwable e) {
                                 Vars.ui.showException(e);
                             }
                         }
                     });
 
-                } else if (int.class.equals(f.getType())) {
+                }else if (int.class.equals(f.getType())) {
                     gameTable.pref(new SettingsTable.Setting() {
                         @Override
                         public void add(SettingsTable settingsTable) {
@@ -60,17 +60,17 @@ public class SettingsDialog extends SettingsMenuDialog {
                                     try {
                                         f.setInt(null, Integer.parseInt(s));
                                         Core.settings.put("ozone." + f.getName(), s);
-                                    } catch (Throwable e) {
+                                    }catch (Throwable e) {
                                         Vars.ui.showException(e);
                                     }
                                 }).pad(6.0F).left();
                                 settingsTable.row();
-                            } catch (Throwable e) {
+                            }catch (Throwable e) {
                                 Vars.ui.showException(e);
                             }
                         }
                     });
-                } else if (long.class.equals(f.getType())) {
+                }else if (long.class.equals(f.getType())) {
                     gameTable.pref(new SettingsTable.Setting() {
                         @Override
                         public void add(SettingsTable settingsTable) {
@@ -80,17 +80,17 @@ public class SettingsDialog extends SettingsMenuDialog {
                                     try {
                                         f.setLong(null, Long.parseLong(s));
                                         Core.settings.put("ozone." + f.getName(), s);
-                                    } catch (Throwable e) {
+                                    }catch (Throwable e) {
                                         Vars.ui.showException(e);
                                     }
                                 }).pad(6.0F).left();
                                 settingsTable.row();
-                            } catch (Throwable e) {
+                            }catch (Throwable e) {
                                 Vars.ui.showException(e);
                             }
                         }
                     });
-                } else if (float.class.equals(f.getType())) {
+                }else if (float.class.equals(f.getType())) {
                     gameTable.pref(new SettingsTable.Setting() {
                         @Override
                         public void add(SettingsTable settingsTable) {
@@ -100,18 +100,18 @@ public class SettingsDialog extends SettingsMenuDialog {
                                     try {
                                         f.setFloat(null, Float.parseFloat(s));
                                         Core.settings.put("ozone." + f.getName(), s);
-                                    } catch (Throwable e) {
+                                    }catch (Throwable e) {
                                         Vars.ui.showException(e);
                                     }
                                 }).pad(6.0F).left();
                                 settingsTable.row();
-                            } catch (Throwable e) {
+                            }catch (Throwable e) {
                                 Vars.ui.showException(e);
                             }
                         }
                     });
                 }
-            } catch (Throwable t) {
+            }catch (Throwable t) {
                 Log.errTag("Ozone-Settings", "Couldn't create settings for: ozone." + f.getName());
                 Log.err(t);
             }

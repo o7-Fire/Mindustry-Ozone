@@ -54,7 +54,7 @@ public class MenuRenderer implements Disposable {
                                 random = Random.getBool();
                             }
                             Thread.sleep(5000);
-                        } catch (InterruptedException e) {
+                        }catch (InterruptedException e) {
 
                         }
                     }

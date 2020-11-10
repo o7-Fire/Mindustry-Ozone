@@ -56,13 +56,13 @@ public class DesktopInput extends mindustry.input.DesktopInput {
         boolean aimCursor = omni && Vars.player.shooting && unit.type().hasWeapons() && unit.type().faceTarget && !boosted && unit.type().rotateShooting;
         if (aimCursor) {
             unit.lookAt(mouseAngle);
-        } else if (!this.movement.isZero()) {
+        }else if (!this.movement.isZero()) {
             unit.lookAt(unit.vel.isZero() ? this.movement.angle() : unit.vel.angle());
         }
 
         if (omni) {
             unit.moveAt(this.movement);
-        } else {
+        }else {
             unit.moveAt(Tmp.v2.trns(unit.rotation, this.movement.len()));
             if (!this.movement.isZero() && ground) {
                 unit.vel.rotateTo(this.movement.angle(), unit.type().rotateSpeed);

@@ -22,7 +22,7 @@ public class OzoneMenu extends BaseDialog {
         this.keyDown((key) -> {
             if (key == KeyCode.escape || key == KeyCode.back) {
                 arc.Core.app.post(this::hide);
-            } else if (key == KeyCode.enter) {
+            }else if (key == KeyCode.enter) {
                 Commands.call(Core.commandsPrefix + commands);
                 commands = "";
                 commandsField.clearText();
@@ -40,7 +40,7 @@ public class OzoneMenu extends BaseDialog {
         try {
             if (!Vars.ui.hudfrag.shown)
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
-        } catch (Throwable ignored) {
+        }catch (Throwable ignored) {
         }
     }
 
@@ -73,7 +73,7 @@ public class OzoneMenu extends BaseDialog {
         try {
             if (Vars.ui.hudfrag.shown)
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
-        } catch (Throwable ignored) {
+        }catch (Throwable ignored) {
         }
     }
 }

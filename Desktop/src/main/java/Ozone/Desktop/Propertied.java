@@ -10,7 +10,7 @@ public class Propertied {
             for (String s : new String(ClassLoader.getSystemResourceAsStream("Manifest.properties").readAllBytes()).split("\n"))
                 if (s.startsWith("#")) continue;
                 else h.put(s.split("=")[0], s.split("=")[1]);
-        } catch (Throwable ignored) {
+        }catch (Throwable ignored) {
         }
     }
 }
