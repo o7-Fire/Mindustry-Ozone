@@ -1,4 +1,3 @@
-include 'CodeGen'
 include 'Tools'
 include 'Desktop'
 rootProject.name = 'Ozone'
