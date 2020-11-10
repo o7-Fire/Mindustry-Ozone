@@ -10,7 +10,7 @@ repositories {
 //Desktop jar with installer and separated library
 jar {
     dependsOn ":gay"
-    archiveFileName = "Ozone.jar"
+    archiveFileName = "Ozone-Desktop.jar"
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
@@ -49,6 +49,7 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     options.compilerArgs += ["-Xlint:deprecation"]
 }
+/*
 //Obfuscated Desktop jar
 task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     printmapping "Ozone-Mapping-Desktop.map"
@@ -63,6 +64,9 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
         libraryjars "${System.getProperty('java.home')}/jmods/java.desktop.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
         libraryjars "${System.getProperty('java.home')}/jmods/java.logging.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
         libraryjars "${System.getProperty('java.home')}/jmods/java.compiler.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+        libraryjars "${System.getProperty('java.home')}/jmods/java.management.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+        libraryjars "${System.getProperty('java.home')}/jmods/java.sql.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
+
     }
     //if(System.getProperty("user.name") == "runner")
       //libraryjars gradle.gradleHomeDir, jarfilter: '!**.jar', filter: '!module-info.class'
@@ -79,8 +83,11 @@ task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
     }
     //libraryjars "${project.rootDir}/libs/"
     //libraryjars "${project.rootDir}/lib/"
-    dontwarn()
+    //optimizations("!field/removal/writeonly,!method/marking/static,!method/removal/parameter,!code/removal/advanced,!code/allocation/variable")
+    dontwarn("mindustry.**")
     repackageclasses 'Ozone'
     injars "$buildDir/libs/Ozone.jar"
     outjars "$buildDir/libs/Ozone-Desktop.jar"
 }
+
+ */

@@ -116,13 +116,15 @@ allprojects {
         //annotationProcessor project(":AtomicPlugin")
         //annotationProcessor files("${project.rootDir}/lib/Atomic-Plugin.jar")
         compileOnly 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'
+        compileOnly group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
+
         spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.1'
     }
 
 
     task deploy(type: Jar) {
         //dependsOn ":Android:jarAndroid"
-        dependsOn ":Desktop:proguard"
+        dependsOn ":Desktop:jar"
 
         from { [zipTree("Desktop/build/libs/Ozone-Desktop.jar"), zipTree("Android/build/libs/Ozone-Android.jar")] }
 
