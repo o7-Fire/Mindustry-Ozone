@@ -1,9 +1,18 @@
 # Project Ozone
-### Classified For Your Eyes Only
 
 
+# Download
+0.Go to [here](https://github.com/o7-Fire/Mindustry-Ozone/actions)
+
+1. Click the latest run\
+![1](https://cdn.discordapp.com/attachments/713346278003572777/775656106260561950/unknown.png)
+2. Click the mindustry-ozone-desktop\
+![2](https://cdn.discordapp.com/attachments/713346278003572777/775656148924760124/unknown.png)
+3. Download and unzip\
+![3](https://cdn.discordapp.com/attachments/713346278003572777/775656236569853952/unknown.png)
+4. Install
 # Minimum Requirement
-* Java 14/8 (JDK 14 preferable)
+* Java 14 and added to %PATH%
 * 4+ thread CPU or 2 thread of highly fast CPU
 * 4 GB+ of RAM for bots operation
 * GPU doesn't matter, unless you use improvised shader
@@ -20,7 +29,9 @@
 * 3.Run Mindustry
 * 4.fuck its crash
 * 5.you are a failure, can't even install a simple mods
-* 6.nvm its show up again
+* 6.nvm its show up again\
+or
+* 0.Copy and paste to %APPDATA%/Mindustry/mods/ (Mindustry user data)
 
 # Feature TODO
 > Fun tools
