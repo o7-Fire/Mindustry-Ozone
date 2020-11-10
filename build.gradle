@@ -52,7 +52,7 @@ allprojects {
         atomHash = "f126e32661"
         githubHash = "null"
         if(project.hasProperty("gHash"))
-            githubHash = args(gHash)
+            githubHash = gHash
         def atomMeta = new File(rootDir, "src/main/resources/Manifest.properties")
         def props = new Properties()
         try{atomMeta.createNewFile()}catch(ignored){}//what a beautiful catch block
