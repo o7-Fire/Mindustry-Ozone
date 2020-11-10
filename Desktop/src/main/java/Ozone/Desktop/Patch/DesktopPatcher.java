@@ -21,7 +21,6 @@ import Ozone.Event.Internal;
 import Settings.Desktop;
 import arc.Core;
 import arc.Events;
-import arc.util.Log;
 import mindustry.Vars;
 import mindustry.game.EventType;
 
@@ -32,7 +31,6 @@ public class DesktopPatcher {
         Events.run(Internal.Init.CommandsRegister, Commands::Init);
         Events.run(Internal.Init.TranslationRegister, Translation::Init);
         Events.run(Internal.Init.PatchRegister, () -> {
-            Log.infoTag("Ozone", "Patching DesktopInput");
             Vars.control.input = new DesktopInput();
         });
         Events.on(EventType.ClientLoadEvent.class, s -> {

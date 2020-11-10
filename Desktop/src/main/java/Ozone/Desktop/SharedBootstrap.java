@@ -66,6 +66,10 @@ public class SharedBootstrap {
         //scope.setContexts("Atomic.Hash", Propertied.h.getOrDefault("AtomHash", "Snapshot"));
         scope.setContexts("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
         scope.setContexts("Java.Version", System.getProperty("java.version"));
+        StringBuilder sb = new StringBuilder();
+        for (URL u : libraryLoader.getURLs())
+            sb.append(u.toExternalForm()).append(":");
+        scope.setContexts("Loaded.Library", sb.toString());
         for (Map.Entry<String, String> s : Propertied.h.entrySet())
             scope.setContexts(s.getKey(), s.getValue());
         return scope;
