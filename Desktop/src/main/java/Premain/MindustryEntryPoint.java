@@ -21,7 +21,8 @@ import io.sentry.Sentry;
 
 import java.io.File;
 
-public class MindustryEntryPoint {
+public class
+MindustryEntryPoint {
     //Mindustry Only
     public static void main(String[] args) {
         try {

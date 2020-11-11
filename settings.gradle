@@ -12,7 +12,6 @@ if(new File(settingsDir, '../Atom').exists()) {
     use(
             ":Atom",
             ":Atom:Atomic",
-            ":Atom:Android",
             ":Atom:Desktop"
     )
 }

@@ -8,7 +8,6 @@ import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Structs;
 import arc.util.serialization.Base64Coder;
-import mindustry.Vars;
 import mindustry.mod.Scripts;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net.NetProvider;
@@ -19,38 +18,71 @@ import rhino.Context;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import static mindustry.Vars.*;
+
 public interface Platform {
+
+    /**
+     * Dynamically loads a jar file.
+     */
     default Class<?> loadJar(Fi jar, String mainClass) throws Exception {
         URLClassLoader classLoader = new URLClassLoader(new URL[]{jar.file().toURI().toURL()}, this.getClass().getClassLoader());
         return classLoader.loadClass(mainClass);
     }
 
+    /**
+     * Steam: Update lobby visibility.
+     */
     default void updateLobby() {
     }
 
+    /**
+     * Steam: Show multiplayer friend invite dialog.
+     */
     default void inviteFriends() {
     }
 
+    /**
+     * Steam: Share a map on the workshop.
+     */
     default void publish(Publishable pub) {
     }
 
+    /**
+     * Steam: View a listing on the workshop.
+     */
     default void viewListing(Publishable pub) {
     }
 
+    /**
+     * Steam: View a listing on the workshop by an ID.
+     */
     default void viewListingID(String mapid) {
     }
 
+    /**
+     * Steam: Return external workshop maps to be loaded.
+     */
     default Seq<Fi> getWorkshopContent(Class<? extends Publishable> type) {
-        return new Seq(0);
+        return new Seq<>(0);
     }
 
+    /**
+     * Steam: Open workshop for maps.
+     */
     default void openWorkshop() {
     }
 
+    /**
+     * Get the networking implementation.
+     */
     default NetProvider getNet() {
         return new ArcNetProvider();
     }
 
+    /**
+     * Gets the scripting implementation.
+     */
     default Scripts createScripts() {
         return new Scripts();
     }
@@ -61,88 +93,109 @@ public interface Platform {
         return c;
     }
 
+    /**
+     * Update discord RPC.
+     */
     default void updateRPC() {
     }
 
+    /**
+     * Must be a base64 string 8 bytes in length.
+     */
     default String getUUID() {
         String uuid = Core.settings.getString("uuid", "");
         if (uuid.isEmpty()) {
             byte[] result = new byte[8];
-            (new Rand()).nextBytes(result);
+            new Rand().nextBytes(result);
             uuid = new String(Base64Coder.encode(result));
             Core.settings.put("uuid", uuid);
             return uuid;
-        }else {
-            return uuid;
         }
+        return uuid;
     }
 
+    /**
+     * Only used for iOS or android: open the share menu for a map or save.
+     */
     default void shareFile(Fi file) {
     }
 
-    default void export(String name, String extension, Platform.FileWriter writer) {
-        if (!Vars.ios) {
-            Vars.platform.showFileChooser(false, extension, (file) -> {
-                Vars.ui.loadAnd(() -> {
+    default void export(String name, String extension, FileWriter writer) {
+        if (!ios) {
+            platform.showFileChooser(false, extension, file -> {
+                ui.loadAnd(() -> {
                     try {
                         writer.write(file);
-                    }catch (Throwable var3) {
-                        Vars.ui.showException(var3);
-                        Log.err(var3);
+                    } catch (Throwable e) {
+                        ui.showException(e);
+                        Log.err(e);
                     }
-
                 });
             });
-        }else {
-            Vars.ui.loadAnd(() -> {
+        } else {
+            ui.loadAnd(() -> {
                 try {
                     Fi result = Core.files.local(name + "." + extension);
                     writer.write(result);
-                    Vars.platform.shareFile(result);
-                }catch (Throwable var4) {
-                    Vars.ui.showException(var4);
-                    Log.err(var4);
+                    platform.shareFile(result);
+                } catch (Throwable e) {
+                    ui.showException(e);
+                    Log.err(e);
                 }
-
             });
         }
-
     }
 
+    /**
+     * Show a file chooser.
+     *
+     * @param cons      Selection listener
+     * @param open      Whether to open or save files
+     * @param extension File extension to filter
+     */
     default void showFileChooser(boolean open, String extension, Cons<Fi> cons) {
-        (new FileChooser(open ? "@open" : "@save", (file) -> {
-            return file.extEquals(extension);
-        }, open, (file) -> {
+        new FileChooser(open ? "@open" : "@save", file -> file.extEquals(extension), open, file -> {
             if (!open) {
                 cons.get(file.parent().child(file.nameWithoutExtension() + "." + extension));
-            }else {
+            } else {
                 cons.get(file);
             }
-
-        })).show();
+        }).show();
     }
 
+    /**
+     * Show a file chooser for multiple file types.
+     *
+     * @param cons       Selection listener
+     * @param extensions File extensions to filter
+     */
     default void showMultiFileChooser(Cons<Fi> cons, String... extensions) {
-        if (Vars.mobile) {
-            this.showFileChooser(true, extensions[0], cons);
-        }else {
-            (new FileChooser("@open", (file) -> {
-                return Structs.contains(extensions, file.extension().toLowerCase());
-            }, true, cons)).show();
+        if (mobile) {
+            showFileChooser(true, extensions[0], cons);
+        } else {
+            new FileChooser("@open", file -> Structs.contains(extensions, file.extension().toLowerCase()), true, cons).show();
         }
-
     }
 
+    /**
+     * Hide the app. Android only.
+     */
     default void hide() {
     }
 
+    /**
+     * Forces the app into landscape mode.
+     */
     default void beginForceLandscape() {
     }
 
+    /**
+     * Stops forcing the app into landscape orientation.
+     */
     default void endForceLandscape() {
     }
 
-    public interface FileWriter {
-        void write(Fi var1) throws Throwable;
+    interface FileWriter {
+        void write(Fi file) throws Throwable;
     }
 }

@@ -1,4 +1,3 @@
-
 package mindustry;
 
 import arc.Core;
@@ -34,6 +33,7 @@ import mindustry.maps.Maps;
 import mindustry.mod.Mods;
 import mindustry.net.BeControl;
 import mindustry.net.Net;
+import mindustry.net.ServerGroup;
 import mindustry.world.Tile;
 
 import java.io.IOException;
@@ -105,7 +105,7 @@ public class Vars implements Loadable {
     /**
      * list of built-in servers.
      */
-    public static final Seq<String> defaultServers = Seq.with();
+    public static final Seq<ServerGroup> defaultServers = Seq.with();
     /**
      * maximum distance between mine and core that supports automatic transferring
      */
@@ -122,25 +122,15 @@ public class Vars implements Loadable {
      * displayed item size when ingame.
      */
     public static final float itemSize = 5f;
-    /**
-     * units outside of this bound will die instantly
-     */
+    /** units outside of this bound will die instantly */
     public static final float finalWorldBounds = 500;
-    /**
-     * mining range for manual miners
-     */
+    /** mining range for manual miners */
     public static final float miningRange = 70f;
-    /**
-     * range for building
-     */
+    /** range for building */
     public static final float buildingRange = 220f;
-    /**
-     * range for moving items
-     */
+    /** range for moving items */
     public static final float itemTransferRange = 220f;
-    /**
-     * range for moving items for logic units
-     */
+    /** range for moving items for logic units */
     public static final float logicItemTransferRange = 45f;
     /**
      * duration of time between turns in ticks
@@ -150,29 +140,17 @@ public class Vars implements Loadable {
      * chance of an invasion per turn, 1 = 100%
      */
     public static final float baseInvasionChance = 1f / 30f;
-    /**
-     * how many turns have to pass before invasions start
-     */
+    /** how many turns have to pass before invasions start */
     public static final int invasionGracePeriod = 20;
-    /**
-     * min armor fraction damage; e.g. 0.05 = at least 5% damage
-     */
+    /** min armor fraction damage; e.g. 0.05 = at least 5% damage */
     public static final float minArmorDamage = 0.1f;
-    /**
-     * launch animation duration
-     */
+    /** launch animation duration */
     public static final float launchDuration = 140f;
-    /**
-     * size of tiles in units
-     */
+    /** size of tiles in units */
     public static final int tilesize = 8;
-    /**
-     * size of one tile payload (^2)
-     */
+    /** size of one tile payload (^2) */
     public static final float tilePayload = tilesize * tilesize;
-    /**
-     * all choosable player colors in join/host dialog
-     */
+    /** all choosable player colors in join/host dialog */
     public static final Color[] playerColors = {
             Color.valueOf("82759a"),
             Color.valueOf("c0c1c5"),
@@ -191,61 +169,33 @@ public class Vars implements Loadable {
             Color.valueOf("4b5ef1"),
             Color.valueOf("2cabfe"),
     };
-    /**
-     * default server port
-     */
+    /** default server port */
     public static final int port = 6567;
-    /**
-     * multicast discovery port.
-     */
+    /** multicast discovery port.*/
     public static final int multicastPort = 20151;
-    /**
-     * multicast group for discovery.
-     */
+    /** multicast group for discovery.*/
     public static final String multicastGroup = "227.2.7.7";
-    /**
-     * map file extension
-     */
+    /** map file extension */
     public static final String mapExtension = "msav";
-    /**
-     * save file extension
-     */
+    /** save file extension */
     public static final String saveExtension = "msav";
-    /**
-     * schematic file extension
-     */
+    /** schematic file extension */
     public static final String schematicExtension = "msch";
-    /**
-     * Whether to load locales.
-     */
+    /** Whether to load locales.*/
     public static boolean loadLocales = true;
-    /**
-     * Whether the logger is loaded.
-     */
+    /** Whether the logger is loaded. */
     public static boolean loadedLogger = false, loadedFileLogger = false;
-    /**
-     * Whether to enable various experimental features (e.g. cliffs)
-     */
+    /** Whether to enable various experimental features (e.g. cliffs) */
     public static boolean experimental = false;
-    /**
-     * tile used in certain situations, instead of null
-     */
+    /** tile used in certain situations, instead of null */
     public static Tile emptyTile;
-    /**
-     * for map generator dialog
-     */
+    /** for map generator dialog */
     public static boolean updateEditorOnChange = false;
-    /**
-     * if true, UI is not drawn
-     */
+    /** if true, UI is not drawn */
     public static boolean disableUI;
-    /**
-     * if true, game is set up in mobile mode, even on desktop. used for debugging
-     */
+    /** if true, game is set up in mobile mode, even on desktop. used for debugging */
     public static boolean testMobile;
-    /**
-     * whether the game is running on a mobile device
-     */
+    /** whether the game is running on a mobile device */
     public static boolean mobile;
     /**
      * whether the game is running on an iOS device
@@ -288,37 +238,21 @@ public class Vars implements Loadable {
      * data subdirectory used for screenshots
      */
     public static Fi screenshotDirectory;
-    /**
-     * data subdirectory used for custom maps
-     */
+    /** data subdirectory used for custom maps */
     public static Fi customMapDirectory;
-    /**
-     * data subdirectory used for custom map previews
-     */
+    /** data subdirectory used for custom map previews */
     public static Fi mapPreviewDirectory;
-    /**
-     * tmp subdirectory for map conversion
-     */
+    /** tmp subdirectory for map conversion */
     public static Fi tmpDirectory;
-    /**
-     * data subdirectory used for saves
-     */
+    /** data subdirectory used for saves */
     public static Fi saveDirectory;
-    /**
-     * data subdirectory used for mods
-     */
+    /** data subdirectory used for mods */
     public static Fi modDirectory;
-    /**
-     * data subdirectory used for schematics
-     */
+    /** data subdirectory used for schematics */
     public static Fi schematicDirectory;
-    /**
-     * data subdirectory used for bleeding edge build versions
-     */
+    /** data subdirectory used for bleeding edge build versions */
     public static Fi bebuildDirectory;
-    /**
-     * empty map, indicates no current map
-     */
+    /** empty map, indicates no current map */
     public static Map emptyMap;
     /**
      * list of all locales that can be switched to
@@ -332,13 +266,13 @@ public class Vars implements Loadable {
     public static EntityCollisions collisions;
     public static Waves waves;
     public static LoopControl loops;
-    public static Platform platform = new Platform() {
-    };
+    public static Platform platform = new Platform(){};
     public static Mods mods;
     public static Schematics schematics;
     public static BeControl becontrol;
     public static AsyncCore asyncCore;
     public static BaseRegistry bases;
+
     public static Universe universe;
     public static World world;
     public static Maps maps;
@@ -362,11 +296,11 @@ public class Vars implements Loadable {
             //load locales
             String[] stra = Core.files.internal("locales").readString().split("\n");
             locales = new Locale[stra.length];
-            for (int i = 0; i < locales.length; i++) {
+            for(int i = 0; i < locales.length; i++){
                 String code = stra[i];
-                if (code.contains("_")) {
+                if(code.contains("_")){
                     locales[i] = new Locale(code.split("_")[0], code.split("_")[1]);
-                }else {
+                } else {
                     locales[i] = new Locale(code);
                 }
             }
@@ -388,8 +322,8 @@ public class Vars implements Loadable {
         emptyMap = new Map(new StringMap());
         emptyTile = null;
 
-        if (tree == null) tree = new FileTree();
-        if (mods == null) mods = new Mods();
+        if(tree == null) tree = new FileTree();
+        if(mods == null) mods = new Mods();
 
         content = new ContentLoader();
         loops = new LoopControl();
@@ -429,13 +363,13 @@ public class Vars implements Loadable {
             String result = text;
             String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
             System.out.println(rawText);
+
+            result = tags[level.ordinal()] + " " + result;
             if (!level.equals(Log.LogLevel.debug))
                 Sentry.addBreadcrumb(text, level.name());
-            result = tags[level.ordinal()] + " " + result;
-
             if (!headless && (ui == null || ui.scriptfrag == null)) {
                 logBuffer.add(result);
-            }else if (!headless) {
+            } else if (!headless) {
                 if (!OS.isWindows) {
                     for (String code : ColorCodes.values) {
                         result = result.replace(code, "");
@@ -466,12 +400,12 @@ public class Vars implements Loadable {
                 try {
                     writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " + Log.removeColors(text) + "\n");
                     writer.flush();
-                }catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                     //ignore it
                 }
             };
-        }catch (Exception e) {
+        } catch (Exception e) {
             //handle log file not being found
             Log.err(e);
         }
@@ -483,7 +417,7 @@ public class Vars implements Loadable {
         settings.setJson(JsonIO.json());
         settings.setAppName(appName);
 
-        if (steam || (Version.modifier != null && Version.modifier.contains("steam"))) {
+        if(steam || (Version.modifier != null && Version.modifier.contains("steam"))) {
             settings.setDataDirectory(Core.files.local("saves/"));
         }
 
@@ -508,7 +442,7 @@ public class Vars implements Loadable {
             if (!headless) {
                 Time.run(10f, () -> ui.showInfo("Note: You have successfully loaded an external translation bundle."));
             }
-        }catch (Throwable e) {
+        } catch (Throwable e) {
             //no external bundle found
 
             Fi handle = Core.files.internal("bundles/bundle");
@@ -516,12 +450,12 @@ public class Vars implements Loadable {
             String loc = settings.getString("locale");
             if (loc.equals("default")) {
                 locale = Locale.getDefault();
-            }else {
+            }else{
                 Locale lastLocale;
-                if (loc.contains("_")) {
+                if(loc.contains("_")){
                     String[] split = loc.split("_");
                     lastLocale = new Locale(split[0], split[1]);
-                }else {
+                }else{
                     lastLocale = new Locale(loc);
                 }
 
@@ -534,7 +468,7 @@ public class Vars implements Loadable {
     }
 
     @Override
-    public void loadAsync() {
+    public void loadAsync(){
         loadSettings();
         init();
     }
