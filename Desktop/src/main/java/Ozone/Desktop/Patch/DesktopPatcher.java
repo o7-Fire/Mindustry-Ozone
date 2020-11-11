@@ -33,7 +33,7 @@ import mindustry.game.EventType;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.InvalidPathException;
 import java.util.HashMap;
@@ -45,32 +45,37 @@ public class DesktopPatcher {
             HashMap<String, String> release = Manifest.getManifest(Manifest.latestReleaseManifestID);
             if (!Manifest.compatibleMindustryVersion(release)) return;
             if (!Manifest.match(release, Propertied.h)) return;
-            Events.on(EventType.ClientLoadEvent.class, s -> {
-                Vars.ui.showConfirm("Ozone-Update", "A new compatible release appeared", () -> {
-                    try {
-                        selfUpdate(release.get("DownloadURL"));
-                    }catch (Throwable i) {
-                        Vars.ui.showException(i);
-                        Sentry.captureException(i);
-                    }
-                });
-            });
-
+            Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showConfirm("Ozone-Update", "A new compatible release appeared", () -> selfUpdate(release.get("DownloadURL"))));
         }catch (Throwable i) {
             Log.errTag("Ozone-Updater", "Failed to get latest release manifest: " + i.toString());
             Sentry.captureException(i);
         }
     }
 
-    public static void selfUpdate(String url) throws IOException {
-        File jar = new File(SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-        if (!new Fi(jar).extension().equals("jar"))
-            throw new InvalidPathException(jar.getAbsolutePath(), "is not a jar file");
-        URL real = new URL("jar:" + Manifest.getArtifactLocation(new URL(url)) + "!/Ozone-Desktop.jar");
-        FileOutputStream f = new FileOutputStream(jar);
-        f.write(real.openStream().readAllBytes());
-        SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_INFORMATION, "Exit", "Relaunch mindustry");
-        System.exit(0);
+    public static void selfUpdate(String url) {
+        Vars.ui.loadfrag.show();
+        Thread t = new Thread(() -> {
+            try {
+                File jar = new File(SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+                if (!new Fi(jar).extension().equals("jar"))
+                    throw new InvalidPathException(jar.getAbsolutePath(), "is not a jar file");
+                URL real = new URL("jar:" + Manifest.getArtifactLocation(new URL(url)) + "!/Ozone-Desktop.jar");
+                FileOutputStream f = new FileOutputStream(jar);
+                InputStream is = real.openStream();
+                f.write(is.readAllBytes());
+                SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_INFORMATION, "Exit", "Relaunch mindustry");
+                System.exit(0);
+            }catch (Throwable e) {
+                Vars.ui.showException(e);
+                Sentry.captureException(e);
+            }finally {
+                Vars.ui.loadfrag.hide();
+            }
+        });
+        t.setDaemon(true);
+        t.start();
+
+
     }
 
     public static void register() {
