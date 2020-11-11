@@ -27,7 +27,7 @@ public class Translation {
         commands.put("javac", "run single line of java code");
         commands.put("library", "manage runtime library");
         commands.put("debug", "System.out.println(\"yeet\")");
-        settings.put("logMessage", "Log Every Message");
+        settings.put("logMessage", "Log Every Message[Being Reworked]");
         generalSettings.put("showPlayerID", "Show Player ID");
         generalSettings.put("showPlayerTyping", "Show Player Typing Status");
         generalSettings.put("showPlayerShooting", "Show Player Shooting Status");

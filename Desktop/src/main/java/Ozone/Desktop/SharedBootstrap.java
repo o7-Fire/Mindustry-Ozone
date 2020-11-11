@@ -80,10 +80,12 @@ public class SharedBootstrap {
         //scope.setContexts("Atomic.Hash", Propertied.h.getOrDefault("AtomHash", "Snapshot"));
         scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
         scope.setTag("Java.Version", System.getProperty("java.version"));
-        StringBuilder s = new StringBuilder();
         for (Map.Entry<String, String> e : Propertied.h.entrySet())
-            s.append(e.getKey()).append("=").append(e.getValue()).append("\n");
-        scope.setContexts("Manifest", s.toString());
+            scope.setTag(e.getKey(), e.getValue());
+        //StringBuilder s = new StringBuilder();
+        //for (Map.Entry<String, String> e : Propertied.h.entrySet())
+        //    s.append(e.getKey()).append("=").append(e.getValue()).append("\n");
+        ///scope.setContexts("Manifest", s.toString());
         StringBuilder sb = new StringBuilder("Library List:\n");
         for (URL u : libraryLoader.getURLs()) sb.append("-").append(u.toString()).append("\n");
         scope.setContexts("Loaded.Library", sb.toString());

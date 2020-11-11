@@ -215,6 +215,7 @@ public class PlayerListFragment extends Fragment {
             SettingsDialog.SettingsTable table = new SettingsDialog.SettingsTable();
             String t = boolean.class.getName();
             //so many unnecessary try and catch
+
             for (Field f : Settings.class.getDeclaredFields())
                 if (f.getType().getName().equals(t)) {
                     try {
@@ -226,6 +227,7 @@ public class PlayerListFragment extends Fragment {
                                 Sentry.captureException(e);
                             }
                         });
+                        f.setBoolean(null, Core.settings.getBool(f.getName(), f.getBoolean(null)));
                     }catch (IllegalAccessException e) {
                         e.printStackTrace();
                         Sentry.captureException(e);

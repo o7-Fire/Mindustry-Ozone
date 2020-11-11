@@ -45,7 +45,7 @@ import java.util.HashMap;
 public class DesktopPatcher {
 
     public static void async() {
-        if (Desktop.logMessage) {
+        if (false) {
             if (Ozone.Desktop.Manifest.messageLog.exists()) {//try to load
                 Ozone.Desktop.Manifest.tryLoadLogMessage();
             }

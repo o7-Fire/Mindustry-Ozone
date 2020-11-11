@@ -68,6 +68,8 @@ allprojects {
             githubOwner = gRepoOwner
         if(project.hasProperty("builderID"))
             modsBuilderID = builderID
+        else
+            modsBuilderID = System.getProperty("user.name")
         if(project.hasProperty("builder"))
             modsBuilder = builder
 

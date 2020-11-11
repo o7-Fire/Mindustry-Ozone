@@ -142,6 +142,7 @@ public class Manifest {
     }
 
     private static void loadMessageLog(File messageLogBackup) throws java.io.IOException, ClassNotFoundException {
+
         for (Object co : SerializeData.dataArrayIn(messageLogBackup).get()) {
             if (!(co instanceof ChatOzoneFragment.ChatMessage)) continue;
             ChatOzoneFragment.ChatMessage cm = (ChatOzoneFragment.ChatMessage) co;
