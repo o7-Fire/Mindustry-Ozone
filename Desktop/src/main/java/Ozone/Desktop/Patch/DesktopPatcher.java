@@ -87,7 +87,7 @@ public class DesktopPatcher {
         });
         Events.on(EventType.ClientLoadEvent.class, s -> {
             Core.settings.getBoolOnce("CrashReportv1", () -> {
-                Vars.ui.showConfirm("Anonymous Data", "We collect your anonymous data (crash-log) so we can fix thing, no turning back", () -> {
+                Vars.ui.showConfirm("Anonymous Data Reporter", "We collect your anonymous insensitive data (crash-log) so we can fix thing, no turning back", () -> {
                 });
             });
             /*

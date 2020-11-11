@@ -34,6 +34,7 @@ dependencies {
     //compileOnly files("${project.rootDir}/libs/Mindustry.jar")
     compileOnly "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
     compileOnly "com.github.Anuken.Mindustry:desktop:$mindustryVersion"
+    compileOnly "com.github.Anuken.Mindustry:annotations:$mindustryVersion"
     implementation 'io.sentry:sentry:3.1.0'
     compileOnly group: 'com.formdev', name: 'flatlaf', version: '0.43'
     compileOnly group: 'com.miglayout', name: 'miglayout-core', version: '5.2'

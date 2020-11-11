@@ -33,10 +33,11 @@ import java.util.Map;
 public class SharedBootstrap {
     public static final String jitpack = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/";
     protected static final ArrayList<String> StandaloneLibrary = new ArrayList<>(
-            Arrays.asList(
+            Arrays.asList(//TODO don't
                     "https://repo1.maven.org/maven2/com/miglayout/miglayout-core/5.2/miglayout-core-5.2.jar",
                     "https://repo1.maven.org/maven2/com/miglayout/miglayout-swing/5.2/miglayout-swing-5.2.jar",
-                    "https://repo1.maven.org/maven2/com/formdev/flatlaf/0.43/flatlaf-0.43.jar")
+                    "https://repo1.maven.org/maven2/com/formdev/flatlaf/0.43/flatlaf-0.43.jar"
+            )
     ), ModsLibrary = new ArrayList<>();
     public static LibraryLoader libraryLoader;
     public static boolean customBootstrap;

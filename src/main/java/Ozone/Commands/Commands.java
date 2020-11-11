@@ -75,7 +75,6 @@ public class Commands {
         });
 
         register("help", new Command(Commands::help));
-        register("kickbypass", new Command(Commands::KickBypass));
         register("chaos-kick", new Command(Commands::chaosKick));
         register("task-move", new Command(Commands::taskMove));
         register("info-pos", new Command(Commands::infoPos, Icon.move));
@@ -106,49 +105,6 @@ public class Commands {
 
     }
 
-    /*
-    //Anuked suggestion
-    public static void superBullet(ArrayList<String> s) {
-        if (s.size() < 3) {
-            tellUser("superBullet x(Target-X-Coordinate-Tile) y(Target-Y-Coordinate-Tile) s(Second, how long the effect lasted)");
-            return;
-        }
-        try {
-            int x = Integer.parseInt(s.get(0));
-            int y = Integer.parseInt(s.get(1));
-            int sec = Integer.parseInt(s.get(2));
-            long start = System.currentTimeMillis();
-            if (Vars.world.tile(x, y) == null) {
-                tellUser("Null tile");
-                return;
-            }
-            float lastX = Vars.player.getX();
-            float lastY = Vars.player.getY();
-            Task task = new Task() {
-                @Override
-                public boolean isCompleted() {
-                    return System.currentTimeMillis() - start > sec * 1000 || !Vars.net.active();
-                }
-
-                @Override
-                public void update() {
-                    Vec2 vec = new Vec2();
-                    Tile tile = Vars.world.tile(x, y);
-                    vec.trns(Vars.player.unit().angleTo(tile), Vars.player.unit().type().speed * 1000);
-                    Vars.player.unit().moveAt(vec, 100F);
-                    Vars.player.x = lastX;
-                    Vars.player.y = lastY;
-
-                }
-            };
-            Commands.commandsQueue.addLast(task);
-        } catch (NumberFormatException f) {
-            tellUser("Failed to parse integer, are you sure that argument was integer ?");
-            Vars.ui.showException(f);
-        }
-    }
-     */
-
     public static void register(String name, Command command) {
         register(name, command, null);
     }
@@ -160,37 +116,6 @@ public class Commands {
             commandsList.put(name, command);
         else
             commandsList.replace(name, command);
-    }
-
-    private static volatile boolean didBypass = false;
-
-    private static void BypassVoid() {
-        while (Vars.net.active()) {
-            if (didBypass) {
-                for (Player target : Groups.player) {
-                    if (!target.name.equals(Vars.player.name)) {
-                        Call.sendChatMessage("/votekick " + target.name);
-                        try {
-                            Thread.sleep(200);
-                        }catch (Throwable e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private static void KickBypass(ArrayList ctx) {
-        didBypass = !didBypass;
-        if (!didBypass) {
-            Thread s1 = new Thread(Commands::BypassVoid);
-            s1.setDaemon(true);
-            s1.start();
-            tellUser("kicking started");
-        }else {
-            tellUser("kicking ended");
-        }
     }
 
     public static void shuffleSorter(ArrayList<String> s) {
@@ -437,6 +362,9 @@ public class Commands {
 
     }
 
+    /**
+     * @author Nexity
+     */
     public static void chaosKick(ArrayList<String> unused) {
         falseVote = !falseVote;
         if (falseVote) {

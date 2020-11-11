@@ -339,7 +339,6 @@ public class Vars implements Loadable {
     public static BeControl becontrol;
     public static AsyncCore asyncCore;
     public static BaseRegistry bases;
-
     public static Universe universe;
     public static World world;
     public static Maps maps;

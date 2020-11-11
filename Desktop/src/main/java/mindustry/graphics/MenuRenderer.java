@@ -44,6 +44,7 @@ public class MenuRenderer implements Disposable {
     private boolean random;
 
     public MenuRenderer() {
+
         Thread t =
                 new Thread(() -> {
 
@@ -234,6 +235,7 @@ public class MenuRenderer implements Disposable {
     }
 
     public void render() {
+
         time += Time.delta;
         float scaling = Math.max(Scl.scl(4f), Math.max(Core.graphics.getWidth() / ((width - 1f) * tilesize), Core.graphics.getHeight() / ((height - 1f) * tilesize)));
         camera.position.set(width * tilesize / 2f, height * tilesize / 2f);
