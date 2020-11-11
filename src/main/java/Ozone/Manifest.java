@@ -47,8 +47,8 @@ public class Manifest {
             if (!(n instanceof ArcNetProvider)) return null;
             ArcNetProvider arc = (ArcNetProvider) n;
             Client c = Reflect.getField(arc.getClass(), "client", arc);
-            return c.getRemoteAddressTCP().getHostName();
-        }catch (Throwable ignored) {
+            return c.getRemoteAddressTCP().getHostName() + ":" + c.getRemoteAddressTCP().getPort();
+        }catch (Throwable h) {
 
         }
         return lastServer;

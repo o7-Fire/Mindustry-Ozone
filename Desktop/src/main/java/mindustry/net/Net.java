@@ -273,7 +273,7 @@ public class Net {
                     this.packetQueue.add(object);
                 }
             }else {
-                Log.err("Unhandled packet type: '@'!", new Object[]{object});
+                Log.err("Unhandled packet type: '@'!", object);
             }
         }
 

@@ -2,7 +2,8 @@
 
 
 # Download
-0.Go to [here](https://github.com/o7-Fire/Mindustry-Ozone/actions)
+0.make github account and login\
+0.1.Go to [here](https://github.com/o7-Fire/Mindustry-Ozone/actions)
 
 1. Click the latest run\
 ![1](https://cdn.discordapp.com/attachments/713346278003572777/775656106260561950/unknown.png)

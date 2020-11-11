@@ -19,12 +19,14 @@ package Ozone.Desktop;
 import Ozone.Watcher.Version;
 import io.sentry.Scope;
 import io.sentry.Sentry;
-import io.sentry.protocol.Contexts;
+import io.sentry.protocol.User;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -62,21 +64,30 @@ public class SharedBootstrap {
     }
 
     public static Scope registerSentry(Scope scope) {
-        scope.setContexts("Ozone.Version", Premain.Version.semantic);
-        scope.setContexts("Ozone.Desktop.Version", Version.semantic);
+        User user = new User();
+        String id = "null";
+        try {
+            String usr = System.getProperty("user.name");
+            id = String.valueOf(ByteBuffer.wrap(MessageDigest.getInstance("SHA-256").digest(usr.getBytes())).getLong());//one way hash
+        }catch (Throwable e) {
+            Sentry.captureException(e);
+        }
+        user.setId(id);
+        scope.setUser(user);
+        scope.setTag("Ozone.Version", Premain.Version.semantic);
+        scope.setTag("Ozone.Desktop.Version", Version.semantic);
         //scope.setContexts("Ozone.Mindustry.Version", Propertied.h.getOrDefault("MindustryVersion", "Idk"));
         //scope.setContexts("Atomic.Hash", Propertied.h.getOrDefault("AtomHash", "Snapshot"));
-        scope.setContexts("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
-        scope.setContexts("Java.Version", System.getProperty("java.version"));
-        Contexts c = new Contexts();
-        int i = 0;
-        for (URL u : libraryLoader.getURLs())
-            c.put(String.valueOf(i++), u.toExternalForm());
-        scope.setContexts("Loaded.Library", c);
-        Contexts prop = new Contexts();
-        for (Map.Entry<String, String> s : Propertied.h.entrySet())
-            prop.put(s.getKey(), s.getValue());
-        scope.setContexts("properties", prop);
+        scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
+        scope.setTag("Java.Version", System.getProperty("java.version"));
+        StringBuilder s = new StringBuilder();
+        for (Map.Entry<String, String> e : Propertied.h.entrySet())
+            s.append(e.getKey()).append("=").append(e.getValue()).append("\n");
+        scope.setContexts("Manifest", s.toString());
+        StringBuilder sb = new StringBuilder("Library List:\n");
+        for (URL u : libraryLoader.getURLs()) sb.append("-").append(u.toString()).append("\n");
+        scope.setContexts("Loaded.Library", sb.toString());
+        //for (Map.Entry<String, String> s : Propertied.h.entrySet())
         return scope;
     }
 

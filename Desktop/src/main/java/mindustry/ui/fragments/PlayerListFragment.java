@@ -19,6 +19,7 @@ import mindustry.graphics.Pal;
 import mindustry.net.NetConnection;
 import mindustry.net.Packets.AdminAction;
 import mindustry.ui.Styles;
+import mindustry.ui.dialogs.BaseDialog;
 
 import static mindustry.Vars.*;
 
@@ -28,7 +29,7 @@ public class PlayerListFragment extends Fragment {
     private Interval timer = new Interval();
     private TextField sField;
     private boolean found = false;
-
+    public Settings settings = new Settings("Player List Settings");
     @Override
     public void build(Group parent) {
         content.name = "players";
@@ -67,7 +68,7 @@ public class PlayerListFragment extends Fragment {
                 pane.table(menu -> {
                     menu.defaults().growX().height(50f).fillY();
                     menu.name = "menu";
-
+                    menu.button("Settings", settings::show).disabled(b -> !net.client());
                     menu.button("@server.bans", ui.bans::show).disabled(b -> net.client());
                     menu.button("@server.admins", ui.admins::show).disabled(b -> net.client());
                     menu.button("@close", this::toggle);
@@ -188,4 +189,10 @@ public class PlayerListFragment extends Fragment {
         }
     }
 
+    public static class Settings extends BaseDialog {
+
+        public Settings(String title) {
+            super(title);
+        }
+    }
 }

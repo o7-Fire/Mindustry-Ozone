@@ -16,6 +16,7 @@
 
 package Ozone.Desktop.Patch;
 
+import Atom.Reflect.Reflect;
 import Ozone.Desktop.Manifest;
 import Ozone.Desktop.SharedBootstrap;
 import Ozone.Event.EventExtended;
@@ -25,10 +26,14 @@ import arc.Core;
 import arc.Events;
 import arc.backend.sdl.jni.SDL;
 import arc.files.Fi;
+import arc.net.Client;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.EventType;
+import mindustry.gen.Groups;
+import mindustry.net.ArcNetProvider;
+import mindustry.net.Net;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,8 +56,26 @@ public class DesktopPatcher {
         }
     }
 
+    public static String getServer() {
+        try {
+            Net.NetProvider n = Reflect.getField(Vars.net.getClass(), "provider", Vars.net);
+            ArcNetProvider arc = (ArcNetProvider) n;
+            Client c = Reflect.getField(arc.getClass(), "client", arc);
+            return c.getRemoteAddressTCP().getHostName() + ":" + c.getRemoteAddressTCP().getPort();
+        }catch (Throwable t) {
+            Sentry.captureException(t);
+            Log.err(t);
+            return "Null";
+        }
+    }
+
     public static void selfUpdate(String url) {
         Vars.ui.loadfrag.show();
+        Sentry.configureScope(scope -> {
+            scope.setTag("Server", getServer());
+            scope.setTag("PlayerSize", String.valueOf(Groups.player.size()));
+            scope.setTag("Multiplayer", String.valueOf(Vars.net.client()));
+        });
         Thread t = new Thread(() -> {
             try {
                 File jar = new File(SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation().getFile());
