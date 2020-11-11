@@ -16,6 +16,7 @@ import arc.struct.Seq;
 import arc.util.*;
 import arc.util.noise.RidgedPerlin;
 import arc.util.noise.Simplex;
+import io.sentry.Sentry;
 import mindustry.content.Blocks;
 import mindustry.content.UnitTypes;
 import mindustry.type.UnitType;
@@ -42,12 +43,18 @@ public class MenuRenderer implements Disposable {
     private int flyers = Mathf.random(15, 35);
     private volatile UnitType flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
     private boolean random;
-
+    public MenuGifRenderer mf;
     public MenuRenderer() {
-
+        //if(Random.getBool())
+        try {
+            mf = new MenuGifRenderer();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            Sentry.captureException(t);
+        }
+        if (mf != null) return;
         Thread t =
                 new Thread(() -> {
-
                     while (true) {
                         try {
                             if (Random.getBool())
@@ -235,6 +242,10 @@ public class MenuRenderer implements Disposable {
     }
 
     public void render() {
+        if (mf != null) {
+            mf.render();
+            return;
+        }
 
         time += Time.delta;
         float scaling = Math.max(Scl.scl(4f), Math.max(Core.graphics.getWidth() / ((width - 1f) * tilesize), Core.graphics.getHeight() / ((height - 1f) * tilesize)));
@@ -316,6 +327,7 @@ public class MenuRenderer implements Disposable {
 
     @Override
     public void dispose() {
+        if (mf != null) mf.dispose();
         batch.dispose();
         shadows.dispose();
     }
