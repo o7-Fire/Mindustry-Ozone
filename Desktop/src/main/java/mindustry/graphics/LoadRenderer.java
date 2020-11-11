@@ -1,6 +1,7 @@
 
 package mindustry.graphics;
 
+import Atom.Utility.Random;
 import arc.Core;
 import arc.func.Boolp;
 import arc.func.Floatp;
@@ -469,7 +470,11 @@ public class LoadRenderer implements Disposable {
             Font font = assets.get("tech");
             font.setColor(Pal.accent);
             Draw.color(Color.black);
-            font.draw(red + "[[[[ " + key + " ]]\n" + orange + "<" + Version.modifier + " " + (Version.build == 0 ? " [init]" : Version.build == -1 ? " custom" : " " + Version.build) + ">", w / 2f, h / 2f + 110 * s, Align.center);
+            font.draw(red + Random.getString(Random.getInt(3, 14)), w / 2f, h / 2f + 110 * s, Align.center);
+            //too much
+            //for (int i = 0; i < Random.getInt(5); i++)
+            //    font.draw(red+Random.getString(Random.getInt(4, 16)), w / Mathf.random(0.1f, 10f) , h / Mathf.random(0.2f, 10f) + 110 * s, Align.center);
+
         }
 
         Draw.flush();
