@@ -102,7 +102,7 @@ public class MenuFragment extends Fragment {
         try {
             HashMap<String, String> h = Manifest.getManifest(Manifest.latestBuildManifestID);
             if (Manifest.compatibleMindustryVersion(h, Propertied.h))
-                if (!Manifest.match(h, Propertied.h)) {
+                if (Manifest.isThisTheLatest(h)) {
                     parent.fill(c -> c.bottom().right().button("Ozone", Icon.warning, () -> ui.showConfirm("Ozone Update", "A new compatible build is exists, do you want to update ?", () -> DesktopPatcher.selfUpdate(h.get("DownloadURL")))).size(200, 60).name("becheck"));
                 }
         }catch (Throwable e) {

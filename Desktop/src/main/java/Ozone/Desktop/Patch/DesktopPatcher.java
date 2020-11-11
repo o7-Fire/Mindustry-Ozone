@@ -17,7 +17,6 @@
 package Ozone.Desktop.Patch;
 
 import Ozone.Desktop.Manifest;
-import Ozone.Desktop.Propertied;
 import Ozone.Desktop.SharedBootstrap;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
@@ -44,7 +43,7 @@ public class DesktopPatcher {
         try {
             HashMap<String, String> release = Manifest.getManifest(Manifest.latestReleaseManifestID);
             if (!Manifest.compatibleMindustryVersion(release)) return;
-            if (!Manifest.match(release, Propertied.h)) return;
+            if (!Manifest.isThisTheLatest(release)) return;
             Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showConfirm("Ozone-Update", "A new compatible release appeared", () -> selfUpdate(release.get("DownloadURL"))));
         }catch (Throwable i) {
             Log.errTag("Ozone-Updater", "Failed to get latest release manifest: " + i.toString());

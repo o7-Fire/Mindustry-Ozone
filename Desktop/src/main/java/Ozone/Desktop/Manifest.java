@@ -64,7 +64,17 @@ public class Manifest {
         if (!b.startsWith("v")) return false;//not sure
         b = b.substring(1);
         return Ozone.Manifest.getMindustryVersion().startsWith(b);
+    }
 
+    public static boolean isThisTheLatest(HashMap<String, String> a) {
+        try {
+            long source = Long.parseLong(Propertied.h.getOrDefault("TimeMilis", "1"));
+            long target = Long.parseLong(a.getOrDefault("TimeMilis", "0"));
+            return target > source;
+        }catch (NumberFormatException t) {
+            Log.errTag("Long-Parse", t.toString());
+        }
+        return false;
     }
 
     public static boolean match(HashMap<String, String> a, HashMap<String, String> b) {
