@@ -429,7 +429,8 @@ public class Vars implements Loadable {
             String result = text;
             String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
             System.out.println(rawText);
-            Sentry.addBreadcrumb(text, level.name());
+            if (!level.equals(Log.LogLevel.debug))
+                Sentry.addBreadcrumb(text, level.name());
             result = tags[level.ordinal()] + " " + result;
 
             if (!headless && (ui == null || ui.scriptfrag == null)) {

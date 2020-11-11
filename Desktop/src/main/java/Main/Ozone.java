@@ -52,6 +52,7 @@ public class Ozone extends Mod {
 
     @Override
     public void loadContent() {
+        DesktopPatcher.async();
         Main.loadContent();
     }
 

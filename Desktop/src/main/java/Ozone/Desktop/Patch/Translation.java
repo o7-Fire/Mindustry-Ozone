@@ -16,8 +16,7 @@
 
 package Ozone.Desktop.Patch;
 
-import static Ozone.Patch.Translation.commands;
-import static Ozone.Patch.Translation.settings;
+import static Ozone.Patch.Translation.*;
 
 public class Translation {
     private static volatile boolean init = false;
@@ -29,5 +28,8 @@ public class Translation {
         commands.put("library", "manage runtime library");
         commands.put("debug", "System.out.println(\"yeet\")");
         settings.put("logMessage", "Log Every Message");
+        generalSettings.put("showPlayerID", "Show Player ID");
+        generalSettings.put("showPlayerTyping", "Show Player Typing Status");
+        generalSettings.put("showPlayerShooting", "Show Player Shooting Status");
     }
 }

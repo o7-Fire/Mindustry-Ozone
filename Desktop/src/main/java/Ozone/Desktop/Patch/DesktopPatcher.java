@@ -44,6 +44,15 @@ import java.util.HashMap;
 
 public class DesktopPatcher {
 
+    public static void async() {
+        if (Desktop.logMessage) {
+            if (Ozone.Desktop.Manifest.messageLog.exists()) {//try to load
+                Ozone.Desktop.Manifest.tryLoadLogMessage();
+            }
+            Events.run(EventExtended.Connect.Disconnected, Ozone.Desktop.Manifest::trySaveLogMessage);
+        }
+    }
+
     public static void checkRelease() {
         try {
             HashMap<String, String> release = Manifest.getManifest(Manifest.latestReleaseManifestID);
@@ -145,12 +154,7 @@ public class DesktopPatcher {
             }
 
              */
-            if (Desktop.logMessage) {
-                if (Ozone.Desktop.Manifest.messageLog.exists()) {//try to load
-                    Ozone.Desktop.Manifest.tryLoadLogMessage();
-                }
-                Events.run(EventExtended.Connect.Disconnected, Ozone.Desktop.Manifest::trySaveLogMessage);
-            }
+
 
         });
 

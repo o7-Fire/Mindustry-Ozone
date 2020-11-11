@@ -29,7 +29,7 @@ import static Ozone.Interface.registerWords;
 public class Translation {
     public static final ArrayList<String> normalSinglet = new ArrayList<>(Arrays.asList("Run"));
     public static final ArrayList<String> singlet1 = new ArrayList<>(Arrays.asList("String", "Integer", "Float", "Long", "Boolean", "Commands"));
-    public static final HashMap<String, String> settings = new HashMap<>();
+    public static final HashMap<String, String> settings = new HashMap<>(), generalSettings = new HashMap<>();
     public static final HashMap<String, String> commands = new HashMap<>();
     public static final HashMap<String, String> keyBinds = new HashMap<>();
 
@@ -66,6 +66,9 @@ public class Translation {
         }
         for (Map.Entry<String, String> s : settings.entrySet()) {
             registerWords("setting.ozone." + s.getKey() + ".name", s.getValue());
+        }
+        for (Map.Entry<String, String> s : generalSettings.entrySet()) {
+            registerWords("setting." + s.getKey() + ".name", s.getValue());
         }
         for (Map.Entry<String, String> s : keyBinds.entrySet()) {
             registerWords("section." + s.getKey() + ".name", s.getValue());

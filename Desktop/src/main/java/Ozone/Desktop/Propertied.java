@@ -17,6 +17,7 @@
 package Ozone.Desktop;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Propertied {
     public static HashMap<String, String> h = new HashMap<>();
@@ -26,6 +27,13 @@ public class Propertied {
             h = parse(new String(ClassLoader.getSystemResourceAsStream("Manifest.properties").readAllBytes()));
         }catch (Throwable ignored) {
         }
+    }
+
+    public static String reverseParse(HashMap<String, String> se) {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> s : se.entrySet())
+            sb.append(s.getKey()).append("=").append(s.getValue()).append("\n");
+        return sb.toString();
     }
 
     public static HashMap<String, String> parse(String se) {

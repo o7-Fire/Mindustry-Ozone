@@ -35,8 +35,8 @@ public class Manifest {
     private static final String gArtifact = gApi + "actions/artifacts/";
     private static final String gAuth = "QWtpbW92OmMxOWFmZDA5ZmRlNzNiYTg1NDg3ZGMzYjJmNmI2YjIxYmViMWE3ZTU=";//magic key
     public static File messageLogFolder = new File(Atom.Manifest.currentFolder, "Ozone/");
-    public static File messageLog = new File(messageLogFolder, "MessageLogArr.dat");
-    public static File messageLogBackup = new File(messageLogFolder, "BackupMessageLogArr.dat");
+    public static final File messageLog = new File(messageLogFolder, "MessageLogArr.dat");
+    public static final File messageLogBackup = new File(messageLogFolder, "BackupMessageLogArr.dat");
     public static int latestReleaseManifestID, latestBuildManifestID;
 
     static {
@@ -153,20 +153,31 @@ public class Manifest {
     public static void trySaveLogMessage() {
         Log.infoTag("Ozone-MessageLogger", "Saving messageLog");
 
-        try {
-            SerializeData.dataOut(new SerializeData.DataArray<>(ChatOzoneFragment.messages.toArray()), messageLog);
-        }catch (Throwable t) {
-            Log.errTag("Ozone-MessageLogger", "Cant save " + Ozone.Desktop.Manifest.messageLog.getAbsolutePath());
-            Log.errTag("Ozone-MessageLogger", t.toString());
-            t.printStackTrace();
-        }
-        try {
-            SerializeData.dataOut(new SerializeData.DataArray<>(ChatOzoneFragment.messages.toArray()), messageLogBackup);
-        }catch (Throwable t) {
-            Log.errTag("Ozone-MessageLogger", "Cant save " + Manifest.messageLogBackup.getAbsolutePath());
-            Log.errTag("Ozone-MessageLogger", t.toString());
-            t.printStackTrace();
-        }
+        new Thread(() -> {
+            synchronized (messageLog) {
+                try {
+                    SerializeData.dataOut(new SerializeData.DataArray<>(ChatOzoneFragment.messages.toArray()), messageLog);
+                }catch (Throwable t) {
+                    Log.errTag("Ozone-MessageLogger", "Cant save " + Ozone.Desktop.Manifest.messageLog.getAbsolutePath());
+                    Log.errTag("Ozone-MessageLogger", t.toString());
+                    Sentry.captureException(t);
+                    t.printStackTrace();
+                }
+            }
+        }).start();
+
+        new Thread(() -> {
+            synchronized (messageLogBackup) {
+                try {
+                    SerializeData.dataOut(new SerializeData.DataArray<>(ChatOzoneFragment.messages.toArray()), messageLogBackup);
+                }catch (Throwable t) {
+                    Log.errTag("Ozone-MessageLogger", "Cant save " + Manifest.messageLogBackup.getAbsolutePath());
+                    Log.errTag("Ozone-MessageLogger", t.toString());
+                    t.printStackTrace();
+                }
+            }
+        });
+
 
     }
 }

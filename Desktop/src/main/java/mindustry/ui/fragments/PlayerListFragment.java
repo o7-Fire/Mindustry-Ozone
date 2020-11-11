@@ -7,6 +7,7 @@ import arc.scene.Group;
 import arc.scene.event.Touchable;
 import arc.scene.ui.Image;
 import arc.scene.ui.Label;
+import arc.scene.ui.SettingsDialog;
 import arc.scene.ui.TextField;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
@@ -14,12 +15,15 @@ import arc.util.Interval;
 import arc.util.Scaling;
 import arc.util.Strings;
 import arc.util.Structs;
+import io.sentry.Sentry;
 import mindustry.gen.*;
 import mindustry.graphics.Pal;
 import mindustry.net.NetConnection;
 import mindustry.net.Packets.AdminAction;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
+
+import java.lang.reflect.Field;
 
 import static mindustry.Vars.*;
 
@@ -165,8 +169,12 @@ public class PlayerListFragment extends Fragment {
             }
 
             content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
-            content.add(new Label(user.isLocal() ? "ID" : String.valueOf(user.id())));
-            content.add(new Label(user.isLocal() ? "Typing" : String.valueOf(user.typing())));
+            if (Settings.showPlayerID)
+                content.add(new Label(user.isLocal() ? "ID" : String.valueOf(user.id())));
+            if (Settings.showPlayerTyping)
+                content.add(new Label(user.isLocal() ? "Typing" : user.typing() ? "[green]True[white]" : "False"));
+            if (Settings.showPlayerShooting)
+                content.add(new Label(user.isLocal() ? "Shooting" : user.shooting() ? "[green]True[white]" : "False"));
             content.row();
             content.image().height(4f).color(state.rules.pvp ? user.team().color : Pal.gray).growX();
             content.row();
@@ -177,6 +185,7 @@ public class PlayerListFragment extends Fragment {
         }
 
         content.marginBottom(5);
+        content.pack();
     }
 
     public void toggle() {
@@ -190,9 +199,39 @@ public class PlayerListFragment extends Fragment {
     }
 
     public static class Settings extends BaseDialog {
+        public static boolean showPlayerID = true, showPlayerTyping, showPlayerShooting;
+
 
         public Settings(String title) {
             super(title);
+            addCloseButton();
+            setup();
+            shown(this::setup);
+            onResize(this::setup);
+        }
+
+        public void setup() {
+            cont.clear();
+            SettingsDialog.SettingsTable table = new SettingsDialog.SettingsTable();
+            String t = boolean.class.getName();
+            //so many unnecessary try and catch
+            for (Field f : Settings.class.getDeclaredFields())
+                if (f.getType().getName().equals(t)) {
+                    try {
+                        table.checkPref(f.getName(), f.getBoolean(null), s -> {
+                            try {
+                                f.setBoolean(null, s);
+                            }catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                                Sentry.captureException(e);
+                            }
+                        });
+                    }catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                        Sentry.captureException(e);
+                    }
+                }
+            cont.add(table);
         }
     }
 }
