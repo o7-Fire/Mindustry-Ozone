@@ -278,7 +278,12 @@ public class ChatOzoneFragment extends ChatFragment {
     }
 
     public void addMessageAntiSpam(String message, String sender) {
-        if (sender == null) sender = message.substring(0, message.indexOf(']'));
+
+        if (sender == null)
+            if (message.contains("]"))
+                sender = message.substring(0, message.indexOf(']'));
+            else
+                sender = message;
         ChatMessage cm = new ChatMessage(message, sender);
         messages.insert(0, cm);
         fadetime += 1f;

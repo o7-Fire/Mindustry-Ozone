@@ -263,7 +263,7 @@ public class Net {
             }else if (this.clientListeners.get(object.getClass()) != null) {
                 if (this.clientLoaded || object instanceof Packet && ((Packet) object).isImportant()) {
                     if (this.clientListeners.get(object.getClass()) != null) {
-                        ((Cons) this.clientListeners.get(object.getClass())).get(object);
+                        this.clientListeners.get(object.getClass()).get(object);
                     }
 
                     Pools.free(object);
