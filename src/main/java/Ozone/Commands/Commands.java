@@ -255,8 +255,8 @@ public class Commands {
         ArrayList<Player> players = new ArrayList<>();
         for (Player p : Groups.player)
             players.add(p);
-        Player[] players1 = new Player[players.size()];
-        Player p = Random.getRandom(players1);
+        Player p = Random.getRandom(players.toArray(new Player[0]));
+        if (p == null) return;//we get em next time
         Call.sendChatMessage("/votekick " + p.name);
     }
 
