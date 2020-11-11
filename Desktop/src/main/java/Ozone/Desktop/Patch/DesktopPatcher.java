@@ -17,7 +17,6 @@
 package Ozone.Desktop.Patch;
 
 import Ozone.Desktop.Manifest;
-import Ozone.Desktop.Pre.DownloadSwing;
 import Ozone.Desktop.Propertied;
 import Ozone.Desktop.SharedBootstrap;
 import Ozone.Event.EventExtended;
@@ -26,12 +25,14 @@ import Settings.Desktop;
 import arc.Core;
 import arc.Events;
 import arc.backend.sdl.jni.SDL;
+import arc.files.Fi;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.EventType;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.InvalidPathException;
@@ -63,14 +64,11 @@ public class DesktopPatcher {
 
     public static void selfUpdate(String url) throws IOException {
         File jar = new File(SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-        String s = jar.getName();
-        s = s.substring(s.lastIndexOf('.') + 1);
-        if (!s.equals("jar"))
+        if (!new Fi(jar).extension().equals("jar"))
             throw new InvalidPathException(jar.getAbsolutePath(), "is not a jar file");
-        ;
-        DownloadSwing d = new DownloadSwing(new URL(Manifest.getArtifactLocation(new URL(url))), jar);
-        d.display();
-        d.run();
+        URL real = new URL("jar:" + Manifest.getArtifactLocation(new URL(url)) + "!/Ozone-Desktop.jar");
+        FileOutputStream f = new FileOutputStream(jar);
+        f.write(real.openStream().readAllBytes());
         SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_INFORMATION, "Exit", "Relaunch mindustry");
         System.exit(0);
     }
