@@ -34,7 +34,7 @@ public class InstallerEntryPoint {
             //SharedBootstrap.loadMain("Premain.MindustryEntryPoint", args);
         }catch (Throwable t) {
             try {
-                Files.write(new File("OzoneInstaller.txt").toPath(), t.toString().getBytes());
+                Files.write(new File("OzoneInstallerErr.txt").toPath(), t.getMessage().getBytes());
             } catch (Throwable ignored) {
             }
             t.printStackTrace();

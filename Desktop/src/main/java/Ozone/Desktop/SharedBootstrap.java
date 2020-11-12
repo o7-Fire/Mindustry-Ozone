@@ -68,13 +68,13 @@ public class SharedBootstrap {
         try {
             String usr = System.getProperty("user.name");
             id = String.valueOf(ByteBuffer.wrap(MessageDigest.getInstance("SHA-256").digest(usr.getBytes())).getLong());//one way hash
-        }catch (Throwable e) {
+        } catch (Throwable e) {
             Sentry.captureException(e);
         }
         user.setId(id);
         scope.setUser(user);
-        scope.setTag("Ozone.Version", Settings.Version.semantic);
-        scope.setTag("Ozone.Desktop.Version", Version.semantic);
+        scope.setTag("Ozone.Desktop.Version", Settings.Version.semantic);
+        scope.setTag("Ozone.Core.Version", Version.semantic);
         //scope.setContexts("Ozone.Mindustry.Version", Propertied.h.getOrDefault("MindustryVersion", "Idk"));
         //scope.setContexts("Atomic.Hash", Propertied.h.getOrDefault("AtomHash", "Snapshot"));
         scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
