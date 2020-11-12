@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package Settings;
+package Ozone.Desktop.UI;
 
-public class Desktop {
-    public static boolean logMessage = false, disableDefaultGif;
+import Ozone.Patch.SettingsDialog;
+
+public class DesktopSettings extends SettingsDialog {
+
 }

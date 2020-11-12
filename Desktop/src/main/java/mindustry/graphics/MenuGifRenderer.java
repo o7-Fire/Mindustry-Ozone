@@ -17,8 +17,10 @@
 package mindustry.graphics;
 
 import Atom.Net.HTPS;
-import Premain.Version;
+import Settings.Desktop;
 import arc.Core;
+import arc.files.Fi;
+import arc.graphics.Texture;
 import arc.graphics.g2d.Animation;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
@@ -26,10 +28,12 @@ import arc.struct.Seq;
 import arc.util.Disposable;
 import arc.util.Log;
 import arc.util.Time;
+import mindustry.Vars;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 
 public class MenuGifRenderer implements Disposable {
     Animation<TextureRegion> animation;
@@ -40,17 +44,30 @@ public class MenuGifRenderer implements Disposable {
             "https://cdn.discordapp.com/attachments/724060628763017296/776078396936683540/tenor.gif",
             "https://media.discordapp.net/attachments/671340986223296574/774550872544903178/image0-1-1.gif"
     );
+    Seq<String> allowed = Seq.with("gif", "jpg", "png", "jpeg");
     int length;
+    Fi menu = new Fi(new File(Vars.dataDirectory.file(), "menu/"));
+    String readme = "Place your own gif/jpg/png/jpeg here, and it will showed randomly on menu";
 
-    public MenuGifRenderer() throws IOException {
+    public MenuGifRenderer() throws IOException, NoMenuResource {
+        menu.mkdirs();
+        if (!menu.child("Readme.txt").exists())
+            Files.write(menu.child("readme.txt").file().toPath(), readme.getBytes());
+        if (Desktop.disableDefaultGif)
+            url.clear();
+        for (Fi f : menu.findAll(f -> allowed.contains(f.extension())))
+            url.add(f.file().toURI().toURL().toExternalForm());
+        if (url.isEmpty()) throw new NoMenuResource("Gif list is empty");
         random();
+
         Object[] e = animation.getKeyFrames();
         length = e.length;
         Log.infoTag("MenuRenderer", "Loaded " + length + " frames");
     }
 
     private URL cache(URL u) throws IOException {
-        File target = new File(Version.cache, u.getFile().replaceAll("/", "."));
+        if (u.getProtocol().startsWith("file")) return u;
+        File target = new File(menu.file(), u.getFile().replaceAll("/", "."));
         if (target.exists()) return target.toURI().toURL();
         HTPS.downloadSync(u.toExternalForm(), target);
         return target.toURI().toURL();
@@ -58,7 +75,16 @@ public class MenuGifRenderer implements Disposable {
 
     private void random() throws IOException {
         URL u = cache(new URL(url.random()));
-        animation = GifDecoder.loadGIFAnimation(Animation.PlayMode.loop, u.openStream());
+        if (new Fi(u.getFile()).extension().equals("gif"))
+            animation = GifDecoder.loadGIFAnimation(Animation.PlayMode.loop, u.openStream());
+        else
+            animation = new Animation<>(1f, Seq.with(new TextureRegion(new Texture(new Fi(u.getFile())))), Animation.PlayMode.loop);
+    }
+
+    public static class NoMenuResource extends Throwable {
+        public NoMenuResource(String message) {
+            super(message);
+        }
     }
 
     public void render() {

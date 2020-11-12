@@ -43,7 +43,7 @@ import java.nio.file.InvalidPathException;
 import java.util.HashMap;
 
 public class DesktopPatcher {
-
+    public static File cache = new File(Vars.dataDirectory.file(), "cache/");
     public static void async() {
         if (false) {
             if (Ozone.Desktop.Manifest.messageLog.exists()) {//try to load
