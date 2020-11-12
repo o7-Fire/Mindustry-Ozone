@@ -17,6 +17,7 @@
 package mindustry.graphics;
 
 import Atom.Net.HTPS;
+import Premain.Version;
 import arc.Core;
 import arc.graphics.g2d.Animation;
 import arc.graphics.g2d.Draw;
@@ -49,7 +50,7 @@ public class MenuGifRenderer implements Disposable {
     }
 
     private URL cache(URL u) throws IOException {
-        File target = new File("lib/", u.getFile().replaceAll("/", "."));
+        File target = new File(Version.cache, u.getFile().replaceAll("/", "."));
         if (target.exists()) return target.toURI().toURL();
         HTPS.downloadSync(u.toExternalForm(), target);
         return target.toURI().toURL();

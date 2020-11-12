@@ -16,6 +16,9 @@
 
 package Premain;
 
+import java.io.File;
+
 public class Version {
     public static final String semantic = "0.7.3";
+    public static File cache = new File("cache/");
 }

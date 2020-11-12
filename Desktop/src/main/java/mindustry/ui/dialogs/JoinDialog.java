@@ -242,7 +242,7 @@ public class JoinDialog extends BaseDialog {
             t.add("[lightgray]" + host.name + "   " + versionString).width(targetWidth() - 10f).left().get().setEllipsis(true);
             t.row();
             if (!host.description.isEmpty()) {
-                t.add("[gray]" + host.description).width(targetWidth() - 10f).left().wrap();
+                t.add("[gray]" + Strings.stripColors(host.description)).width(targetWidth() - 10f).left().wrap();
                 t.row();
             }
             t.add("[lightgray]" + (Core.bundle.format("players" + (host.players == 1 && host.playerLimit <= 0 ? ".single" : ""), (host.players == 0 ? "[lightgray]" : "[accent]") + host.players + (host.playerLimit > 0 ? "[lightgray]/[accent]" + host.playerLimit : "") + "[lightgray]"))).left();
@@ -275,7 +275,9 @@ public class JoinDialog extends BaseDialog {
 
         cont.clear();
         cont.table(t -> {
-            t.add("@name").padRight(10);
+            t.button(Icon.image, () -> {
+                ui.showInfoText("Preview", player.name());
+            });
             t.field(Core.settings.getString("name"), text -> {
                 player.name(text);
                 Core.settings.put("name", text);
