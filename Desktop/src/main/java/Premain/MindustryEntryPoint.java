@@ -22,11 +22,8 @@ import io.sentry.Sentry;
 import java.io.File;
 import java.nio.file.Files;
 
-public class
-MindustryEntryPoint {
-    //Mindustry Only
+public class MindustryEntryPoint {
     public static void main(String[] args) {
-        //if(true) throw new RuntimeException("E");
         try {
             System.out.println("Initializing Ozone Environment");
             SharedBootstrap.classloaderNoParent();
@@ -34,11 +31,10 @@ MindustryEntryPoint {
             SharedBootstrap.loadMods();
             SharedBootstrap.loadClasspath();
             SharedBootstrap.libraryLoader.addURL(new File(args[0]));
-            //PrePatcher.init();
             SharedBootstrap.loadMain("Main.OzoneMindustry", args);
-        }catch (Throwable t) {
+        } catch (Throwable t) {
             try {
-                Files.write(new File("OzoneInstaller.txt").toPath(), t.toString().getBytes());
+                Files.write(new File(MindustryEntryPoint.class.getName() + ".txt").toPath(), t.toString().getBytes());
             } catch (Throwable ignored) {
             }
             t.printStackTrace();

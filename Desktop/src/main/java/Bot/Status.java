@@ -14,10 +14,27 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop.UI;
+package Bot;
 
-import Ozone.Patch.SettingsDialog;
+import Atom.Utility.Random;
+import arc.graphics.Color;
 
-public class DesktopSettings extends SettingsDialog {
+public enum Status {
+    ONLINE(Color.green),
+    OFFLINE(Color.gray),
+    CONNECTING(Color.cyan),
+    DISCONNECTING(Color.acid),
+    ERROR(Color.red);
 
+    String color;
+
+    Status(Color color) {
+        this.color = "[" + Random.getHex(color.rgba8888()) + "][white]";
+    }
+
+
+    @Override
+    public String toString() {
+        return color + name();
+    }
 }

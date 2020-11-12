@@ -22,26 +22,29 @@ import io.sentry.Sentry;
 import java.io.File;
 import java.nio.file.Files;
 
-
-public class InstallerEntryPoint {
-
-    //Standalone only
+public class BotEntryPoint {
+    //Bot Launcher Only
     public static void main(String[] args) {
+        //if(true) throw new RuntimeException("E");
         try {
+            if (System.getProperty("MindustryExecutable") == null) {
+                throw new RuntimeException("System Property of MindustryExecutable is empty");
+            }
+            System.out.println("Initializing Oxygen-less Environment");
             SharedBootstrap.classloaderNoParent();
             SharedBootstrap.loadStandalone();
-            SharedBootstrap.loadMain("Main.OzoneInstaller", args);
-            //SharedBootstrap.loadMain("Premain.MindustryEntryPoint", args);
-        }catch (Throwable t) {
+            SharedBootstrap.loadMods();
+            SharedBootstrap.loadClasspath();
+            SharedBootstrap.libraryLoader.addURL(new File(System.getProperty("MindustryExecutable")));
+            SharedBootstrap.loadMain("Main.OxygenMindustry", args);
+        } catch (Throwable t) {
             try {
-                Files.write(new File(InstallerEntryPoint.class.getName() + ".txt").toPath(), t.getMessage().getBytes());
+                Files.write(new File(BotEntryPoint.class.getName() + ".txt").toPath(), t.toString().getBytes());
             } catch (Throwable ignored) {
             }
             t.printStackTrace();
             if (t.getCause() != null) t = t.getCause();
-
             Sentry.captureException(t);
-
         }
     }
 }

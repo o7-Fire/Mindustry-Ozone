@@ -48,6 +48,7 @@ public class SharedBootstrap {
     static {
         ModsLibrary.add(getAtom("Desktop", Propertied.h.getOrDefault("AtomHash", "-SNAPSHOT")));
         ModsLibrary.add(getAtom("Atomic", Propertied.h.getOrDefault("AtomHash", "-SNAPSHOT")));
+        ModsLibrary.add(getJitpack("Anuken.Arc", "backend-headless", "v113.2"));
     }
 
     static {
@@ -115,6 +116,10 @@ public class SharedBootstrap {
         return jitpack + type + "/" + hash + "/" + type + "-" + hash + ".jar";
     }
 
+    public static String getJitpack(String orgRepo, String type, String hash) {
+        return "https://jitpack.io/com/github/" + orgRepo.replace('.', '/') + "/" + type + "/" + hash + "/" + type + "-" + hash + ".jar";
+    }
+
     public static void loadStandalone() throws MalformedURLException {
         if (standalone) throw new IllegalStateException("Standalone dependency already loaded");
         standalone = true;
@@ -129,6 +134,7 @@ public class SharedBootstrap {
             //if(s.contains("gson"))continue;else
             libraryLoader.addURL(new File(s));
     }
+
 
     public static void loadMain(String classpath, String[] arg) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         SharedBootstrap.libraryLoader.loadClass(classpath).getMethod("main", String[].class).invoke(null, (Object) arg);

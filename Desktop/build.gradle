@@ -33,11 +33,13 @@ dependencies {
     compileOnly "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
     compileOnly "com.github.Anuken.Mindustry:desktop:$mindustryVersion"
     compileOnly "com.github.Anuken.Mindustry:annotations:$mindustryVersion"
+    compileOnly "com.github.Anuken.Arc:backend-headless:$mindustryVersion"
     implementation 'io.sentry:sentry:3.1.0'
     compileOnly group: 'com.formdev', name: 'flatlaf', version: '0.43'
     compileOnly group: 'com.miglayout', name: 'miglayout-core', version: '5.2'
     compileOnly group: 'com.miglayout', name: 'miglayout-swing', version: '5.2'
     compileOnly 'com.github.MinnDevelopment:java-discord-rpc:v2.0.1'
+
 
 }
 
@@ -47,45 +49,3 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     options.compilerArgs += ["-Xlint:deprecation"]
 }
-/*
-//Obfuscated Desktop jar
-task proguard(dependsOn: jar, type: proguard.gradle.ProGuardTask) {
-    printmapping "Ozone-Mapping-Desktop.map"
-    keep 'class !Ozone.** { *; }'
-    // Automatically handle the Java version of this build.
-    if (System.getProperty('java.version').startsWith('1.')) {
-        // Before Java 9, the runtime classes were packaged in a single jar file.
-        libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
-    } else {
-        // As of Java 9, the runtime classes are packaged in modular jmod files.
-        libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
-        libraryjars "${System.getProperty('java.home')}/jmods/java.desktop.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
-        libraryjars "${System.getProperty('java.home')}/jmods/java.logging.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
-        libraryjars "${System.getProperty('java.home')}/jmods/java.compiler.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
-        libraryjars "${System.getProperty('java.home')}/jmods/java.management.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
-        libraryjars "${System.getProperty('java.home')}/jmods/java.sql.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
-
-    }
-    //if(System.getProperty("user.name") == "runner")
-      //libraryjars gradle.gradleHomeDir, jarfilter: '!**.jar', filter: '!module-info.class'
-    HashMap<String, String> s = new HashMap<>()
-    for(String e : configurations.runtimeClasspath.asList()) {
-        s.put(e,e)
-    }
-    for(String e : configurations.compileClasspath.asList()) {
-        s.put(e,e)
-    }
-    for(Map.Entry<String,String> e : s.entrySet()){
-        println e.key
-        libraryjars e.key
-    }
-    //libraryjars "${project.rootDir}/libs/"
-    //libraryjars "${project.rootDir}/lib/"
-    //optimizations("!field/removal/writeonly,!method/marking/static,!method/removal/parameter,!code/removal/advanced,!code/allocation/variable")
-    dontwarn("mindustry.**")
-    repackageclasses 'Ozone'
-    injars "$buildDir/libs/Ozone.jar"
-    outjars "$buildDir/libs/Ozone-Desktop.jar"
-}
-
- */

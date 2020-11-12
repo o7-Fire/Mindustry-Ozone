@@ -29,6 +29,8 @@ public class Translation {
         commands.put("debug", "System.out.println(\"yeet\")");
         settings.put("logMessage", "Log Every Message[Being Reworked]");
         settings.put("disableDefaultGif", "Disable default GIF list");
+        generalSettings.put("BotController.serverPort", "Base Port");
+        generalSettings.put("BotController.serverName", "Base Port");
         generalSettings.put("showPlayerID", "Show Player ID");
         generalSettings.put("showPlayerTyping", "Show Player Typing Status");
         generalSettings.put("showPlayerShooting", "Show Player Shooting Status");

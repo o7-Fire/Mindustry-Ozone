@@ -45,8 +45,9 @@ public class EntryPoint extends Mod {
     }
 
     public static void startTheRealOne() {
-        StringBuilder cli = new StringBuilder();
+
         try {
+            StringBuilder cli = new StringBuilder();
             cli.append(System.getProperty("java.home")).append(File.separator).append("bin").append(File.separator).append("java ");
             for (String jvmArg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
                 cli.append(jvmArg).append(" ");
@@ -55,7 +56,6 @@ public class EntryPoint extends Mod {
             cli.append(Ozone.class.getProtectionDomain().getCodeSource().getLocation().getFile());
             cli.append(" ");
             cli.append(MindustryEntryPoint.class.getTypeName()).append(" ").append(DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-            //cli.append(ManagementFactory.getRuntimeMXBean().getClassPath()).append(" ");
             new Thread(() -> {
                 try {
                     Runtime.getRuntime().exec(cli.toString()).waitFor();
@@ -63,7 +63,6 @@ public class EntryPoint extends Mod {
                     e.printStackTrace();
                 }
             }).start();
-            //Thread.sleep(9000);
             System.exit(0);
         }catch (Throwable e) {
             throw new RuntimeException(e);
