@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package Premain;
+package Settings;
 
 import java.io.File;
 
 public class Version {
-    public static final String semantic = "0.7.3";
+    public static final String semantic = "0.8.6";
     public static File cache = new File("cache/");
 }

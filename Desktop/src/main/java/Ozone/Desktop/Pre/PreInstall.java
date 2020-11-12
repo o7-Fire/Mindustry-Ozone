@@ -87,7 +87,12 @@ public class PreInstall {
             File ozone = new File(mods, "Ozone.jar");
             //library.mkdirs();
             try {
-                Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                File self = new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+                String ext = self.getName();
+                if (!ext.contains(".")) throw new RuntimeException("WTF !?!, i am not a jar");
+                ext = ext.substring(ext.indexOf('.') + 1);
+                if (!ext.startsWith("jar")) throw new RuntimeException("WTF !?!, i am not a jar");
+                Files.copy(self.toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 m.labelStatus.setText("Finished");
                 m.frame1.pack();
                 if (ozone.exists()) return;

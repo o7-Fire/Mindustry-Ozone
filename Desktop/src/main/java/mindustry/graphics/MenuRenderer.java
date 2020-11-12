@@ -45,15 +45,15 @@ public class MenuRenderer implements Disposable {
     private boolean random;
     public MenuGifRenderer mf;
     public MenuRenderer() {
-       // if (Random.getBool())
-        try {
-            mf = new MenuGifRenderer();
-        } catch (MenuGifRenderer.NoMenuResource s) {
-            mf = null;
-        } catch (Throwable t) {
-            t.printStackTrace();
-            Sentry.captureException(t);
-        }
+       if (Random.getBool())
+           try {
+               mf = new MenuGifRenderer();
+           } catch (MenuGifRenderer.NoMenuResource s) {
+               mf = null;
+           } catch (Throwable t) {
+               t.printStackTrace();
+               Sentry.captureException(t);
+           }
         if (mf != null) return;
         Thread t =
                 new Thread(() -> {

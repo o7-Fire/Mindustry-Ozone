@@ -66,6 +66,6 @@ public class Version {
         if (build == -1) {
             return "custom build";
         }
-        return (type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision) + " [ [royal]Ozone[accent]:[pink]" + Ozone.Watcher.Version.semantic + "[accent]:[green]" + Premain.Version.semantic + "[white] ]";
+        return (type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision) + " [ [royal]Ozone[accent]:[pink]" + Ozone.Watcher.Version.semantic + "[accent]:[green]" + Settings.Version.semantic + "[white] ]";
     }
 }

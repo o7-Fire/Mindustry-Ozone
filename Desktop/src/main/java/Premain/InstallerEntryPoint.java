@@ -19,6 +19,9 @@ package Premain;
 import Ozone.Desktop.SharedBootstrap;
 import io.sentry.Sentry;
 
+import java.io.File;
+import java.nio.file.Files;
+
 
 public class InstallerEntryPoint {
 
@@ -28,9 +31,17 @@ public class InstallerEntryPoint {
             SharedBootstrap.classloaderNoParent();
             SharedBootstrap.loadStandalone();
             SharedBootstrap.loadMain("Main.OzoneInstaller", args);
+            //SharedBootstrap.loadMain("Premain.MindustryEntryPoint", args);
         }catch (Throwable t) {
-            Sentry.captureException(t);
+            try {
+                Files.write(new File("OzoneInstaller.txt").toPath(), t.toString().getBytes());
+            } catch (Throwable ignored) {
+            }
             t.printStackTrace();
+            if (t.getCause() != null) t = t.getCause();
+
+            Sentry.captureException(t);
+
         }
     }
 }

@@ -68,10 +68,11 @@ allprojects {
             githubOwner = gRepoOwner
         if(project.hasProperty("builderID"))
             modsBuilderID = builderID
-        else
-            modsBuilderID = System.getProperty("user.name")
+
         if(project.hasProperty("builder"))
             modsBuilder = builder
+        else
+            modsBuilder = System.getProperty("user.name")
 
         def atomMeta = new File(rootDir, "src/main/resources/Manifest.properties")
         def props = new Properties()

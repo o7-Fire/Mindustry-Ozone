@@ -20,11 +20,13 @@ import Ozone.Desktop.SharedBootstrap;
 import io.sentry.Sentry;
 
 import java.io.File;
+import java.nio.file.Files;
 
 public class
 MindustryEntryPoint {
     //Mindustry Only
     public static void main(String[] args) {
+        //if(true) throw new RuntimeException("E");
         try {
             System.out.println("Initializing Ozone Environment");
             SharedBootstrap.classloaderNoParent();
@@ -35,7 +37,12 @@ MindustryEntryPoint {
             //PrePatcher.init();
             SharedBootstrap.loadMain("Main.OzoneMindustry", args);
         }catch (Throwable t) {
+            try {
+                Files.write(new File("OzoneInstaller.txt").toPath(), t.toString().getBytes());
+            } catch (Throwable ignored) {
+            }
             t.printStackTrace();
+            if (t.getCause() != null) t = t.getCause();
             Sentry.captureException(t);
         }
     }

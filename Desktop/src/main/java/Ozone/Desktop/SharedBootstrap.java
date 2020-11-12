@@ -53,10 +53,9 @@ public class SharedBootstrap {
     static {
         Sentry.init(options -> {
             options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
-            options.setRelease("Ozone." + Version.semantic + ":" + "Desktop." + Premain.Version.semantic);
+            options.setRelease("Ozone." + Version.semantic + ":" + "Desktop." + Settings.Version.semantic);
         });
         Sentry.configureScope(SharedBootstrap::registerSentry);
-
     }
 
     public static void classloaderNoParent() {
@@ -74,7 +73,7 @@ public class SharedBootstrap {
         }
         user.setId(id);
         scope.setUser(user);
-        scope.setTag("Ozone.Version", Premain.Version.semantic);
+        scope.setTag("Ozone.Version", Settings.Version.semantic);
         scope.setTag("Ozone.Desktop.Version", Version.semantic);
         //scope.setContexts("Ozone.Mindustry.Version", Propertied.h.getOrDefault("MindustryVersion", "Idk"));
         //scope.setContexts("Atomic.Hash", Propertied.h.getOrDefault("AtomHash", "Snapshot"));
