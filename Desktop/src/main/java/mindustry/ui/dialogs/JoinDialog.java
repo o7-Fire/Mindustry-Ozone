@@ -1,5 +1,6 @@
 package mindustry.ui.dialogs;
 
+import Atom.Utility.Random;
 import arc.Core;
 import arc.Events;
 import arc.graphics.Color;
@@ -276,7 +277,7 @@ public class JoinDialog extends BaseDialog {
         cont.clear();
         cont.table(t -> {
             t.button(Icon.image, () -> {
-                ui.showInfoText("Preview", player.name());
+                ui.showInfoText("Preview", "[" + Random.getHex(player.color().rgba8888()) + "]" + player.name());
             });
             t.field(Core.settings.getString("name"), text -> {
                 player.name(text);

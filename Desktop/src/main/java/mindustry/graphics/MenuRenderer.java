@@ -327,7 +327,10 @@ public class MenuRenderer implements Disposable {
 
     @Override
     public void dispose() {
-        if (mf != null) mf.dispose();
+        if (mf != null) {
+            mf.dispose();
+            return;
+        }
         batch.dispose();
         shadows.dispose();
     }
