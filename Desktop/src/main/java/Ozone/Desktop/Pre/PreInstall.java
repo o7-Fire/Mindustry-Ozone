@@ -21,7 +21,6 @@ import Ozone.Desktop.Swing.Main;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
@@ -70,10 +69,8 @@ public class PreInstall {
         //Install Button
         m.buttonInstall.addActionListener(e -> {
             m.labelStatus.setVisible(true);
-            //m.progressBar1.setVisible(true);
             m.labelStatus.setText("Scanning");
             m.frame1.pack();
-            //mods
             File mods = new File(mindustry, "mods/");
             if (!mods.exists()) {
                 System.out.println(mods.getAbsolutePath() + " doesn't exists, are you sure this is right directory");
@@ -81,11 +78,7 @@ public class PreInstall {
                 m.frame1.pack();
                 return;
             }
-            //mods/libs
-            //File library = new File(mods, Manifest.libs);
-            //mods/Ozone.jar
             File ozone = new File(mods, "Ozone.jar");
-            //library.mkdirs();
             try {
                 File self = new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile());
                 String ext = self.getName();
@@ -96,64 +89,11 @@ public class PreInstall {
                 m.labelStatus.setText("Finished");
                 m.frame1.pack();
                 if (ozone.exists()) return;
-            }catch (IOException ioException) {
+            } catch (Throwable ioException) {
                 m.labelStatus.setText(ioException.getMessage());
                 m.frame1.pack();
                 return;
             }
-                /*
-            //mods/libs/Atomic-AtomHash.jar
-            //File atom = new File(library, Manifest.atomFile);
-            if (ozone.exists()) {
-                try {
-                    m.labelStatus.setText("Updating");
-                    m.frame1.pack();
-                    Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                } catch (Throwable t) {
-                    m.labelStatus.setText(t.getMessage());
-                    m.frame1.pack();
-                }
-            }
-
-            if (atom.exists() && ozone.exists()) {
-                m.labelStatus.setText("Atom already downloaded & Ozone already updated");
-                m.progressBar1.setVisible(false);
-                m.frame1.pack();
-                return;
-            }
-            if (atom.exists()) {
-                try {
-                    Files.copy(new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    m.labelStatus.setText("Finished");
-                    m.frame1.pack();
-                } catch (IOException ioException) {
-                    m.labelStatus.setText(ioException.getMessage());
-                    m.frame1.pack();
-                }
-                return;
-            }
-
-
-            Thread t = new Thread(() -> {
-                try {
-                    DownloadSwing download = new DownloadSwing(new URL(Manifest.atomDownloadLink), atom);
-                    download.display(m.frame1);
-                    download.display(m.progressBar1);
-                    download.display(m.labelStatus);
-                    m.frame1.pack();
-                    download.run();
-                    m.labelStatus.setText("Installed");
-                    m.progressBar1.setVisible(false);
-                    m.frame1.pack();
-                } catch (Throwable g) {
-                    g.printStackTrace();
-                    m.labelStatus.setText(g.toString());
-                    m.frame1.pack();
-                }
-            });
-            t.setDaemon(true);
-            t.start();
-            */
             m.frame1.pack();
         });
 
