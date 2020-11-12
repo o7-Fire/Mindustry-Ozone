@@ -51,7 +51,7 @@ allprojects {
     ext {
 
         mindustryVersion = "v113.1"
-        atomHash = "f126e32661"
+        atomHash = "b9c0929330"
         githubHash = "null"
         githubBranch = "null"
         githubRepo = "o7-Fire/Mindustry-Ozone"

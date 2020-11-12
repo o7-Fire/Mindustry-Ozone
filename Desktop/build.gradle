@@ -30,8 +30,6 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation rootProject
-    //compileOnly files("${project.rootDir}/libs/Atomic.jar")
-    //compileOnly files("${project.rootDir}/libs/Mindustry.jar")
     compileOnly "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
     compileOnly "com.github.Anuken.Mindustry:desktop:$mindustryVersion"
     compileOnly "com.github.Anuken.Mindustry:annotations:$mindustryVersion"
