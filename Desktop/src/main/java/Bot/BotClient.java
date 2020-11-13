@@ -16,21 +16,29 @@
 
 package Bot;
 
+import Atom.Utility.Random;
+import Main.Ozone;
+import Ozone.Desktop.BotController;
+import Premain.BotEntryPoint;
 import arc.util.Log;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.lang.management.ManagementFactory;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-public class Bot {
+import static Ozone.Desktop.BotController.generateProp;
+
+public class BotClient {
     public final StringBuilder sb = new StringBuilder();
-    public String name;
-    public int id;
+    public String name, rmiName;
+    private int id = 0, port;
     public Process process;
     public InputStream is, er;
     public long ping;
@@ -39,14 +47,47 @@ public class Bot {
     BotInterface rmi;
     private Status status;
 
-    public Bot(String name, int id) {
+    public BotClient(String name) {
         this.name = name;
-        this.id = id;
+        this.port = Random.getInt(1000, 40000);
+        this.rmiName = BotController.base + name;
+        if (rmiName.equals(BotController.base))
+            throw new IllegalStateException("RMI name client equal RMI name server");
         status = Status.OFFLINE;
+    }
+
+    public boolean connected() {
+        return rmi != null;
+    }
+
+    public boolean launched() {
+        return process != null;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getRmiName() {
+        return rmiName;
     }
 
     public BotInterface getRmi() {
         return rmi;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void refreshID() {
+        if (rmi != null)
+            try {
+                int i = rmi.getID();
+                if (i == 0) return;
+                id = rmi.getID();
+            } catch (Throwable ignored) {
+            }
     }
 
     public Status getStatus() {
@@ -55,6 +96,33 @@ public class Bot {
 
     public synchronized void setStatus(Status s) {
         status = s;
+    }
+
+    public BotInterface connect() throws RemoteException, NotBoundException {
+        if (!launched()) throw new IllegalStateException("Not yet launched");
+        if (connected()) throw new IllegalStateException("Already have RMI attached");
+        Registry registry = LocateRegistry.getRegistry(getPort());
+        BotInterface b = (BotInterface) registry.lookup(getRmiName());
+        attachRMI(b);
+        return b;
+    }
+
+    public Process launch() throws IOException {
+        if (launched()) throw new IllegalStateException("Already launched");
+        StringBuilder cli = new StringBuilder();
+        cli.append(System.getProperty("java.home")).append(File.separator).append("bin").append(File.separator).append("java ");
+        for (String jvmArg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+            cli.append(jvmArg).append(" ");
+        }
+        for (Map.Entry<String, String> p : generateProp(this).entrySet())
+            cli.append("-D").append(p.getKey()).append("=").append(p.getValue()).append(" ");
+        cli.append("-cp ");
+        cli.append(Ozone.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+        cli.append(" ");
+        cli.append(BotEntryPoint.class.getTypeName()).append(" ");
+        Process p = Runtime.getRuntime().exec(cli.toString());
+        attachProcess(p);
+        return p;
     }
 
     public void attachRMI(BotInterface b) {
@@ -73,6 +141,7 @@ public class Bot {
                 setStatus(Status.ERROR);
                 return;
             }
+            refreshID();
             while (rmi != null) {
                 try {
                     Thread.sleep(500);

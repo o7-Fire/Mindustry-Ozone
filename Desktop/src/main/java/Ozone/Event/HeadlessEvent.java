@@ -14,26 +14,7 @@
  * limitations under the License.
  */
 
-package Bot;
+package Ozone.Event;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-
-public interface BotInterface extends Remote {
-    default void kill() throws RemoteException {
-
-    }
-
-    default String getType() throws RemoteException {
-        return null;
-    }
-
-    default boolean alive() throws RemoteException {
-        return false;
-    }
-
-    default int getID() throws RemoteException {
-        return 0;
-    }
-
+public class HeadlessEvent {
 }

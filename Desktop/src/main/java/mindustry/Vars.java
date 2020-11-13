@@ -69,7 +69,7 @@ public class Vars implements Loadable {
     /**
      * main application name, capitalized
      */
-    public static final String appName = "Mindustry";
+    public static String appName = "Mindustry";
     /**
      * URL for itch.io donations.
      */

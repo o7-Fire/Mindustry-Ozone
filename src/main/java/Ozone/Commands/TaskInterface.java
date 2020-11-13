@@ -30,14 +30,14 @@ import mindustry.world.Tile;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-public class BotInterface {
+public class TaskInterface {
     private static final Queue<Task> taskQueue = new Queue<>();
     private static volatile boolean init = false;
 
     public static void init() {
         if (init) return;
         init = true;
-        Events.run(EventType.Trigger.update, BotInterface::update);
+        Events.run(EventType.Trigger.update, TaskInterface::update);
     }
 
     private static void update() {

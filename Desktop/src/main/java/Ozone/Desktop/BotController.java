@@ -16,48 +16,49 @@
 
 package Ozone.Desktop;
 
-import Bot.Bot;
+import Atom.Utility.Random;
+import Bot.BotClient;
+import Bot.BotInterface;
 import Bot.ServerInterface;
-import Main.Ozone;
-import Premain.BotEntryPoint;
 import mindustry.Vars;
 import mindustry.desktop.DesktopLauncher;
 
-import java.io.File;
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class BotController {
     public static int port = 7070;
     public static String base = Vars.player.name().isEmpty() ? "BotController" : Vars.player.name();
-    public static ArrayList<Bot> bots = new ArrayList<>();
+    public static ArrayList<BotClient> botClients = new ArrayList<>();
 
-    public static Process launchBot(HashMap<String, String> property) throws IOException {
-        StringBuilder cli = new StringBuilder();
-        cli.append(System.getProperty("java.home")).append(File.separator).append("bin").append(File.separator).append("java ");
-        for (String jvmArg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
-            cli.append(jvmArg).append(" ");
-        }
-        for (Map.Entry<String, String> p : property.entrySet())
-            cli.append("-D").append(p.getKey()).append("=").append(p.getValue()).append(" ");
-        cli.append("-cp ");
-        cli.append(Ozone.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-        cli.append(" ");
-        cli.append(BotEntryPoint.class.getTypeName()).append(" ");
-        return Runtime.getRuntime().exec(cli.toString());
+
+    public static void launchBot(String name) {
+        for (BotClient c : botClients)
+            if (c.name.equals(name)) throw new IllegalStateException(name + " already registered");
+        BotClient pre = new BotClient(name);
+        botClients.add(pre);
     }
 
-    public static HashMap<String, String> generateProp(int p, String regName) {
+    public static BotInterface connectToBot(BotClient b) throws RemoteException, NotBoundException {
+        return b.connect();
+    }
+
+    public static Process launchBot(BotClient b) throws IOException {
+        return b.launch();
+    }
+
+    public static HashMap<String, String> generateProp(BotClient b) {
         HashMap<String, String> h = new HashMap<>();
-        h.put("ServerRegPort", String.valueOf(p));
+        h.put("ServerRegPort", String.valueOf(port));
         h.put("ServerRegName", base);
         h.put("MindustryExecutable", DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-        h.put("RegPort", String.valueOf(port));
-        h.put("RegName", regName);
+        h.put("RegPort", String.valueOf(b.getPort()));
+        h.put("RegName", b.rmiName);
+        h.put("BotName", b.name);
+        h.put("BotID", String.valueOf(Random.getInt(Integer.MAX_VALUE)));
         return h;
     }
 

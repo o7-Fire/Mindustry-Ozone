@@ -155,7 +155,7 @@ public class Commands {
     }
 
     public static void taskClear(ArrayList<String> s) {
-        BotInterface.reset();
+        TaskInterface.reset();
         tellUser("Task cleared");
     }
 
@@ -210,7 +210,7 @@ public class Commands {
                 half = true;
             }
             long start = System.currentTimeMillis();
-            BotInterface.addTask(new DestructBlock(x, y, half), a -> tellUser("Completed in " + Countdown.result(start, TimeUnit.SECONDS)));
+            TaskInterface.addTask(new DestructBlock(x, y, half), a -> tellUser("Completed in " + Countdown.result(start, TimeUnit.SECONDS)));
         }catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");
             Vars.ui.showException(f);
@@ -353,7 +353,7 @@ public class Commands {
                 return;
             }
             long start = System.currentTimeMillis();
-            BotInterface.addTask(new Move(x, y), a -> tellUser("Reached in " + Countdown.result(start, TimeUnit.SECONDS)));
+            TaskInterface.addTask(new Move(x, y), a -> tellUser("Reached in " + Countdown.result(start, TimeUnit.SECONDS)));
             toggleUI();
         }catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");

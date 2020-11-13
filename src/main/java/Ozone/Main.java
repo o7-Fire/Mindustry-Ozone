@@ -17,8 +17,8 @@
 package Ozone;
 
 import Atom.Utility.Random;
-import Ozone.Commands.BotInterface;
 import Ozone.Commands.Commands;
+import Ozone.Commands.TaskInterface;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Ozone.Patch.SettingsDialog;
@@ -50,7 +50,7 @@ public class Main {
         loadSettings();
         patch();
         initUI();
-        BotInterface.init();
+        TaskInterface.init();
         Commands.init();
         initEvent();
     }
@@ -81,7 +81,7 @@ public class Main {
             // setOzoneLogger();
         });
         Events.run(EventExtended.Connect.Disconnected, () -> {
-            BotInterface.reset();
+            TaskInterface.reset();
             Commands.commandsQueue.clear();
         });
         Events.on(EventType.ClientPreConnectEvent.class, s -> {

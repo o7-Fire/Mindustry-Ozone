@@ -16,8 +16,8 @@
 
 package Ozone.Commands.Task;
 
-import Ozone.Commands.BotInterface;
 import Ozone.Commands.Pathfinding;
+import Ozone.Commands.TaskInterface;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import mindustry.Vars;
@@ -25,9 +25,9 @@ import mindustry.ai.Astar;
 import mindustry.content.Blocks;
 import mindustry.world.Tile;
 
-import static Ozone.Commands.BotInterface.samePos;
-import static Ozone.Commands.BotInterface.setMov;
 import static Ozone.Commands.Pathfinding.distanceTo;
+import static Ozone.Commands.TaskInterface.samePos;
+import static Ozone.Commands.TaskInterface.setMov;
 
 public class Move extends Task {
     private final Vec2 destPos, destTilePos;
@@ -62,9 +62,9 @@ public class Move extends Task {
     @Override
     public boolean isCompleted() {
         if (Vars.player.unit().isFlying())
-            return distanceTo(BotInterface.getCurrentPos(), destPos) < airTolerance * 1.2f;
+            return distanceTo(TaskInterface.getCurrentPos(), destPos) < airTolerance * 1.2f;
         else
-            return distanceTo(BotInterface.getCurrentPos(), destPos) < landTolerance || pathfindingCache.isEmpty();
+            return distanceTo(TaskInterface.getCurrentPos(), destPos) < landTolerance || pathfindingCache.isEmpty();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class Move extends Task {
                         t.setOverlay(Blocks.dirtWall);
                 }
             if (destTile != null) {
-                if (distanceTo(BotInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance) {
+                if (distanceTo(TaskInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance) {
                     pathfindingCache.remove(0).clearOverlay();
                 }
             }
@@ -102,7 +102,7 @@ public class Move extends Task {
     }
 
     public float getCurrentDistance() {
-        return (float) distanceTo(BotInterface.getCurrentTilePos(), destTilePos);
+        return (float) distanceTo(TaskInterface.getCurrentTilePos(), destTilePos);
     }
 
 

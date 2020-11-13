@@ -69,7 +69,7 @@ public class Pathfinding {
             Log.debug("Failed to get pathTile for: " + tile.toString() + "\n" + g.toString());
             float danger = 0f;
             for (int i = 0; i < 4; i++) {
-                for (Tile t : BotInterface.getNearby(tile, i, 2)) {
+                for (Tile t : TaskInterface.getNearby(tile, i, 2)) {
                     float fDanger = 0f;
                     //such a lie, it can be null but intellij refuse to
                     if (tile == null) continue;

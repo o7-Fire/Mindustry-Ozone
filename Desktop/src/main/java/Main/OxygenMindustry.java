@@ -18,13 +18,23 @@ package Main;
 
 import Bot.BotInterface;
 import Bot.ServerInterface;
+import Bot.UIHeadless;
 import arc.ApplicationListener;
+import arc.Core;
 import arc.backend.headless.HeadlessApplication;
+import arc.files.Fi;
+import arc.math.Rand;
 import arc.struct.Seq;
+import arc.util.I18NBundle;
 import arc.util.Log;
+import arc.util.serialization.Base64Coder;
 import io.sentry.Sentry;
 import mindustry.Vars;
+import mindustry.core.NetClient;
 import mindustry.core.Platform;
+import mindustry.gen.Player;
+import mindustry.input.Binding;
+import mindustry.io.JsonIO;
 import mindustry.net.Net;
 
 import java.io.IOException;
@@ -36,12 +46,15 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
+import static arc.Core.keybinds;
+import static arc.Core.settings;
 import static arc.util.Log.format;
 import static arc.util.Log.logger;
-import static mindustry.Vars.platform;
+import static mindustry.Vars.*;
 
-public class OxygenMindustry implements ApplicationListener {
+public class OxygenMindustry implements ApplicationListener, Platform {
     protected static String[] tags = {"&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", ""};
     protected static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss"),
             autosaveDate = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH-mm-ss");
@@ -49,19 +62,18 @@ public class OxygenMindustry implements ApplicationListener {
     protected static BotInterface botInterface;
     protected static Registry registry;
     protected static ServerInterface serverInterface;
+    protected static Seq<String> dont = Seq.with("MindustryExecutable", "ServerRegPort", "ServerRegName", "RegPort", "RegName", "BotID");
+    String uuid;
 
+    public OxygenMindustry() {
+        byte[] result = new byte[8];
+        new Rand().nextBytes(result);
+        uuid = new String(Base64Coder.encode(result));
+    }
 
     public static void main(String[] args) throws IOException, NotBoundException, AlreadyBoundException {
         preCheck();
-        Vars.platform = new Platform() {
-        };
-        Vars.net = new Net(platform.getNet());
-        logger = (level1, text) -> {
-            String result = "[" + dateTime.format(LocalDateTime.now()) + "] " + format(tags[level1.ordinal()] + " " + text + "&fr");
-            System.out.println(result);
-            Sentry.addBreadcrumb(text, level1.name());
-        };
-        Log.info("Logger Online");
+        preInit();
         Log.info("Creating Headless Bot");
         h = new HeadlessRemoteApplication(new OxygenMindustry());
         Log.info("Headless Bot Created");
@@ -69,9 +81,21 @@ public class OxygenMindustry implements ApplicationListener {
         createClient();
     }
 
+    public static void preInit() {
+        appName = "Oxygen-Mindustry-Headless";
+
+        Vars.net = new Net(platform.getNet());
+        logger = (level1, text) -> {
+            String result = "[" + dateTime.format(LocalDateTime.now()) + "] " + format(tags[level1.ordinal()] + " " + text + "&fr");
+            System.out.println(result);
+            Sentry.addBreadcrumb(text, level1.name());
+        };
+        Log.info("Logger Online");
+    }
+
     public static void preCheck() {
         Log.info("Pre Check");
-        Seq<String> s = Seq.with("MindustryExecutable", "ServerRegPort", "ServerRegName", "RegPort", "RegName");
+        Seq<String> s = new Seq<>(dont);
         for (String e : System.getProperties().keySet().toArray(new String[0])) {
             if (s.contains(e)) s.remove(e);
         }
@@ -91,19 +115,61 @@ public class OxygenMindustry implements ApplicationListener {
 
     public static void createClient() throws IOException, NotBoundException {
         Log.info("Connecting to server");
-        Registry registry = LocateRegistry.getRegistry(System.getProperty("ServerRegPort"));
+        int port = Integer.parseInt(System.getProperty("ServerRegPort"));
+        Registry registry = LocateRegistry.getRegistry(port);
         serverInterface = (ServerInterface) registry.lookup(System.getProperty("ServerRegName"));
-        Log.info("Connected to server: @", serverInterface.name());
+        Log.info("Connected to \"@\" at port @ with reg \"@\"", serverInterface.name(), port, System.getProperty("ServerRegName"));
+    }
+
+    @Override
+    public String getUUID() {
+        return uuid;
     }
 
     @Override
     public void init() {
+        loadSetting();
+        platform = this;
+        player = Player.create();
+        netClient = new NetClient();
+        ui = new UIHeadless();
+    }
 
+    public void loadSetting() {
+        settings.setJson(JsonIO.json());
+        settings.setDataDirectory(Core.files.local("bots/config/"));
+        loadSettings();
+        settings.defaults("locale", "default", "blocksync", true);
+        keybinds.setDefaults(Binding.values());
+        settings.setAutosave(true);
+        settings.load();
+        Fi handle = Core.files.internal("bundles/bundle");
+        Locale locale;
+        String loc = settings.getString("locale");
+        if (loc.equals("default")) {
+            locale = Locale.getDefault();
+        } else {
+            Locale lastLocale;
+            if (loc.contains("_")) {
+                String[] split = loc.split("_");
+                lastLocale = new Locale(split[0], split[1]);
+            } else {
+                lastLocale = new Locale(loc);
+            }
+
+            locale = lastLocale;
+        }
+
+        Locale.setDefault(locale);
+        Core.bundle = I18NBundle.createBundle(handle, locale);
     }
 
     public static class HeadlessRemoteApplication extends HeadlessApplication {
         public HeadlessRemoteApplication(ApplicationListener listener) {
-            super(listener);
+            super(listener, t -> {
+                t.printStackTrace();
+                Sentry.captureException(t);
+            });
         }
     }
 
@@ -112,6 +178,16 @@ public class OxygenMindustry implements ApplicationListener {
 
         public Interface(HeadlessRemoteApplication a) {
             app = a;
+        }
+
+        @Override
+        public boolean alive() throws RemoteException {
+            return false;
+        }
+
+        @Override
+        public int getID() throws RemoteException {
+            return 0;
         }
 
         @Override

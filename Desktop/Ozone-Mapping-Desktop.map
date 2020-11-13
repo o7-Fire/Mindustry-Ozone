@@ -31,7 +31,7 @@ Main.Ozone -> Main.Ozone:
     void <init>() -> <init>
                   void init() -> init
                                void loadContent() -> loadContent
-                               Ozone.Commands.BotInterface -> Ozone.a:
+                               Ozone.Commands.TaskInterface -> Ozone.a:
     arc.struct.Queue taskQueue -> a
     boolean init -> b
             void init() -> a
