@@ -24,6 +24,14 @@ public interface BotInterface extends Remote {
 
     }
 
+    default void connect(String ip, int port) throws RemoteException {
+
+    }
+
+    default void sendChat(String s) throws RemoteException {
+
+    }
+
     default String getType() throws RemoteException {
         return null;
     }

@@ -144,7 +144,7 @@ public class MenuFragment extends Fragment {
                 join = new MobileButton(Icon.add, "@joingame", () -> checkPlay(ui.join::show)),
                 editor = new MobileButton(Icon.terrain, "@editor", () -> checkPlay(ui.maps::show)),
                 tools = new MobileButton(Icon.settings, "@settings", ui.settings::show),
-                mods = new MobileButton(Icon.book, "@mods", ui.mods::show),
+                mods = new MobileButton(Icon.box, "@mods", Manifest.modsMenu::show),
                 donate = new MobileButton(Icon.link, "@website", () -> Core.app.openURI("https://anuke.itch.io/mindustry")),
                 exit = new MobileButton(Icon.exit, "@quit", () -> Core.app.exit());
 
@@ -202,20 +202,20 @@ public class MenuFragment extends Fragment {
             t.name = "buttons";
 
             buttons(t,
-                    new Buttoni("@play", Icon.play,
-                            new Buttoni("@campaign", Icon.play, () -> checkPlay(ui.planet::show)),
-                            new Buttoni("@joingame", Icon.add, () -> checkPlay(ui.join::show)),
-                            new Buttoni("@customgame", Icon.terrain, () -> checkPlay(ui.custom::show)),
-                            new Buttoni("@loadgame", Icon.download, () -> checkPlay(ui.load::show)),
-                            new Buttoni("@tutorial", Icon.info, () -> checkPlay(control::playTutorial))
+                    new DesktopButton("@play", Icon.play,
+                            new DesktopButton("@campaign", Icon.play, () -> checkPlay(ui.planet::show)),
+                            new DesktopButton("@joingame", Icon.add, () -> checkPlay(ui.join::show)),
+                            new DesktopButton("@customgame", Icon.terrain, () -> checkPlay(ui.custom::show)),
+                            new DesktopButton("@loadgame", Icon.download, () -> checkPlay(ui.load::show)),
+                            new DesktopButton("@tutorial", Icon.info, () -> checkPlay(control::playTutorial))
                     ),
-                    new Buttoni("@editor", Icon.terrain, () -> checkPlay(ui.maps::show)), steam ? new Buttoni("@workshop", Icon.book, platform::openWorkshop) : null,
-                    new Buttoni(Core.bundle.get("mods"), Icon.bookOpen, ui.mods::show),
+                    new DesktopButton("@editor", Icon.terrain, () -> checkPlay(ui.maps::show)), steam ? new DesktopButton("@workshop", Icon.book, platform::openWorkshop) : null,
+                    new DesktopButton("@mods", Icon.box, Manifest.modsMenu::show),
                     //not enough space for this button
                     //new Buttoni("@schematics", Icon.paste, ui.schematics::show),
-                    new Buttoni("@settings", Icon.settings, ui.settings::show),
-                    new Buttoni("@about.button", Icon.info, ui.about::show),
-                    new Buttoni("@quit", Icon.exit, Core.app::exit)
+                    new DesktopButton("@settings", Icon.settings, ui.settings::show),
+                    new DesktopButton("@about.button", Icon.info, ui.about::show),
+                    new DesktopButton("@quit", Icon.exit, Core.app::exit)
             );
 
         }).width(width).growY();
@@ -254,15 +254,15 @@ public class MenuFragment extends Fragment {
         submenu.actions(Actions.alpha(1f), Actions.alpha(0f, 0.2f, Interp.fade), Actions.run(() -> submenu.clearChildren()));
     }
 
-    private void buttons(Table t, Buttoni... buttons) {
-        for (Buttoni b : buttons) {
+    public void buttons(Table t, DesktopButton... buttons) {
+        for (DesktopButton b : buttons) {
             if (b == null) continue;
             Button[] out = {null};
             out[0] = t.button(b.text, b.icon, Styles.clearToggleMenut, () -> {
                 if (currentMenu == out[0]) {
                     currentMenu = null;
                     fadeOutMenu();
-                }else {
+                } else {
                     if (b.submenu != null) {
                         currentMenu = out[0];
                         submenu.clearChildren();
@@ -283,20 +283,20 @@ public class MenuFragment extends Fragment {
         }
     }
 
-    private static class Buttoni {
+    public static class DesktopButton {
         final Drawable icon;
         final String text;
         final Runnable runnable;
-        final Buttoni[] submenu;
+        final DesktopButton[] submenu;
 
-        public Buttoni(String text, Drawable icon, Runnable runnable) {
+        public DesktopButton(String text, Drawable icon, Runnable runnable) {
             this.icon = icon;
             this.text = text;
             this.runnable = runnable;
             this.submenu = null;
         }
 
-        public Buttoni(String text, Drawable icon, Buttoni... buttons) {
+        public DesktopButton(String text, Drawable icon, DesktopButton... buttons) {
             this.icon = icon;
             this.text = text;
             this.runnable = () -> {

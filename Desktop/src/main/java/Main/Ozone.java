@@ -16,9 +16,15 @@
 
 package Main;
 
+import Ozone.Desktop.Manifest;
 import Ozone.Desktop.Patch.DesktopPatcher;
+import Ozone.Desktop.UI.BotControllerDialog;
+import Ozone.Desktop.UI.ModsMenu;
+import Ozone.Event.DesktopEvent;
 import Ozone.Main;
 import arc.Core;
+import arc.Events;
+import mindustry.Vars;
 import mindustry.mod.Mod;
 
 /**
@@ -27,16 +33,13 @@ import mindustry.mod.Mod;
 public class Ozone extends Mod {
 
     public Ozone() {
-        /*
-        Sentry.configureScope(scope -> {
-            SharedBootstrap.registerSentry(scope);
-            scope.setContexts("Mindustry.Version", mindustry.core.Version.combined());
+        Events.on(DesktopEvent.InitUI.class, s -> {
+            if (!Vars.headless) {
+                Manifest.botControllerDialog = new BotControllerDialog();
+                Manifest.modsMenu = new ModsMenu();
+            }
         });
-          */
 
-
-        //gay spy
-        //legit 100%
         if (Core.settings != null) {
             Core.settings.put("crashreport", false);
             Core.settings.put("uiscalechanged", false);//shut

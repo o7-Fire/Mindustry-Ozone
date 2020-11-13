@@ -30,7 +30,7 @@ import mindustry.Vars;
 public class OzoneMindustry {
     public static long start = System.currentTimeMillis() / 1000;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Throwable {
         //  new Thread(()-> {
         SharedBootstrap.customBootstrap = true;
         try {
@@ -47,13 +47,13 @@ public class OzoneMindustry {
             });
         }catch (Throwable var2) {
             var2.printStackTrace();
-            handleCrash(var2);
+            throw handleCrash(var2);
         }
         // }).start();
 
     }
 
-    static void handleCrash(Throwable e) {
+    static Throwable handleCrash(Throwable e) throws Throwable {
         Cons<Runnable> dialog = Runnable::run;
         boolean badGPU = false;
         String finalMessage = Strings.getFinalMessage(e);
@@ -78,7 +78,7 @@ public class OzoneMindustry {
 
          */
         SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_ERROR, "Oh Nein", e.toString());
-        throw new RuntimeException(e);
+        return e;
     }
 
     private static void message(String message) {

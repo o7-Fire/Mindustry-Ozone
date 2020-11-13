@@ -111,6 +111,7 @@ public class DesktopPatcher {
 
     public static void register() {
         checkRelease();
+
         Ozone.Manifest.settings.add(Desktop.class);
         Events.run(Internal.Init.CommandsRegister, Commands::Init);
         Events.run(Internal.Init.TranslationRegister, Translation::Init);

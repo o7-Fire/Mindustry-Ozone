@@ -16,8 +16,8 @@
 
 package Ozone.Desktop.Patch;
 
+import static Ozone.Interface.registerWords;
 import static Ozone.Patch.Translation.*;
-
 public class Translation {
     private static volatile boolean init = false;
 
@@ -34,5 +34,7 @@ public class Translation {
         generalSettings.put("showPlayerID", "Show Player ID");
         generalSettings.put("showPlayerTyping", "Show Player Typing Status");
         generalSettings.put("showPlayerShooting", "Show Player Shooting Status");
+        registerWords("load.mods", "Ozone");
+        registerWords("BotsController", "Bots Controller");
     }
 }

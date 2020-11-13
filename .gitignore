@@ -5,6 +5,7 @@
 Tools/build
 *.class
 /Ozone/
+/config/
 /cache/
 /lib/
 *.war

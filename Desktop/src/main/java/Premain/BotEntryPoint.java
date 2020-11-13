@@ -45,6 +45,7 @@ public class BotEntryPoint {
             t.printStackTrace();
             if (t.getCause() != null) t = t.getCause();
             Sentry.captureException(t);
+            System.exit(1);
         }
     }
 }

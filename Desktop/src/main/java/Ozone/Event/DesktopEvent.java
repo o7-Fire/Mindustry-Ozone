@@ -14,29 +14,10 @@
  * limitations under the License.
  */
 
-package Bot;
+package Ozone.Event;
 
-import arc.graphics.Color;
+public class DesktopEvent {
+    public static class InitUI {
 
-public enum Status {
-    ONLINE(Color.green),
-    OFFLINE(Color.gray),
-    CONNECTING(Color.cyan),
-    CONNECTED(Color.green),
-    DISCONNECTING(Color.acid),
-    ERROR(Color.red),
-    LAUNCHING(Color.coral),
-    LAUNCHED(Color.blue);
-
-    String color;
-
-    Status(Color color) {
-        this.color = "[#" + color.toString() + "]";
-    }
-
-
-    @Override
-    public String toString() {
-        return color + name() + "[white]";
     }
 }

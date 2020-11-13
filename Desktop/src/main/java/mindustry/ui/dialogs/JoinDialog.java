@@ -1,6 +1,7 @@
 package mindustry.ui.dialogs;
 
 import Atom.Utility.Random;
+import Ozone.Event.DesktopEvent;
 import arc.Core;
 import arc.Events;
 import arc.graphics.Color;
@@ -45,7 +46,7 @@ public class JoinDialog extends BaseDialog {
 
     public JoinDialog() {
         super("@joingame");
-
+        Events.fire(new DesktopEvent.InitUI());
         loadServers();
 
         if (!steam) buttons.add().width(60f);

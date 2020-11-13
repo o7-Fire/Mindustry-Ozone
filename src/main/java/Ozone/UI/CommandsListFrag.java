@@ -89,7 +89,6 @@ public class CommandsListFrag extends Fragment {
             Table button = new Table();
             button.left();
             button.margin(5).marginBottom(10);
-
             Table table = new Table() {
                 @Override
                 public void draw() {

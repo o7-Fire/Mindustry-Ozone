@@ -17,6 +17,8 @@
 package Ozone.Desktop;
 
 import Atom.File.SerializeData;
+import Ozone.Desktop.UI.BotControllerDialog;
+import Ozone.Desktop.UI.ModsMenu;
 import Ozone.Patch.ChatOzoneFragment;
 import arc.util.Log;
 import com.google.gson.JsonArray;
@@ -38,17 +40,19 @@ public class Manifest {
     public static final File messageLog = new File(messageLogFolder, "MessageLogArr.dat");
     public static final File messageLogBackup = new File(messageLogFolder, "BackupMessageLogArr.dat");
     public static int latestReleaseManifestID, latestBuildManifestID;
+    public static BotControllerDialog botControllerDialog;
+    public static ModsMenu modsMenu;
 
     static {
         try {
             latestBuildManifestID = getLatestBuildManifestID();
-        }catch (Throwable e) {
+        } catch (Throwable e) {
             Log.errTag("Ozone-Updater", "Failed to fetch latest build");
             Sentry.captureException(e);
         }
         try {
             latestReleaseManifestID = getLatestReleaseManifestID();
-        }catch (Throwable e) {
+        } catch (Throwable e) {
             Log.errTag("Ozone-Updater", "Failed to fetch latest release");
             Sentry.captureException(e);
         }
