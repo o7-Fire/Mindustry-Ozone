@@ -20,6 +20,7 @@ import Bot.BotInterface;
 import Bot.ServerInterface;
 import Ozone.Desktop.SharedBootstrap;
 import arc.Application;
+import arc.Core;
 import arc.Events;
 import arc.Files;
 import arc.backend.sdl.SdlConfig;
@@ -54,7 +55,7 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
    // protected static String[] tags = {"&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", ""};
    public static Application h;
     protected static String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
-    protected static Seq<String> dont = Seq.with("MindustryExecutable", "ServerRegPort", "ServerRegName", "RegPort", "RegName", "BotID");
+    protected static Seq<String> dont = Seq.with("MindustryExecutable", "ServerRegPort", "ServerRegName", "RegPort", "RegName", "BotID", "BotName");
 
     protected static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss"), autosaveDate = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH-mm-ss");
     String uuid;
@@ -153,6 +154,7 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
         } catch (Throwable t) {
             throw new RuntimeException("Failed to establish RMI connection", t);
         }
+        Core.settings.put("name", System.getProperty("BotName"));
         super.init();
     }
 

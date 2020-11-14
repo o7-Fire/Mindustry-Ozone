@@ -22,6 +22,7 @@ import Ozone.Desktop.BotController;
 import Premain.BotEntryPoint;
 import arc.util.Log;
 import arc.util.OS;
+import io.sentry.Sentry;
 
 import java.io.*;
 import java.rmi.NotBoundException;
@@ -124,6 +125,11 @@ public class BotClient {
             sb.append("Connecting to ").append(getRmiName()).append(":").append(getPort()).append("\n");
             attachRMI(b);
             setStatus(Status.CONNECTED);
+            try {
+                rmi.alive();
+                setStatus(Status.ONLINE);
+            } catch (Throwable ignored) {
+            }
             return b;
         } catch (Throwable t) {
             setStatus(Status.ERROR);
@@ -169,27 +175,16 @@ public class BotClient {
         rmi = b;
         //check RMI connection
         service.submit(() -> {
-            try {
-                if (rmi.alive())
-                    setStatus(Status.CONNECTING);
-                else {
-                    setStatus(Status.ERROR);
-                    return;
-                }
-            } catch (Throwable t) {
-                t.printStackTrace();
-                Log.err(t);
-                setStatus(Status.ERROR);
-                return;
-            }
             while (rmi != null) {
                 try {
                     Thread.sleep(500);
                     if (!rmi.alive()) break;
                     if (!status.equals(Status.CONNECTED)) setStatus(Status.ONLINE);
-                } catch (RemoteException | InterruptedException remoteException) {
+                } catch (Throwable remoteException) {
+                    Sentry.captureException(remoteException);
                     remoteException.printStackTrace();
                     Log.err(remoteException);
+                    break;
                 }
             }
             setStatus(Status.OFFLINE);

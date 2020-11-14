@@ -145,7 +145,7 @@ public class BotControllerDialog extends BaseDialog {
             cont.add(id).growX().right();
             cont.button("Connect", Icon.play, () -> {
                 try {
-                    botClient.connect();
+                    botClient.connect().alive();
                     setup();
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -162,15 +162,14 @@ public class BotControllerDialog extends BaseDialog {
             cont.row();
             cont.labelWrap("Ping:").growX().left();
             cont.add(ping).growX().right();
-            cont.row();
-            cont.labelWrap("PID:").growX().left();
-            cont.label(() -> botClient.launched() ? botClient.process.pid() + "" : "doesn't exist");
             cont.button("Kill", Icon.cancel, () -> {
                 botClient.exit();
                 BotController.botClients.remove(botClient);
                 hide();
             }).disabled(i -> !botClient.launched() && !botClient.connected()).growX();
-            ;
+            cont.row();
+            cont.labelWrap("PID:").growX().left();
+            cont.label(() -> botClient.launched() ? botClient.process.pid() + "" : "doesn't exist");
             cont.row();
             cont.add(new ScrollPane(log)).width((Core.graphics.getWidth() * 5) / 8).growY().left().bottom();
         }

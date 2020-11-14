@@ -20,7 +20,6 @@ import Bot.Manifest;
 import Bot.Status;
 import arc.scene.ui.Label;
 import arc.util.Interval;
-import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
 
@@ -61,7 +60,7 @@ public class BotControllerUI extends BaseDialog {
         cont.label(() -> System.getProperty("ServerRegPort")).growX().right();
         cont.row();
         cont.labelWrap("Name:").growX().left();
-        cont.label(() -> Vars.player.name).growX().right();
+        cont.label(() -> System.getProperty("BotName")).growX().right();
         cont.row();
         cont.labelWrap("ID:").growX().left();
         cont.add(id).growX().right();
