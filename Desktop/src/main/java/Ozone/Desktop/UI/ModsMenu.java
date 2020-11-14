@@ -34,7 +34,10 @@ public class ModsMenu extends BaseDialog {
         cont.clear();
         cont.button("@mods", Icon.book, Vars.ui.mods::show).growX();
         cont.row();
-        cont.button(Core.bundle.get("BotsController"), Icon.android, Manifest.botControllerDialog::show).growX();
+        if (!Manifest.isBot())
+            cont.button(Core.bundle.get("BotsController"), Icon.android, Manifest.botControllerDialog::show).growX();
+        else
+            cont.button(Core.bundle.get("BotsController"), Icon.android, Bot.Manifest.botUI::show).growX();
         /*
         cont.button(Random.getString(),Icon.android, ()->{}).growX();
         cont.button(Random.getString(),Icon.android, ()->{}).growX();

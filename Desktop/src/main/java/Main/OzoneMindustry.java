@@ -19,7 +19,6 @@ package Main;
 import Ozone.Desktop.OzoneLauncher;
 import Ozone.Desktop.SharedBootstrap;
 import arc.Files;
-import arc.backend.sdl.SdlApplication;
 import arc.backend.sdl.SdlConfig;
 import arc.backend.sdl.jni.SDL;
 import arc.func.Cons;
@@ -35,7 +34,7 @@ public class OzoneMindustry {
         SharedBootstrap.customBootstrap = true;
         try {
             Vars.loadLogger();
-            new SdlApplication(new OzoneLauncher(args), new SdlConfig() {
+            new SdlAppWithExtraStep(new OzoneLauncher(args), new SdlConfig() {
                 {
                     this.title = "Mindustry-Ozone";
                     this.maximized = true;

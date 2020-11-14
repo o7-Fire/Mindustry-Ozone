@@ -19,6 +19,7 @@ package Ozone.Desktop.UI;
 import Bot.BotClient;
 import Bot.Status;
 import Ozone.Desktop.BotController;
+import arc.Core;
 import arc.scene.ui.Label;
 import arc.scene.ui.ScrollPane;
 import arc.scene.ui.SettingsDialog;
@@ -75,13 +76,7 @@ public class BotControllerDialog extends BaseDialog {
                     new BotInfoDialog(b).show();
                 }).growX().left();
                 bot.button("Remove", Icon.cancel, () -> {
-                    try {
-                        b.exit();
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                        Vars.ui.showException("Failed to destroy bot", e);
-                        return;
-                    }
+                    b.exit();
                     BotController.botClients.remove(b);
                     setup();
                 }).growX().right();
@@ -118,7 +113,7 @@ public class BotControllerDialog extends BaseDialog {
     public static class BotInfoDialog extends BaseDialog {
         BotClient botClient;
         Label log = new Label("Log"), ping = new Label("0 ms"), status = new Label(Status.OFFLINE.toString()), id = new Label("0");
-        private Interval timer = new Interval();
+        Interval timer = new Interval();
 
         public BotInfoDialog(BotClient b) {
             super("Bot " + Strings.stripColors(b.name));
@@ -135,18 +130,6 @@ public class BotControllerDialog extends BaseDialog {
             cont.clear();
             cont.labelWrap("Name:").growX().left();
             cont.label(() -> botClient.name).growX().right();
-            cont.row();
-            cont.labelWrap("ID:").growX().left();
-            cont.add(id).growX().right();
-            cont.row();
-            cont.labelWrap("Status:").growX().left();
-            cont.add(status).growX().right();
-            cont.row();
-            cont.labelWrap("Ping:").growX().left();
-            cont.add(ping).growX().right();
-            cont.row();
-            cont.labelWrap("PID:").growX().left();
-            cont.label(() -> botClient.launched() ? botClient.process.pid() + "" : "Not yet launched");
             cont.button("Launch", Icon.box, () -> {
                 try {
                     botClient.launch();
@@ -157,6 +140,9 @@ public class BotControllerDialog extends BaseDialog {
                     Vars.ui.showException("Error while launching bot", e);
                 }
             }).disabled(botClient.launched() || !BotController.serverStarted()).growX();
+            cont.row();
+            cont.labelWrap("ID:").growX().left();
+            cont.add(id).growX().right();
             cont.button("Connect", Icon.play, () -> {
                 try {
                     botClient.connect();
@@ -168,19 +154,37 @@ public class BotControllerDialog extends BaseDialog {
                 }
             }).disabled(i -> !botClient.launched() || botClient.connected()).growX();
             cont.row();
-            cont.add(new ScrollPane(log)).growY().growX().left().bottom();
+            cont.labelWrap("Status:").growX().left();
+            cont.add(status).growX().right();
+            cont.button("Commands", Icon.commandAttack, () -> {
+
+            }).disabled(i -> !botClient.launched() || !botClient.connected()).growX();
+            cont.row();
+            cont.labelWrap("Ping:").growX().left();
+            cont.add(ping).growX().right();
+            cont.row();
+            cont.labelWrap("PID:").growX().left();
+            cont.label(() -> botClient.launched() ? botClient.process.pid() + "" : "doesn't exist");
+            cont.button("Kill", Icon.cancel, () -> {
+                botClient.exit();
+                BotController.botClients.remove(botClient);
+                hide();
+            }).disabled(i -> !botClient.launched() && !botClient.connected()).growX();
+            ;
+            cont.row();
+            cont.add(new ScrollPane(log)).width((Core.graphics.getWidth() * 5) / 8).growY().left().bottom();
         }
 
         public void update() {
             if (this.isShown() && timer.get(40) && (botClient.launched() || botClient.connected())) {
                 status.setText(botClient.getStatus().toString());
-                long s = System.currentTimeMillis();
                 try {
+                    long s = System.currentTimeMillis();
                     botClient.getRmi().alive();
+                    s = System.currentTimeMillis() - s;
+                    ping.setText(s + " ms");
                 } catch (Throwable ignored) {
                 }
-                s = System.currentTimeMillis() - s;
-                ping.setText(s + " ms");
                 id.setText(botClient.getId() + "");
                 synchronized (botClient.sb) {
                     log.setText(botClient.sb.toString());

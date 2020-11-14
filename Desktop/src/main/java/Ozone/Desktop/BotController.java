@@ -45,11 +45,7 @@ public class BotController implements ServerInterface {
         base = base.replace("[", "").replace("]", "").replaceAll("[0-9]", "");
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             for (BotClient bc : botClients) {
-                try {
-                    bc.exit();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
+                bc.exit();
             }
         }));
     }

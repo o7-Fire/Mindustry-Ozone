@@ -29,6 +29,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,7 +41,7 @@ public class BotClient {
     private final int port;
     public Process process;
     public InputStream is, er;
-    ExecutorService service = Executors.newFixedThreadPool(2);
+    public static ExecutorService service = Executors.newCachedThreadPool();
     BotInterface rmi;
     private Status status;
 
@@ -53,14 +54,19 @@ public class BotClient {
         status = Status.OFFLINE;
     }
 
-    public void exit() throws RemoteException {
+    public void exit() {
         if (connected()) {
-            getRmi().kill();
-            process.destroy();
-        } else if (launched()) {
-            process.destroy();
+            try {
+                getRmi().kill();
+            } catch (Throwable ignored) {
+            }
+            rmi = null;
         }
-        process = null;
+        if (launched() || connected()) {
+            process.destroyForcibly();//show no mercy
+            process = null;
+        }
+
     }
 
     @Override
@@ -115,6 +121,7 @@ public class BotClient {
             setStatus(Status.CONNECTING);
             Registry registry = LocateRegistry.getRegistry(getPort());
             BotInterface b = (BotInterface) registry.lookup(getRmiName());
+            sb.append("Connecting to ").append(getRmiName()).append(":").append(getPort()).append("\n");
             attachRMI(b);
             setStatus(Status.CONNECTED);
             return b;
@@ -142,7 +149,11 @@ public class BotClient {
                 cli.append(separator).append(s);
             cli.append(" ");
             cli.append(BotEntryPoint.class.getTypeName()).append(" ");
-            Process p = Runtime.getRuntime().exec(cli.toString());
+            StringTokenizer st = new StringTokenizer(cli.toString());
+            String[] cmdarray = new String[st.countTokens()];
+            for (int i = 0; st.hasMoreTokens(); i++) cmdarray[i] = st.nextToken();
+            Process p = new ProcessBuilder().redirectErrorStream(true).command(cmdarray).start();
+            ;
             attachProcess(p);
             setStatus(Status.LAUNCHED);
             return p;
@@ -209,13 +220,10 @@ public class BotClient {
             }
         });
         service.submit(() -> {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-            readProcessStream(reader);
-        });
-        service.submit(() -> {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             readProcessStream(reader);
         });
+
     }
 
     private void readProcessStream(BufferedReader reader) {
@@ -225,9 +233,11 @@ public class BotClient {
                 if ((line = reader.readLine()) == null) break;
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+                break;
             }
-            System.out.println(line);
+            //System.out.println(line);
             synchronized (sb) {
+                line = line.replace("&lc&fb", "[green]").replace("&lb&fb", "[blue]").replace("&ly&fb", "[yellow]").replace("&lr&fb", "[red]").replace("&fr", "[white]");
                 sb.append(line).append("\n");
             }
         }

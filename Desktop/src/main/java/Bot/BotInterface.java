@@ -16,10 +16,20 @@
 
 package Bot;
 
+import Ozone.Commands.Task.Task;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface BotInterface extends Remote {
+    default void addTask(Task t) throws RemoteException {
+
+    }
+
+    default void clearTask() throws RemoteException {
+
+    }
+
     default void kill() throws RemoteException {
 
     }

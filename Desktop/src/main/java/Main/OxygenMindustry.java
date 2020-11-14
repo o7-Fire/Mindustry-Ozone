@@ -22,7 +22,6 @@ import Ozone.Desktop.SharedBootstrap;
 import arc.Application;
 import arc.Events;
 import arc.Files;
-import arc.backend.sdl.SdlApplication;
 import arc.backend.sdl.SdlConfig;
 import arc.files.Fi;
 import arc.math.Rand;
@@ -52,8 +51,9 @@ import static arc.util.Log.logger;
 import static mindustry.Vars.appName;
 
 public class OxygenMindustry extends ClientLauncher implements BotInterface {
-    protected static String[] tags = {"&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", ""};
-    public static Application h;
+   // protected static String[] tags = {"&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", ""};
+   public static Application h;
+    protected static String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
     protected static Seq<String> dont = Seq.with("MindustryExecutable", "ServerRegPort", "ServerRegName", "RegPort", "RegName", "BotID");
 
     protected static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss"), autosaveDate = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH-mm-ss");
@@ -67,11 +67,13 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 
     public static void main(String[] args) {
         SharedBootstrap.customBootstrap = true;
+        logger();
+        Log.info("Logger Online");
         preCheck();
         preInit();
         Log.info("Creating Bot");
         oxygen = new OxygenMindustry();
-        h = new SdlApplication(oxygen, new SdlConfig() {
+        h = new SdlAppWithExtraStep(oxygen, new SdlConfig() {
             {
                 this.title = "Mindustry-Oxygen";
                 this.maximized = true;
@@ -107,13 +109,12 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
         Events.on(EventType.ClientCreateEvent.class, s -> {
             logger();
         });
-        logger();
-        Log.info("Logger Online");
     }
 
     public static void logger() {
+
         logger = (level1, text) -> {
-            String result = "[" + dateTime.format(LocalDateTime.now()) + "] " + format(tags[level1.ordinal()] + " " + text + "&fr");
+            String result = "[" + dateTime.format(LocalDateTime.now()) + "] " + format(tags[level1.ordinal()] + " " + text + "[white]");
             System.out.println(result);
             Sentry.addBreadcrumb(text, level1.name());
         };
@@ -182,7 +183,6 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
     public void kill() {
         Log.info("SIGKILL Signal Received");
         app.exit();
-        System.exit(0);
     }
 
     @Override
