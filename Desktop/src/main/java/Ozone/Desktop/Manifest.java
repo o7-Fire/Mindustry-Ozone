@@ -58,6 +58,10 @@ public class Manifest {
         }
     }
 
+    public static boolean isBot() {
+        return System.getProperty("BotID") != null;
+    }
+
     public static boolean compatibleMindustryVersion(HashMap<String, String> a, HashMap<String, String> b) {
         return a.getOrDefault("MindustryVersion", "").equals(b.getOrDefault("MindustryVersion", "!"));
     }

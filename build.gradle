@@ -55,7 +55,7 @@ allprojects {
         githubHash = "null"
         githubBranch = "null"
         githubRepo = "o7-Fire/Mindustry-Ozone"
-        githubOwner = "o7-Fire"
+        githubOwner = "null"
         modsBuilderID = "idk"
         modsBuilder = "java"
         if(project.hasProperty("gHash"))

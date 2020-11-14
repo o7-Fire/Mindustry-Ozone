@@ -39,7 +39,7 @@ public class BotEntryPoint {
             SharedBootstrap.loadMain("Main.OxygenMindustry", args);
         } catch (Throwable t) {
             try {
-                Files.write(new File(BotEntryPoint.class.getName() + ".txt").toPath(), t.toString().getBytes());
+                Files.write(new File(BotEntryPoint.class.getName() + ".txt").toPath(), (t.toString() + t.getMessage()).getBytes());
             } catch (Throwable ignored) {
             }
             t.printStackTrace();

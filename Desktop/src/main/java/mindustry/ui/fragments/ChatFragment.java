@@ -33,25 +33,20 @@ public class ChatFragment extends Table {
     private float fadetime;
     private boolean shown = false;
     private TextField chatfield;
-    private Label fieldlabel = new Label(">");
+    private Label fieldlabel;
     private Font font;
-    private GlyphLayout layout = new GlyphLayout();
-    private float offsetx = Scl.scl(4), offsety = Scl.scl(4), fontoffsetx = Scl.scl(2), chatspace = Scl.scl(50);
-    private Color shadowColor = new Color(0, 0, 0, 0.4f);
-    private float textspacing = Scl.scl(10);
-    private Seq<String> history = new Seq<>();
+    private GlyphLayout layout;
+    private float offsetx, offsety, fontoffsetx, chatspace;
+    private Color shadowColor;
+    private float textspacing;
+    private Seq<String> history;
     private int historyPos = 0;
     private int scrollPos = 0;
-    private Fragment container = new Fragment() {
-        @Override
-        public void build(Group parent) {
-            scene.add(ChatFragment.this);
-        }
-    };
+    private Fragment container;
 
     public ChatFragment() {
         super();
-
+        fieldlabel = new Label(">");
         setFillParent(true);
         font = Fonts.def;
 
@@ -67,6 +62,7 @@ public class ChatFragment extends Table {
             return net.active() && ui.hudfrag.shown;
         });
 
+        history = new Seq<>();
         update(() -> {
 
             if (net.active() && input.keyTap(Binding.chat) && (scene.getKeyboardFocus() == chatfield || scene.getKeyboardFocus() == null || ui.minimapfrag.shown()) && !ui.scriptfrag.shown()) {
@@ -89,6 +85,19 @@ public class ChatFragment extends Table {
 
         history.insert(0, "");
         setup();
+        layout = new GlyphLayout();
+        offsetx = Scl.scl(4);
+        offsety = Scl.scl(4);
+        fontoffsetx = Scl.scl(2);
+        chatspace = Scl.scl(50);
+        shadowColor = new Color(0, 0, 0, 0.4f);
+        textspacing = Scl.scl(10);
+        container = new Fragment() {
+            @Override
+            public void build(Group parent) {
+                scene.add(ChatFragment.this);
+            }
+        };
     }
 
     public Fragment container() {

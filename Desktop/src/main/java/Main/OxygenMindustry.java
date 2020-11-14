@@ -17,32 +17,24 @@
 package Main;
 
 import Bot.BotInterface;
-import Bot.Interface.StubCore;
-import Bot.Interface.UIHeadless;
 import Bot.ServerInterface;
 import Ozone.Desktop.SharedBootstrap;
-import arc.ApplicationListener;
-import arc.Core;
+import arc.Application;
 import arc.Events;
-import arc.backend.headless.HeadlessApplication;
+import arc.Files;
+import arc.backend.sdl.SdlApplication;
+import arc.backend.sdl.SdlConfig;
 import arc.files.Fi;
 import arc.math.Rand;
 import arc.struct.Seq;
-import arc.util.I18NBundle;
 import arc.util.Log;
+import arc.util.OS;
 import arc.util.serialization.Base64Coder;
 import io.sentry.Sentry;
-import mindustry.Vars;
-import mindustry.core.GameState;
-import mindustry.core.NetClient;
-import mindustry.core.Platform;
-import mindustry.core.World;
+import mindustry.ClientLauncher;
 import mindustry.game.EventType;
-import mindustry.gen.Player;
-import mindustry.input.Binding;
-import mindustry.io.JsonIO;
-import mindustry.net.Net;
 
+import java.io.File;
 import java.io.IOException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
@@ -52,21 +44,18 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
-import static arc.Core.*;
+import static Bot.Manifest.*;
+import static arc.Core.app;
 import static arc.util.Log.format;
 import static arc.util.Log.logger;
-import static mindustry.Vars.*;
+import static mindustry.Vars.appName;
 
-public class OxygenMindustry implements ApplicationListener, Platform, BotInterface {
+public class OxygenMindustry extends ClientLauncher implements BotInterface {
     protected static String[] tags = {"&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", ""};
-    public static HeadlessApplication h;
+    public static Application h;
     protected static Seq<String> dont = Seq.with("MindustryExecutable", "ServerRegPort", "ServerRegName", "RegPort", "RegName", "BotID");
-    public static BotInterface botInterface;
-    public static Registry registry;
-    public static ServerInterface serverInterface;
-    public static OxygenMindustry o;
+
     protected static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss"), autosaveDate = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH-mm-ss");
     String uuid;
 
@@ -76,31 +65,58 @@ public class OxygenMindustry implements ApplicationListener, Platform, BotInterf
         uuid = new String(Base64Coder.encode(result));
     }
 
-    public static void main(String[] args) throws IOException, NotBoundException, AlreadyBoundException {
+    public static void main(String[] args) {
         SharedBootstrap.customBootstrap = true;
-        //preCheck();
+        preCheck();
         preInit();
-        Log.info("Creating Headless Bot");
-        o = new OxygenMindustry();
-        h = new HeadlessApplication(o, t -> {
-            t.printStackTrace();
-            Sentry.captureException(t);
+        Log.info("Creating Bot");
+        oxygen = new OxygenMindustry();
+        h = new SdlApplication(oxygen, new SdlConfig() {
+            {
+                this.title = "Mindustry-Oxygen";
+                this.maximized = true;
+                this.stencil = 8;
+                this.width = 900;
+                this.height = 700;
+                this.setWindowIcon(Files.FileType.internal, "icons/rect10.png");
+            }
         });
-        Log.info("Headless Bot Created");
-        //createInterface(o);
-        // connectToServer();
+        Log.info(h.getType().name() + " Bot Exited");
+
+    }
+
+    private static void watcher() {
+        Thread t = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(500);
+                    serverInterface.alive();
+                } catch (Throwable e) {
+                    Log.err(e);
+                    break;
+                }
+            }
+            oxygen.kill();
+        });
+        t.setDaemon(true);
+        t.start();
     }
 
     public static void preInit() {
-        appName = "Oxygen-Mindustry-Headless";
-        headless = true;
-        Vars.net = new Net(platform.getNet());
+        appName = "Oxygen-Mindustry-Bot";
+        Events.on(EventType.ClientCreateEvent.class, s -> {
+            logger();
+        });
+        logger();
+        Log.info("Logger Online");
+    }
+
+    public static void logger() {
         logger = (level1, text) -> {
             String result = "[" + dateTime.format(LocalDateTime.now()) + "] " + format(tags[level1.ordinal()] + " " + text + "&fr");
             System.out.println(result);
             Sentry.addBreadcrumb(text, level1.name());
         };
-        Log.info("Logger Online");
     }
 
     public static void preCheck() {
@@ -109,7 +125,7 @@ public class OxygenMindustry implements ApplicationListener, Platform, BotInterf
         for (String e : System.getProperties().keySet().toArray(new String[0])) {
             if (s.contains(e)) s.remove(e);
         }
-        if (!s.isEmpty()) throw new RuntimeException(s.toString() + " is null in system property");
+        if (!s.isEmpty()) throw new IllegalArgumentException(s.toString() + " is null in system property");
     }
 
     public static void createInterface(BotInterface b) throws AlreadyBoundException, RemoteException {
@@ -117,10 +133,26 @@ public class OxygenMindustry implements ApplicationListener, Platform, BotInterf
         int i = Integer.parseInt(System.getProperty("RegPort"));
         String interfaceName = System.getProperty("RegName");
         registry = LocateRegistry.createRegistry(i);
-        botInterface = b;
-        BotInterface stub = (BotInterface) UnicastRemoteObject.exportObject(botInterface, i);
+        BotInterface stub = (BotInterface) UnicastRemoteObject.exportObject(b, i);
         registry.bind(interfaceName, stub);
         Log.info("Bot Interface Created on port: @ with name \"@\"", i, interfaceName);
+    }
+
+    @Override
+    public void init() {
+        Fi f = new Fi(OS.getAppDataDirectoryString(appName)).child("mods/");
+        f.mkdirs();
+        f = f.child("Ozone.jar");
+        File ozone = new File(OxygenMindustry.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+        if (!f.exists() && ozone.isFile()) new Fi(ozone).copyTo(f);
+        try {
+            createInterface(oxygen);
+            connectToServer();
+            watcher();
+        } catch (Throwable t) {
+            throw new RuntimeException("Failed to establish RMI connection", t);
+        }
+        super.init();
     }
 
     public static void connectToServer() throws IOException, NotBoundException {
@@ -137,75 +169,24 @@ public class OxygenMindustry implements ApplicationListener, Platform, BotInterf
     }
 
     @Override
-    public void init() {
-        loadSetting();
-        platform = this;
-        player = Player.create();
-        netClient = new NetClient();
-        try {
-            ui = new UIHeadless();
-            ui.init();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        logic = new StubCore.LogicTM();
-        world = new World();
-        state = new GameState();
-    }
-
-    @Override
-    public void update() {
-        Events.fire(EventType.Trigger.update);
-    }
-
-    public void loadSetting() {
-        settings.setJson(JsonIO.json());
-        settings.setDataDirectory(Core.files.local("bots/config/"));
-        loadSettings();
-        settings.defaults("locale", "default", "blocksync", true);
-        keybinds.setDefaults(Binding.values());
-        settings.setAutosave(true);
-        settings.load();
-        Fi handle = Core.files.internal("bundles/bundle");
-        Locale locale;
-        String loc = settings.getString("locale");
-        if (loc.equals("default")) {
-            locale = Locale.getDefault();
-        } else {
-            Locale lastLocale;
-            if (loc.contains("_")) {
-                String[] split = loc.split("_");
-                lastLocale = new Locale(split[0], split[1]);
-            } else {
-                lastLocale = new Locale(loc);
-            }
-
-            locale = lastLocale;
-        }
-
-        Locale.setDefault(locale);
-        Core.bundle = I18NBundle.createBundle(handle, locale);
-    }
-
-
-    @Override
-    public boolean alive() throws RemoteException {
+    public boolean alive() {
         return app.isHeadless();
     }
 
     @Override
-    public int getID() throws RemoteException {
+    public int getID() {
         return Integer.parseInt(System.getProperty("BotID"));
     }
 
     @Override
-    public void kill() throws RemoteException {
+    public void kill() {
         Log.info("SIGKILL Signal Received");
         app.exit();
+        System.exit(0);
     }
 
     @Override
-    public String getType() throws RemoteException {
-        return app.getType().toString();
+    public String getType() {
+        return app.getType().name();
     }
 }

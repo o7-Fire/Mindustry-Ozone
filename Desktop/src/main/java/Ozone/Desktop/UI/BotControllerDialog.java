@@ -213,7 +213,7 @@ public class BotControllerDialog extends BaseDialog {
             }).growX().addInputDialog(5).right();
             cont.row();
             cont.labelWrap("Main Host Name:").growX().left();
-            cont.field(BotController.base, s -> BotController.base = s).growX().addInputDialog(5).right();
+            cont.field(BotController.base, s -> BotController.base = s).growX().addInputDialog(64).right();
             cont.add(table);
         }
     }
