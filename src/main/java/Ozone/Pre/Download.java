@@ -55,7 +55,7 @@ public class Download implements Runnable {
 
         InputStream stream = null;
         FileOutputStream outputStream = null;
-        File temp = new File(file.getParent(), this.toString());
+        File temp = new File(file.getParent(), System.currentTimeMillis() + ".temp");
 
         try {
             outputStream = new FileOutputStream(temp);

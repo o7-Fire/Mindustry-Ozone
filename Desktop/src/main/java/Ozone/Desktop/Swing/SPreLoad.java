@@ -38,10 +38,11 @@ public class SPreLoad extends JFrame {
     public SPreLoad() {
         initComponents();
     }
-
+static {
+    Main.setTheme();
+}
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - Itzbenz
         frame1 = new Frame();
         label1 = new JLabel();
         label2 = new JLabel();

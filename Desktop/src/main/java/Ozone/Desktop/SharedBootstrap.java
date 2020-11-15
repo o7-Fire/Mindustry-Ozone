@@ -38,7 +38,7 @@ public class SharedBootstrap {
             Arrays.asList(//TODO don't
                     "https://repo1.maven.org/maven2/com/miglayout/miglayout-core/5.2/miglayout-core-5.2.jar",
                     "https://repo1.maven.org/maven2/com/miglayout/miglayout-swing/5.2/miglayout-swing-5.2.jar",
-                    "https://repo1.maven.org/maven2/com/formdev/flatlaf/0.43/flatlaf-0.43.jar"
+                    "https://github.com/atarw/material-ui-swing/releases/download/v1.1.2-rc1/material-ui-swing-1.1.2-rc1-with-dependencies.jar"//for future reference
             )
     ), ModsLibrary = new ArrayList<>();
     public static LibraryLoader libraryLoader;
@@ -63,7 +63,7 @@ public class SharedBootstrap {
         SharedBootstrap.libraryLoader = new LibraryLoader(new URL[]{SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation()}, null);
     }
 
-    public static Scope registerSentry(Scope scope) {
+    public static void registerSentry(Scope scope) {
         User user = new User();
         String id = "null";
         try {
@@ -90,7 +90,6 @@ public class SharedBootstrap {
         for (URL u : libraryLoader.getURLs()) sb.append("-").append(u.toString()).append("\n");
         scope.setContexts("Loaded.Library", sb.toString());
         //for (Map.Entry<String, String> s : Propertied.h.entrySet())
-        return scope;
     }
 
     protected static void loadAtomic() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {

@@ -57,7 +57,7 @@ public class LibraryLoader extends URLClassLoader {
             File temp = new File(cache, url.getFile().substring(1).replace("/", "."));
             if (!temp.exists()) {
                 try {
-                    findClass("net.miginfocom.swing.MigLayout");
+                    loadClass("net.miginfocom.swing.MigLayout");
                     loadClass("Main.Download").getMethod("main", URL.class, File.class).invoke(null, url, temp);
                 }catch (Throwable t) {
                     Download d = new Download(url, temp);

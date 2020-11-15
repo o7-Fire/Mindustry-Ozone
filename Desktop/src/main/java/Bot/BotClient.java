@@ -114,7 +114,6 @@ public class BotClient {
     public synchronized void setStatus(Status s) {
         status = s;
     }
-
     public BotInterface connect() throws RemoteException, NotBoundException {
         if (!launched()) throw new IllegalStateException("Not yet launched");
         if (connected()) throw new IllegalStateException("Already have RMI attached");

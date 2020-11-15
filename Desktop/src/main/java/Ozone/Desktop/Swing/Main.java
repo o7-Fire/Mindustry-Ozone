@@ -20,11 +20,7 @@
 
 package Ozone.Desktop.Swing;
 
-
-import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.formdev.flatlaf.FlatLightLaf;
+import mdlaf.MaterialLookAndFeel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -46,47 +42,29 @@ public class Main extends JPanel {
     public JProgressBar progressBar1;
     public JButton buttonInstall;
     public JButton buttonExit;
+    private static boolean set;
 
     public Main() {
         initComponents();
     }
 
+    static {
+        setTheme();
+    }
+
     public static void setTheme() {
+        if (set) return;
+        set = true;
         try {
-            UIManager.setLookAndFeel(new FlatDarkLaf());
-            return;
-        }catch (Throwable t) {
-            t.printStackTrace();
-        }
-        try {
-            UIManager.setLookAndFeel(new FlatDarculaLaf());
-            return;
-        }catch (Throwable t) {
-            t.printStackTrace();
-        }
-        try {
-            UIManager.setLookAndFeel(new FlatIntelliJLaf());
-            return;
-        }catch (Throwable t) {
-            t.printStackTrace();
-        }
-        try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
-            return;
-        }catch (Throwable t) {
-            t.printStackTrace();
-        }
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            return;
-        }catch (Throwable t) {
-            t.printStackTrace();
+            UIManager.setLookAndFeel(new MaterialLookAndFeel());
+            //MaterialLookAndFeel.changeTheme(new JMarsDarkTheme());
+        } catch (Throwable ignored) {
+            set = false;
         }
     }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - Itzbenz
         dialog1 = new JDialog();
         fileChooser1 = new JFileChooser();
         frame1 = new JFrame();
