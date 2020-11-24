@@ -2,6 +2,7 @@ package mindustry.ui.dialogs;
 
 import Atom.Utility.Random;
 import Ozone.Event.DesktopEvent;
+import Ozone.Experimental.Evasion.Identification;
 import arc.Core;
 import arc.Events;
 import arc.graphics.Color;
@@ -241,6 +242,8 @@ public class JoinDialog extends BaseDialog {
         }
 
         content.table(t -> {
+            t.add("[yellow]USID: " + Identification.getUsid(host.address + ":" + host.port)).left().growX();
+            t.row();
             t.add("[lightgray]" + host.name + "   " + versionString).width(targetWidth() - 10f).left().get().setEllipsis(true);
             t.row();
             if (!host.description.isEmpty()) {

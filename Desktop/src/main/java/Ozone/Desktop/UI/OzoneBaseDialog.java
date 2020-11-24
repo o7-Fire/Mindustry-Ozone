@@ -17,9 +17,12 @@
 package Ozone.Desktop.UI;
 
 import arc.Core;
+import arc.scene.style.Drawable;
+import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
 
 public class OzoneBaseDialog extends BaseDialog {
+    public Drawable icon = Icon.book;
     public OzoneBaseDialog(String title, DialogStyle style) {
         super(title, style);
         addCloseButton();

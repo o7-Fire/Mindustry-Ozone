@@ -39,15 +39,10 @@ public class BotControllerDialog extends OzoneBaseDialog {
 
     public BotControllerDialog() {
         super("Bot Controller");
-        addCloseButton();
         buttons.button("Settings", Icon.settings, settings::show).size(210f, 64f);
         buttons.button("Refresh", Icon.refresh, this::setup).size(210f, 64f);
         buttons.button("Create Bot", Icon.add, this::addBot).size(210f, 64f);
         buttons.button("Start Server", Icon.add, this::startServer).size(210f, 64f).disabled(s -> BotController.serverStarted());
-        setup();
-        shown(this::setup);
-        onResize(this::setup);
-        update(this::update);
     }
 
     void update() {

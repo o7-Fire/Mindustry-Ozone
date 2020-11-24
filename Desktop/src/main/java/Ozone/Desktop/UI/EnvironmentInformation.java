@@ -16,20 +16,83 @@
 
 package Ozone.Desktop.UI;
 
-import mindustry.ui.dialogs.BaseDialog;
+import arc.Core;
+import arc.math.Interp;
+import arc.scene.actions.Actions;
+import arc.scene.event.Touchable;
+import arc.scene.ui.Label;
+import arc.scene.ui.ScrollPane;
+import arc.scene.ui.layout.Table;
+import arc.struct.ObjectMap;
+import arc.util.Interval;
+import mindustry.Vars;
+import mindustry.gen.Icon;
+import mindustry.ui.Styles;
 
-public class EnvironmentInformation extends BaseDialog {
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class EnvironmentInformation extends OzoneBaseDialog {
+    Table table = new Table();
+    ScrollPane scrollPane = new ScrollPane(table);
+    Interval timer = new Interval();
 
     public EnvironmentInformation() {
         super("Environment Information");
-        addCloseButton();
-        shown(this::setup);
-        onResize(this::setup);
+        icon = Icon.info;
     }
 
     void setup() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("---------------------a[red]aaaaaaaaaaaaaaaaaaaa[blue]aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        cont.labelWrap(sb.toString()).growX().growY();
+        table = new Table();
+        scrollPane = new ScrollPane(table);
+        cont.clear();
+        generate();
+        cont.add(scrollPane).growX().growY();
+    }
+
+    void update() {
+        if (isShown() && timer.get(20f)) {
+            generate();
+        }
+    }
+
+    void generate() {
+        table.clearChildren();
+        add("Player Name", Vars.player.name);
+        add("UUID", Core.settings.getString("uuid"));
+        try {
+            Field f = Core.settings.getClass().getDeclaredField("values");
+            f.setAccessible(true);
+            ObjectMap<String, Object> values = (ObjectMap<String, Object>) f.get(Core.settings);
+            ArrayList<String> yikes = new ArrayList<>();
+            for (String s : values.keys()) yikes.add(s);
+            String[] keys = yikes.toArray(new String[0]);
+            List<String> key = Arrays.stream(keys).filter(s -> s.startsWith("usid-")).collect(Collectors.toList());
+            for (String k : key) {
+                add(k, Core.settings.getString(k));
+            }
+        }catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+    void add(String title, String value) {
+        if (value == null) value = "null";
+        Label l = new Label(title + ":");
+        table.add(l).growX();
+        String finalValue = value;
+        table.button(value, Icon.copy, () -> {
+            Core.app.setClipboardText(finalValue);
+            Table table = new Table();
+            table.touchable = Touchable.disabled;
+            table.setFillParent(true);
+            table.actions(Actions.fadeOut(4.0F, Interp.fade), Actions.remove());
+            table.bottom().add("Copied").style(Styles.outlineLabel).padBottom(80);
+            Core.scene.add(table);
+        }).growX();
+        table.row();
     }
 }

@@ -17,21 +17,43 @@
 package Ozone.Experimental.Evasion;
 
 import arc.Core;
+import arc.math.Rand;
 import arc.struct.ObjectMap;
-import io.sentry.Sentry;
-import mindustry.Vars;
+import arc.util.serialization.Base64Coder;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Identification {
     public static void changeID() throws NoSuchFieldException, IllegalAccessException {
-            //does it pass by reference
-            ObjectMap<String, Object> values = (ObjectMap<String, Object>) Core.settings.getClass().getDeclaredField("values").get(Core.settings);
-            String[] keys = values.keys().toSeq().toArray(String[].class);
-            List<String> key = Arrays.stream(keys).filter(s -> s.startsWith("usid-") || s.startsWith("uuid")).collect(Collectors.toList());
-            for(String s : key) Core.settings.put(s, null);
+        //does it pass by reference
+        Field f = Core.settings.getClass().getDeclaredField("values");
+        f.setAccessible(true);
+        ObjectMap<String, Object> values = (ObjectMap<String, Object>) f.get(Core.settings);
+        ArrayList<String> yikes = new ArrayList<>();
+        for (String s : values.keys()) yikes.add(s);
+        String[] keys = yikes.toArray(new String[0]);
+        List<String> key = Arrays.stream(keys).filter(s -> s.startsWith("usid-") || s.startsWith("uuid")).collect(Collectors.toList());
+        for (String s : key) Core.settings.put(s, null);
 
+    }
+
+    public static String getUsid(String ip) {
+        if (ip.contains("/")) {
+            ip = ip.substring(ip.indexOf("/") + 1);
+        }
+
+        if (Core.settings.getString("usid-" + ip, (String) null) != null) {
+            return Core.settings.getString("usid-" + ip, (String) null);
+        }else {
+            byte[] bytes = new byte[8];
+            (new Rand()).nextBytes(bytes);
+            String result = new String(Base64Coder.encode(bytes));
+            Core.settings.put("usid-" + ip, result);
+            return result;
+        }
     }
 }

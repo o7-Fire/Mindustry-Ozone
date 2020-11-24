@@ -19,16 +19,10 @@ package Ozone.Desktop.UI;
 import Ozone.Desktop.Manifest;
 import Ozone.Experimental.Evasion.Identification;
 import arc.Core;
-import arc.struct.ObjectMap;
 import io.sentry.Sentry;
 import mindustry.Vars;
-import mindustry.core.NetClient;
 import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ModsMenu extends BaseDialog {
     public ModsMenu() {
@@ -40,15 +34,17 @@ public class ModsMenu extends BaseDialog {
 
     void setup() {
         cont.clear();
-        cont.button("@mods", Icon.book, Vars.ui.mods::show).growX();
+        cont.button("@mods", Icon.book, Vars.ui.mods::show).growX();// a sacrifice indeed
         cont.row();
         if (!Manifest.isBot())
             cont.button(Core.bundle.get("BotsController"), Icon.android, Manifest.botControllerDialog::show).growX();
         else
             cont.button(Core.bundle.get("BotsController"), Icon.android, Bot.Manifest.botUI::show).growX();
         cont.row();
-        cont.button("Reset UID", Icon.refresh, ()->{
-            Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", ()->{
+        generic();
+        cont.row();
+        cont.button("Reset UID", Icon.refresh, () -> {
+            Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", () -> {
                 try {
                     Identification.changeID();
                 }catch (Throwable e) {
@@ -57,23 +53,15 @@ public class ModsMenu extends BaseDialog {
                 }
             });
         }).growX();
-        /*
-        cont.button(Random.getString(),Icon.android, ()->{}).growX();
-        cont.button(Random.getString(),Icon.android, ()->{}).growX();
-        cont.button(Random.getString(),Icon.android, ()->{}).growX();
-        cont.button(Random.getString(),Icon.android, ()->{}).growX();
+
+    }
+
+    void generic() {
+        add(Manifest.envInf);
+    }
+
+    void add(OzoneBaseDialog dialog) {
+        cont.button(Core.bundle.get(dialog.getClass().getName()), dialog.icon, dialog::show).growX();
         cont.row();
-        cont.button(Random.getString(),Icon.android, ()->{}).left();
-        cont.button(Random.getString(),Icon.android, ()->{}).left();
-        cont.button(Random.getString(),Icon.android, ()->{}).left();
-        cont.button(Random.getString(),Icon.android, ()->{}).left();
-        cont.row();
-        cont.field(Random.getString(), s ->{
-
-        }).growX().right();
-        cont.button(Random.getString(),Icon.android, ()->{}).growX().left();
-
-         */
-
     }
 }

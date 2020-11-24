@@ -16,14 +16,18 @@
 
 package Ozone.Desktop.Patch;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static Ozone.Interface.registerWords;
 import static Ozone.Patch.Translation.*;
 public class Translation {
     private static volatile boolean init = false;
-
+    static HashMap<String, String> deskUI = new HashMap<>();
     public static void Init() {
         if (init) return;
         init = true;
+        deskUI.put("EnvironmentInformation", "Environment Information");
         commands.put("javac", "run single line of java code");
         commands.put("library", "manage runtime library");
         commands.put("debug", "System.out.println(\"yeet\")");
@@ -36,5 +40,8 @@ public class Translation {
         generalSettings.put("showPlayerShooting", "Show Player Shooting Status");
         registerWords("load.mods", "Ozone");
         registerWords("BotsController", "Bots Controller");
+        for (Map.Entry<String, String> s : deskUI.entrySet()) {
+            registerWords("Ozone.Desktop.UI." + s.getKey(), s.getValue());
+        }
     }
 }

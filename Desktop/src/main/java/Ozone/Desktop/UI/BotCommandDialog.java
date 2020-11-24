@@ -18,22 +18,18 @@ package Ozone.Desktop.UI;
 
 import Bot.BotClient;
 import mindustry.gen.Icon;
-import mindustry.ui.dialogs.BaseDialog;
 
-public class BotCommandDialog extends BaseDialog {
+public class BotCommandDialog extends OzoneBaseDialog {
     BotClient botClient;
-    public BotCommandDialog(BotClient b){
+
+    public BotCommandDialog(BotClient b) {
         super("Bot Commands");
         botClient = b;
-        addCloseButton();
         buttons.button("Refresh", Icon.refresh, this::setup).size(210f, 64f);
-        setup();
-        shown(this::setup);
-        onResize(this::setup);
     }
 
-    void setup(){
-        if(!botClient.connected()){
+    void setup() {
+        if (!botClient.connected()) {
             cont.labelWrap("[red]RMI not connected").growX().growY();
             return;
         }
