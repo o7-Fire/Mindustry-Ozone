@@ -26,7 +26,12 @@ public class Propertied {
         try {
             h = parse(new String(ClassLoader.getSystemResourceAsStream("Manifest.properties").readAllBytes()));
         }catch (Throwable ignored) {
+            h = null;
         }
+        if (h == null)
+            try {
+                h = parse(new String(Propertied.class.getProtectionDomain().getClassLoader().getResourceAsStream("Manifest.properties").readAllBytes()));
+            }catch (Throwable ignored) { }
     }
 
     public static String reverseParse(HashMap<String, String> se) {

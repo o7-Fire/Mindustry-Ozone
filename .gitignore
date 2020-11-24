@@ -7,6 +7,7 @@ Tools/build
 /Ozone/
 /config/
 /cache/
+/*.txt
 /lib/
 *.war
 *.ear

@@ -30,7 +30,6 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.UUID;
 
 
 public class SharedBootstrap {
@@ -49,7 +48,6 @@ public class SharedBootstrap {
     static {
         ModsLibrary.add(getAtom("Desktop", Propertied.h.getOrDefault("AtomHash", "-SNAPSHOT")));
         ModsLibrary.add(getAtom("Atomic", Propertied.h.getOrDefault("AtomHash", "-SNAPSHOT")));
-        ModsLibrary.add(getJitpack("Anuken.Arc", "backend-headless", Propertied.h.getOrDefault("MindustryVersion", "-SNAPSHOT")));
     }
 
     static {

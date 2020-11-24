@@ -31,7 +31,6 @@ dependencies {
     compileOnly "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
     compileOnly "com.github.Anuken.Mindustry:desktop:$mindustryVersion"
     compileOnly "com.github.Anuken.Mindustry:annotations:$mindustryVersion"
-    compileOnly "com.github.Anuken.Arc:backend-headless:$mindustryVersion"
 
     implementation 'io.sentry:sentry:3.1.0'
 

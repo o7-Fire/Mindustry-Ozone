@@ -17,9 +17,12 @@
 package Premain;
 
 import Main.Ozone;
+import Ozone.Desktop.Propertied;
 import Ozone.Desktop.SharedBootstrap;
+import arc.backend.sdl.jni.SDL;
 import arc.util.Log;
 import io.sentry.Sentry;
+import mindustry.core.Version;
 import mindustry.desktop.DesktopLauncher;
 import mindustry.mod.Mod;
 
@@ -31,17 +34,22 @@ import java.lang.management.ManagementFactory;
 public class EntryPoint extends Mod {
     public Mod OzoneMod = null;
     public EntryPoint() {
+        String required = Propertied.h.getOrDefault("MindustryVersion", "Mindustry Version is gone");
         try {
-            if (!SharedBootstrap.customBootstrap)
+            if (!SharedBootstrap.customBootstrap) {
+                if (!required.contains(String.valueOf(Version.build)))
+                    SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_WARNING, "Ozone", "Incompatible mindustry version, require: " + required);
                 startTheRealOne();
-            else {
+            }else {
                 Log.infoTag("Ozone", "Running in Ozone Mode");
                 OzoneMod = new Main.Ozone();
             }
-        } catch (Throwable t) {
+        }catch (Throwable t) {
             t.printStackTrace();
             Sentry.captureException(t);
         }
+
+
     }
 
     public static void startTheRealOne() {
