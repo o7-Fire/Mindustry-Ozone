@@ -18,8 +18,8 @@ package Ozone.Desktop;
 
 import Atom.Utility.Random;
 import Bot.BotClient;
-import Bot.BotInterface;
-import Bot.ServerInterface;
+import Bot.Interface.Shared.BotInterface;
+import Bot.Interface.Shared.ServerInterface;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.desktop.DesktopLauncher;
@@ -48,6 +48,10 @@ public class BotController implements ServerInterface {
                 bc.exit();
             }
         }));
+    }
+
+    public BotController(){
+
     }
 
     public static boolean serverStarted() {
@@ -116,5 +120,6 @@ public class BotController implements ServerInterface {
         public boolean alive() throws RemoteException {
             return true;
         }
+
     }
 }

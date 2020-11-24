@@ -50,7 +50,7 @@ allprojects {
 
     ext {
 
-        mindustryVersion = "v113.1"
+        mindustryVersion = "v115"
         atomHash = "7981515756"
         githubHash = "null"
         githubBranch = "null"
@@ -58,6 +58,7 @@ allprojects {
         githubOwner = "null"
         modsBuilderID = "idk"
         modsBuilder = "java"
+
         if(project.hasProperty("gHash"))
             githubHash = gHash
         if(project.hasProperty("gBranch"))
@@ -68,7 +69,6 @@ allprojects {
             githubOwner = gRepoOwner
         if(project.hasProperty("builderID"))
             modsBuilderID = builderID
-
         if(project.hasProperty("builder"))
             modsBuilder = builder
         else
@@ -117,7 +117,7 @@ allprojects {
         testImplementation 'junit:junit:4.12'
         compileOnly "com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"
         compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
-        compileOnly"com.github.Anuken.Arc:backend-sdl:$mindustryVersion"
+        compileOnly "com.github.Anuken.Arc:backend-sdl:$mindustryVersion"
         compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
         compileOnly 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'
         compileOnly group: 'org.jetbrains', name: 'annotations', version: '20.1.0'

@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class TaskInterface {
-    private static final Queue<Task> taskQueue = new Queue<>();
+    public static final Queue<Task> taskQueue = new Queue<>();
     private static volatile boolean init = false;
 
     public static void init() {

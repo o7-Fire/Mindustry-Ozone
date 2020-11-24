@@ -1,14 +1,10 @@
-plugins {
-    id 'java'
-}
-
 
 repositories {
     mavenCentral()
 }
 //Desktop jar with installer and separated library
 jar {
-    dependsOn ":gay"
+    dependsOn ":makeJar"
     archiveFileName = "Ozone-Desktop.jar"
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
@@ -29,18 +25,21 @@ repositories {
 }
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
     implementation rootProject
+
     compileOnly "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
     compileOnly "com.github.Anuken.Mindustry:desktop:$mindustryVersion"
     compileOnly "com.github.Anuken.Mindustry:annotations:$mindustryVersion"
     compileOnly "com.github.Anuken.Arc:backend-headless:$mindustryVersion"
+
     implementation 'io.sentry:sentry:3.1.0'
+
     compileOnly "io.github.vincenzopalazzo:material-ui-swing:1.1.2-rc1"
     compileOnly group: 'com.miglayout', name: 'miglayout-core', version: '5.2'
     compileOnly group: 'com.miglayout', name: 'miglayout-swing', version: '5.2'
+
     compileOnly 'com.github.MinnDevelopment:java-discord-rpc:v2.0.1'
-
-
 }
 
 tasks.withType(JavaCompile) {

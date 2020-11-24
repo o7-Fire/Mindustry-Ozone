@@ -136,3 +136,9 @@ config/maps/
 config/mods/
 config/settings.bin
 src/test/resources/
+CodeGen/
+Desktop/out/production/resources/
+Desktop/src/main/java/Bot/Interface/Client/
+Desktop/src/main/java/Bot/Interface/Server/
+Desktop/src/main/java/mindustry/world/
+out/production/resources/

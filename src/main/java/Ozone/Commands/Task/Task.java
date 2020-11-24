@@ -18,6 +18,7 @@ package Ozone.Commands.Task;
 
 import Ozone.Commands.Commands;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
@@ -40,7 +41,7 @@ public abstract class Task {
 
     public void taskCompleted() {
         for (Consumer<Object> s : onTaskCompleted)
-            s.accept(new Object());
+            s.accept(new Object());//wtf ?
     }
 
     public void interrupt() {

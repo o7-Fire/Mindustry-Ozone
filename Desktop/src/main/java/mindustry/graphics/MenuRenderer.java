@@ -1,4 +1,3 @@
-
 package mindustry.graphics;
 
 import Atom.Utility.Random;
@@ -32,7 +31,7 @@ import static mindustry.Vars.*;
 public class MenuRenderer implements Disposable {
     private static final float darkness = 0.3f;
     private final int width = !mobile ? 100 : 60, height = !mobile ? 50 : 40;
-
+    public MenuGifRenderer mf;
     private int cacheFloor, cacheWall;
     private Camera camera = new Camera();
     private Mat mat = new Mat();
@@ -43,17 +42,17 @@ public class MenuRenderer implements Disposable {
     private int flyers = Mathf.random(15, 35);
     private volatile UnitType flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
     private boolean random;
-    public MenuGifRenderer mf;
+
     public MenuRenderer() {
-       if (Random.getBool())
-           try {
-               mf = new MenuGifRenderer();
-           } catch (MenuGifRenderer.NoMenuResource s) {
-               mf = null;
-           } catch (Throwable t) {
-               t.printStackTrace();
-               Sentry.captureException(t);
-           }
+        if (Random.getBool())
+            try {
+                mf = new MenuGifRenderer();
+            }catch (MenuGifRenderer.NoMenuResource s) {
+                mf = null;
+            }catch (Throwable t) {
+                t.printStackTrace();
+                Sentry.captureException(t);
+            }
         if (mf != null) return;
         Thread t =
                 new Thread(() -> {
@@ -89,20 +88,21 @@ public class MenuRenderer implements Disposable {
         Simplex s3 = new Simplex(offset + 2);
         RidgedPerlin rid = new RidgedPerlin(1 + offset, 1);
         Block[] selected = Structs.select(
-                new Block[]{Blocks.sand, Blocks.slag},
-                new Block[]{Blocks.shale, Blocks.slag},
-                new Block[]{Blocks.ice, Blocks.water},
-                new Block[]{Blocks.shale, Blocks.slag},
-                new Block[]{Blocks.ice, Blocks.darkMetal},
+                new Block[]{Blocks.sand, Blocks.sandWall},
+                new Block[]{Blocks.shale, Blocks.shaleWall},
+                new Block[]{Blocks.ice, Blocks.iceWall},
+                new Block[]{Blocks.sand, Blocks.sandWall},
+                new Block[]{Blocks.shale, Blocks.shaleWall},
+                new Block[]{Blocks.ice, Blocks.iceWall},
                 new Block[]{Blocks.moss, Blocks.sporePine}
         );
         Block[] selected2 = Structs.select(
                 new Block[]{Blocks.basalt, Blocks.duneWall},
                 new Block[]{Blocks.basalt, Blocks.duneWall},
-                new Block[]{Blocks.stone, Blocks.tar},
-                new Block[]{Blocks.stone, Blocks.tar},
+                new Block[]{Blocks.stone, Blocks.stoneWall},
+                new Block[]{Blocks.stone, Blocks.stoneWall},
                 new Block[]{Blocks.moss, Blocks.sporeWall},
-                new Block[]{Blocks.salt, Blocks.water}
+                new Block[]{Blocks.salt, Blocks.saltWall}
         );
 
         Block ore1 = ores.random();

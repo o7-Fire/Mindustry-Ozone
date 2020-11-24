@@ -33,20 +33,25 @@ public class ChatFragment extends Table {
     private float fadetime;
     private boolean shown = false;
     private TextField chatfield;
-    private Label fieldlabel;
+    private Label fieldlabel = new Label(">");
     private Font font;
-    private GlyphLayout layout;
-    private float offsetx, offsety, fontoffsetx, chatspace;
-    private Color shadowColor;
-    private float textspacing;
-    private Seq<String> history;
+    private GlyphLayout layout = new GlyphLayout();
+    private float offsetx = Scl.scl(4), offsety = Scl.scl(4), fontoffsetx = Scl.scl(2), chatspace = Scl.scl(50);
+    private Color shadowColor = new Color(0, 0, 0, 0.4f);
+    private float textspacing = Scl.scl(10);
+    private Seq<String> history = new Seq<>();
     private int historyPos = 0;
     private int scrollPos = 0;
-    private Fragment container;
+    private Fragment container = new Fragment() {
+        @Override
+        public void build(Group parent) {
+            scene.add(ChatFragment.this);
+        }
+    };
 
     public ChatFragment() {
         super();
-        fieldlabel = new Label(">");
+
         setFillParent(true);
         font = Fonts.def;
 
@@ -62,7 +67,6 @@ public class ChatFragment extends Table {
             return net.active() && ui.hudfrag.shown;
         });
 
-        history = new Seq<>();
         update(() -> {
 
             if (net.active() && input.keyTap(Binding.chat) && (scene.getKeyboardFocus() == chatfield || scene.getKeyboardFocus() == null || ui.minimapfrag.shown()) && !ui.scriptfrag.shown()) {
@@ -85,19 +89,6 @@ public class ChatFragment extends Table {
 
         history.insert(0, "");
         setup();
-        layout = new GlyphLayout();
-        offsetx = Scl.scl(4);
-        offsety = Scl.scl(4);
-        fontoffsetx = Scl.scl(2);
-        chatspace = Scl.scl(50);
-        shadowColor = new Color(0, 0, 0, 0.4f);
-        textspacing = Scl.scl(10);
-        container = new Fragment() {
-            @Override
-            public void build(Group parent) {
-                scene.add(ChatFragment.this);
-            }
-        };
     }
 
     public Fragment container() {
@@ -166,7 +157,7 @@ public class ChatFragment extends Table {
             if (!shown && fadetime - i < 1f && fadetime - i >= 0f) {
                 font.getCache().setAlphas((fadetime - i) * opacity);
                 Draw.color(0, 0, 0, shadowColor.a * (fadetime - i) * opacity);
-            } else {
+            }else {
                 font.getCache().setAlphas(opacity);
             }
 
@@ -211,10 +202,10 @@ public class ChatFragment extends Table {
                 };
                 input.canceled = this::hide;
                 Core.input.getTextInput(input);
-            } else {
+            }else {
                 chatfield.fireClick();
             }
-        } else {
+        }else {
             //sending chat has a delay; workaround for issue #1943
             Time.run(2f, () -> {
                 scene.setKeyboardFocus(null);
@@ -266,7 +257,7 @@ public class ChatFragment extends Table {
             this.sender = sender;
             if (sender == null) { //no sender, this is a server message?
                 formattedMessage = message == null ? "" : message;
-            } else {
+            }else {
                 formattedMessage = "[coral][[" + sender + "[coral]]:[white] " + message;
             }
         }

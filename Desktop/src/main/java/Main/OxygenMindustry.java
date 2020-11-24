@@ -16,8 +16,10 @@
 
 package Main;
 
-import Bot.BotInterface;
-import Bot.ServerInterface;
+import Bot.Interface.Shared.BotInterface;
+import Bot.Interface.Shared.ServerInterface;
+import Ozone.Commands.Task.Task;
+import Ozone.Commands.TaskInterface;
 import Ozone.Desktop.SharedBootstrap;
 import arc.Application;
 import arc.Core;
@@ -32,7 +34,10 @@ import arc.util.OS;
 import arc.util.serialization.Base64Coder;
 import io.sentry.Sentry;
 import mindustry.ClientLauncher;
+import mindustry.Vars;
+import mindustry.core.NetClient;
 import mindustry.game.EventType;
+import mindustry.gen.Call;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +49,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.function.Consumer;
 
 import static Bot.Manifest.*;
 import static arc.Core.app;
@@ -154,6 +161,9 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
         } catch (Throwable t) {
             throw new RuntimeException("Failed to establish RMI connection", t);
         }
+        Events.run(EventType.Trigger.update, ()->{
+
+        });
         Core.settings.put("name", System.getProperty("BotName"));
         super.init();
     }
@@ -164,6 +174,38 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
         Registry registry = LocateRegistry.getRegistry(port);
         serverInterface = (ServerInterface) registry.lookup(System.getProperty("ServerRegName"));
         Log.info("Connected to \"@\" at port @ with reg \"@\"", serverInterface.name(), port, System.getProperty("ServerRegName"));
+    }
+
+    @Override
+    public void addTask(Task t) throws RemoteException {
+        addTask(t, null);
+    }
+
+    @Override
+    public void addTask(Task t, Consumer<Object> onEnd) {
+        TaskInterface.addTask(t, onEnd);
+    }
+
+    @Override
+    public void clearTask() {
+        TaskInterface.reset();
+    }
+
+    @Override
+    public ArrayList<Task> getTask() {
+        ArrayList<Task> task = new ArrayList<>();
+        for(Task t : TaskInterface.taskQueue) task.add(t);
+        return task;
+    }
+
+    @Override
+    public void connect(String ip, int port) {
+        NetClient.connect(ip, port);
+    }
+
+    @Override
+    public void sendChat(String s) {
+        if(Vars.net.active()) Call.sendChatMessage(s);
     }
 
     @Override

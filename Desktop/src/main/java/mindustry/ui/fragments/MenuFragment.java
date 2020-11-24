@@ -1,4 +1,3 @@
-
 package mindustry.ui.fragments;
 
 import Atom.Utility.Random;
@@ -106,7 +105,7 @@ public class MenuFragment extends Fragment {
                     parent.fill(c -> c.bottom().right().button("Ozone", Icon.warning, () -> ui.showConfirm("Ozone Update", "A new compatible build is exists, do you want to update ?", () -> DesktopPatcher.selfUpdate(h.get("DownloadURL")))).size(200, 60).name("becheck"));
                 }
         }catch (Throwable e) {
-            Log.err(e);
+            Log.err(e.toString());
             Sentry.captureException(e);
         }
 
@@ -206,8 +205,7 @@ public class MenuFragment extends Fragment {
                             new DesktopButton("@campaign", Icon.play, () -> checkPlay(ui.planet::show)),
                             new DesktopButton("@joingame", Icon.add, () -> checkPlay(ui.join::show)),
                             new DesktopButton("@customgame", Icon.terrain, () -> checkPlay(ui.custom::show)),
-                            new DesktopButton("@loadgame", Icon.download, () -> checkPlay(ui.load::show)),
-                            new DesktopButton("@tutorial", Icon.info, () -> checkPlay(control::playTutorial))
+                            new DesktopButton("@loadgame", Icon.download, () -> checkPlay(ui.load::show))
                     ),
                     new DesktopButton("@editor", Icon.terrain, () -> checkPlay(ui.maps::show)), steam ? new DesktopButton("@workshop", Icon.book, platform::openWorkshop) : null,
                     new DesktopButton("@mods", Icon.box, Manifest.modsMenu::show),
@@ -262,7 +260,7 @@ public class MenuFragment extends Fragment {
                 if (currentMenu == out[0]) {
                     currentMenu = null;
                     fadeOutMenu();
-                } else {
+                }else {
                     if (b.submenu != null) {
                         currentMenu = out[0];
                         submenu.clearChildren();

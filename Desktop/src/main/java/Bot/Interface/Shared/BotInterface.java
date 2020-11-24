@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
-package Bot;
+package Bot.Interface.Shared;
 
 import Ozone.Commands.Task.Task;
+import arc.struct.Seq;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public interface BotInterface extends Remote {
     default void addTask(Task t) throws RemoteException {
 
+    }
+    default void addTask(Task t, Consumer<Object> onEnd) throws RemoteException {
+
+    }
+    default ArrayList<Task> getTask()throws RemoteException{
+        return null;
     }
 
     default void clearTask() throws RemoteException {

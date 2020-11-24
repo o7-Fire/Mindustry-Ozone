@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package Bot;
+package Ozone.Experimental;
 
+import Ozone.Commands.Task.Task;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+public abstract class AttackDiagram extends Task implements Runnable {
+    protected boolean complete;
 
-public interface ServerInterface extends Remote {
+    @Override
+    public void run() {
 
-
-    default String name() throws RemoteException {
-        return null;
     }
 
-    default boolean alive() throws RemoteException {
-        return false;
+    @Override
+    public boolean isCompleted() {
+        return complete;
     }
-
 }

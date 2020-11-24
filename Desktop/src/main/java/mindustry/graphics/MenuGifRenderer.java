@@ -81,12 +81,6 @@ public class MenuGifRenderer implements Disposable {
             animation = new Animation<>(1f, Seq.with(new TextureRegion(new Texture(new Fi(u.getFile())))), Animation.PlayMode.loop);
     }
 
-    public static class NoMenuResource extends Throwable {
-        public NoMenuResource(String message) {
-            super(message);
-        }
-    }
-
     public void render() {
         elapsed += Time.delta;
         if (iteration > length) iteration = 0;
@@ -100,5 +94,11 @@ public class MenuGifRenderer implements Disposable {
     @Override
     public void dispose() {
 
+    }
+
+    public static class NoMenuResource extends Throwable {
+        public NoMenuResource(String message) {
+            super(message);
+        }
     }
 }

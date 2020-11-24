@@ -53,14 +53,6 @@ public class Main extends JPanel {
     }
 
     public static void setTheme() {
-        if (set) return;
-        set = true;
-        try {
-            UIManager.setLookAndFeel(new MaterialLookAndFeel());
-            //MaterialLookAndFeel.changeTheme(new JMarsDarkTheme());
-        } catch (Throwable ignored) {
-            set = false;
-        }
     }
 
     private void initComponents() {

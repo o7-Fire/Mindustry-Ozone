@@ -1,4 +1,3 @@
-
 package mindustry.graphics;
 
 import Atom.Utility.Random;

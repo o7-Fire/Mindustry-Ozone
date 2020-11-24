@@ -129,7 +129,7 @@ public class GifDecoder {
                 int n = frameCount - 2;
                 if (n > 0) {
                     lastPixmap = getFrame(n - 1);
-                } else {
+                }else {
                     lastPixmap = null;
                 }
             }
@@ -233,12 +233,12 @@ public class GifDecoder {
                     status = STATUS_FORMAT_ERROR;
                 }
             }
-        } else {
+        }else {
             status = STATUS_OPEN_ERROR;
         }
         try {
             is.close();
-        } catch (Exception e) {
+        }catch (Exception e) {
         }
         return status;
     }
@@ -375,7 +375,7 @@ public class GifDecoder {
         int curByte = 0;
         try {
             curByte = in.read();
-        } catch (Exception e) {
+        }catch (Exception e) {
             status = STATUS_FORMAT_ERROR;
         }
         return curByte;
@@ -399,7 +399,7 @@ public class GifDecoder {
                     }
                     n += count;
                 }
-            } catch (Exception e) {
+            }catch (Exception e) {
                 e.printStackTrace();
             }
             if (n < blockSize) {
@@ -422,12 +422,12 @@ public class GifDecoder {
         int n = 0;
         try {
             n = in.read(c);
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
         }
         if (n < nbytes) {
             status = STATUS_FORMAT_ERROR;
-        } else {
+        }else {
             tab = new int[256]; // max size to avoid bounds checks
             int i = 0;
             int j = 0;
@@ -467,7 +467,7 @@ public class GifDecoder {
                             }
                             if (app.equals("NETSCAPE2.0")) {
                                 readNetscapeExt();
-                            } else {
+                            }else {
                                 skip(); // don't care
                             }
                             break;
@@ -544,7 +544,7 @@ public class GifDecoder {
         if (lctFlag) {
             lct = readColorTable(lctSize); // read table
             act = lct; // make local table active
-        } else {
+        }else {
             act = gct; // make global table active
             if (bgIndex == transIndex) {
                 bgColor = 0;
@@ -607,7 +607,7 @@ public class GifDecoder {
                 int b2 = ((int) block[2]) & 0xff;
                 loopCount = (b2 << 8) | b1;
             }
-        } while ((blockSize > 0) && !err());
+        }while ((blockSize > 0) && !err());
     }
 
     /**
@@ -641,7 +641,7 @@ public class GifDecoder {
     protected void skip() {
         do {
             readBlock();
-        } while ((blockSize > 0) && !err());
+        }while ((blockSize > 0) && !err());
     }
 
     public Animation<TextureRegion> getAnimation(Animation.PlayMode playMode) {

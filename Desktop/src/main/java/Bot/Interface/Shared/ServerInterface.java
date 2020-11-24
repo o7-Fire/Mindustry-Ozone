@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
-package Settings;
+package Bot.Interface.Shared;
 
-import java.io.File;
 
-public class Version {
-    public static final String semantic = "0.9.6";
-    public static File cache = new File("cache/");
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface ServerInterface extends Remote {
+
+
+    default String name() throws RemoteException {
+        return null;
+    }
+
+    default boolean alive() throws RemoteException {
+        return false;
+    }
+
 }

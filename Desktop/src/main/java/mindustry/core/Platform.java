@@ -126,19 +126,19 @@ public interface Platform {
                 ui.loadAnd(() -> {
                     try {
                         writer.write(file);
-                    } catch (Throwable e) {
+                    }catch (Throwable e) {
                         ui.showException(e);
                         Log.err(e);
                     }
                 });
             });
-        } else {
+        }else {
             ui.loadAnd(() -> {
                 try {
                     Fi result = Core.files.local(name + "." + extension);
                     writer.write(result);
                     platform.shareFile(result);
-                } catch (Throwable e) {
+                }catch (Throwable e) {
                     ui.showException(e);
                     Log.err(e);
                 }
@@ -152,15 +152,20 @@ public interface Platform {
      * @param cons      Selection listener
      * @param open      Whether to open or save files
      * @param extension File extension to filter
+     * @param title     The title of the native dialog
      */
-    default void showFileChooser(boolean open, String extension, Cons<Fi> cons) {
-        new FileChooser(open ? "@open" : "@save", file -> file.extEquals(extension), open, file -> {
+    default void showFileChooser(boolean open, String title, String extension, Cons<Fi> cons) {
+        new FileChooser(title, file -> file.extEquals(extension), open, file -> {
             if (!open) {
                 cons.get(file.parent().child(file.nameWithoutExtension() + "." + extension));
-            } else {
+            }else {
                 cons.get(file);
             }
         }).show();
+    }
+
+    default void showFileChooser(boolean open, String extension, Cons<Fi> cons) {
+        showFileChooser(open, open ? "@open" : "@save", extension, cons);
     }
 
     /**
@@ -172,7 +177,7 @@ public interface Platform {
     default void showMultiFileChooser(Cons<Fi> cons, String... extensions) {
         if (mobile) {
             showFileChooser(true, extensions[0], cons);
-        } else {
+        }else {
             new FileChooser("@open", file -> Structs.contains(extensions, file.extension().toLowerCase()), true, cons).show();
         }
     }

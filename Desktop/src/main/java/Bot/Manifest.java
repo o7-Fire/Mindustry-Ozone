@@ -16,6 +16,7 @@
 
 package Bot;
 
+import Bot.Interface.Shared.ServerInterface;
 import Bot.UI.BotControllerUI;
 import Main.OxygenMindustry;
 import Ozone.Event.DesktopEvent;

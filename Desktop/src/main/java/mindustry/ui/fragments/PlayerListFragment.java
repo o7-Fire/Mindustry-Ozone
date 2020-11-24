@@ -29,11 +29,12 @@ import static mindustry.Vars.*;
 
 public class PlayerListFragment extends Fragment {
     public Table content = new Table().marginRight(13f).marginLeft(13f);
+    public Settings settings = new Settings("Player List Settings");
     private boolean visible = false;
     private Interval timer = new Interval();
     private TextField sField;
     private boolean found = false;
-    public Settings settings = new Settings("Player List Settings");
+
     @Override
     public void build(Group parent) {
         content.name = "players";

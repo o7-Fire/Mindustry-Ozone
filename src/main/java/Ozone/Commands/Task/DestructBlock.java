@@ -18,6 +18,7 @@ package Ozone.Commands.Task;
 
 import mindustry.Vars;
 import mindustry.gen.Builderc;
+import mindustry.input.DesktopInput;
 import mindustry.world.Build;
 import mindustry.world.Tile;
 import mindustry.world.blocks.ConstructBlock;
@@ -48,12 +49,12 @@ public class DestructBlock extends Task {
 
     @Override
     public void update() {
-        if (!(Vars.player.unit() instanceof Builderc)) return;
+        if (Vars.player.unit() == null) return;
         Tile t = Vars.world.tile(x, y);
         if (t == null) return;
         if (half && t.block() instanceof ConstructBlock) return;
-        int idx = Vars.player.builder().plans().indexOf((req) -> req.breaking && req.x == x && req.y == y);
+        int idx = Vars.player.unit().plans().indexOf((req) -> req.breaking && req.x == x && req.y == y);
         if (idx != -1) return;
-        Vars.player.builder().removeBuild(x, y, true);
+        Vars.player.unit().removeBuild(x, y, true);
     }
 }

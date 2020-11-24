@@ -239,6 +239,7 @@ public class DownloadSwing implements Runnable {
                 }
             }
             try {
+                file.getParentFile().mkdirs();
                 if (temp.exists())
                     Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }catch (Throwable t) {

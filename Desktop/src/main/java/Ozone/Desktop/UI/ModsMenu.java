@@ -17,10 +17,18 @@
 package Ozone.Desktop.UI;
 
 import Ozone.Desktop.Manifest;
+import Ozone.Experimental.Evasion.Identification;
 import arc.Core;
+import arc.struct.ObjectMap;
+import io.sentry.Sentry;
 import mindustry.Vars;
+import mindustry.core.NetClient;
 import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ModsMenu extends BaseDialog {
     public ModsMenu() {
@@ -38,6 +46,17 @@ public class ModsMenu extends BaseDialog {
             cont.button(Core.bundle.get("BotsController"), Icon.android, Manifest.botControllerDialog::show).growX();
         else
             cont.button(Core.bundle.get("BotsController"), Icon.android, Bot.Manifest.botUI::show).growX();
+        cont.row();
+        cont.button("Reset UID", Icon.refresh, ()->{
+            Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", ()->{
+                try {
+                    Identification.changeID();
+                }catch (Throwable e) {
+                    Sentry.captureException(e);
+                    Vars.ui.showException(e);
+                }
+            });
+        }).growX();
         /*
         cont.button(Random.getString(),Icon.android, ()->{}).growX();
         cont.button(Random.getString(),Icon.android, ()->{}).growX();

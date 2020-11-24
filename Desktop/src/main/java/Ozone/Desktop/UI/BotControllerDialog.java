@@ -58,7 +58,6 @@ public class BotControllerDialog extends BaseDialog {
     //new TextureRegionDrawable(new TextureRegion(Core.assets.get("sprites/schematic-background.png", Texture.class)))
     public void setup() {
         cont.clear();
-
         if (BotController.botClients.isEmpty()) {
             cont.button("Such an empty, go create a [orange]Bot", () -> {
             }).center().growX().disabled(true);

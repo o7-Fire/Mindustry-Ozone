@@ -30,6 +30,7 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.UUID;
 
 
 public class SharedBootstrap {
@@ -48,13 +49,14 @@ public class SharedBootstrap {
     static {
         ModsLibrary.add(getAtom("Desktop", Propertied.h.getOrDefault("AtomHash", "-SNAPSHOT")));
         ModsLibrary.add(getAtom("Atomic", Propertied.h.getOrDefault("AtomHash", "-SNAPSHOT")));
-        ModsLibrary.add(getJitpack("Anuken.Arc", "backend-headless", "v113.2"));
+        ModsLibrary.add(getJitpack("Anuken.Arc", "backend-headless", Propertied.h.getOrDefault("MindustryVersion", "-SNAPSHOT")));
     }
 
     static {
         Sentry.init(options -> {
             options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
             options.setRelease("Ozone." + Version.semantic + ":" + "Desktop." + Settings.Version.semantic);
+            options.setEnvironment(Propertied.h.getOrDefault("Github-CI", "no").equals("Github-CI") ? "release" : "dev");
         });
         Sentry.configureScope(SharedBootstrap::registerSentry);
     }
@@ -76,20 +78,13 @@ public class SharedBootstrap {
         scope.setUser(user);
         scope.setTag("Ozone.Desktop.Version", Settings.Version.semantic);
         scope.setTag("Ozone.Core.Version", Version.semantic);
-        //scope.setContexts("Ozone.Mindustry.Version", Propertied.h.getOrDefault("MindustryVersion", "Idk"));
-        //scope.setContexts("Atomic.Hash", Propertied.h.getOrDefault("AtomHash", "Snapshot"));
         scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
         scope.setTag("Java.Version", System.getProperty("java.version"));
         for (Map.Entry<String, String> e : Propertied.h.entrySet())
             scope.setTag(e.getKey(), e.getValue());
-        //StringBuilder s = new StringBuilder();
-        //for (Map.Entry<String, String> e : Propertied.h.entrySet())
-        //    s.append(e.getKey()).append("=").append(e.getValue()).append("\n");
-        ///scope.setContexts("Manifest", s.toString());
         StringBuilder sb = new StringBuilder("Library List:\n");
         for (URL u : libraryLoader.getURLs()) sb.append("-").append(u.toString()).append("\n");
         scope.setContexts("Loaded.Library", sb.toString());
-        //for (Map.Entry<String, String> s : Propertied.h.entrySet())
     }
 
     protected static void loadAtomic() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {

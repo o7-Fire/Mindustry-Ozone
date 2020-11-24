@@ -17,6 +17,7 @@
 package Bot;
 
 import Atom.Utility.Random;
+import Bot.Interface.Shared.BotInterface;
 import Main.Ozone;
 import Ozone.Desktop.BotController;
 import Premain.BotEntryPoint;

@@ -30,7 +30,7 @@ public class BotEntryPoint {
             if (System.getProperty("MindustryExecutable") == null) {
                 throw new RuntimeException("System Property of MindustryExecutable is empty");
             }
-            System.out.println("Initializing Oxygen-less Environment");
+            System.out.println("Initializing Oxygen Environment");
             SharedBootstrap.classloaderNoParent();
             SharedBootstrap.loadStandalone();
             SharedBootstrap.loadMods();

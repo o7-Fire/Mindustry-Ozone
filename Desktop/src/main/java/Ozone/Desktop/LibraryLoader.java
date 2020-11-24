@@ -47,14 +47,12 @@ public class LibraryLoader extends URLClassLoader {
         defineClass(name, h, 0, h.length);
     }
 
-    //Fuck you java reflection illegal access
-    //pretty sure its a bug
+
     @Override
     public void addURL(URL url) {
-        //if (Ozone.Core.settings.getBool("ozone.debugMode", false))
-        //    Log.debug("Ozone-LibraryLoader: @", "Loading: " + url.toString());
         if (url.getProtocol().startsWith("http")) {
-            File temp = new File(cache, url.getFile().substring(1).replace("/", "."));
+            File temp = new File(cache, url.getFile());//.substring(1).replace("/", ".")
+            temp.getParentFile().mkdirs();
             if (!temp.exists()) {
                 try {
                     loadClass("net.miginfocom.swing.MigLayout");
@@ -64,16 +62,8 @@ public class LibraryLoader extends URLClassLoader {
                     d.run();
                 }
             }
-            if (temp.exists()) {
-                try {
-                    url = temp.toURI().toURL();
-                }catch (MalformedURLException ignored) {
-
-                }
-            }
-
+            if (temp.exists()) try { url = temp.toURI().toURL(); }catch (Throwable ignored) { }//sometime its just dont work file to url
         }
-
         super.addURL(url);
     }
 
