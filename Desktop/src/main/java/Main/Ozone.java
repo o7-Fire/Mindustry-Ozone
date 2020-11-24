@@ -19,6 +19,7 @@ package Main;
 import Ozone.Desktop.Manifest;
 import Ozone.Desktop.Patch.DesktopPatcher;
 import Ozone.Desktop.UI.BotControllerDialog;
+import Ozone.Desktop.UI.EnvironmentInformation;
 import Ozone.Desktop.UI.ModsMenu;
 import Ozone.Event.DesktopEvent;
 import Ozone.Main;
@@ -37,6 +38,7 @@ public class Ozone extends Mod {
             if (!Vars.headless) {
                 Manifest.botControllerDialog = new BotControllerDialog();
                 Manifest.modsMenu = new ModsMenu();
+                Manifest.envInf = new EnvironmentInformation();
             }
         });
 

@@ -33,7 +33,7 @@ import mindustry.gen.Tex;
 import mindustry.ui.dialogs.BaseDialog;
 
 
-public class BotControllerDialog extends BaseDialog {
+public class BotControllerDialog extends OzoneBaseDialog {
     private final Settings settings = new Settings();
     private Interval timer = new Interval();
 
@@ -50,18 +50,18 @@ public class BotControllerDialog extends BaseDialog {
         update(this::update);
     }
 
-    private void update() {
+    void update() {
         if (isShown() && timer.get(200))
             setup();
     }
 
     //new TextureRegionDrawable(new TextureRegion(Core.assets.get("sprites/schematic-background.png", Texture.class)))
-    public void setup() {
+    void setup() {
         cont.clear();
         if (BotController.botClients.isEmpty()) {
             cont.button("Such an empty, go create a [orange]Bot", () -> {
             }).center().growX().disabled(true);
-        } else {
+        }else {
             Table container = new Table();
             for (BotClient b : BotController.botClients) {
                 Table bot = new Table(Tex.pane);

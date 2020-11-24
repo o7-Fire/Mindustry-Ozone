@@ -18,6 +18,7 @@ package Ozone.Desktop;
 
 import Atom.File.SerializeData;
 import Ozone.Desktop.UI.BotControllerDialog;
+import Ozone.Desktop.UI.EnvironmentInformation;
 import Ozone.Desktop.UI.ModsMenu;
 import Ozone.Patch.ChatOzoneFragment;
 import arc.util.Log;
@@ -42,6 +43,7 @@ public class Manifest {
     public static int latestReleaseManifestID, latestBuildManifestID;
     public static BotControllerDialog botControllerDialog;
     public static ModsMenu modsMenu;
+    public static EnvironmentInformation envInf;
 
     static {
         try {
