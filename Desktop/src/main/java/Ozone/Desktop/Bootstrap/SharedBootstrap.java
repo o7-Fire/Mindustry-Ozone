@@ -23,34 +23,22 @@ import io.sentry.Sentry;
 import io.sentry.protocol.User;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 
 public class SharedBootstrap {
-    public static final String jitpack = "https://jitpack.io/com/github/o7-Fire/Atomic-Library/";
-    protected static final ArrayList<String> StandaloneLibrary = new ArrayList<>(
-            Arrays.asList(//TODO don't
-                    "https://repo1.maven.org/maven2/com/miglayout/miglayout-core/5.2/miglayout-core-5.2.jar",
-                    "https://repo1.maven.org/maven2/com/miglayout/miglayout-swing/5.2/miglayout-swing-5.2.jar",
-                    "https://github.com/atarw/material-ui-swing/releases/download/v1.1.2-rc1/material-ui-swing-1.1.2-rc1-with-dependencies.jar"//for future reference
-            )
-    ), ModsLibrary = new ArrayList<>();
+
     public static LibraryLoader libraryLoader;
     public static boolean customBootstrap;
-    private static boolean mods, standalone, classpath, atomic;
+    private static boolean runtime, classpath, atomic;
 
-    static {
-        Dependency.url.size();
-        ModsLibrary.add(getAtom("Desktop", Propertied.Manifest.getOrDefault("AtomHash", "-SNAPSHOT")));
-        ModsLibrary.add(getAtom("Atomic", Propertied.Manifest.getOrDefault("AtomHash", "-SNAPSHOT")));
-    }
 
     static {
         Sentry.init(options -> {
@@ -95,30 +83,18 @@ public class SharedBootstrap {
             libraryLoader.addURL(new URL(s));
     }
 
-    public static void loadMods() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        if (mods) throw new IllegalStateException("Mods dependency already loaded");
-        mods = true;
-        for (String s : ModsLibrary)
-            libraryLoader.addURL(new URL(s));
+    public static void loadRuntime() throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        if (runtime) throw new IllegalStateException("Runtime dependency already loaded");
+        runtime = true;
+        for (Dependency d : Dependency.dependencies) {
+            if (!d.type.equals(Dependency.Type.runtime)) continue;
+            libraryLoader.addURL(new URL(d.getDownload()));
+        }
         loadAtomic();
-        //libraryLoader.addURL(new URL(Manifest.atomDownloadLink));//Atomic Ozone.Core
-        //libraryLoader.addURL(new URL(desktopAtomicURL));//Atomic Ozone.Core
-
-    }
-
-    public static String getAtom(String type, String hash) {
-        return jitpack + type + "/" + hash + "/" + type + "-" + hash + ".jar";
     }
 
     public static String getJitpack(String orgRepo, String type, String hash) {
         return "https://jitpack.io/com/github/" + orgRepo.replace('.', '/') + "/" + type + "/" + hash + "/" + type + "-" + hash + ".jar";
-    }
-
-    public static void loadStandalone() throws MalformedURLException {
-        if (standalone) throw new IllegalStateException("Standalone dependency already loaded");
-        standalone = true;
-        for (String s : StandaloneLibrary)
-            libraryLoader.addURL(new URL(s));
     }
 
     public static void loadClasspath() throws MalformedURLException {
@@ -128,7 +104,6 @@ public class SharedBootstrap {
             //if(s.contains("gson"))continue;else
             libraryLoader.addURL(new File(s));
     }
-
 
     public static void loadMain(String classpath, String[] arg) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         SharedBootstrap.libraryLoader.loadClass(classpath).getMethod("main", String[].class).invoke(null, (Object) arg);

@@ -25,6 +25,7 @@ import java.util.Map;
 public class Propertied {
     public static HashMap<String, String> Manifest, Dependencies;
 
+
     static {
         Manifest = read("Manifest.properties");
         Dependencies = read("dependencies");

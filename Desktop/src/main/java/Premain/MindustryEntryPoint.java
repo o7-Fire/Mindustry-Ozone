@@ -27,8 +27,7 @@ public class MindustryEntryPoint {
         try {
             System.out.println("Initializing Ozone Environment");
             SharedBootstrap.classloaderNoParent();
-            SharedBootstrap.loadStandalone();
-            SharedBootstrap.loadMods();
+            SharedBootstrap.loadRuntime();
             SharedBootstrap.loadClasspath();
             SharedBootstrap.libraryLoader.addURL(new File(args[0]));
             SharedBootstrap.loadMain("Main.OzoneMindustry", args);
@@ -40,6 +39,7 @@ public class MindustryEntryPoint {
             t.printStackTrace();
             if (t.getCause() != null) t = t.getCause();
             Sentry.captureException(t);
+            Catch.errorBox(t.toString(), "Ozone Environment");
             System.exit(1);
         }
     }

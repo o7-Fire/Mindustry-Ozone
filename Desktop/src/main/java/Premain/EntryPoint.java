@@ -83,6 +83,7 @@ public class EntryPoint extends Mod {
             if (OzoneMod != null)
                 OzoneMod.init();
         } catch (Throwable t) {
+            Log.err(t);
             t.printStackTrace();
             Sentry.captureException(t);
         }
@@ -94,6 +95,7 @@ public class EntryPoint extends Mod {
             if (OzoneMod != null)
                 OzoneMod.loadContent();
         } catch (Throwable t) {
+            Log.err(t);
             t.printStackTrace();
             Sentry.captureException(t);
         }

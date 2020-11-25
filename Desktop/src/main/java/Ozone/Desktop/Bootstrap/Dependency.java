@@ -19,7 +19,9 @@ package Ozone.Desktop.Bootstrap;
 import Ozone.Desktop.Propertied;
 import io.sentry.Sentry;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -71,8 +73,21 @@ public class Dependency {
         }
     }
 
+    public String getDownload() throws IOException {
+        StringBuilder sb = new StringBuilder();
+        for (String u : url) {
+            try {
+                String r = getDownload(u);
+                sb.append(r).append("\n");
+                new URL(r).openStream();
+                return r;
+            }catch (FileNotFoundException ignored) { }
+        }
+        throw new FileNotFoundException(sb.toString());
+    }
+
     public String getDownload(String url) {
-        return String.format("%s%s/%s/%s/%s-%s.jar", url,
+        return String.format("%s/%s/%s/%s/%s-%s.jar", url,
                 groupId.replace('.', '/'), artifactId, version,
                 artifactId, version);
 

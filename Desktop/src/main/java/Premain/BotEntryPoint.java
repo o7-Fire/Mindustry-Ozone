@@ -32,8 +32,7 @@ public class BotEntryPoint {
             }
             System.out.println("Initializing Oxygen Environment");
             SharedBootstrap.classloaderNoParent();
-            SharedBootstrap.loadStandalone();
-            SharedBootstrap.loadMods();
+            SharedBootstrap.loadRuntime();
             SharedBootstrap.loadClasspath();
             SharedBootstrap.libraryLoader.addURL(new File(System.getProperty("MindustryExecutable")));
             SharedBootstrap.loadMain("Main.OxygenMindustry", args);
@@ -45,6 +44,7 @@ public class BotEntryPoint {
             t.printStackTrace();
             if (t.getCause() != null) t = t.getCause();
             Sentry.captureException(t);
+            Catch.errorBox(t.toString(), "Bot Launcher");
             System.exit(1);
         }
     }
