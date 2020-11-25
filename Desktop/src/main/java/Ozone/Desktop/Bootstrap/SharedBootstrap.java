@@ -47,6 +47,7 @@ public class SharedBootstrap {
     private static boolean mods, standalone, classpath, atomic;
 
     static {
+        Dependency.url.size();
         ModsLibrary.add(getAtom("Desktop", Propertied.Manifest.getOrDefault("AtomHash", "-SNAPSHOT")));
         ModsLibrary.add(getAtom("Atomic", Propertied.Manifest.getOrDefault("AtomHash", "-SNAPSHOT")));
     }

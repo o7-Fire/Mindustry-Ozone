@@ -78,12 +78,24 @@ allprojects {
 
     dependencies {
         testImplementation 'junit:junit:4.12'
-        compileOnly "com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"
-        compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
-        compileOnly "com.github.Anuken.Arc:backend-sdl:$mindustryVersion"
-        compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
-        compileOnly 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'//Desktop
-        compileOnly group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
+        compileOnly ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
+            because("runtime")
+        }
+        compileOnly ("com.github.Anuken.Arc:arc-core:$mindustryVersion"){
+            because("provided")
+        }
+        compileOnly ("com.github.Anuken.Arc:backend-sdl:$mindustryVersion"){
+            because("provided")
+        }
+        compileOnly ("com.github.Anuken.Mindustry:core:$mindustryVersion"){
+            because("provided")
+        }
+        compileOnly ('com.github.javaparser:javaparser-symbol-solver-core:3.16.1'){
+            because("runtime")
+        }//Desktop
+        compileOnly( group: 'org.jetbrains', name: 'annotations', version: '20.1.0'){
+            because("compile")
+        }
     }
 }
 

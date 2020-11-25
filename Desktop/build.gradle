@@ -6,17 +6,31 @@ dependencies {
 
     implementation rootProject
 
-    compileOnly "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
-    compileOnly "com.github.Anuken.Mindustry:desktop:$mindustryVersion"
-    compileOnly "com.github.Anuken.Mindustry:annotations:$mindustryVersion"
+    compileOnly ("com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"){
+        because("runtime")
+    }
+    compileOnly ("com.github.Anuken.Mindustry:desktop:$mindustryVersion"){
+        because("provided")
+    }
+    compileOnly ("com.github.Anuken.Mindustry:annotations:$mindustryVersion"){
+        because("compile")
+    }
 
     implementation 'io.sentry:sentry:3.1.0'
 
-    compileOnly "io.github.vincenzopalazzo:material-ui-swing:1.1.2-rc1"
-    compileOnly group: 'com.miglayout', name: 'miglayout-core', version: '5.2'
-    compileOnly group: 'com.miglayout', name: 'miglayout-swing', version: '5.2'
+    compileOnly ("io.github.vincenzopalazzo:material-ui-swing:1.1.2-rc1"){
+        because("runtime")
+    }
+    compileOnly (group: 'com.miglayout', name: 'miglayout-core', version: '5.2'){
+        because("runtime")
+    }
+    compileOnly (group: 'com.miglayout', name: 'miglayout-swing', version: '5.2'){
+        because("runtime")
+    }
 
-    compileOnly 'com.github.MinnDevelopment:java-discord-rpc:v2.0.1'
+    compileOnly ('com.github.MinnDevelopment:java-discord-rpc:v2.0.1'){
+        because("provided")
+    }
 
 }
 
@@ -38,6 +52,7 @@ jar {
         sb.append('groupId=').append(dep.group).append('\n')
         sb.append('artifactId=').append(dep.name).append('\n')
         sb.append('version=').append(dep.version).append('\n')
+        sb.append('type=').append(dep.reason).append('\n\n')
     }
     ArrayList<String> done = new ArrayList<>();
     project.repositories.each {

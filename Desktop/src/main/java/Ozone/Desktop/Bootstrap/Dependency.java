@@ -19,40 +19,18 @@ package Ozone.Desktop.Bootstrap;
 import Ozone.Desktop.Propertied;
 import io.sentry.Sentry;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Dependency {
     public static ArrayList<Dependency> dependencies = new ArrayList<>();
     public static ArrayList<String> url = new ArrayList<>();
-    static ArrayList<String> integrated = new ArrayList<>(Arrays.asList(
-            "arc-core", "backend-sdl", "core", "desktop", "annotations"
-    )),
-            standalone = new ArrayList<>(Arrays.asList(
-                    "Atomic", "Desktop"
-            ));
+
 
     static {
         try {
-            String last = "";
-            HashMap<String, String> hash = new HashMap<>();
-            for (String s : new String(Propertied.getResource("dependencies").readAllBytes()).split("\n")) {
-                if (last.equals("version")) {
-                    dependencies.add(new Dependency(hash.get("groupId"), hash.get("artifactId"), hash.get("version")));
-                    hash = new HashMap<>();
-                }
-                if (last.isEmpty()) {
-                    String[] sys = s.split("=");
-                    last = sys[0];
-                    if (last.equals("url")) {
-                        url.add(sys[0]);
-                    }else
-                        hash.put(sys[0], sys[1]);
-                }
-            }
-
-
+            parseDependency();
         }catch (Throwable t) {
             t.printStackTrace();
             Sentry.captureException(t);
@@ -63,17 +41,34 @@ public class Dependency {
     public String groupId, artifactId, version;
     public Type type;
 
-    public Dependency(String groupId, String artifactId, String version) {
+    public Dependency(String groupId, String artifactId, String version, String type) {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.version = version;
-        if (integrated.contains(artifactId))
-            type = Type.Integrated;
-        else if (groupId.equals("com.github.o7-Fire.Atomic-Library"))
-            type = Type.Standalone;
-        else
-            type = Type.Runtime;
+        this.type = Type.valueOf(type);
 
+    }
+
+    public static void parseDependency() throws IOException {
+        dependencies.clear();
+        url.clear();
+        String last = "";
+        HashMap<String, String> hash = new HashMap<>();
+        for (String s : new String(Propertied.getResource("dependencies").readAllBytes()).split("\n")) {
+            if (s.isEmpty()) continue;
+            if (last.equals("type")) {
+                dependencies.add(new Dependency(hash.get("groupId"), hash.get("artifactId"), hash.get("version"), hash.get("type")));
+                hash = new HashMap<>();
+            }
+
+            String[] sys = s.split("=");
+            last = sys[0];
+            if (last.equals("url")) {
+                url.add(sys[1]);
+            }else
+                hash.put(sys[0], sys[1]);
+
+        }
     }
 
     public String getDownload(String url) {
@@ -83,5 +78,5 @@ public class Dependency {
 
     }
 
-    public enum Type {Standalone, Runtime, Integrated}
+    public enum Type {provided, runtime, compile}
 }
