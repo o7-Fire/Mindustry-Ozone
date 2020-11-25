@@ -16,3 +16,22 @@ dependencies {
     compileOnly 'com.github.MinnDevelopment:java-discord-rpc:v2.0.1'
 
 }
+
+
+//Desktop jar with installer and separated library
+jar {
+    dependsOn ":makeJar"
+    archiveFileName = "Ozone-Desktop.jar"
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+
+    manifest {
+        attributes 'Main-Class': 'Premain.InstallerEntryPoint'
+    }
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = 14
+    targetCompatibility = 14
+    options.encoding = "UTF-8"
+    options.compilerArgs += ["-Xlint:deprecation"]
+}
