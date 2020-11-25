@@ -16,22 +16,35 @@
 
 package Ozone.Desktop;
 
+import io.sentry.Sentry;
+
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Propertied {
-    public static HashMap<String, String> h = new HashMap<>();
+    public static HashMap<String, String> Manifest, Dependencies;
 
     static {
+        Manifest = read("Manifest.properties");
+        Dependencies = read("dependencies");
+    }
+
+    public static InputStream getResource(String name) {
+        InputStream is = ClassLoader.getSystemResourceAsStream(name);
+        if (is == null) is = Propertied.class.getProtectionDomain().getClassLoader().getResourceAsStream(name);
+        return is;
+    }
+
+    static HashMap<String, String> read(String name) {
+        HashMap<String, String> temp;
         try {
-            h = parse(new String(ClassLoader.getSystemResourceAsStream("Manifest.properties").readAllBytes()));
-        }catch (Throwable ignored) {
-            h = null;
+            temp = parse(new String(getResource(name).readAllBytes()));
+        }catch (Throwable g) {
+            temp = new HashMap<>();
+            Sentry.captureException(g);
         }
-        if (h == null)
-            try {
-                h = parse(new String(Propertied.class.getProtectionDomain().getClassLoader().getResourceAsStream("Manifest.properties").readAllBytes()));
-            }catch (Throwable ignored) { }
+        return temp;
     }
 
     public static String reverseParse(HashMap<String, String> se) {
@@ -44,8 +57,7 @@ public class Propertied {
     public static HashMap<String, String> parse(String se) {
         HashMap<String, String> te = new HashMap<>();
         for (String s : se.split("\n"))
-            if (s.startsWith("#")) continue;
-            else te.put(s.split("=")[0], s.split("=")[1]);
+            if (!s.startsWith("#")) te.put(s.split("=")[0], s.split("=")[1]);
         return te;
     }
 }

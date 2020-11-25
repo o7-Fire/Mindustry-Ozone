@@ -16,7 +16,7 @@
 
 package Premain;
 
-import Ozone.Desktop.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import io.sentry.Sentry;
 
 import java.io.File;

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop;
+package Ozone.Desktop.Bootstrap;
 
+import Ozone.Desktop.Propertied;
 import Ozone.Watcher.Version;
 import io.sentry.Scope;
 import io.sentry.Sentry;
@@ -46,15 +47,15 @@ public class SharedBootstrap {
     private static boolean mods, standalone, classpath, atomic;
 
     static {
-        ModsLibrary.add(getAtom("Desktop", Propertied.h.getOrDefault("AtomHash", "-SNAPSHOT")));
-        ModsLibrary.add(getAtom("Atomic", Propertied.h.getOrDefault("AtomHash", "-SNAPSHOT")));
+        ModsLibrary.add(getAtom("Desktop", Propertied.Manifest.getOrDefault("AtomHash", "-SNAPSHOT")));
+        ModsLibrary.add(getAtom("Atomic", Propertied.Manifest.getOrDefault("AtomHash", "-SNAPSHOT")));
     }
 
     static {
         Sentry.init(options -> {
             options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
             options.setRelease("Ozone." + Version.semantic + ":" + "Desktop." + Settings.Version.semantic);
-            options.setEnvironment(Propertied.h.getOrDefault("Github-CI", "no").equals("Github-CI") ? "release" : "dev");
+            options.setEnvironment(Propertied.Manifest.getOrDefault("Github-CI", "no").equals("Github-CI") ? "release" : "dev");
         });
         Sentry.configureScope(SharedBootstrap::registerSentry);
     }
@@ -78,7 +79,7 @@ public class SharedBootstrap {
         scope.setTag("Ozone.Core.Version", Version.semantic);
         scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
         scope.setTag("Java.Version", System.getProperty("java.version"));
-        for (Map.Entry<String, String> e : Propertied.h.entrySet())
+        for (Map.Entry<String, String> e : Propertied.Manifest.entrySet())
             scope.setTag(e.getKey(), e.getValue());
         StringBuilder sb = new StringBuilder("Library List:\n");
         for (URL u : libraryLoader.getURLs()) sb.append("-").append(u.toString()).append("\n");

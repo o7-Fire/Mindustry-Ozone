@@ -17,8 +17,8 @@
 package Ozone.Desktop.Patch;
 
 import Atom.Reflect.Reflect;
+import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Manifest;
-import Ozone.Desktop.SharedBootstrap;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Settings.Desktop;

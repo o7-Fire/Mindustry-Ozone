@@ -40,7 +40,7 @@ public class OzoneInstaller {
             mindustry = new File("mindustry/");//i gave up "yeet"//
         }
         m = new Main();
-        m.label1.setText("Mindustry " + Propertied.h.getOrDefault("MindustryVersion", "Manifest.properties gone ;-;"));
+        m.label1.setText("Mindustry " + Propertied.Manifest.getOrDefault("MindustryVersion", "Manifest.properties gone ;-;"));
         PreInstall.install(m);
     }
 

@@ -16,8 +16,8 @@
 
 package Main;
 
-import Ozone.Desktop.OzoneLauncher;
-import Ozone.Desktop.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.OzoneLauncher;
+import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import arc.Files;
 import arc.backend.sdl.SdlApplication;
 import arc.backend.sdl.SdlConfig;

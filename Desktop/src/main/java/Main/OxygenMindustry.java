@@ -20,7 +20,7 @@ import Bot.Interface.Shared.BotInterface;
 import Bot.Interface.Shared.ServerInterface;
 import Ozone.Commands.Task.Task;
 import Ozone.Commands.TaskInterface;
-import Ozone.Desktop.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import arc.Application;
 import arc.Core;
 import arc.Events;

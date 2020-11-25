@@ -34,7 +34,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class Manifest {
-    private static final String gApi = "https://api.github.com/repos/" + Propertied.h.getOrDefault("GithubRepo", "null") + "/";
+    private static final String gApi = "https://api.github.com/repos/" + Propertied.Manifest.getOrDefault("GithubRepo", "null") + "/";
     private static final String gArtifact = gApi + "actions/artifacts/";
     private static final String gAuth = "QWtpbW92OmMxOWFmZDA5ZmRlNzNiYTg1NDg3ZGMzYjJmNmI2YjIxYmViMWE3ZTU=";//magic key
     public static File messageLogFolder = new File(Atom.Manifest.currentFolder, "Ozone/");
@@ -78,7 +78,7 @@ public class Manifest {
 
     public static boolean isThisTheLatest(HashMap<String, String> a) {
         try {
-            long source = Long.parseLong(Propertied.h.getOrDefault("TimeMilis", "1"));
+            long source = Long.parseLong(Propertied.Manifest.getOrDefault("TimeMilis", "1"));
             long target = Long.parseLong(a.getOrDefault("TimeMilis", "0"));
             return target > source;
         }catch (NumberFormatException t) {

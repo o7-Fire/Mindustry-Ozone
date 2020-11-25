@@ -17,8 +17,8 @@
 package Premain;
 
 import Main.Ozone;
+import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Propertied;
-import Ozone.Desktop.SharedBootstrap;
 import arc.backend.sdl.jni.SDL;
 import arc.util.Log;
 import io.sentry.Sentry;
@@ -34,7 +34,7 @@ import java.lang.management.ManagementFactory;
 public class EntryPoint extends Mod {
     public Mod OzoneMod = null;
     public EntryPoint() {
-        String required = Propertied.h.getOrDefault("MindustryVersion", "Mindustry Version is gone");
+        String required = Propertied.Manifest.getOrDefault("MindustryVersion", "Mindustry Version is gone");
         try {
             if (!SharedBootstrap.customBootstrap) {
                 if (!required.contains(String.valueOf(Version.build)))

@@ -1,5 +1,5 @@
 import java.text.SimpleDateFormat
-
+group = "org.o7.Fire"
 buildscript {
     repositories {
         mavenLocal()
@@ -9,10 +9,7 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-    dependencies {
-        //classpath 'com.guardsquare:proguard-gradle:7.0.0'
-        //classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.5.1"
-    }
+
 }
 
 
@@ -27,26 +24,7 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url 'https://jitpack.io' }
         jcenter()
-        flatDir {
-            dirs 'libs'
-        }
-        flatDir {
-            dirs 'lib'
-        }
-
-
     }
-    repositories {
-        mavenCentral()
-        maven { url 'https://www.jitpack.io' }
-        flatDir {
-            dirs 'libs'
-        }
-        flatDir {
-            dirs 'lib'
-        }
-    }
-
 
     ext {
         mindustryVersion = findProperty("mindustryVersion")
@@ -95,17 +73,6 @@ allprojects {
 
     }
 
-    repositories {
-        mavenCentral()
-        maven { url 'https://www.jitpack.io' }
-        flatDir {
-            dirs 'libs'
-        }
-        flatDir {
-            dirs 'lib'
-        }
-    }
-
     dependencies {
 
         testImplementation 'junit:junit:4.12'
@@ -113,11 +80,9 @@ allprojects {
         compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
         compileOnly "com.github.Anuken.Arc:backend-sdl:$mindustryVersion"
         compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
-        compileOnly 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'
+        compileOnly 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'//Desktop
         compileOnly group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
     }
-
-
 
 }
 task deploy(type: Jar) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop;
+package Ozone.Desktop.Bootstrap;
 
 import Ozone.Pre.Download;
 
