@@ -1,5 +1,5 @@
 import java.text.SimpleDateFormat
-group = "org.o7.Fire"
+
 buildscript {
     repositories {
         mavenLocal()
@@ -28,7 +28,7 @@ allprojects {
 
     ext {
         mindustryVersion = findProperty("mindustryVersion")
-        atomHash =   findProperty("atomHash")
+        atomHash = findProperty("atomHash")
         githubHash = "null"
         githubBranch = "null"
         githubRepo = "o7-Fire/Mindustry-Ozone"
@@ -36,17 +36,17 @@ allprojects {
         modsBuilderID = "idk"
         modsBuilder = "java"
 
-        if(project.hasProperty("gHash"))
+        if (project.hasProperty("gHash"))
             githubHash = gHash
-        if(project.hasProperty("gBranch"))
+        if (project.hasProperty("gBranch"))
             githubBranch = gBranch
-        if(project.hasProperty("gRepo"))
+        if (project.hasProperty("gRepo"))
             githubRepo = gRepo
-        if(project.hasProperty("gRepoOwner"))
+        if (project.hasProperty("gRepoOwner"))
             githubOwner = gRepoOwner
-        if(project.hasProperty("builderID"))
+        if (project.hasProperty("builderID"))
             modsBuilderID = builderID
-        if(project.hasProperty("builder"))
+        if (project.hasProperty("builder"))
             modsBuilder = builder
         else
             modsBuilder = System.getProperty("user.name")
@@ -55,8 +55,11 @@ allprojects {
         def props = new Properties()
         def df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ") // you can change it
         df.setTimeZone(TimeZone.getTimeZone("UTC"))
-        try{atomMeta.createNewFile()}catch(ignored){}//what a beautiful catch block
-        if(atomMeta.exists()){
+        try {
+            atomMeta.createNewFile()
+        } catch (ignored) {
+        }//what a beautiful catch block
+        if (atomMeta.exists()) {
             props.load(new FileInputStream(atomMeta))
             props["AtomHash"] = atomHash
             props["MindustryVersion"] = mindustryVersion
@@ -74,7 +77,6 @@ allprojects {
     }
 
     dependencies {
-
         testImplementation 'junit:junit:4.12'
         compileOnly "com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"
         compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
@@ -83,11 +85,12 @@ allprojects {
         compileOnly 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'//Desktop
         compileOnly group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
     }
-
 }
+
 task deploy(type: Jar) {
     dependsOn ":Desktop:jar"
 }
+
 jar {
     archiveFileName = "Ozone.jar"
     from {
@@ -103,6 +106,7 @@ tasks.withType(JavaCompile) {
         options.compilerArgs.addAll(['--release', '8'])
     }
 }
+
 task makeJar{
     dependsOn jar
 }

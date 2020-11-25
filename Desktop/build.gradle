@@ -1,29 +1,3 @@
-import java.nio.file.Files
-
-repositories {
-    mavenCentral()
-}
-
-//Desktop jar with installer and separated library
-jar {
-    dependsOn ":makeJar"
-    archiveFileName = "Ozone-Desktop.jar"
-    from {configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }}
-
-    manifest {
-        attributes 'Main-Class': 'Premain.InstallerEntryPoint'
-    }
-}
-repositories {
-    mavenCentral()
-    maven { url 'https://www.jitpack.io' }
-    flatDir {
-        dirs 'libs'
-    }
-    flatDir {
-        dirs 'lib'
-    }
-}
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
@@ -41,35 +15,4 @@ dependencies {
 
     compileOnly 'com.github.MinnDevelopment:java-discord-rpc:v2.0.1'
 
-}
-
-task pom{
-    StringBuilder sb = new StringBuilder()
-    File txt = new File(rootDir, "src/main/resources/dependencies")
-    FileOutputStream fs = new FileOutputStream(txt)
-
-    project.configurations.compileOnly.allDependencies.each { dep ->
-        sb.append('groupId=').append(dep.group).append('\n')
-        sb.append('artifactId=').append(dep.name).append('\n')
-        sb.append('version=').append(dep.version).append('\n')
-    }
-    ArrayList<String> done = new ArrayList<>();
-    for (ArtifactRepository repository : project.repositories.asList()) {
-        String url = repository.properties.get('url')
-        if(url == null)continue
-        if(!url.toString().startsWith("http"))continue
-        url = url.endsWith("/") ? url.substring(0, url.length() - 1) : url
-        if(done.contains(url.toString()))continue
-        done.add(url.toString())
-        sb.append("url=").append(url).append("\n")
-    }
-    fs.write(sb.toString().getBytes())
-    fs.close()
-}
-tasks.withType(JavaCompile) {
-    dependsOn(pom)
-    sourceCompatibility = 14
-    targetCompatibility = 14
-    options.encoding = "UTF-8"
-    options.compilerArgs += ["-Xlint:deprecation"]
 }
