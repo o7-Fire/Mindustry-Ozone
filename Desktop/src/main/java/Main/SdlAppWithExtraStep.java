@@ -29,13 +29,9 @@ public class SdlAppWithExtraStep extends SdlApplication {
     public void exit() {
         super.exit();
         Thread t = new Thread(() -> {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-            }
+            try { Thread.sleep(3000); }catch (InterruptedException e) { }
             System.exit(0);
-        }
-        );
+        });
         t.setDaemon(true);//beware of stall
         t.start();
 

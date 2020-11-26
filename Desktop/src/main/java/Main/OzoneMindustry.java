@@ -53,30 +53,15 @@ public class OzoneMindustry {
 
     }
 
-    static Throwable handleCrash(Throwable e) throws Throwable {
+    static Throwable handleCrash(Throwable e) {
         Cons<Runnable> dialog = Runnable::run;
         boolean badGPU = false;
         String finalMessage = Strings.getFinalMessage(e);
         String total = Strings.getCauses(e).toString();
         if (total.contains("Couldn't create window") || total.contains("OpenGL 2.0 or higher") || total.toLowerCase().contains("pixel format") || total.contains("GLEW") || total.contains("unsupported combination of formats")) {
-            dialog.get(() -> {
-                message(total.contains("Couldn't create window") ? "A graphics initialization error has occured! Try to update your graphics drivers:\n" + finalMessage : "Your graphics card does not support the right OpenGL features.\nTry to update your graphics drivers. If this doesn't work, your computer may not support Mindustry.\n\nFull message: " + finalMessage);
-            });
+            dialog.get(() -> message(total.contains("Couldn't create window") ? "A graphics initialization error has occured! Try to update your graphics drivers:\n" + finalMessage : "Your graphics card does not support the right OpenGL features.\nTry to update your graphics drivers. If this doesn't work, your computer may not support Mindustry.\n\nFull message: " + finalMessage));
             badGPU = true;
         }
-     /*
-        boolean finalBadGPU = badGPU;
-
-        CrashSender.send(e, (file) -> {
-            Throwable fc = Strings.getFinalCause(e);
-            if (!finalBadGPU) {
-                dialog.get(() -> {
-                    message("A crash has occured. It has been saved in:\n" + file.getAbsolutePath() + "\n" + fc.getClass().getSimpleName().replace("Exception", "") + (fc.getMessage() == null ? "" : ":\n" + fc.getMessage()));
-                });
-            }
-        });
-
-         */
         SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_ERROR, "Oh Nein", e.toString());
         return e;
     }
