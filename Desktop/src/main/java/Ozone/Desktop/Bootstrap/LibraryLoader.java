@@ -49,7 +49,7 @@ public class LibraryLoader extends URLClassLoader {
 
 
     @Override
-    public void addURL(URL url) {
+    public synchronized void addURL(URL url) {
         if (url.getProtocol().startsWith("http")) {
             File temp = new File(cache, url.getFile());//.substring(1).replace("/", ".")
             temp.getParentFile().mkdirs();
@@ -67,7 +67,7 @@ public class LibraryLoader extends URLClassLoader {
         super.addURL(url);
     }
 
-    public void addURL(File file) throws MalformedURLException {
+    public synchronized void addURL(File file) throws MalformedURLException {
         if (file.exists())
             addURL(file.toURI().toURL());
         //else Log.errTag("Ozone-LibraryLoader", file.getAbsolutePath() + " doesn't exist");

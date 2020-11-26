@@ -19,20 +19,27 @@ package Ozone.Desktop.Bootstrap;
 import Ozone.Desktop.Propertied;
 import io.sentry.Sentry;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Dependency {
+public class Dependency implements Serializable {
     public static ArrayList<Dependency> dependencies = new ArrayList<>();
     public static ArrayList<String> url = new ArrayList<>();
-
+    private static File cache = new File("lib/dependency.link");
+    private static HashMap<String, String> downloadCache = new HashMap<>();
 
     static {
+        cache.getParentFile().mkdirs();
         try {
             parseDependency();
+            load();
         }catch (Throwable t) {
             t.printStackTrace();
             Sentry.captureException(t);
@@ -40,15 +47,19 @@ public class Dependency {
         }
     }
 
-    public String groupId, artifactId, version;
-    public Type type;
+    public final String groupId, artifactId, version;
+    public final Type type;
+    public String link;
 
     public Dependency(String groupId, String artifactId, String version, String type) {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.version = version;
         this.type = Type.valueOf(type);
+    }
 
+    public static void load() throws IOException {
+        if (cache.exists()) downloadCache = Propertied.parse(new String(Files.readAllBytes(cache.toPath())));
     }
 
     public static void parseDependency() throws IOException {
@@ -73,13 +84,30 @@ public class Dependency {
         }
     }
 
+    public static void save() throws IOException {
+        Files.write(cache.toPath(), Propertied.reverseParse(downloadCache).getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+    }
+
+    @Override
+    public String toString() {
+        return groupId + artifactId + version + type;
+    }
+
     public String getDownload() throws IOException {
+        if (link != null) return link;
+        if (downloadCache.containsKey(toString())) {
+            link = downloadCache.get(toString());
+            return link;
+        }
+
         StringBuilder sb = new StringBuilder();
         for (String u : url) {
             try {
                 String r = getDownload(u);
                 sb.append(r).append("\n");
                 new URL(r).openStream();
+                link = r;
+                downloadCache.put(toString(), link);
                 return r;
             }catch (FileNotFoundException ignored) { }
         }

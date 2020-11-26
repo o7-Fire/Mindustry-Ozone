@@ -86,15 +86,13 @@ public class SharedBootstrap {
     public static void loadRuntime() throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         if (runtime) throw new IllegalStateException("Runtime dependency already loaded");
         runtime = true;
+        Dependency.load();
         for (Dependency d : Dependency.dependencies) {
             if (!d.type.equals(Dependency.Type.runtime)) continue;
             libraryLoader.addURL(new URL(d.getDownload()));
         }
         loadAtomic();
-    }
-
-    public static String getJitpack(String orgRepo, String type, String hash) {
-        return "https://jitpack.io/com/github/" + orgRepo.replace('.', '/') + "/" + type + "/" + hash + "/" + type + "-" + hash + ".jar";
+        Dependency.save();
     }
 
     public static void loadClasspath() throws MalformedURLException {

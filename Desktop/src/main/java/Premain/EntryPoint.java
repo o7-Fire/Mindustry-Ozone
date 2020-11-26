@@ -21,6 +21,7 @@ import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Propertied;
 import arc.backend.sdl.jni.SDL;
 import arc.util.Log;
+import arc.util.Strings;
 import io.sentry.Sentry;
 import mindustry.core.Version;
 import mindustry.desktop.DesktopLauncher;
@@ -34,6 +35,7 @@ import java.lang.management.ManagementFactory;
 public class EntryPoint extends Mod {
     public Mod OzoneMod = null;
     public EntryPoint() {
+        Log.infoTag("Version", Strings.stripColors(Version.combined()));
         String required = Propertied.Manifest.getOrDefault("MindustryVersion", "Mindustry Version is gone");
         try {
             if (!SharedBootstrap.customBootstrap) {
