@@ -27,7 +27,6 @@ dependencies {
     compileOnly (group: 'com.miglayout', name: 'miglayout-swing', version: '5.2'){
         because("runtime")
     }
-
     compileOnly ('com.github.MinnDevelopment:java-discord-rpc:v2.0.1'){
         because("provided")
     }

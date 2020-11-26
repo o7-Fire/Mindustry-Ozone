@@ -29,6 +29,7 @@ allprojects {
     ext {
         mindustryVersion = findProperty("mindustryVersion")
         atomHash = findProperty("atomHash")
+        def arcHash = findProject("arcHash")
         githubHash = "null"
         githubBranch = "null"
         githubRepo = "o7-Fire/Mindustry-Ozone"
@@ -81,10 +82,10 @@ allprojects {
         compileOnly ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
             because("runtime")
         }
-        compileOnly ("com.github.Anuken.Arc:arc-core:$mindustryVersion"){
+        compileOnly ("com.github.Anuken.Arc:arc-core:$arcHash"){
             because("provided")
         }
-        compileOnly ("com.github.Anuken.Arc:backend-sdl:$mindustryVersion"){
+        compileOnly ("com.github.Anuken.Arc:backend-sdl:$arcHash"){
             because("provided")
         }
         compileOnly ("com.github.Anuken.Mindustry:core:$mindustryVersion"){
@@ -92,7 +93,7 @@ allprojects {
         }
         compileOnly ('com.github.javaparser:javaparser-symbol-solver-core:3.16.1'){
             because("runtime")
-        }//Desktop
+        }
         compileOnly( group: 'org.jetbrains', name: 'annotations', version: '20.1.0'){
             because("compile")
         }
