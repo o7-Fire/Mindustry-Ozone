@@ -28,11 +28,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Identification {
-    public static void changeID() throws NoSuchFieldException, IllegalAccessException {
-        //does it pass by reference
+    public static ObjectMap<String, Object> getValue() throws NoSuchFieldException, IllegalAccessException {
         Field f = Core.settings.getClass().getDeclaredField("values");
         f.setAccessible(true);
-        ObjectMap<String, Object> values = (ObjectMap<String, Object>) f.get(Core.settings);
+        return (ObjectMap<String, Object>) f.get(Core.settings);
+    }
+
+    public static void changeID() throws NoSuchFieldException, IllegalAccessException {
+        ObjectMap<String, Object> values = getValue();
         ArrayList<String> yikes = new ArrayList<>();
         for (String s : values.keys()) yikes.add(s);
         String[] keys = yikes.toArray(new String[0]);

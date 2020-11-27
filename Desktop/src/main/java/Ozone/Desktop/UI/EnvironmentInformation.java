@@ -16,6 +16,7 @@
 
 package Ozone.Desktop.UI;
 
+import Ozone.Experimental.Evasion.Identification;
 import Ozone.Manifest;
 import arc.Core;
 import arc.scene.ui.Label;
@@ -26,7 +27,6 @@ import arc.util.Interval;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,9 +61,7 @@ public class EnvironmentInformation extends OzoneBaseDialog {
         add("Player Name", Vars.player.name);
         add("UUID", Core.settings.getString("uuid"));
         try {
-            Field f = Core.settings.getClass().getDeclaredField("values");
-            f.setAccessible(true);
-            ObjectMap<String, Object> values = (ObjectMap<String, Object>) f.get(Core.settings);
+            ObjectMap<String, Object> values = Identification.getValue();
             ArrayList<String> yikes = new ArrayList<>();
             for (String s : values.keys()) yikes.add(s);
             String[] keys = yikes.toArray(new String[0]);
