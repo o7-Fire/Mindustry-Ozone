@@ -47,7 +47,7 @@ public class Commands {
             i[0]++;
         });
         register("javac", new Command(Commands::javac));
-        register("library", new Command(Commands::library));
+        //register("library", new Command(Commands::library));
         register("debug", new Command(Commands::debug));
         register("info-pos", new Command(Commands::infoPos));
     }

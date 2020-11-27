@@ -28,6 +28,7 @@ import arc.struct.Seq;
 import arc.util.Disposable;
 import arc.util.Log;
 import arc.util.Time;
+import io.sentry.Sentry;
 import mindustry.Vars;
 
 import java.io.File;
@@ -39,19 +40,20 @@ public class MenuGifRenderer implements Disposable {
     Animation<TextureRegion> animation;
     float elapsed;
     int iteration = 0;
-    Seq<String> url = Seq.with(//insert your shitty gif here
-            "https://cdn.discordapp.com/attachments/713346278003572777/776046031120891934/hmm.gif",
-            "https://cdn.discordapp.com/attachments/724060628763017296/776078396936683540/tenor.gif",
-            "https://media.discordapp.net/attachments/671340986223296574/774550872544903178/image0-1-1.gif"
-    );
+    Seq<String> url = new Seq<>();
     Seq<String> allowed = Seq.with("gif", "jpg", "png", "jpeg");
     int length;
     Fi menu = new Fi(new File(Vars.dataDirectory.file(), "menu/"));
     String readme = "Place your own gif/jpg/png/jpeg here, and it will showed randomly on menu";
 
     public MenuGifRenderer() throws IOException, NoMenuResource {
+        try {
+            url.addAll(new String(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master/Desktop/gif.txt").openStream().readAllBytes()).split("\n"));
+        }catch (Throwable i) {
+            Sentry.captureException(i);
+        }
         menu.mkdirs();
-        if (!menu.child("Readme.txt").exists())
+        if (!menu.child("readme.txt").exists())
             Files.write(menu.child("readme.txt").file().toPath(), readme.getBytes());
         if (Desktop.disableDefaultGif)
             url.clear();

@@ -25,6 +25,7 @@ import Ozone.Patch.ImprovisedKeybinding;
 import Settings.Core;
 import arc.input.KeyCode;
 import arc.scene.ui.TextField;
+import arc.util.Interval;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
@@ -32,7 +33,7 @@ import mindustry.ui.dialogs.BaseDialog;
 public class OzoneMenu extends BaseDialog {
     private TextField commandsField;
     private String commands = "";
-
+    Interval interval = new Interval();
     public OzoneMenu(String title, DialogStyle style) {
         super(title, style);
         this.keyDown((key) -> {
@@ -46,21 +47,38 @@ public class OzoneMenu extends BaseDialog {
         });
         this.shown(this::setup);
         this.onResize(this::setup);
+        update(this::update);
         Interface.registerKeybinding(new ImprovisedKeybinding("ozone.menu", KeyCode.backtick, "Ozone", ImprovisedKeybinding.mode.tap), this::show);
     }
 
+    void update() {
+        if (!isShown()) return;
+        if (!interval.get(40)) return;
+        try {
+            if (!Vars.ui.hudfrag.shown)
+                Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
+        }catch (Throwable ignored) { }
+        if (!Vars.ui.chatfrag.shown()) {
+            Vars.ui.chatfrag.toggle();
+        }
+        arc.Core.scene.setKeyboardFocus(commandsField);
+    }
 
     @Override
     public void hide() {
         super.hide();
         try {
+            if (Vars.ui.chatfrag.shown()) {
+                Vars.ui.chatfrag.toggle();
+            }
             if (!Vars.ui.hudfrag.shown)
                 Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
-        }catch (Throwable ignored) {
-        }
+        }catch (Throwable ignored) {}
     }
 
     public void setup() {
+
+
         cont.top();
         cont.clear();
         //   cont.button(Ozone.Core.bundle.get("ozone.javaEditor"), Icon.pencil, () -> {
