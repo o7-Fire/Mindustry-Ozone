@@ -19,9 +19,7 @@ package Ozone.UI;
 
 import Atom.Reflect.Reflect;
 import Ozone.Commands.Commands;
-import Ozone.Interface;
 import Ozone.Manifest;
-import Ozone.Patch.ImprovisedKeybinding;
 import Settings.Core;
 import arc.input.KeyCode;
 import arc.scene.ui.TextField;
@@ -48,7 +46,6 @@ public class OzoneMenu extends BaseDialog {
         this.shown(this::setup);
         this.onResize(this::setup);
         update(this::update);
-        Interface.registerKeybinding(new ImprovisedKeybinding("ozone.menu", KeyCode.backtick, "Ozone", ImprovisedKeybinding.mode.tap), this::show);
     }
 
     void update() {

@@ -139,23 +139,12 @@ public class Commands {
     }
 
 
-    //todo dont do shit check
     public static void javac(ArrayList<String> arg) {
-        String requiredLibrary = "com.github.javaparser-javaparser-core";
         if (!Manifest.javacExists()) {
             tellUser("no javac detected, are you sure using JDK ?");
             return;
         }
-        if (Manifest.library.stream().anyMatch(s -> s.getName().contains(requiredLibrary))) {
-            if (!Manifest.library.stream().filter(s -> s.getName().contains(requiredLibrary)).findFirst().get().downloaded()) {
-                tellUser(requiredLibrary + " is not yet downloaded");
-                tellUser("use \"" + Core.commandsPrefix + "library download all\"");
-                return;
-            }
-        }else {
-            tellUser("Cant find " + requiredLibrary + " in Manifest.library");
-            availableLib();
-        }
+
 
         String code = Utility.joiner(arg.toArray(new String[0]), " ");
         Thread th = new Thread(() -> {

@@ -16,10 +16,8 @@
 
 package Ozone.Desktop.UI;
 
+import Ozone.Manifest;
 import arc.Core;
-import arc.math.Interp;
-import arc.scene.actions.Actions;
-import arc.scene.event.Touchable;
 import arc.scene.ui.Label;
 import arc.scene.ui.ScrollPane;
 import arc.scene.ui.layout.Table;
@@ -27,7 +25,6 @@ import arc.struct.ObjectMap;
 import arc.util.Interval;
 import mindustry.Vars;
 import mindustry.gen.Icon;
-import mindustry.ui.Styles;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -84,15 +81,11 @@ public class EnvironmentInformation extends OzoneBaseDialog {
         Label l = new Label(title + ":");
         table.add(l).growX();
         String finalValue = value;
-        table.button(value, Icon.copy, () -> {
+        table.field(value, s -> {}).disabled(true).growX();
+        table.button(Icon.copy, () -> {
             Core.app.setClipboardText(finalValue);
-            Table table = new Table();
-            table.touchable = Touchable.disabled;
-            table.setFillParent(true);
-            table.actions(Actions.fadeOut(4.0F, Interp.fade), Actions.remove());
-            table.bottom().add("Copied").style(Styles.outlineLabel).padBottom(80);
-            Core.scene.add(table);
-        }).growX();
+            Manifest.toast("Copied");
+        }).right();
         table.row();
     }
 }

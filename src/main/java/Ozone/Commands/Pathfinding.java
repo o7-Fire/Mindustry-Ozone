@@ -71,8 +71,7 @@ public class Pathfinding {
             for (int i = 0; i < 4; i++) {
                 for (Tile t : TaskInterface.getNearby(tile, i, 2)) {
                     float fDanger = 0f;
-                    //such a lie, it can be null but intellij refuse to
-                    if (tile == null) continue;
+                    if (t == null) continue;
                     if (!t.passable())
                         fDanger += 0.4f;//avoid unpassable, sometime its stuck
                     if (t.floor().isLiquid)

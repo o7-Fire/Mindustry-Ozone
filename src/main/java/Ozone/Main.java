@@ -260,22 +260,12 @@ public class Main {
 
     protected static void patch() {
         try {
+            mindustry.Vars.ui.chatfrag.addMessage("gay", "no");
             Log.infoTag("Ozone", "Patching");
             Events.fire(Internal.Init.PatchRegister);
             Translation.register();
-            //Countdown.start();
             patchTranslation();
-            //Countdown.stop();
-            //Log.infoTag("Ozone", "Patching translation done: " + Countdown.result());
-            //Log.infoTag("Ozone", "Patching Settings");
             Vars.ui.settings = new SettingsDialog();
-            //Log.infoTag("Ozone", "Patching ChatFragment");
-            //arc.Core.scene.root.removeChild(Vars.ui.chatfrag);
-            //ui.menuGroup.getChildren().forEach(Element::remove);//brrrrrrr
-            //ui.menufrag = new MenuFragment();
-            //ui.menufrag.build(ui.menuGroup);
-            //Vars.ui.chatfrag = new ChatOzoneFragment();
-            //Vars.ui.chatfrag.container().build(Vars.ui.hudGroup);
             Vars.enableConsole = true;
             Log.infoTag("Ozone", "Patching Complete");
             if (Core.debugMode) Log.level = (Log.LogLevel.debug);

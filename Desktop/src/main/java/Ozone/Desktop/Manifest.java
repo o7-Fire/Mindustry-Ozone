@@ -60,6 +60,7 @@ public class Manifest {
         }
     }
 
+
     public static boolean isBot() {
         return System.getProperty("BotID") != null;
     }

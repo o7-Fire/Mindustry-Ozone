@@ -91,9 +91,7 @@ allprojects {
         compileOnly ("com.github.Anuken.Mindustry:core:$mindustryVersion"){
             because("provided")
         }
-        compileOnly ('com.github.javaparser:javaparser-symbol-solver-core:3.16.1'){
-            because("runtime")
-        }
+
         compileOnly( group: 'org.jetbrains', name: 'annotations', version: '20.1.0'){
             because("compile")
         }

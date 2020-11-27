@@ -17,6 +17,7 @@
 package Ozone.Desktop.Bootstrap;
 
 import Ozone.Pre.Download;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,12 +74,20 @@ public class LibraryLoader extends URLClassLoader {
         //else Log.errTag("Ozone-LibraryLoader", file.getAbsolutePath() + " doesn't exist");
     }
 
+    @Nullable
+    @Override
+    public URL getResource(String name) {
+        URL u = super.getResource(name);
+        if (u == null) u = ClassLoader.getSystemResource(name);
+        return u;
+    }
+
 
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
-        //Note: don't mess with java.
-        if (name.startsWith("java.")) return ClassLoader.getSystemClassLoader().loadClass(name);
+        //Note: don't mess with java
+        try { return super.loadClass(name); }catch (Throwable ignored) {}
         //Log.infoTag("Ozone-LibraryLoader", name);
-        return super.loadClass(name);
+        return ClassLoader.getSystemClassLoader().loadClass(name);
     }
 }

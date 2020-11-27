@@ -20,7 +20,6 @@ package Ozone;
 import Atom.Struct.Filter;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
-import Ozone.Patch.ImprovisedKeybinding;
 import arc.Events;
 import arc.backend.sdl.jni.SDL;
 import arc.struct.ObjectMap;
@@ -35,8 +34,6 @@ import java.util.concurrent.Future;
 
 public class Interface {
     protected static final ObjectMap<String, String> bundle = new ObjectMap<>();
-    protected static final ObjectMap<ImprovisedKeybinding, Runnable> keybindings = new ObjectMap<>();
-
     //on load event show this stupid warning
     public static void warningUI(String title, String description) {
         if (Vars.ui == null)
@@ -45,9 +42,6 @@ public class Interface {
             Vars.ui.showErrorMessage(title + "\n" + description);
     }
 
-    public synchronized static void registerKeybinding(ImprovisedKeybinding b, Runnable r) {
-        keybindings.put(b, r);
-    }
 
     public synchronized static void registerWords(String key, String value) {
         bundle.put(key, value);

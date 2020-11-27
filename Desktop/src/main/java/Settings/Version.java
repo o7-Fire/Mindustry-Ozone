@@ -16,9 +16,6 @@
 
 package Settings;
 
-import java.io.File;
-
 public class Version {
-    public static final String semantic = "0.9.6";
-    public static File cache = new File("cache/");
+    public static final String semantic = "0.10.2";
 }

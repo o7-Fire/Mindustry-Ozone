@@ -88,7 +88,6 @@ public class Commands {
         register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
         register("message-log", new Command(Commands::messageLog, Icon.rotate));
         register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
-        //register("super-bullet", new Command(Commands::superBullet));
         Events.fire(Internal.Init.CommandsRegister);
         for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet())
             c.getValue().description = Commands.getTranslation(c.getKey());

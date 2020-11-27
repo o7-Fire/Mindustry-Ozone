@@ -32,16 +32,6 @@ public class PreInstall {
         m.label4.setText(mindustry.getAbsolutePath());
         m.labelStatus.setVisible(false);
         m.progressBar1.setVisible(false);
-        /*
-        try {
-            for (String s : new String(PreInstall.class.getClassLoader().getResourceAsStream("Manifest.properties").readAllBytes()).split("\n"))
-                if(s.startsWith("MindustryVersion"))
-                    m.label1.setText("Mindustry " +s.substring(s.indexOf("=") + 1));
-        }catch (Throwable ignored){
-
-        }
-
-         */
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
@@ -79,21 +69,22 @@ public class PreInstall {
                 return;
             }
             File ozone = new File(mods, "Ozone.jar");
-            try {
-                File self = new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-                String ext = self.getName();
-                if (!ext.contains(".")) throw new RuntimeException("WTF !?!, i am not a jar");
-                ext = ext.substring(ext.indexOf('.') + 1);
-                if (!ext.startsWith("jar")) throw new RuntimeException("WTF !?!, i am not a jar");
-                Files.copy(self.toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                m.labelStatus.setText("Finished");
-                m.frame1.pack();
-                if (ozone.exists()) return;
-            } catch (Throwable ioException) {
-                m.labelStatus.setText(ioException.getMessage());
-                m.frame1.pack();
-                return;
-            }
+            m.labelStatus.setText("Copying...");
+            new Thread(() -> {
+                try {
+                    File self = new File(PreInstall.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+                    String ext = self.getName();
+                    if (!ext.contains(".")) throw new RuntimeException("WTF !?!, i am not a jar");
+                    ext = ext.substring(ext.indexOf('.') + 1);
+                    if (!ext.startsWith("jar")) throw new RuntimeException("WTF !?!, i am not a jar");
+                    Files.copy(self.toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    m.labelStatus.setText("Finished");
+                    m.frame1.pack();
+                }catch (Throwable ioException) {
+                    m.labelStatus.setText(ioException.getMessage());
+                    m.frame1.pack();
+                }
+            }).start();
             m.frame1.pack();
         });
 

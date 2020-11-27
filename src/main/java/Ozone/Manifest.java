@@ -19,11 +19,17 @@ package Ozone;
 import Atom.Reflect.Reflect;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
+import arc.Core;
+import arc.math.Interp;
 import arc.net.Client;
+import arc.scene.actions.Actions;
+import arc.scene.event.Touchable;
+import arc.scene.ui.layout.Table;
 import mindustry.Vars;
 import mindustry.core.Version;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
+import mindustry.ui.Styles;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -48,11 +54,18 @@ public class Manifest {
             ArcNetProvider arc = (ArcNetProvider) n;
             Client c = Reflect.getField(arc.getClass(), "client", arc);
             return c.getRemoteAddressTCP().getHostName() + ":" + c.getRemoteAddressTCP().getPort();
-        }catch (Throwable h) {
-
-        }
+        }catch (Throwable ignored) { }
         return lastServer;
 
+    }
+
+    public static void toast(String text) {
+        Table table = new Table();
+        table.touchable = Touchable.disabled;
+        table.setFillParent(true);
+        table.actions(Actions.fadeOut(4.0F, Interp.fade), Actions.remove());
+        table.bottom().add(text).style(Styles.outlineLabel).padBottom(80);
+        Core.scene.add(table);
     }
 
     public static ArrayList<Field> getSettings() {
