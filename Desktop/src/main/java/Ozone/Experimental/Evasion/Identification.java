@@ -37,8 +37,15 @@ public class Identification {
         for (String s : values.keys()) yikes.add(s);
         String[] keys = yikes.toArray(new String[0]);
         List<String> key = Arrays.stream(keys).filter(s -> s.startsWith("usid-") || s.startsWith("uuid")).collect(Collectors.toList());
-        for (String s : key) Core.settings.put(s, null);
 
+        for (String s : key) Core.settings.put(s, getRandomUID());
+
+    }
+
+    public static String getRandomUID() {
+        byte[] bytes = new byte[8];
+        (new Rand()).nextBytes(bytes);
+        return new String(Base64Coder.encode(bytes));
     }
 
     public static String getUsid(String ip) {
@@ -49,9 +56,7 @@ public class Identification {
         if (Core.settings.getString("usid-" + ip, (String) null) != null) {
             return Core.settings.getString("usid-" + ip, (String) null);
         }else {
-            byte[] bytes = new byte[8];
-            (new Rand()).nextBytes(bytes);
-            String result = new String(Base64Coder.encode(bytes));
+            String result = getRandomUID();
             Core.settings.put("usid-" + ip, result);
             return result;
         }
