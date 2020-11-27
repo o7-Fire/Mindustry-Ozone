@@ -124,7 +124,7 @@ public class Commands {
             return tile.build.interactable(Vars.player.team()) && (tile.build.block() instanceof Sorter || tile.block() instanceof ItemSource);
         });
         if (f == null) {
-            tellUser("whoops cant find block");
+            tellUser("wtf ?");
             return;
         }
         commandsQueue.add(new Task() {
@@ -142,7 +142,10 @@ public class Commands {
                 completed = true;
                 try {
                     Tile t = f.get();
-                    if (t == null) return;
+                    if (t == null) {
+                        tellUser("block can't be find");
+                        return;
+                    }
                     Item target = Random.getRandom(Vars.content.items().toArray(Item.class));
                     t.build.configure(target);
                 }catch (InterruptedException | ExecutionException e) {
