@@ -125,15 +125,19 @@ public class BotControllerDialog extends OzoneBaseDialog {
             cont.labelWrap("Name:").growX().left();
             cont.label(() -> botClient.name).growX().right();
             cont.button("Launch", Icon.box, () -> {
+                if (!BotController.serverStarted()) {
+                    Vars.ui.showInfo("Start server first");
+                    return;
+                }
                 try {
                     botClient.launch();
                     setup();
-                } catch (Throwable e) {
+                }catch (Throwable e) {
                     e.printStackTrace();
                     Sentry.captureException(e);
                     Vars.ui.showException("Error while launching bot", e);
                 }
-            }).disabled(botClient.launched() || !BotController.serverStarted()).growX();
+            }).disabled(botClient.launched()).growX();
             cont.row();
             cont.labelWrap("ID:").growX().left();
             cont.add(id).growX().right();

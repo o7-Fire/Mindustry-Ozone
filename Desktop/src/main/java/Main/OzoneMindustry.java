@@ -16,7 +16,6 @@
 
 package Main;
 
-import Ozone.Desktop.Bootstrap.OzoneLauncher;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import arc.Files;
 import arc.backend.sdl.SdlApplication;
@@ -25,6 +24,7 @@ import arc.backend.sdl.jni.SDL;
 import arc.func.Cons;
 import arc.util.Strings;
 import mindustry.Vars;
+import mindustry.desktop.DesktopLauncher;
 
 //basically its a patcher
 public class OzoneMindustry {
@@ -35,7 +35,7 @@ public class OzoneMindustry {
         SharedBootstrap.customBootstrap = true;
         try {
             Vars.loadLogger();
-            new SdlApplication(new OzoneLauncher(args), new SdlConfig() {
+            new SdlApplication(new DesktopLauncher(args), new SdlConfig() {
                 {
                     this.title = "Mindustry-Ozone";
                     this.maximized = true;
@@ -47,23 +47,25 @@ public class OzoneMindustry {
             });
         }catch (Throwable var2) {
             var2.printStackTrace();
-            throw handleCrash(var2);
+            handleCrash(var2);
+            throw var2;
         }
         // }).start();
 
     }
 
-    static Throwable handleCrash(Throwable e) {
-        Cons<Runnable> dialog = Runnable::run;
-        boolean badGPU = false;
-        String finalMessage = Strings.getFinalMessage(e);
-        String total = Strings.getCauses(e).toString();
-        if (total.contains("Couldn't create window") || total.contains("OpenGL 2.0 or higher") || total.toLowerCase().contains("pixel format") || total.contains("GLEW") || total.contains("unsupported combination of formats")) {
-            dialog.get(() -> message(total.contains("Couldn't create window") ? "A graphics initialization error has occured! Try to update your graphics drivers:\n" + finalMessage : "Your graphics card does not support the right OpenGL features.\nTry to update your graphics drivers. If this doesn't work, your computer may not support Mindustry.\n\nFull message: " + finalMessage));
-            badGPU = true;
-        }
-        SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_ERROR, "Oh Nein", e.toString());
-        return e;
+    static void handleCrash(Throwable e) {
+        try {
+            Cons<Runnable> dialog = Runnable::run;
+            boolean badGPU = false;
+            String finalMessage = Strings.getFinalMessage(e);
+            String total = Strings.getCauses(e).toString();
+            if (total.contains("Couldn't create window") || total.contains("OpenGL 2.0 or higher") || total.toLowerCase().contains("pixel format") || total.contains("GLEW") || total.contains("unsupported combination of formats")) {
+                dialog.get(() -> message(total.contains("Couldn't create window") ? "A graphics initialization error has occured! Try to update your graphics drivers:\n" + finalMessage : "Your graphics card does not support the right OpenGL features.\nTry to update your graphics drivers. If this doesn't work, your computer may not support Mindustry.\n\nFull message: " + finalMessage));
+                badGPU = true;
+            }
+            SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_ERROR, "Oh Nein", e.toString());
+        }catch (Throwable ignored) {}
     }
 
     private static void message(String message) {

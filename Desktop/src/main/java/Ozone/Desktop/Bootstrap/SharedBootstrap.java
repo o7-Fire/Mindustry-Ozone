@@ -60,7 +60,7 @@ public class SharedBootstrap {
             String usr = System.getProperty("user.name");
             id = String.valueOf(ByteBuffer.wrap(MessageDigest.getInstance("SHA-256").digest(usr.getBytes())).getLong());//one way hash
         } catch (Throwable e) {
-            Sentry.captureException(e);
+            Sentry.captureException(e);//ironic
         }
         user.setId(id);
         scope.setUser(user);

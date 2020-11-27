@@ -38,7 +38,7 @@ public class OzoneLauncher extends ClientLauncher {
     public OzoneLauncher(String[] arg) {
         args = arg;
         if (discord) {
-            DiscordRPC.INSTANCE.Discord_Initialize(discordID, null, true, null);
+            DiscordRPC.INSTANCE.Discord_Initialize(discordID, null, true, String.valueOf(1127400));
             Log.info("Initialized Discord rich presence.");
             Runtime.getRuntime().addShutdownHook(new Thread(DiscordRPC.INSTANCE::Discord_Shutdown));
         }
