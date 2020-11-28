@@ -86,7 +86,8 @@ public class LibraryLoader extends URLClassLoader {
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
         //Note: don't mess with java
-        try { return super.loadClass(name); }catch (Throwable ignored) {}
+        if (!name.startsWith("Ozone.Desktop.Bootstrap"))
+            try { return super.loadClass(name); }catch (Throwable ignored) {}
         //Log.infoTag("Ozone-LibraryLoader", name);
         return ClassLoader.getSystemClassLoader().loadClass(name);
     }

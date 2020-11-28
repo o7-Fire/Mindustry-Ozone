@@ -1,5 +1,6 @@
 package mindustry.core;
 
+import Ozone.Desktop.Propertied;
 import arc.Core;
 import arc.Files.FileType;
 import arc.files.Fi;
@@ -7,6 +8,8 @@ import arc.struct.ObjectMap;
 import arc.util.OS;
 import arc.util.Strings;
 import arc.util.io.PropertiesUtils;
+
+import java.util.HashMap;
 
 public class Version {
     /**
@@ -33,10 +36,10 @@ public class Version {
      * Whether version loading is enabled.
      */
     public static boolean enabled = true;
-
+    public static HashMap<String, String> h = new HashMap<>();
     public static void init() {
         if (!enabled) return;
-
+        h = Propertied.read("version.properties");
         Fi file = OS.isAndroid || OS.isIos ? Core.files.internal("version.properties") : new Fi("version.properties", FileType.internal);
 
         ObjectMap<String, String> map = new ObjectMap<>();

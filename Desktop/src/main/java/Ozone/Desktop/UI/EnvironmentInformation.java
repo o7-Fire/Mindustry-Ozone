@@ -16,6 +16,9 @@
 
 package Ozone.Desktop.UI;
 
+import Ozone.Desktop.Bootstrap.Dependency;
+import Ozone.Desktop.Bootstrap.LibraryLoader;
+import Ozone.Desktop.Propertied;
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Manifest;
 import arc.Core;
@@ -24,12 +27,17 @@ import arc.scene.ui.ScrollPane;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
 import arc.util.Interval;
+import arc.util.Log;
+import io.sentry.Sentry;
 import mindustry.Vars;
+import mindustry.core.Version;
 import mindustry.gen.Icon;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class EnvironmentInformation extends OzoneBaseDialog {
@@ -40,6 +48,8 @@ public class EnvironmentInformation extends OzoneBaseDialog {
     public EnvironmentInformation() {
         super("Environment Information");
         icon = Icon.info;
+        buttons.button("Refresh", Icon.refresh, this::generate).size(210f, 64f);
+
     }
 
     void setup() {
@@ -51,15 +61,36 @@ public class EnvironmentInformation extends OzoneBaseDialog {
     }
 
     void update() {
-        if (isShown() && timer.get(20f)) {
-            generate();
-        }
+
     }
 
     void generate() {
         table.clearChildren();
+
         add("Player Name", Vars.player.name);
         add("UUID", Core.settings.getString("uuid"));
+        //add("Current Millis", System.currentTimeMillis());
+        add(Propertied.Manifest);
+        add(Version.h);
+        dep();
+        uid();
+    }
+
+    void dep() {
+        try {
+            for (URL u : ((LibraryLoader) this.getClass().getClassLoader()).getURLs()) {
+                add("Library", u.toExternalForm());
+            }
+        }catch (Throwable ignored) {}
+        for (Dependency d : Dependency.dependencies)
+            try {
+                add(d.toString(), d.getDownload());
+            }catch (Throwable i) {
+                add(d.toString(), i.toString());
+            }
+    }
+
+    void uid() {
         try {
             ObjectMap<String, Object> values = Identification.getValue();
             ArrayList<String> yikes = new ArrayList<>();
@@ -70,8 +101,17 @@ public class EnvironmentInformation extends OzoneBaseDialog {
                 add(k, Core.settings.getString(k));
             }
         }catch (Throwable t) {
+            Log.err(t);
+            Sentry.captureException(t);
             t.printStackTrace();
         }
+        for (Map.Entry<Object, Object> s : System.getProperties().entrySet())
+            add(s.getKey().toString(), s.getValue().toString());
+    }
+
+    void add(Map<String, String> map) {
+        for (Map.Entry<String, String> s : map.entrySet())
+            add(s.getKey(), s.getValue());
     }
 
     void add(String title, String value) {
@@ -79,11 +119,19 @@ public class EnvironmentInformation extends OzoneBaseDialog {
         Label l = new Label(title + ":");
         table.add(l).growX();
         String finalValue = value;
-        table.field(value, s -> {}).disabled(true).growX();
+        table.row();
+        table.field(value, s -> {
+            generate();
+            Core.app.setClipboardText(finalValue);
+            Manifest.toast("Copied");
+        }).expandX().disabled(true).growX();
+        /*
         table.button(Icon.copy, () -> {
             Core.app.setClipboardText(finalValue);
             Manifest.toast("Copied");
         }).right();
+
+         */
         table.row();
     }
 }

@@ -23,12 +23,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Propertied {
-    public static HashMap<String, String> Manifest, Dependencies;
+    public static HashMap<String, String> Manifest;
 
 
     static {
         Manifest = read("Manifest.properties");
-        Dependencies = read("dependencies");
     }
 
     public static InputStream getResource(String name) {
@@ -37,7 +36,7 @@ public class Propertied {
         return is;
     }
 
-    static HashMap<String, String> read(String name) {
+    public static HashMap<String, String> read(String name) {
         HashMap<String, String> temp;
         try {
             temp = parse(new String(getResource(name).readAllBytes()));

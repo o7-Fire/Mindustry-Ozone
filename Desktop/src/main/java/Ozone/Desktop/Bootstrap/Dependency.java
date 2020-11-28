@@ -90,7 +90,7 @@ public class Dependency implements Serializable {
 
     @Override
     public String toString() {
-        return groupId + artifactId + version + type;
+        return groupId + "." + artifactId + "." + version;
     }
 
     public String getDownload() throws IOException {

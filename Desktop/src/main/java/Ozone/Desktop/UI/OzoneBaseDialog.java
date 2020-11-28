@@ -32,6 +32,7 @@ public class OzoneBaseDialog extends BaseDialog {
         update(this::update);
     }
 
+
     public OzoneBaseDialog(String title) {
         this(title, Core.scene.getStyle(DialogStyle.class));
     }

@@ -37,7 +37,8 @@ import mindustry.ui.fragments.Fragment;
 
 import java.util.Map;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.state;
+import static mindustry.Vars.ui;
 
 //UI madness
 //TODO rebuild
@@ -56,7 +57,7 @@ public class CommandsListFrag extends Fragment {
         parent.fill(cont -> {
             cont.visible(() -> visible);
             cont.update(() -> {
-                if (!(net.active() && !state.is(GameState.State.menu))) {
+                if (!state.is(GameState.State.playing)) {
                     visible = false;
                 }
             });
@@ -132,6 +133,7 @@ public class CommandsListFrag extends Fragment {
 
     public void toggle() {
         visible = !visible;
+
         if (visible) {
             rebuild();
         }else {
