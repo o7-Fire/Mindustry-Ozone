@@ -20,25 +20,19 @@ import Atom.Utility.Random;
 import Ozone.Commands.Commands;
 import Ozone.Commands.Task.CommandsSpam;
 import Settings.Core;
-import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.Lines;
 import arc.scene.Group;
 import arc.scene.event.Touchable;
 import arc.scene.ui.TextField;
-import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.gen.Icon;
 import mindustry.gen.Tex;
-import mindustry.ui.Styles;
 import mindustry.ui.fragments.Fragment;
 
 import java.util.Map;
 
 import static mindustry.Vars.state;
-import static mindustry.Vars.ui;
 
 //UI madness
 //TODO rebuild
@@ -88,6 +82,13 @@ public class CommandsListFrag extends Fragment {
         for (Map.Entry<String, Commands.Command> cl : Commands.commandsList.entrySet()) {
             if (cl.getValue().icon == null) continue;
             String name = (Core.colorPatch ? "[" + Random.getRandomHexColor() + "]" : "") + cl.getKey().replace("-", " ") + "[white]";
+            content.button(name + ":" + cl.getValue().description, cl.getValue().icon, () -> {
+                Commands.call(Core.commandsPrefix + cl.getKey());
+            }).growX();
+        }
+        /*
+        for (Map.Entry<String, Commands.Command> cl : Commands.commandsList.entrySet()) {
+
             Table button = new Table();
             button.left();
             button.margin(5).marginBottom(10);
@@ -126,6 +127,8 @@ public class CommandsListFrag extends Fragment {
             content.row();
         }
 
+
+         */
 
         content.marginBottom(5);
     }

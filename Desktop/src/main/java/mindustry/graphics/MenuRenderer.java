@@ -2,6 +2,7 @@ package mindustry.graphics;
 
 import Atom.Utility.Random;
 import arc.Core;
+import arc.assets.Loadable;
 import arc.func.Floatc2;
 import arc.graphics.Camera;
 import arc.graphics.Color;
@@ -28,7 +29,7 @@ import mindustry.world.blocks.environment.OreBlock;
 
 import static mindustry.Vars.*;
 
-public class MenuRenderer implements Disposable {
+public class MenuRenderer implements Disposable, Loadable {
     private static final float darkness = 0.3f;
     private final int width = !mobile ? 100 : 60, height = !mobile ? 50 : 40;
     public MenuGifRenderer mf;
@@ -42,6 +43,17 @@ public class MenuRenderer implements Disposable {
     private int flyers = Mathf.random(15, 35);
     private volatile UnitType flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
     private boolean random;
+
+    @Override
+    public void loadAsync() {
+
+    }
+
+    @Override
+    public String getName() {
+        return "MenuRenderer";
+    }
+
 
     public MenuRenderer() {
         if (Random.getBool())
