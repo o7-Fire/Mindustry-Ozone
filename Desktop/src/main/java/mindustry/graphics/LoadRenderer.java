@@ -49,7 +49,7 @@ public class LoadRenderer implements Disposable {
         //vignetting is probably too much
         fx.addEffect(new VignettingFilter(false));
         //fx.addEffect(new BloomFilter());
-
+        //meaningless bar
         bars = new Bar[]{
                 new Bar("s_proc#", OS.cores / 16f, OS.cores < 4),
                 new Bar("c_aprog", () -> assets != null, () -> assets.getProgress(), () -> false),
