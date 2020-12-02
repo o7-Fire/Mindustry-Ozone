@@ -37,6 +37,7 @@ public class Version {
      */
     public static boolean enabled = true;
     public static HashMap<String, String> h = new HashMap<>();
+
     public static void init() {
         if (!enabled) return;
         h = Propertied.read("version.properties");
@@ -53,11 +54,11 @@ public class Version {
             try {
                 build = Integer.parseInt(split[0]);
                 revision = Integer.parseInt(split[1]);
-            }catch (Throwable e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
                 build = -1;
             }
-        }else {
+        } else {
             build = Strings.canParseInt(map.get("build")) ? Integer.parseInt(map.get("build")) : -1;
         }
     }

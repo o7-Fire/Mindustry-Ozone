@@ -65,10 +65,6 @@ public class Vars implements Loadable {
      */
     public static final Charset charset = Charset.forName("UTF-8");
     /**
-     * main application name, capitalized
-     */
-    public static String appName = "Mindustry";
-    /**
      * URL for itch.io donations.
      */
     public static final String donationURL = "https://anuke.itch.io/mindustry/purchase";
@@ -214,6 +210,10 @@ public class Vars implements Loadable {
      */
     public static final String schematicExtension = "msch";
     /**
+     * main application name, capitalized
+     */
+    public static String appName = "Mindustry";
+    /**
      * Whether to load locales.
      */
     public static boolean loadLocales = true;
@@ -329,7 +329,8 @@ public class Vars implements Loadable {
     public static GameState state;
     public static EntityCollisions collisions;
     public static Waves waves;
-    public static Platform platform = new Platform() {};
+    public static Platform platform = new Platform() {
+    };
     public static Mods mods;
     public static Schematics schematics;
     public static BeControl becontrol;
@@ -363,7 +364,7 @@ public class Vars implements Loadable {
                 String code = stra[i];
                 if (code.contains("_")) {
                     locales[i] = new Locale(code.split("_")[0], code.split("_")[1]);
-                }else {
+                } else {
                     locales[i] = new Locale(code);
                 }
             }
@@ -432,7 +433,7 @@ public class Vars implements Loadable {
                 Sentry.addBreadcrumb(text, level.name());
             if (!headless && (ui == null || ui.scriptfrag == null)) {
                 logBuffer.add(result);
-            }else if (!headless) {
+            } else if (!headless) {
                 if (!OS.isWindows) {
                     for (String code : ColorCodes.values) {
                         result = result.replace(code, "");
@@ -463,12 +464,12 @@ public class Vars implements Loadable {
                 try {
                     writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " + Log.removeColors(text) + "\n");
                     writer.flush();
-                }catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                     //ignore it
                 }
             };
-        }catch (Exception e) {
+        } catch (Exception e) {
             //handle log file not being found
             Log.err(e);
         }
@@ -505,7 +506,7 @@ public class Vars implements Loadable {
             if (!headless) {
                 Time.run(10f, () -> ui.showInfo("Note: You have successfully loaded an external translation bundle."));
             }
-        }catch (Throwable e) {
+        } catch (Throwable e) {
             //no external bundle found
 
             Fi handle = Core.files.internal("bundles/bundle");
@@ -513,12 +514,12 @@ public class Vars implements Loadable {
             String loc = settings.getString("locale");
             if (loc.equals("default")) {
                 locale = Locale.getDefault();
-            }else {
+            } else {
                 Locale lastLocale;
                 if (loc.contains("_")) {
                     String[] split = loc.split("_");
                     lastLocale = new Locale(split[0], split[1]);
-                }else {
+                } else {
                     lastLocale = new Locale(loc);
                 }
 

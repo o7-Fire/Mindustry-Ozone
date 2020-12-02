@@ -75,7 +75,7 @@ public class JoinDialog extends BaseDialog {
                 Server server = new Server();
                 server.setIP(Core.settings.getString("ip"));
                 servers.add(server);
-            }else {
+            } else {
                 renaming.setIP(Core.settings.getString("ip"));
             }
             saveServers();
@@ -128,7 +128,7 @@ public class JoinDialog extends BaseDialog {
                     if (server.lastHost != null) {
                         Events.fire(new ClientPreConnectEvent(server.lastHost));
                         safeConnect(server.ip, server.port, server.lastHost.version);
-                    }else {
+                    } else {
                         connect(server.ip, server.port);
                     }
                 }
@@ -193,7 +193,7 @@ public class JoinDialog extends BaseDialog {
         for (Server other : servers) {
             if (other.lastHost != null) {
                 setupServer(other, other.lastHost);
-            }else {
+            } else {
                 refreshServer(other);
             }
         }
@@ -207,7 +207,7 @@ public class JoinDialog extends BaseDialog {
 
     void refreshServer(Server server) {
         server.content.clear();
-        server.content.label(() -> Core.bundle.get("server.refreshing") + Strings.animated(Time.time(), 4, 11, "."));
+        server.content.label(() -> Core.bundle.get("server.refreshing") + Strings.animated(Time.time, 4, 11, "."));
 
         net.pingHost(server.ip, server.port, host -> setupServer(server, host), e -> {
             server.content.clear();
@@ -226,18 +226,18 @@ public class JoinDialog extends BaseDialog {
 
         if (host.version == -1) {
             versionString = Core.bundle.format("server.version", Core.bundle.get("server.custombuild"), "");
-        }else if (host.version == 0) {
+        } else if (host.version == 0) {
             versionString = Core.bundle.get("server.outdated");
-        }else if (host.version < Version.build && Version.build != -1) {
+        } else if (host.version < Version.build && Version.build != -1) {
             versionString = Core.bundle.get("server.outdated") + "\n" +
                     Core.bundle.format("server.version", host.version, "");
-        }else if (host.version > Version.build && Version.build != -1) {
+        } else if (host.version > Version.build && Version.build != -1) {
             versionString = Core.bundle.get("server.outdated.client") + "\n" +
                     Core.bundle.format("server.version", host.version, "");
-        }else if (host.version == Version.build && Version.type.equals(host.versionType)) {
+        } else if (host.version == Version.build && Version.type.equals(host.versionType)) {
             //not important
             versionString = "";
-        }else {
+        } else {
             versionString = Core.bundle.format("server.version", host.version, host.versionType);
         }
 
@@ -352,7 +352,7 @@ public class JoinDialog extends BaseDialog {
 
         local.clear();
         local.background(null);
-        local.table(Tex.button, t -> t.label(() -> "[accent]" + Core.bundle.get("hosts.discovering.any") + Strings.animated(Time.time(), 4, 10f, ".")).pad(10f)).growX();
+        local.table(Tex.button, t -> t.label(() -> "[accent]" + Core.bundle.get("hosts.discovering.any") + Strings.animated(Time.time, 4, 10f, ".")).pad(10f)).growX();
         net.discoverServers(this::addLocalHost, this::finishLocalHosts);
     }
 
@@ -425,7 +425,7 @@ public class JoinDialog extends BaseDialog {
             local.add("@hosts.none").pad(10f);
             local.add().growX();
             local.button(Icon.refresh, this::refreshLocal).pad(-12f).padLeft(0).size(70f);
-        }else {
+        } else {
             local.background(null);
         }
     }
@@ -474,7 +474,7 @@ public class JoinDialog extends BaseDialog {
         if (version != Version.build && Version.build != -1 && version != -1) {
             ui.showInfo("[scarlet]" + (version > Version.build ? KickReason.clientOutdated : KickReason.serverOutdated).toString() + "\n[]" +
                     Core.bundle.format("server.versions", Version.build, version));
-        }else {
+        } else {
             connect(ip, port);
         }
     }
@@ -506,17 +506,17 @@ public class JoinDialog extends BaseDialog {
                             String[] addresses;
                             if (child.has("addresses") || (child.has("address") && child.get("address").isArray())) {
                                 addresses = (child.has("addresses") ? child.get("addresses") : child.get("address")).asArray().map(Jval::asString).toArray(String.class);
-                            }else {
+                            } else {
                                 addresses = new String[]{child.getString("address", "<invalid>")};
                             }
                             defaultServers.add(new ServerGroup(name, addresses));
                         });
                         Log.info("Fetched @ global servers.", defaultServers.size);
-                    }catch (Throwable ignored) {
+                    } catch (Throwable ignored) {
                         Log.err("Failed to parse community servers.");
                     }
                 });
-            }catch (Throwable e) {
+            } catch (Throwable e) {
                 Log.err("Failed to fetch communitycommunity servers.");
             }
         }, t -> {
@@ -545,11 +545,11 @@ public class JoinDialog extends BaseDialog {
                     int idx = ip.lastIndexOf(':');
                     this.ip = ip.substring(0, idx);
                     this.port = Integer.parseInt(ip.substring(idx + 1));
-                }catch (Exception e) {
+                } catch (Exception e) {
                     this.ip = ip;
                     this.port = Vars.port;
                 }
-            }else {
+            } else {
                 this.ip = ip;
                 this.port = Vars.port;
             }

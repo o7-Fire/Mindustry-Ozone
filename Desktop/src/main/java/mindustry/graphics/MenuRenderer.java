@@ -44,24 +44,13 @@ public class MenuRenderer implements Disposable, Loadable {
     private volatile UnitType flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
     private boolean random;
 
-    @Override
-    public void loadAsync() {
-
-    }
-
-    @Override
-    public String getName() {
-        return "MenuRenderer";
-    }
-
-
     public MenuRenderer() {
         if (Random.getBool())
             try {
                 mf = new MenuGifRenderer();
-            }catch (MenuGifRenderer.NoMenuResource s) {
+            } catch (MenuGifRenderer.NoMenuResource s) {
                 mf = null;
-            }catch (Throwable t) {
+            } catch (Throwable t) {
                 t.printStackTrace();
                 Sentry.captureException(t);
             }
@@ -76,7 +65,7 @@ public class MenuRenderer implements Disposable, Loadable {
                                 random = Random.getBool();
                             }
                             Thread.sleep(5000);
-                        }catch (InterruptedException e) {
+                        } catch (InterruptedException e) {
 
                         }
                     }
@@ -87,6 +76,16 @@ public class MenuRenderer implements Disposable, Loadable {
         generate();
         cache();
         Log.info("Time to generate menu: @", Time.elapsed());
+    }
+
+    @Override
+    public void loadAsync() {
+
+    }
+
+    @Override
+    public String getName() {
+        return "MenuRenderer";
     }
 
     private void generate() {
@@ -314,11 +313,11 @@ public class MenuRenderer implements Disposable, Loadable {
                 p = Color.valueOf(Random.getRandomHexColor());
             Draw.color(p);
             Fill.circle(x + Angles.trnsx(rotation + 180, engineOffset), y + Angles.trnsy(rotation + 180, engineOffset),
-                    engineSize + Mathf.absin(Time.time(), 2f, engineSize / 4f));
+                    engineSize + Mathf.absin(Time.time, 2f, engineSize / 4f));
 
             Draw.color(Color.white);
             Fill.circle(x + Angles.trnsx(rotation + 180, engineOffset - 1f), y + Angles.trnsy(rotation + 180, engineOffset - 1f),
-                    (engineSize + Mathf.absin(Time.time(), 2f, engineSize / 4f)) / 2f);
+                    (engineSize + Mathf.absin(Time.time, 2f, engineSize / 4f)) / 2f);
             Draw.color();
 
             Draw.rect(icon, x, y, flyerRot - 90);

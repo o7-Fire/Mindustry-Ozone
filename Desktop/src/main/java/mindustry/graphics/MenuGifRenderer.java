@@ -49,7 +49,7 @@ public class MenuGifRenderer implements Disposable {
     public MenuGifRenderer() throws IOException, NoMenuResource {
         try {
             url.addAll(new String(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master/Desktop/gif.txt").openStream().readAllBytes()).split("\n"));
-        }catch (Throwable i) {
+        } catch (Throwable i) {
             Sentry.captureException(i);
         }
         menu.mkdirs();

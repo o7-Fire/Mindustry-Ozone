@@ -48,7 +48,7 @@ jar {
 
     StringBuilder sb = new StringBuilder()
     File txt = new File(rootDir, "src/main/resources/dependencies")
-
+    txt.delete()
     configurations.compileOnly.allDependencies.each { dep ->
         sb.append('groupId=').append(dep.group).append('\n')
         sb.append('artifactId=').append(dep.name).append('\n')

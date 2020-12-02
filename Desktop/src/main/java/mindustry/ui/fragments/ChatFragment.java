@@ -157,7 +157,7 @@ public class ChatFragment extends Table {
             if (!shown && fadetime - i < 1f && fadetime - i >= 0f) {
                 font.getCache().setAlphas((fadetime - i) * opacity);
                 Draw.color(0, 0, 0, shadowColor.a * (fadetime - i) * opacity);
-            }else {
+            } else {
                 font.getCache().setAlphas(opacity);
             }
 
@@ -202,10 +202,10 @@ public class ChatFragment extends Table {
                 };
                 input.canceled = this::hide;
                 Core.input.getTextInput(input);
-            }else {
+            } else {
                 chatfield.fireClick();
             }
-        }else {
+        } else {
             //sending chat has a delay; workaround for issue #1943
             Time.run(2f, () -> {
                 scene.setKeyboardFocus(null);
@@ -257,7 +257,7 @@ public class ChatFragment extends Table {
             this.sender = sender;
             if (sender == null) { //no sender, this is a server message?
                 formattedMessage = message == null ? "" : message;
-            }else {
+            } else {
                 formattedMessage = "[coral][[" + sender + "[coral]]:[white] " + message;
             }
         }
