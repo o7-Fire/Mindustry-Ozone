@@ -30,6 +30,7 @@ import mindustry.gen.Icon;
 import mindustry.gen.Tex;
 import mindustry.ui.fragments.Fragment;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static mindustry.Vars.state;
@@ -65,7 +66,7 @@ public class CommandsListFrag extends Fragment {
                         2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay ? in tick, 10 frame is the lowest standard, 1 frame if you persist",
                                 6, "100", true, d -> Commands.commandsQueue.addLast(new CommandsSpam(c, d, commands)))));
                 pane.row();
-                pane.pane(content).grow().get().setScrollingDisabled(true, false);
+                pane.pane(content).growX().grow().get().setScrollingDisabled(true, false);
                 pane.row();
                 pane.table(menu -> {
                     menu.defaults().growX().height(50f).fillY();
@@ -80,11 +81,16 @@ public class CommandsListFrag extends Fragment {
     public void rebuild() {
         content.clear();
         for (Map.Entry<String, Commands.Command> cl : Commands.commandsList.entrySet()) {
-            if (cl.getValue().icon == null) continue;
-            String name = (Core.colorPatch ? "[" + Random.getRandomHexColor() + "]" : "") + cl.getKey().replace("-", " ") + "[white]";
-            content.button(name + ":" + cl.getValue().description, cl.getValue().icon, () -> {
-                Commands.call(Core.commandsPrefix + cl.getKey());
-            }).growX();
+            Table table = new Table();
+            boolean allowed = cl.getValue().icon != null;
+            String name = (Core.colorPatch ? "[" + Random.getRandomHexColor() + "]" : "") + cl.getKey() + "[white]";
+            if (allowed)
+                table.button(name, cl.getValue().icon, () -> cl.getValue().method.accept(new ArrayList<>())).growX();
+            else table.button(name, Icon.boxSmall, () -> {
+            }).tooltip("Disabled, commands require user input").disabled(true).growX();
+            table.button(Icon.info, () -> Vars.ui.showInfo(cl.getValue().description));
+            content.add(table).width(350f).maxHeight(h + 14);
+            content.row();
         }
         /*
         for (Map.Entry<String, Commands.Command> cl : Commands.commandsList.entrySet()) {

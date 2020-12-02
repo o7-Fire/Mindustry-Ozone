@@ -74,17 +74,17 @@ public class Commands {
                 commandsQueue.removeFirst();
         });
 
-        register("help", new Command(Commands::help));
-        register("chaos-kick", new Command(Commands::chaosKick));
+        register("help", new Command(Commands::help, Icon.infoCircle));
+        register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
         register("task-move", new Command(Commands::taskMove));
         register("info-pos", new Command(Commands::infoPos, Icon.move));
         register("info-pathfinding", new Command(Commands::infoPathfinding));
         register("random-kick", new Command(Commands::randomKick, Icon.hammer));
         register("info-unit", new Command(Commands::infoUnit, Icon.units));
-        register("force-exit", new Command(Commands::forceExit));
+        register("force-exit", new Command(Commands::forceExit, Icon.exit));
         register("task-deconstruct", new Command(Commands::taskDeconstruct));
         register("send-colorize", new Command(Commands::sendColorize));
-        register("task-clear", new Command(Commands::taskClear));
+        register("task-clear", new Command(Commands::taskClear, Icon.cancel));
         register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
         register("message-log", new Command(Commands::messageLog, Icon.rotate));
         register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));

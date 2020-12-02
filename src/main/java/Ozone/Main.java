@@ -49,9 +49,9 @@ public class Main {
         Log.infoTag("Ozone", "Hail o7");
         loadSettings();
         patch();
+        Commands.init();
         initUI();
         TaskInterface.init();
-        Commands.init();
         initEvent();
     }
 
