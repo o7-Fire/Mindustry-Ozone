@@ -8,8 +8,10 @@ import arc.struct.ObjectMap;
 import arc.util.OS;
 import arc.util.Strings;
 import arc.util.io.PropertiesUtils;
+import io.sentry.Sentry;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Version {
     /**
@@ -41,6 +43,11 @@ public class Version {
     public static void init() {
         if (!enabled) return;
         h = Propertied.read("version.properties");
+        Sentry.configureScope(scope -> {
+            for (Map.Entry<String, String> e : h.entrySet())
+                scope.setTag("Mindustry-" + e.getKey(), e.getValue());
+        });
+
         Fi file = OS.isAndroid || OS.isIos ? Core.files.internal("version.properties") : new Fi("version.properties", FileType.internal);
 
         ObjectMap<String, String> map = new ObjectMap<>();
