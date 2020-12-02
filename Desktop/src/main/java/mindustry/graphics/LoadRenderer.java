@@ -71,16 +71,15 @@ public class LoadRenderer implements Disposable {
     }
 
     public void draw() {
-        mesh = MeshBuilder.buildHex(colorRed, Random.getInt(16), true, Mathf.random(5f));
-        if (!preview) {
-            if (lastFrameTime == 0) {
-                lastFrameTime = Time.millis();
-            }
+          if (!preview) {
+              if (lastFrameTime == 0) {
+                  lastFrameTime = Time.millis();
+              }
 
-            float timespace = Time.timeSinceMillis(lastFrameTime) / 1000f;
-            renderTimes.add(timespace);
-            lastFrameTime = Time.millis();
-        }
+              float timespace = Time.timeSinceMillis(lastFrameTime) / 1000f;
+              renderTimes.add(timespace);
+              lastFrameTime = Time.millis();
+          }
 
         if (fx.getWidth() != graphics.getWidth() || fx.getHeight() != graphics.getHeight()) {
             fx.resize(graphics.getWidth(), graphics.getHeight());
