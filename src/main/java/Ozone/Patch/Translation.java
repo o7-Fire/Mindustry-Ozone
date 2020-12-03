@@ -55,6 +55,7 @@ public class Translation {
         commands.put("send-colorize", "send Colorized text");
         commands.put("info-unit", "get current unit info");
         commands.put("random-kick", "random kick someone");
+        commands.put("clear-pathfinding-overlay", "Clear every pathfinding overlay");
         commands.put("shuffle-sorter", "shuffle every block that look like sorter, note: item source too");
         commands.put("javac", "run single line of code, like \nVars.player.unit().moveAt(new Vec2(100, 100));");
         commands.put("task-clear", "clear all bot task");

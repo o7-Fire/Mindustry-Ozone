@@ -23,6 +23,7 @@ import Ozone.Desktop.Pre.DownloadSwing;
 import Settings.Core;
 import arc.util.Log;
 import mindustry.Vars;
+import mindustry.gen.Icon;
 
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -48,8 +49,8 @@ public class Commands {
         });
         register("javac", new Command(Commands::javac));
         //register("library", new Command(Commands::library));
-        register("debug", new Command(Commands::debug));
-        register("info-pos", new Command(Commands::infoPos));
+        register("debug", new Command(Commands::debug, Icon.pause));
+        register("info-pos", new Command(Commands::infoPos, Icon.move));
     }
 
     public static void infoPos(ArrayList<String> arg) {

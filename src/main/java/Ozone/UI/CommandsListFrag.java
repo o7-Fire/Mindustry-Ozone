@@ -35,8 +35,6 @@ import java.util.Map;
 
 import static mindustry.Vars.state;
 
-//UI madness
-//TODO rebuild
 public class CommandsListFrag extends Fragment {
     public boolean visible = false;
     private Table logs = new Table().marginRight(30f).marginLeft(20f);//Add this ?
