@@ -16,11 +16,12 @@
 
 package Ozone.Commands;
 
+import Atom.Utility.Random;
 import Ozone.Patch.Hack;
 import arc.Events;
 import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
 import arc.math.geom.Position;
 import arc.struct.Seq;
 import arc.util.Log;
@@ -38,8 +39,30 @@ import java.util.ArrayList;
 
 public class Pathfinding {
     //TODO don't be stupid
-    public static ArrayList<Seq<Tile>> render = new ArrayList<>();
+    public static ArrayList<PathfindingOverlay> render = new ArrayList<>();
     private static boolean init = false;
+
+    static void draw() {
+        float x = 0, y = 0;
+        boolean draw = true;
+
+
+        for (PathfindingOverlay h : render) {
+            boolean b = false;
+
+            for (Tile t : h.tiles) {
+                if (draw) {
+                    x = t.drawx();
+                    y = t.drawy();
+                } else {
+                    Lines.stroke(h.thick, b ? h.color : h.second);
+                    Lines.line(x, y, t.drawx(), t.drawy());
+                    b = !b;
+                }
+                draw = !draw;
+            }
+        }
+    }
 
     public static void init() {
         if (init) return;
@@ -47,21 +70,17 @@ public class Pathfinding {
         Events.run(EventType.Trigger.draw, Pathfinding::draw);
     }
 
-    static void draw() {
-        float x = 0, y = 0;
-        boolean draw = true;
-        Draw.color(Color.cyan);
-        Lines.stroke(5f, Color.orange);
-        for (Seq<Tile> h : render)
-            for (Tile t : h) {
-                if (draw) {
-                    x = t.drawx();
-                    y = t.drawy();
-                } else {
-                    Lines.line(x, y, t.drawx(), t.drawy());
-                }
-                draw = !draw;
-            }
+    public static class PathfindingOverlay {
+        Seq<Tile> tiles;
+        Color color, second;
+        float thick;
+
+        public PathfindingOverlay(Seq<Tile> tiles) {
+            this.tiles = tiles;
+            this.color = Color.valueOf(Random.getRandomHexColor());
+            second = Color.valueOf(Random.getRandomHexColor());
+            thick = Mathf.random(5f);
+        }
     }
 
     public static boolean passable(Tile t) {

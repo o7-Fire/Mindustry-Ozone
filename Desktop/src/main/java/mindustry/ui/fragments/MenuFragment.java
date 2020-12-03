@@ -1,5 +1,6 @@
 package mindustry.ui.fragments;
 
+import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Ozone.Desktop.Manifest;
 import Ozone.Desktop.Patch.DesktopPatcher;
@@ -98,16 +99,20 @@ public class MenuFragment extends Fragment {
             }));
 
         }
-        try {
-            HashMap<String, String> h = Manifest.getManifest(Manifest.latestBuildManifestID);
-            if (Manifest.compatibleMindustryVersion(h, Propertied.Manifest))
-                if (Manifest.isThisTheLatest(h)) {
-                    parent.fill(c -> c.bottom().right().button("Ozone", Icon.warning, () -> ui.showConfirm("Ozone Update", "A new compatible build is exists, do you want to update ?", () -> DesktopPatcher.selfUpdate(h.get("DownloadURL")))).size(200, 60).name("becheck"));
-                }
-        } catch (Throwable e) {
-            Log.err(e.toString());
-            Sentry.captureException(e);
-        }
+        Group finalParent = parent;
+        Pool.submit(() -> {
+            try {
+                HashMap<String, String> h = Manifest.getManifest(Manifest.latestBuildManifestID);
+                if (Manifest.compatibleMindustryVersion(h, Propertied.Manifest))
+                    if (Manifest.isThisTheLatest(h)) {
+                        finalParent.fill(c -> c.bottom().right().button("Ozone", Icon.warning, () -> ui.showConfirm("Ozone Update", "A new compatible build is exists, do you want to update ?", () -> DesktopPatcher.selfUpdate(h.get("DownloadURL")))).size(200, 60).name("becheck"));
+                    }
+            } catch (Throwable e) {
+                Log.err(e.toString());
+                Sentry.captureException(e);
+            }
+            return null;
+        });
 
 
         String versionText = ((Version.build == -1) ? "[#fc8140aa]" : "[#ffffffba]") + Version.combined();

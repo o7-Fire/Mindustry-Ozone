@@ -17,6 +17,7 @@
 package Ozone.Commands;
 
 import Atom.Time.Countdown;
+import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Commands.Task.DestructBlock;
@@ -87,6 +88,7 @@ public class Commands {
         register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
         register("message-log", new Command(Commands::messageLog, Icon.rotate));
         register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
+        register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
         Events.fire(Internal.Init.CommandsRegister);
         for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet())
             c.getValue().description = Commands.getTranslation(c.getKey());
@@ -94,6 +96,10 @@ public class Commands {
         Log.infoTag("Ozone", commandsList.size() + " commands loaded");
     }
 
+    public static void clearPathfindingOverlay(ArrayList<String> arg) {
+        tellUser("Clearing: " + Pathfinding.render.size() + " overlay");
+        Pathfinding.render.clear();
+    }
 
     public static void shuffleConfigurable(ArrayList<String> arg) {
 
@@ -296,36 +302,18 @@ public class Commands {
                 tellUser("Non existent source tiles");
                 return;
             }
-            Thread t = new Thread(() -> {
-                Seq<Tile> tiles;
+            Pool.submit(() -> {
+                Seq<Tile> tiles = new Seq<>();
                 try {
-                    tiles = Astar.pathfind(source, target, h -> 0, Tile::passable);
-                    Pathfinding.render.add(tiles);
+                    tiles.addAll(Astar.pathfind(source, target, h -> 0, Tile::passable));
+                    Pathfinding.render.add(new Pathfinding.PathfindingOverlay(tiles));
                 } catch (Throwable e) {
                     tellUser("Pathfinding failed");
                     tellUser(e.toString());
-                    return;
                 }
+                return tiles;
             });
-            t.setDaemon(true);
-              /*
-            for (Tile t : tiles) {
 
-
-                if (t.block() == null)
-                    tellUser("Null block: " + t.toString());
-                else if (pathfindingBlock != null)
-                    t.setOverlay(pathfindingBlock);
-                else if (t.block().isFloor())
-                    t.setOverlay(Blocks.magmarock);
-                else if (t.block().isStatic())
-                    t.setOverlay(Blocks.dirtWall);
-
-            }
-            //tellUser("to clear pathfinding overlay use /sync");
-
-
-                 */
         }catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");
             Vars.ui.showException(f);

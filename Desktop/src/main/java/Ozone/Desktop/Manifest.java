@@ -17,6 +17,7 @@
 package Ozone.Desktop;
 
 import Atom.File.SerializeData;
+import Atom.Utility.Pool;
 import Ozone.Desktop.UI.BotControllerDialog;
 import Ozone.Desktop.UI.EnvironmentInformation;
 import Ozone.Desktop.UI.ModsMenu;
@@ -46,18 +47,8 @@ public class Manifest {
     public static EnvironmentInformation envInf;
 
     static {
-        try {
-            latestBuildManifestID = getLatestBuildManifestID();
-        } catch (Throwable e) {
-            Log.errTag("Ozone-Updater", "Failed to fetch latest build");
-            Sentry.captureException(e);
-        }
-        try {
-            latestReleaseManifestID = getLatestReleaseManifestID();
-        } catch (Throwable e) {
-            Log.errTag("Ozone-Updater", "Failed to fetch latest release");
-            Sentry.captureException(e);
-        }
+        latestBuildManifestID = getLatestBuildManifestID();
+        latestReleaseManifestID = getLatestReleaseManifestID();
     }
 
 
@@ -82,7 +73,7 @@ public class Manifest {
             long source = Long.parseLong(Propertied.Manifest.getOrDefault("TimeMilis", "1"));
             long target = Long.parseLong(a.getOrDefault("TimeMilis", "0"));
             return target > source;
-        }catch (NumberFormatException t) {
+        } catch (NumberFormatException t) {
             Log.errTag("Long-Parse", t.toString());
         }
         return false;
@@ -92,9 +83,18 @@ public class Manifest {
         return a.getOrDefault("BuilderID", "").equals(b.getOrDefault("BuilderID", ""));
     }
 
-    public static int getLatestBuildManifestID() throws IOException {
-        JsonArray apiRunner = new JsonParser().parse(new String(new URL(gApi + "actions/artifacts").openStream().readAllBytes())).getAsJsonObject().get("artifacts").getAsJsonArray();
-        return apiRunner.get(0).getAsJsonObject().get("id").getAsInt();
+    public static int getLatestBuildManifestID() {
+        Pool.submit(() -> {
+            try {
+                JsonArray apiRunner = new JsonParser().parse(new String(new URL(gApi + "actions/artifacts").openStream().readAllBytes())).getAsJsonObject().get("artifacts").getAsJsonArray();
+                latestBuildManifestID = apiRunner.get(0).getAsJsonObject().get("id").getAsInt();
+            } catch (Throwable t) {
+                Sentry.captureException(t);
+                Log.errTag("Ozone-Updater", "Failed to fetch latest build");
+            }
+            return null;
+        });
+        return 0;
     }
 
     public static HashMap<String, String> getManifest(int id) throws IOException {
@@ -119,15 +119,24 @@ public class Manifest {
         return main;
     }
 
-    public static int getLatestReleaseManifestID() throws IOException {
-        JsonArray o = new JsonParser().parse(new String(new URL(gApi + "releases").openStream().readAllBytes())).getAsJsonArray();
-        JsonObject mf = o.get(0).getAsJsonObject();
-        HashMap<String, String> hmf = Propertied.parse(mf.get("body").getAsString());
-        if (!hmf.containsKey("id")) {
-            throw new IOException("Release ID Gone");
-        }else {
-            return Integer.parseInt(hmf.get("id"));
-        }
+    public static int getLatestReleaseManifestID() {
+        Pool.submit(() -> {
+            try {
+                JsonArray o = new JsonParser().parse(new String(new URL(gApi + "releases").openStream().readAllBytes())).getAsJsonArray();
+                JsonObject mf = o.get(0).getAsJsonObject();
+                HashMap<String, String> hmf = Propertied.parse(mf.get("body").getAsString());
+                if (!hmf.containsKey("id")) {
+
+                } else {
+                    latestReleaseManifestID = Integer.parseInt(hmf.get("id"));
+                }
+            } catch (Throwable t) {
+                Sentry.captureException(t);
+                Log.errTag("Ozone-Updater", "Failed to fetch latest release");
+            }
+            return null;
+        });
+        return 0;
     }
 
     public static void tryLoadLogMessage() {
@@ -136,7 +145,7 @@ public class Manifest {
         try {
             loadMessageLog(messageLog);
             return;
-        }catch (Throwable t) {
+        } catch (Throwable t) {
             Log.errTag("Ozone-MessageLogger", "Cant load " + Ozone.Desktop.Manifest.messageLog.getAbsolutePath());
             Log.errTag("Ozone-MessageLogger", t.toString());
             t.printStackTrace();

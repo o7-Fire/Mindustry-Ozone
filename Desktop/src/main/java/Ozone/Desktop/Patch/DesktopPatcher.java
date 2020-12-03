@@ -17,6 +17,7 @@
 package Ozone.Desktop.Patch;
 
 import Atom.Reflect.Reflect;
+import Atom.Utility.Pool;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Manifest;
 import Ozone.Event.EventExtended;
@@ -54,15 +55,19 @@ public class DesktopPatcher {
     }
 
     public static void checkRelease() {
-        try {
-            HashMap<String, String> release = Manifest.getManifest(Manifest.latestReleaseManifestID);
-            if (!Manifest.compatibleMindustryVersion(release)) return;
-            if (!Manifest.isThisTheLatest(release)) return;
-            Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showConfirm("Ozone-Update", "A new compatible release appeared", () -> selfUpdate(release.get("DownloadURL"))));
-        }catch (Throwable i) {
-            Log.errTag("Ozone-Updater", "Failed to get latest release manifest: " + i.toString());
-            Sentry.captureException(i);
-        }
+        Pool.submit(() -> {
+            try {
+                HashMap<String, String> release = Manifest.getManifest(Manifest.latestReleaseManifestID);
+                if (!Manifest.compatibleMindustryVersion(release)) return null;
+                if (!Manifest.isThisTheLatest(release)) return null;
+                Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showConfirm("Ozone-Update", "A new compatible release appeared", () -> selfUpdate(release.get("DownloadURL"))));
+            } catch (Throwable i) {
+                Log.errTag("Ozone-Updater", "Failed to get latest release manifest: " + i.toString());
+                Sentry.captureException(i);
+            }
+            return null;
+        });
+
     }
 
     public static String getServer() {
