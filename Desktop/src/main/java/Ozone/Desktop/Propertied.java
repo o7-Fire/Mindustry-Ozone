@@ -56,8 +56,12 @@ public class Propertied {
 
     public static HashMap<String, String> parse(String se) {
         HashMap<String, String> te = new HashMap<>();
-        for (String s : se.split("\n"))
-            if (!s.startsWith("#")) te.put(s.split("=")[0], s.split("=")[1]);
+        for (String s : se.split("\n")) {
+            if (s.endsWith("\r"))
+                s = s.substring(0, s.length() - 1);
+            if (!s.startsWith("#"))
+                te.put(s.split("=")[0], s.split("=")[1]);
+        }
         return te;
     }
 }

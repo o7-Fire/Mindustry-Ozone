@@ -17,10 +17,16 @@
 package Ozone.Commands;
 
 import Ozone.Patch.Hack;
+import arc.Events;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
 import arc.math.geom.Position;
+import arc.struct.Seq;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.ai.Pathfinder;
+import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.Legsc;
 import mindustry.gen.Unit;
@@ -28,9 +34,35 @@ import mindustry.gen.WaterMovec;
 import mindustry.world.Tile;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 public class Pathfinding {
     //TODO don't be stupid
+    public static ArrayList<Seq<Tile>> render = new ArrayList<>();
+    private static boolean init = false;
+
+    public static void init() {
+        if (init) return;
+        init = true;
+        Events.run(EventType.Trigger.draw, Pathfinding::draw);
+    }
+
+    static void draw() {
+        float x = 0, y = 0;
+        boolean draw = true;
+        Draw.color(Color.cyan);
+        Lines.stroke(5f, Color.orange);
+        for (Seq<Tile> h : render)
+            for (Tile t : h) {
+                if (draw) {
+                    x = t.drawx();
+                    y = t.drawy();
+                } else {
+                    Lines.line(x, y, t.drawx(), t.drawy());
+                }
+                draw = !draw;
+            }
+    }
 
     public static boolean passable(Tile t) {
         Unit unit = Vars.player.unit();
@@ -38,9 +70,9 @@ public class Pathfinding {
         if (unit instanceof WaterMovec) {
             if (!t.block().isFloor()) return false;
             if (!t.block().asFloor().isLiquid) return false;
-        }else if (unit instanceof Legsc) {
+        } else if (unit instanceof Legsc) {
             if (!t.passable()) return false;
-        }else if (!unit.isFlying()) {
+        } else if (!unit.isFlying()) {
             if (!t.passable()) return false;
             if (t.build != null) return false;
         }

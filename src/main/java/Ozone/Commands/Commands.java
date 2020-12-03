@@ -36,7 +36,6 @@ import arc.struct.Seq;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.ai.Astar;
-import mindustry.content.Blocks;
 import mindustry.game.EventType;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
@@ -61,9 +60,9 @@ public class Commands {
 
     public static final Queue<Task> commandsQueue = new Queue<>();
     public static HashMap<String, Command> commandsList = new HashMap<>();
-    private static boolean init = false;
-    private volatile static boolean falseVote = false;
 
+    private volatile static boolean falseVote = false;
+    private static boolean init = false;
     public static void init() {
         if (init) return;
         init = true;
@@ -297,15 +296,22 @@ public class Commands {
                 tellUser("Non existent source tiles");
                 return;
             }
-            Seq<Tile> tiles;
-            try {
-                tiles = Astar.pathfind(source, target, h -> 0, Tile::passable);
-            }catch (Throwable t) {
-                tellUser("Pathfinding failed");
-                tellUser(t.toString());
-                return;
-            }
+            Thread t = new Thread(() -> {
+                Seq<Tile> tiles;
+                try {
+                    tiles = Astar.pathfind(source, target, h -> 0, Tile::passable);
+                    Pathfinding.render.add(tiles);
+                } catch (Throwable e) {
+                    tellUser("Pathfinding failed");
+                    tellUser(e.toString());
+                    return;
+                }
+            });
+            t.setDaemon(true);
+              /*
             for (Tile t : tiles) {
+
+
                 if (t.block() == null)
                     tellUser("Null block: " + t.toString());
                 else if (pathfindingBlock != null)
@@ -314,8 +320,12 @@ public class Commands {
                     t.setOverlay(Blocks.magmarock);
                 else if (t.block().isStatic())
                     t.setOverlay(Blocks.dirtWall);
+
             }
-            tellUser("to clear pathfinding overlay use /sync");
+            //tellUser("to clear pathfinding overlay use /sync");
+
+
+                 */
         }catch (NumberFormatException f) {
             tellUser("Failed to parse integer, are you sure that argument was integer ?");
             Vars.ui.showException(f);

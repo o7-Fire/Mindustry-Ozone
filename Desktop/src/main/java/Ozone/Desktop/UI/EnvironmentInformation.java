@@ -44,7 +44,7 @@ public class EnvironmentInformation extends OzoneBaseDialog {
     Table table = new Table();
     ScrollPane scrollPane = new ScrollPane(table);
     Interval timer = new Interval();
-
+    boolean b;
     public EnvironmentInformation() {
         super("Environment Information");
         icon = Icon.info;
@@ -81,12 +81,20 @@ public class EnvironmentInformation extends OzoneBaseDialog {
             for (URL u : ((LibraryLoader) this.getClass().getClassLoader()).getURLs()) {
                 add("Library", u.toExternalForm());
             }
-        }catch (Throwable ignored) {}
+        } catch (Throwable ignored) {
+        }
         for (Dependency d : Dependency.dependencies)
             try {
-                add(d.toString(), d.getDownload());
-            }catch (Throwable i) {
-                add(d.toString(), i.toString());
+                add(d.type.name(), d.getDownload());
+            } catch (Throwable i) {
+                add(d.type.name(), i.toString());
+            }
+        if (!b)
+            try {
+                Dependency.save();
+                b = true;
+            } catch (Throwable ignored) {
+
             }
     }
 
