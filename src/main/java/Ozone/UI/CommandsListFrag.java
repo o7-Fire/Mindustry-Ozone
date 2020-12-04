@@ -90,51 +90,6 @@ public class CommandsListFrag extends Fragment {
             content.add(table).width(350f).maxHeight(h + 14);
             content.row();
         }
-        /*
-        for (Map.Entry<String, Commands.Command> cl : Commands.commandsList.entrySet()) {
-
-            Table button = new Table();
-            button.left();
-            button.margin(5).marginBottom(10);
-            Table table = new Table() {
-                @Override
-                public void draw() {
-                    super.draw();
-                    Draw.color(Color.valueOf(Random.getRandomHexColor()));
-                    Draw.alpha(parentAlpha);
-                    Lines.stroke(Scl.scl(3f));
-                    Lines.rect(x, y, width, height);
-                    Draw.reset();
-                }
-            };
-            if (cl.getValue().icon != null)
-                table.image(cl.getValue().icon).fontScale(3.8f).center().grow();
-            button.add(table).size(h);
-            button.label(() -> cl.getValue().description);
-            try {
-                button.row();
-                button.label(() -> name);
-                button.button(Icon.settings, Styles.clearPartiali, () -> ui.showConfirm(name, "are you sure want to run commands: " + name, () -> {
-                    String com = cl.getKey();
-                    Commands.call(Core.commandsPrefix + com);
-                }));
-
-            }catch (Throwable a) {
-                ui.showException(a);
-            }
-            content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
-            content.row();
-            if (Core.colorPatch)
-                content.image().height(4f).color(Color.valueOf(Random.getRandomHexColor())).growX();
-            else
-                content.image().height(4f).color(Color.gray).growX();
-            content.row();
-        }
-
-
-         */
-
-        content.marginBottom(5);
     }
 
 

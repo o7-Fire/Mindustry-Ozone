@@ -34,7 +34,7 @@ public class LoadRenderer implements Disposable {
     private static final String orange = "[#" + color + "]";
     private static final FloatSeq floats = new FloatSeq();
     private static final boolean preview = false;
-
+    private static final boolean ran = Random.getBool();
     private float testprogress = 0f;
     private StringBuilder assetText = new StringBuilder();
     private Bar[] bars;
@@ -471,8 +471,9 @@ public class LoadRenderer implements Disposable {
             Draw.color(Color.black);
             font.draw(red + Random.getString(Random.getInt(3, 14)), w / 2f, h / 2f + 110 * s, Align.center);
             //too much
-            //for (int i = 0; i < Random.getInt(5); i++)
-            //    font.draw(red+Random.getString(Random.getInt(4, 16)), w / Mathf.random(0.1f, 10f) , h / Mathf.random(0.2f, 10f) + 110 * s, Align.center);
+            if (ran)
+                for (int i = 0; i < Random.getInt(5); i++)
+                    font.draw(red + Random.getString(Random.getInt(4, 16)), w / Mathf.random(0.1f, 10f), h / Mathf.random(0.2f, 10f) + 110 * s, Align.center);
 
         }
 
