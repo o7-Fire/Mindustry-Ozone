@@ -27,6 +27,7 @@ allprojects {
     }
 
     ext {
+
         mindustryVersion = findProperty("mindustryVersion")
         atomHash = findProperty("atomHash")
         def arcHash = findProject("arcHash")
