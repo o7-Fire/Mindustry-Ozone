@@ -27,13 +27,7 @@ allprojects {
     }
 
     ext {
-        Vhash = "null"
         modsBuilder = "javac"
-
-        if (project.hasProperty("gHash"))
-            Vhash = gHash
-        else if(project.hasProperty("version"))
-            Vhash = version
         if (project.hasProperty("builder"))
             modsBuilder = builder
         else
@@ -52,7 +46,7 @@ allprojects {
             props["AtomHash"] = atomHash
             props["ArcHash"] = arcHash
             props["MindustryVersion"] = mindustryVersion
-            props["VHash"] = Vhash
+            props["VHash"] = version
             props["ModsBuilder"] = modsBuilder
             props["TimeStamp"] = df.format(new Date())
             props["TimeMilis"] = String.valueOf(System.currentTimeMillis())
