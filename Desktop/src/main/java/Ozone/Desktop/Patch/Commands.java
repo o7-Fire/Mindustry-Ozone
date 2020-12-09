@@ -63,6 +63,7 @@ public class Commands {
             tellUser("The debug mode mason, what do they mean");
             return;
         }
+
         if (i == 5) {
             tellUser("pls dont");
         }else if (i == 10)
@@ -141,10 +142,6 @@ public class Commands {
 
 
     public static void javac(ArrayList<String> arg) {
-        if (!Manifest.javacExists()) {
-            tellUser("no javac detected, are you sure using JDK ?");
-            return;
-        }
 
 
         String code = Utility.joiner(arg.toArray(new String[0]), " ");

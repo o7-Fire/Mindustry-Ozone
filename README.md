@@ -5,8 +5,9 @@
 
 ### Release
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/0.7.1.0.7.3/Ozone-Desktop.jar)
-[0.7.1.0.7.3][Mindustry v113.1]
-
+[0.7.1.0.7.3][Mindustry v113.1]\
+[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v120/Ozone-Desktop.jar)
+[0.9.0:0.10.2][Mindustry v120]
 
 ### Latest Build
 0.make github account and login\
