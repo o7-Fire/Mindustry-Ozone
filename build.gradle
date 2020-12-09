@@ -27,27 +27,13 @@ allprojects {
     }
 
     ext {
-
-        mindustryVersion = findProperty("mindustryVersion")
-        atomHash = findProperty("atomHash")
-        def arcHash = findProject("arcHash")
-        githubHash = "null"
-        githubBranch = "null"
-        githubRepo = "o7-Fire/Mindustry-Ozone"
-        githubOwner = "null"
-        modsBuilderID = "idk"
-        modsBuilder = "java"
+        Vhash = "null"
+        modsBuilder = "javac"
 
         if (project.hasProperty("gHash"))
-            githubHash = gHash
-        if (project.hasProperty("gBranch"))
-            githubBranch = gBranch
-        if (project.hasProperty("gRepo"))
-            githubRepo = gRepo
-        if (project.hasProperty("gRepoOwner"))
-            githubOwner = gRepoOwner
-        if (project.hasProperty("builderID"))
-            modsBuilderID = builderID
+            Vhash = gHash
+        else if(project.hasProperty("version"))
+            Vhash = version
         if (project.hasProperty("builder"))
             modsBuilder = builder
         else
@@ -64,12 +50,9 @@ allprojects {
         if (atomMeta.exists()) {
             props.load(new FileInputStream(atomMeta))
             props["AtomHash"] = atomHash
+            props["ArcHash"] = arcHash
             props["MindustryVersion"] = mindustryVersion
-            props["GithubHash"] = githubHash
-            props["GithubBranch"] = githubBranch
-            props["GithubRepo"] = githubRepo
-            props["GithubInitializer"] = githubOwner
-            props["BuilderID"] = modsBuilderID
+            props["VHash"] = Vhash
             props["ModsBuilder"] = modsBuilder
             props["TimeStamp"] = df.format(new Date())
             props["TimeMilis"] = String.valueOf(System.currentTimeMillis())
