@@ -15,7 +15,5 @@ if(new File(settingsDir, '../Atom').exists()) {
             ":Atom:Desktop"
     )
 }
-
-
-
+include 'Manifest'
 

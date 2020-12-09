@@ -1,0 +1,19 @@
+import java.nio.file.Files
+import java.nio.file.StandardOpenOption
+
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
+jar {
+    archiveFileName = "Ozone-Manifest.jar"
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+}

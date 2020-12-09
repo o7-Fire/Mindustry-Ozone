@@ -53,7 +53,7 @@ allprojects {
         else
             modsBuilder = System.getProperty("user.name")
 
-        def atomMeta = new File(rootDir, "src/main/resources/Manifest.properties")
+        def atomMeta = new File(sourceSets.main.resources.srcDirs[0], "Manifest.properties")
         def props = new Properties()
         def df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ") // you can change it
         df.setTimeZone(TimeZone.getTimeZone("UTC"))
