@@ -17,31 +17,20 @@
 package Ozone.Desktop.Patch;
 
 import Atom.Reflect.Reflect;
-import Atom.Utility.Pool;
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
-import Ozone.Desktop.Manifest;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Settings.Desktop;
 import arc.Core;
 import arc.Events;
-import arc.backend.sdl.jni.SDL;
-import arc.files.Fi;
 import arc.net.Client;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.EventType;
-import mindustry.gen.Groups;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.InvalidPathException;
-import java.util.HashMap;
 
 public class DesktopPatcher {
     public static File cache = new File(Vars.dataDirectory.file(), "cache/");
@@ -54,21 +43,7 @@ public class DesktopPatcher {
         }
     }
 
-    public static void checkRelease() {
-        Pool.submit(() -> {
-            try {
-                HashMap<String, String> release = Manifest.getManifest(Manifest.latestReleaseManifestID);
-                if (!Manifest.compatibleMindustryVersion(release)) return null;
-                if (!Manifest.isThisTheLatest(release)) return null;
-                Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showConfirm("Ozone-Update", "A new compatible release appeared", () -> selfUpdate(release.get("DownloadURL"))));
-            } catch (Throwable i) {
-                Log.errTag("Ozone-Updater", "Failed to get latest release manifest: " + i.toString());
-                Sentry.captureException(i);
-            }
-            return null;
-        });
 
-    }
 
     public static String getServer() {
         try {
@@ -83,39 +58,10 @@ public class DesktopPatcher {
         }
     }
 
-    public static void selfUpdate(String url) {
-        Vars.ui.loadfrag.show();
-        Sentry.configureScope(scope -> {
-            scope.setTag("Server", getServer());
-            scope.setTag("PlayerSize", String.valueOf(Groups.player.size()));
-            scope.setTag("Multiplayer", String.valueOf(Vars.net.client()));
-        });
-        Thread t = new Thread(() -> {
-            try {
-                File jar = new File(SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-                if (!new Fi(jar).extension().equals("jar"))
-                    throw new InvalidPathException(jar.getAbsolutePath(), "is not a jar file");
-                URL real = new URL("jar:" + Manifest.getArtifactLocation(new URL(url)) + "!/Ozone-Desktop.jar");
-                FileOutputStream f = new FileOutputStream(jar);
-                InputStream is = real.openStream();
-                f.write(is.readAllBytes());
-                SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_INFORMATION, "Exit", "Relaunch mindustry");
-                System.exit(0);
-            }catch (Throwable e) {
-                Vars.ui.showException(e);
-                Sentry.captureException(e);
-            }finally {
-                Vars.ui.loadfrag.hide();
-            }
-        });
-        t.setDaemon(true);
-        t.start();
 
-
-    }
 
     public static void register() {
-        checkRelease();
+
 
         Ozone.Manifest.settings.add(Desktop.class);
         Events.run(Internal.Init.CommandsRegister, Commands::Init);

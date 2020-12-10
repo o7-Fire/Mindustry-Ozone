@@ -1,17 +1,15 @@
 package mindustry.ui.fragments;
 
-import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Ozone.Desktop.Manifest;
-import Ozone.Desktop.Patch.DesktopPatcher;
-import Ozone.Desktop.Propertied;
+import Ozone.Desktop.Patch.Updater;
 import arc.Core;
 import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Interp;
-import arc.math.Mathf;
+import arc.scene.Element;
 import arc.scene.Group;
 import arc.scene.actions.Actions;
 import arc.scene.event.Touchable;
@@ -21,20 +19,14 @@ import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.scene.ui.layout.WidgetGroup;
 import arc.util.Align;
-import arc.util.Log;
-import arc.util.Tmp;
-import io.sentry.Sentry;
 import mindustry.core.Version;
 import mindustry.game.EventType.DisposeEvent;
 import mindustry.game.EventType.ResizeEvent;
 import mindustry.gen.Icon;
 import mindustry.graphics.MenuRenderer;
-import mindustry.graphics.Pal;
 import mindustry.ui.Fonts;
 import mindustry.ui.MobileButton;
 import mindustry.ui.Styles;
-
-import java.util.HashMap;
 
 import static mindustry.Vars.*;
 
@@ -85,34 +77,17 @@ public class MenuFragment extends Fragment {
         if (mobile) {
             parent.fill(c -> c.bottom().left().button("", Styles.infot, ui.about::show).size(84, 45).name("info"));
             parent.fill(c -> c.bottom().right().button("", Styles.discordt, ui.discord::show).size(84, 45).name("discord"));
-        } else if (becontrol.active()) {
-            parent.fill(c -> c.bottom().right().button("@be.check", Icon.refresh, () -> {
-                ui.loadfrag.show();
-                becontrol.checkUpdate(result -> {
-                    ui.loadfrag.hide();
-                    if (!result) {
-                        ui.showInfo("@be.noupdates");
-                    }
-                });
-            }).size(200, 60).name("becheck").update(t -> {
-                t.getLabel().setColor(becontrol.isUpdateAvailable() ? Tmp.c1.set(Color.white).lerp(Pal.accent, Mathf.absin(5f, 1f)) : Color.white);
-            }));
-
         }
-        Group finalParent = parent;
-        Pool.submit(() -> {
-            try {
-                HashMap<String, String> h = Manifest.getManifest(Manifest.latestBuildManifestID);
-                if (Manifest.compatibleMindustryVersion(h, Propertied.Manifest))
-                    if (Manifest.isThisTheLatest(h)) {
-                        finalParent.fill(c -> c.bottom().right().button("Ozone", Icon.warning, () -> ui.showConfirm("Ozone Update", "A new compatible build is exists, do you want to update ?", () -> DesktopPatcher.selfUpdate(h.get("DownloadURL")))).size(200, 60).name("becheck"));
-                    }
-            } catch (Throwable e) {
-                Log.err(e.toString());
-                Sentry.captureException(e);
-            }
-            return null;
-        });
+        parent.fill(c -> c.bottom().right().button("Update", Icon.refresh, () -> {
+            if (Updater.newRelease.get())
+                ui.showConfirm("New Release", "A new compatible release appeared", () -> {
+                    Updater.update(Updater.getRelease(false));
+                });
+            else
+                ui.showConfirm("New Build", "A new compatible build appeared", () -> {
+                    Updater.update(Updater.getBuild(false));
+                });
+        }).size(200, 60).name("buildcheck").visible(() -> Updater.newBuild.get() || Updater.newRelease.get()).update(Element::updateVisibility));
 
 
         String versionText = ((Version.build == -1) ? "[#fc8140aa]" : "[#ffffffba]") + Version.combined();

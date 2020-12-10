@@ -29,9 +29,10 @@ import mindustry.desktop.DesktopLauncher;
 //basically its a patcher
 public class OzoneMindustry {
     public static long start = System.currentTimeMillis() / 1000;
-
+    public static String[] arg;
     public static void main(String[] args) throws Throwable {
         //  new Thread(()-> {
+        arg = args;
         SharedBootstrap.customBootstrap = true;
         try {
             Vars.loadLogger();

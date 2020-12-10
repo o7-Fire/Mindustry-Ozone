@@ -17,5 +17,5 @@
 package Settings;
 
 public class Version {
-    public static final String semantic = "0.10.2";
+    public static final String semantic = "0.11.0";
 }

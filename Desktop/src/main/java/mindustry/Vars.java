@@ -1,5 +1,6 @@
 package mindustry;
 
+import Ozone.Desktop.Patch.Updater;
 import arc.Core;
 import arc.Events;
 import arc.Settings;
@@ -540,5 +541,6 @@ public class Vars implements Loadable {
     public void loadAsync() {
         loadSettings();
         init();
+        Updater.async();
     }
 }
