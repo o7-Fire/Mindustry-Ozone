@@ -1,16 +1,17 @@
 # Project Ozone
 
-
+[![](https://jitpack.io/v/o7-Fire/Mindustry-Ozone.svg)](https://jitpack.io/#o7-Fire/Mindustry-Ozone)
 # Download
 
-### Release
-[![](https://jitpack.io/v/o7-Fire/Mindustry-Ozone.svg)](https://jitpack.io/#o7-Fire/Mindustry-Ozone) \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/a8805a30a5/Desktop-a8805a30a5.jar)
 [0.9.0:0.11.0][Mindustry v121] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v120/Ozone-Desktop.jar)
 [0.9.0:0.10.2][Mindustry v120] \
-[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/-SNAPSHOT/Desktop--SNAPSHOT.jar) [Snapshot] \
-[Other Version](https://jitpack.io/#o7-Fire/Mindustry-Ozone)
+[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/-SNAPSHOT/Desktop--SNAPSHOT.jar) [Snapshot] (
+May take a while to build) \
+[Other Version](https://jitpack.io/#o7-Fire/Mindustry-Ozone) [Jitpack] \
+[Other Version](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github]
+
 # Minimum Requirement
 * Java 14 and added to %PATH%
 * 4+ thread CPU or 2 thread of highly fast CPU
