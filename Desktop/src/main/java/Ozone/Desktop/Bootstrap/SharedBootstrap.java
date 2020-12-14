@@ -16,6 +16,8 @@
 
 package Ozone.Desktop.Bootstrap;
 
+import Atom.File.FileUtility;
+import Atom.Utility.Random;
 import Ozone.Desktop.Propertied;
 import Ozone.Watcher.Version;
 import io.sentry.Scope;
@@ -28,6 +30,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Map;
@@ -37,7 +41,7 @@ public class SharedBootstrap {
 
     public static LibraryLoader libraryLoader;
     public static boolean customBootstrap;
-    private static boolean runtime, classpath, atomic;
+    private static boolean runtime, classpath, atomic, compile;
 
 
     static {
@@ -57,8 +61,10 @@ public class SharedBootstrap {
         User user = new User();
         String id = "null";
         try {
-            String usr = System.getProperty("user.name");
-            id = String.valueOf(ByteBuffer.wrap(MessageDigest.getInstance("SHA-256").digest(usr.getBytes())).getLong());//one way hash
+            File cred = new File("lib/cred");
+            if(!cred.exists())
+                FileUtility.write(cred, Random.getString(512).getBytes(StandardCharsets.UTF_8));
+            id = String.valueOf(ByteBuffer.wrap(Files.readAllBytes(cred.toPath())).getLong());
         } catch (Throwable e) {
             Sentry.captureException(e);//ironic
         }
@@ -81,6 +87,15 @@ public class SharedBootstrap {
         ArrayList<String> se = (ArrayList<String>) libraryLoader.loadClass("Main.LoadAtom").getMethod("main", String[].class).invoke(null, (Object) new String[0]);
         for (String s : se)
             libraryLoader.addURL(new URL(s));
+    }
+
+    public static void load(Dependency.Type type) throws IOException {
+        Dependency.load();
+        for (Dependency d : Dependency.dependencies) {
+            if(!d.type.equals(type))continue;
+            libraryLoader.addURL(new URL(d.getDownload()));
+        }
+        Dependency.save();
     }
 
     public static void loadRuntime() throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {

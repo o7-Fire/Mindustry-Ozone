@@ -7,8 +7,7 @@
 [0.9.0:0.11.0][Mindustry v121] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v120/Ozone-Desktop.jar)
 [0.9.0:0.10.2][Mindustry v120] \
-[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/-SNAPSHOT/Desktop--SNAPSHOT.jar) [Snapshot] (
-May take a while to build) \
+[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/-SNAPSHOT/Desktop--SNAPSHOT.jar) [Snapshot] (May take a while to build) \
 [Other Version](https://jitpack.io/#o7-Fire/Mindustry-Ozone) [Jitpack] \
 [Other Version](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github]
 

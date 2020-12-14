@@ -67,11 +67,11 @@ public class EnvironmentInformation extends OzoneBaseDialog {
     void generate() {
         table.clearChildren();
 
-        add("Player Name", Vars.player.name);
-        add("UUID", Core.settings.getString("uuid"));
-        //add("Current Millis", System.currentTimeMillis());
-        add(Propertied.Manifest);
-        add(Version.h);
+        ad("Player Name", Vars.player.name);
+        ad("UUID", Core.settings.getString("uuid"));
+        ad("Current Millis", System.currentTimeMillis());
+        ad(Propertied.Manifest);
+        ad(Version.h);
         dep();
         uid();
     }
@@ -79,15 +79,15 @@ public class EnvironmentInformation extends OzoneBaseDialog {
     void dep() {
         try {
             for (URL u : ((LibraryLoader) this.getClass().getClassLoader()).getURLs()) {
-                add("Library", u.toExternalForm());
+                ad("Library", u.toExternalForm());
             }
         } catch (Throwable ignored) {
         }
         for (Dependency d : Dependency.dependencies)
             try {
-                add(d.type.name(), d.getDownload());
+                ad(d.type.name(), d.getDownload());
             } catch (Throwable i) {
-                add(d.type.name(), i.toString());
+                ad(d.type.name(), i.toString());
             }
         if (!b)
             try {
@@ -106,7 +106,7 @@ public class EnvironmentInformation extends OzoneBaseDialog {
             String[] keys = yikes.toArray(new String[0]);
             List<String> key = Arrays.stream(keys).filter(s -> s.startsWith("usid-")).collect(Collectors.toList());
             for (String k : key) {
-                add(k, Core.settings.getString(k));
+                ad(k, Core.settings.getString(k));
             }
         }catch (Throwable t) {
             Log.err(t);
@@ -114,21 +114,21 @@ public class EnvironmentInformation extends OzoneBaseDialog {
             t.printStackTrace();
         }
         for (Map.Entry<Object, Object> s : System.getProperties().entrySet())
-            add(s.getKey().toString(), s.getValue().toString());
+            ad(s.getKey().toString(), s.getValue().toString());
     }
 
-    void add(Map<String, String> map) {
+    void ad(Map<String, String> map) {
         for (Map.Entry<String, String> s : map.entrySet())
-            add(s.getKey(), s.getValue());
+            ad(s.getKey(), s.getValue());
     }
 
-    void add(String title, String value) {
+    void ad(String title, Object value) {
         if (value == null) value = "null";
         Label l = new Label(title + ":");
         table.add(l).growX();
-        String finalValue = value;
+        String finalValue = String.valueOf(value);
         table.row();
-        table.field(value, s -> {
+        table.field(finalValue, s -> {
             generate();
             Core.app.setClipboardText(finalValue);
             Manifest.toast("Copied");
