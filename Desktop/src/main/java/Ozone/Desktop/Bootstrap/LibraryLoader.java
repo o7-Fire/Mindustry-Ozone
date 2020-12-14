@@ -53,18 +53,18 @@ public class LibraryLoader extends URLClassLoader {
     @Override
     public synchronized void addURL(URL url) {
         try {
-            if (url.getProtocol().startsWith("http")) {
-            File temp = new File(cache, url.getFile());//.substring(1).replace("/", ".")
-            temp.getParentFile().mkdirs();
-            if (!temp.exists()) {
-                try {
-                    loadClass("net.miginfocom.swing.MigLayout");
-                    loadClass("Main.Download").getMethod("main", URL.class, File.class).invoke(null, url, temp);
-                }catch (Throwable t) {
-                    Download d = new Download(url, temp);
-                    d.run();
+            if (url.getProtocol().startsWith("http") && url.getFile().endsWith(".jar")) {
+                File temp = new File(cache, url.getFile());
+                temp.getParentFile().mkdirs();
+                if (!temp.exists()) {
+                    try {
+                        loadClass("net.miginfocom.swing.MigLayout");
+                        loadClass("Main.Download").getMethod("main", URL.class, File.class).invoke(null, url, temp);
+                    }catch (Throwable t) {
+                        Download d = new Download(url, temp);
+                        d.run();
+                    }
                 }
-            }
             if (temp.exists())
                 url = temp.toURI().toURL();
 
@@ -89,6 +89,10 @@ public class LibraryLoader extends URLClassLoader {
         return u;
     }
 
+    @Override
+    public InputStream getResourceAsStream(String name) {
+        return super.getResourceAsStream(name);
+    }
 
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {

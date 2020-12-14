@@ -24,8 +24,6 @@ import java.util.Map;
 
 public class Propertied {
     public static HashMap<String, String> Manifest;
-
-
     static {
         Manifest = read("Manifest.properties");
     }
