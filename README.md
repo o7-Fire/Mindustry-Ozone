@@ -5,7 +5,7 @@
 
 ### Release
 [![](https://jitpack.io/v/o7-Fire/Mindustry-Ozone.svg)](https://jitpack.io/#o7-Fire/Mindustry-Ozone) \
-[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v121/Desktop-v121.jar)
+[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/a8805a30a5/Desktop-a8805a30a5.jar)
 [0.9.0:0.11.0][Mindustry v121] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v120/Ozone-Desktop.jar)
 [0.9.0:0.10.2][Mindustry v120] \
