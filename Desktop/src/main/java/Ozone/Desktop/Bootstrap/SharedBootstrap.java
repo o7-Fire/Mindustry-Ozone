@@ -32,7 +32,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -66,7 +65,7 @@ public class SharedBootstrap {
                 FileUtility.write(cred, Random.getString(512).getBytes(StandardCharsets.UTF_8));
             id = String.valueOf(ByteBuffer.wrap(Files.readAllBytes(cred.toPath())).getLong());
         } catch (Throwable e) {
-            Sentry.captureException(e);//ironic
+            Sentry.captureException(e);
         }
         user.setId(id);
         scope.setUser(user);
