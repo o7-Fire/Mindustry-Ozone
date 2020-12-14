@@ -16,8 +16,7 @@
 
 package Ozone.Desktop.Bootstrap;
 
-import Atom.File.FileUtility;
-import Atom.Utility.Random;
+
 import Ozone.Desktop.Propertied;
 import Ozone.Watcher.Version;
 import io.sentry.Scope;
@@ -30,10 +29,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 
 public class SharedBootstrap {
@@ -47,7 +47,7 @@ public class SharedBootstrap {
         Sentry.init(options -> {
             options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
             options.setRelease("Ozone." + Version.semantic + ":" + "Desktop." + Settings.Version.semantic);
-            options.setEnvironment(Propertied.Manifest.getOrDefault("Github-CI", "no").equals("Github-CI") ? "release" : "dev");
+            options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "no").startsWith("v") ? "release" : "dev");
         });
         Sentry.configureScope(SharedBootstrap::registerSentry);
     }
@@ -61,8 +61,10 @@ public class SharedBootstrap {
         String id = "null";
         try {
             File cred = new File("lib/cred");
-            if(!cred.exists())
-                FileUtility.write(cred, Random.getString(512).getBytes(StandardCharsets.UTF_8));
+            byte[] h = new byte[512];
+            new Random().nextBytes(h);
+            if (!cred.exists())
+                Files.write(cred.toPath(), h, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
             id = String.valueOf(ByteBuffer.wrap(Files.readAllBytes(cred.toPath())).getLong());
         } catch (Throwable e) {
             Sentry.captureException(e);

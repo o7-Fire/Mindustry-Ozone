@@ -27,10 +27,16 @@ import mindustry.Vars;
 import mindustry.desktop.DesktopLauncher;
 
 //basically its a patcher
-public class OzoneMindustry {
+public class OzoneMindustry extends DesktopLauncher {
     public static long start = System.currentTimeMillis() / 1000;
     public static String[] arg;
-    public static void main(String[] args) throws Throwable {
+    public static boolean disableRPC;
+
+    public OzoneMindustry(String[] args) {
+        super(args);
+    }
+
+    public static void main(String[] args) {
         //  new Thread(()-> {
         arg = args;
         SharedBootstrap.customBootstrap = true;
@@ -53,6 +59,12 @@ public class OzoneMindustry {
         }
         // }).start();
 
+    }
+
+    @Override
+    public void updateRPC() {
+        if (!disableRPC)
+            super.updateRPC();
     }
 
     static void handleCrash(Throwable e) {
