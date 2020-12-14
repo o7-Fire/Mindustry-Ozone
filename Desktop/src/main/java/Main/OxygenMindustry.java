@@ -72,8 +72,9 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
         new Rand().nextBytes(result);
         uuid = new String(Base64Coder.encode(result));
     }
-
+    public static volatile boolean bot;
     public static void main(String[] args) {
+        bot = true;
         SharedBootstrap.customBootstrap = true;
         logger();
         Log.info("Logger Online");

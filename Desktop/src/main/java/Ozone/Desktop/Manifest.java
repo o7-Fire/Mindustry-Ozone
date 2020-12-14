@@ -17,6 +17,7 @@
 package Ozone.Desktop;
 
 import Atom.File.SerializeData;
+import Main.OxygenMindustry;
 import Ozone.Desktop.UI.BotControllerDialog;
 import Ozone.Desktop.UI.EnvironmentInformation;
 import Ozone.Desktop.UI.ModsMenu;
@@ -35,7 +36,9 @@ public class Manifest {
     public static EnvironmentInformation envInf;
 
 
-
+    public static boolean isBot(){
+        return OxygenMindustry.bot;
+    }
 
     public static void tryLoadLogMessage() {
         Log.infoTag("Ozone-MessageLogger", "Loading messageLog");

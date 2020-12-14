@@ -47,7 +47,7 @@ public class Version {
             for (Map.Entry<String, String> e : h.entrySet())
                 scope.setTag("Mindustry-" + e.getKey(), e.getValue());
         });
-
+        h.put("Ozone-Version", Ozone.Watcher.Version.semantic+":"+Settings.Version.semantic);
         Fi file = OS.isAndroid || OS.isIos ? Core.files.internal("version.properties") : new Fi("version.properties", FileType.internal);
 
         ObjectMap<String, String> map = new ObjectMap<>();

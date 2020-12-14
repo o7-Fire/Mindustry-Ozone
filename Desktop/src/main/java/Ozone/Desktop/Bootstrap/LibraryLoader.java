@@ -17,6 +17,7 @@
 package Ozone.Desktop.Bootstrap;
 
 import Ozone.Pre.Download;
+import io.sentry.Sentry;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -51,7 +52,8 @@ public class LibraryLoader extends URLClassLoader {
 
     @Override
     public synchronized void addURL(URL url) {
-        if (url.getProtocol().startsWith("http")) {
+        try {
+            if (url.getProtocol().startsWith("http")) {
             File temp = new File(cache, url.getFile());//.substring(1).replace("/", ".")
             temp.getParentFile().mkdirs();
             if (!temp.exists()) {
@@ -63,7 +65,12 @@ public class LibraryLoader extends URLClassLoader {
                     d.run();
                 }
             }
-            if (temp.exists()) try { url = temp.toURI().toURL(); }catch (Throwable ignored) { }//sometime its just dont work file to url
+            if (temp.exists())
+                url = temp.toURI().toURL();
+
+        }
+        }catch (Throwable e) {
+            Sentry.captureException(e);
         }
         super.addURL(url);
     }

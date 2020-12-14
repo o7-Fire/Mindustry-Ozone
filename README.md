@@ -4,22 +4,13 @@
 # Download
 
 ### Release
-[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/0.7.1.0.7.3/Ozone-Desktop.jar)
-[0.7.1.0.7.3][Mindustry v113.1]\
+[![](https://jitpack.io/v/o7-Fire/Mindustry-Ozone.svg)](https://jitpack.io/#o7-Fire/Mindustry-Ozone) \
+[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v121/Desktop-v121.jar)
+[0.9.0:0.11.0][Mindustry v121] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v120/Ozone-Desktop.jar)
-[0.9.0:0.10.2][Mindustry v120]
-
-### Latest Build
-0.make github account and login\
-0.1.Go to [here](https://github.com/o7-Fire/Mindustry-Ozone/actions)
-
-1. Click the latest run\
-![1](https://cdn.discordapp.com/attachments/713346278003572777/775656106260561950/unknown.png)
-2. Click the mindustry-ozone-desktop\
-![2](https://cdn.discordapp.com/attachments/713346278003572777/775656148924760124/unknown.png)
-3. Download and unzip\
-![3](https://cdn.discordapp.com/attachments/713346278003572777/775656236569853952/unknown.png)
-4. Install
+[0.9.0:0.10.2][Mindustry v120] \
+[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/-SNAPSHOT/Desktop--SNAPSHOT.jar) [Snapshot] \
+[Other Version](https://jitpack.io/#o7-Fire/Mindustry-Ozone)
 # Minimum Requirement
 * Java 14 and added to %PATH%
 * 4+ thread CPU or 2 thread of highly fast CPU

@@ -27,7 +27,7 @@ import java.nio.file.StandardCopyOption;
 import static Main.OzoneInstaller.mindustry;
 
 public class PreInstall {
-
+    static boolean yet;
     public static void install(Main m) {
         m.label4.setText(mindustry.getAbsolutePath());
         m.labelStatus.setVisible(false);
@@ -62,10 +62,11 @@ public class PreInstall {
             m.labelStatus.setText("Scanning");
             m.frame1.pack();
             File mods = new File(mindustry, "mods/");
-            if (!mods.exists()) {
+            if (!mods.exists() && !yet) {
                 System.out.println(mods.getAbsolutePath() + " doesn't exists, are you sure this is right directory");
                 m.labelStatus.setText(mods.getAbsolutePath() + " doesn't exists, are you sure this is right directory");
                 m.frame1.pack();
+                yet = true;
                 return;
             }
             File ozone = new File(mods, "Ozone.jar");
