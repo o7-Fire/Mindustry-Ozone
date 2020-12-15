@@ -42,7 +42,6 @@ public class ModsMenu extends BaseDialog {
             cont.button(Core.bundle.get("BotsController"), Icon.android, Bot.Manifest.botUI::show).growX();
         cont.row();
         generic();
-        cont.row();
         cont.button("Reset UID", Icon.refresh, () -> {
             Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", () -> {
                 try {
@@ -58,6 +57,7 @@ public class ModsMenu extends BaseDialog {
 
     void generic() {
         add(Manifest.envInf);
+        add(Manifest.dbgMenu);
     }
 
     void add(OzoneBaseDialog dialog) {

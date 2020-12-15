@@ -22,6 +22,7 @@ import Ozone.Desktop.Propertied;
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Manifest;
 import arc.Core;
+import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.Label;
 import arc.scene.ui.ScrollPane;
 import arc.scene.ui.layout.Table;
@@ -115,6 +116,10 @@ public class EnvironmentInformation extends OzoneBaseDialog {
         }
         for (Map.Entry<Object, Object> s : System.getProperties().entrySet())
             ad(s.getKey().toString(), s.getValue().toString());
+        for (ObjectMap.Entry<String, TextureRegionDrawable> s : Icon.icons.entries()) {
+            table.button(s.key, s.value, () -> {}).growX().disabled(true);
+            table.row();
+        }
     }
 
     void ad(Map<String, String> map) {

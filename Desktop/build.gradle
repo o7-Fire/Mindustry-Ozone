@@ -3,6 +3,7 @@ import java.nio.file.StandardOpenOption
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation rootProject
     compileOnly (group: 'com.miglayout', name: 'miglayout-core', version: '5.2'){
         because("runtime")
     }
@@ -21,7 +22,7 @@ dependencies {
         because("compile")
     }
 
-    implementation 'io.sentry:sentry:3.1.0'
+
 
     compileOnly ("io.github.vincenzopalazzo:material-ui-swing:1.1.2-rc1"){
         because("runtime")

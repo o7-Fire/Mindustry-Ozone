@@ -19,6 +19,7 @@ package Ozone.Desktop;
 import Atom.File.SerializeData;
 import Main.OxygenMindustry;
 import Ozone.Desktop.UI.BotControllerDialog;
+import Ozone.Desktop.UI.DebugMenuDialog;
 import Ozone.Desktop.UI.EnvironmentInformation;
 import Ozone.Desktop.UI.ModsMenu;
 import Ozone.Patch.ChatOzoneFragment;
@@ -34,6 +35,7 @@ public class Manifest {
     public static BotControllerDialog botControllerDialog;
     public static ModsMenu modsMenu;
     public static EnvironmentInformation envInf;
+    public static DebugMenuDialog dbgMenu;
 
 
     public static boolean isBot(){

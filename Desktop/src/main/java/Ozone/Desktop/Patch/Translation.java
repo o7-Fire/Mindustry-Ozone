@@ -28,6 +28,7 @@ public class Translation {
         if (init) return;
         init = true;
         deskUI.put("EnvironmentInformation", "Environment Information");
+        deskUI.put("DebugMenuDialog", "Debug Menu");
         commands.put("javac", "run single line of java code");
         commands.put("library", "manage runtime library");
         commands.put("debug", "System.out.println(\"yeet\")");
