@@ -17,6 +17,8 @@
 package Ozone.Test;
 
 import Atom.Utility.Log;
+import Atom.Utility.Pool;
+import io.sentry.Sentry;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ConfigurationBuilder;
@@ -25,12 +27,14 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 public abstract class Test {
     protected static Result successDefault = new Result("Success", true), failedDefault = new Result("Failed", false);
     protected static Log Log;
     private static int staticTest = 0;
     protected ArrayList<Result> testResult = new ArrayList<>();
+    protected ArrayList<SubTest> subTests = new ArrayList<>();
     protected int testConducted = 0;
 
     public Test() {
@@ -52,17 +56,23 @@ public abstract class Test {
         return testKit;
     }
 
-    private static Result test(Testable r) {
+    public static Result test(SubTest subTest) {
+        return test(subTest.testable, subTest.name);
+    }
+
+    public static Result test(Testable r) {
         return test(r, "Test #" + staticTest++);
     }
 
-    private static Result test(Testable r, String name) {
+    public static Result test(Testable r, String name) {
         long start = System.currentTimeMillis();
         Throwable t = null;
         try {
             r.run();
         }catch (Throwable e) {
             t = e;
+            e.printStackTrace();
+            Sentry.captureException(e);
         }
         Result result = new Result(t == null, start);
         result.reason = name + " " + result.reason;
@@ -73,16 +83,47 @@ public abstract class Test {
         return result;
     }
 
+    public static ArrayList<Result> runConcurrentTest(ArrayList<SubTest> ar) {
+        ArrayList<Future<Result>> task = new ArrayList<>();
+        ArrayList<Result> results = new ArrayList<>();
+        for (SubTest s : ar)
+            task.add(Pool.submit(() -> test(s.testable, s.name)));
+        task.forEach(f -> {
+            try { results.add(f.get()); }catch (Throwable ignored) { }
+        });
+        return results;
+    }
+
     public ArrayList<Result> run() {
+        testResult.clear();
+        testResult.addAll(runConcurrentTest(subTests));
         return testResult;
     }
 
-    protected void addTest(Testable r) {
+    protected void tryTest(SubTest t) {
+        tryTest(t.testable, t.name);
+    }
+
+    protected void tryTest(Testable r) {
         testResult.add(test(r));
     }
 
-    protected void addTest(Testable r, String name) {
+    protected void tryTest(Testable r, String name) {
         testResult.add(test(r, name));
+    }
+
+    public ArrayList<SubTest> getSubTest() {
+        return subTests;
+    }
+
+    public static class SubTest {
+        public final String name;
+        public final Testable testable;
+
+        public SubTest(String name, Testable testable) {
+            this.name = name;
+            this.testable = testable;
+        }
     }
 
     public static class Result implements Serializable {

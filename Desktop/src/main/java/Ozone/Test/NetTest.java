@@ -19,39 +19,27 @@ import Ozone.Desktop.Pre.DownloadSwing;
 import Ozone.Pre.Download;
 
 import java.io.File;
-import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class NetTest extends Test {
 
     public URL url;
 
+    public NetTest() {
+        subTests.add(new SubTest("Downloading Interface Swing", this::downloadGUI));
+        subTests.add(new SubTest("Downloading Interface CLI", this::download));
+        try {
+            url = new URL("https://github.com/Anuken/Mindustry/releases/download/v121.2/Mindustry.jar");
+        }catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static File file() {
         File f = FileUtility.temp();
         System.out.println(f.getAbsolutePath());
         return f;
-    }
-
-    @Override
-    public ArrayList<Result> run() {
-        ping();
-        addTest(() -> url = new URL("https://github.com/Anuken/Mindustry/releases/download/v121.2/Mindustry.jar"), "URL conversion");
-        addTest(this::downloadGUI, "Downloading with Swing");
-        addTest(this::download, "Downloading classic way");
-        return testResult;
-    }
-
-    public void ping() {
-        long s = System.currentTimeMillis();
-        try {
-            InetAddress address = InetAddress.getByName("www.google.com");
-            boolean reachable = address.isReachable(10000);
-            testResult.add(new Result("www.google.com" + (reachable ? "" : "un") + "reachable", reachable, s));
-        }catch (Throwable e) {
-            testResult.add(new Result(new RuntimeException("Unable to ping google.com", e), s));
-        }
-
     }
 
     public void downloadGUI() {
@@ -62,6 +50,7 @@ public class NetTest extends Test {
 
     public void download() {
         Download d = new Download(url, file());
+        d.print(s -> Log.info(s));
         d.run();
     }
 }

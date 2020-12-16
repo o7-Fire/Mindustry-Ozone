@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
 
 //probably will be relocated to Atom library
 public class Download implements Runnable {
@@ -22,7 +23,7 @@ public class Download implements Runnable {
     protected long size; // size of download in bytes
     protected File file;
     protected volatile boolean downloading = true;
-    private PrintWriter pw;
+    private Consumer<String> pw;
 
     // Constructor for Download.
     public Download(URL url, File file) {
@@ -35,12 +36,12 @@ public class Download implements Runnable {
 
     protected static String getUserReading(long s) {
         if (s < 10000000)
-            return (s / 1000) / 1000F + " KB";
+            return s / 1000 + " KB";
         else
-            return (s / 1000000) / 1000F + " MB";
+            return s / 1_000_000L + " MB";
     }
 
-    public void print(PrintWriter is) {
+    public void print(Consumer<String> is) {
         if (pw != null) return;
         pw = is;
         es.submit((Runnable) this::print);
@@ -48,7 +49,7 @@ public class Download implements Runnable {
 
     private void print(String s) {
         if (pw != null)
-            pw.println(s);
+            pw.accept(s);
     }
 
     public long getDownloaded() {
@@ -70,10 +71,11 @@ public class Download implements Runnable {
 
             }
         }
+        print("Finished");
     }
 
     protected void setMax(long max) {
-        print("Downloading: " + getUserReading(size));
+        print("Total Size: " + getUserReading(size));
     }
 
     protected void updateProgress() {
@@ -86,7 +88,8 @@ public class Download implements Runnable {
         InputStream stream;
         FileOutputStream outputStream;
         File temp = new File(file.getParent(), System.currentTimeMillis() + ".temp");
-
+        print("Output: " + file.getAbsolutePath());
+        print("URL: " + url.toExternalForm());
         outputStream = new FileOutputStream(temp);
         // Open connection to URL.
         HttpURLConnection connection =
@@ -164,10 +167,16 @@ public class Download implements Runnable {
     public void run() {
         try {
             download();
+            close();
         }catch (IOException e) {
             Sentry.captureException(e);
-            downloading = false;
+            close();
             throw new RuntimeException(e);
         }
+    }
+
+    protected void close() {
+        downloading = false;
+
     }
 }

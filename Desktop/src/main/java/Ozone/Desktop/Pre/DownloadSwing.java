@@ -83,16 +83,16 @@ public class DownloadSwing extends Download {
         if (swing != null) {
             swing.progressBar1.setMaximum(1000);
             if (getSize() < 10000000)
-                swing.label2.setText(file.getName() + " " + (getSize() / 1000) / 1000F + " KB");
+                swing.label2.setText(file.getName() + " " + (getSize() / 1000) + " KB");
             else
-                swing.label2.setText(file.getName() + " " + (getSize() / 1000000) / 1000F + " MB");
+                swing.label2.setText(file.getName() + " " + (getSize() / 1000000) + " MB");
             swing.frame1.pack();
         }
         if (label != null) {
             if (getSize() < 10000000)
-                label.setText(file.getName() + " " + (getSize() / 1000) / 1000F + " KB");
+                label.setText(file.getName() + " " + (getSize() / 1000) + " KB");
             else
-                label.setText(file.getName() + " " + (getSize() / 1000000) / 1000F + " MB");
+                label.setText(file.getName() + " " + (getSize() / 1000000) + " MB");
         }
         if (frame != null) frame.pack();
 
@@ -126,4 +126,11 @@ public class DownloadSwing extends Download {
     }
 
 
+    @Override
+    protected void close() {
+        super.close();
+        swing.frame1.setVisible(false);
+        swing.frame1.dispose();
+
+    }
 }

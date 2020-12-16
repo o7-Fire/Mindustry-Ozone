@@ -22,6 +22,7 @@ import Ozone.Desktop.Propertied;
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Manifest;
 import arc.Core;
+import arc.func.Prov;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.Label;
 import arc.scene.ui.ScrollPane;
@@ -34,6 +35,7 @@ import mindustry.Vars;
 import mindustry.core.Version;
 import mindustry.gen.Icon;
 
+import java.lang.management.ManagementFactory;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,6 +73,8 @@ public class EnvironmentInformation extends OzoneBaseDialog {
         ad("Player Name", Vars.player.name);
         ad("UUID", Core.settings.getString("uuid"));
         ad("Current Millis", System.currentTimeMillis());
+        ad("Compilation Time Total (ms)", () -> ManagementFactory.getCompilationMXBean().getTotalCompilationTime());
+        ad("isCompilationTimeMonitoringSupported", () -> ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());
         ad(Propertied.Manifest);
         ad(Version.h);
         dep();
@@ -114,8 +118,10 @@ public class EnvironmentInformation extends OzoneBaseDialog {
             Sentry.captureException(t);
             t.printStackTrace();
         }
+
         for (Map.Entry<Object, Object> s : System.getProperties().entrySet())
             ad(s.getKey().toString(), s.getValue().toString());
+
         for (ObjectMap.Entry<String, TextureRegionDrawable> s : Icon.icons.entries()) {
             table.button(s.key, s.value, () -> {}).growX().disabled(true);
             table.row();
@@ -125,6 +131,15 @@ public class EnvironmentInformation extends OzoneBaseDialog {
     void ad(Map<String, String> map) {
         for (Map.Entry<String, String> s : map.entrySet())
             ad(s.getKey(), s.getValue());
+    }
+
+    void ad(String title, Prov<Object> cons) {
+        try {
+            Object o = cons.get();
+            ad(title, o);
+        }catch (Throwable t) {
+            Sentry.captureException(t);
+        }
     }
 
     void ad(String title, Object value) {
