@@ -17,6 +17,7 @@
 package Ozone.Desktop.Patch;
 
 import Atom.Reflect.Reflect;
+import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Settings.Desktop;
@@ -74,6 +75,7 @@ public class DesktopPatcher {
                 Vars.ui.showConfirm("Anonymous Data Reporter", "We collect your anonymous insensitive data (crash-log) so we can fix thing, no turning back", () -> {
                 });
             });
+            Log.infoTag("Bootstrap", "Startup in " + (System.currentTimeMillis() - SharedBootstrap.startup) + " ms");
             /*
             long need = Manifest.library.stream().filter(library -> !library.downloaded()).count();
             if (need == 0) return;

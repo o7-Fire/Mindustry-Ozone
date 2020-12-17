@@ -16,6 +16,7 @@
 
 package Premain;
 
+import Ozone.Desktop.Bootstrap.Dependency;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import io.sentry.Sentry;
 
@@ -25,11 +26,20 @@ import java.nio.file.Files;
 public class MindustryEntryPoint {
     public static void main(String[] args) {
         try {
+            File mindustryJar = null;
+            if (System.getProperty("MindustryExecutable") != null)
+                mindustryJar = new File(System.getProperty("MindustryExecutable"));
+            else if (args.length != 0)
+                mindustryJar = new File(args[0]);
+
             System.out.println("Initializing Ozone Environment");
             SharedBootstrap.classloaderNoParent();
             SharedBootstrap.loadRuntime();
             SharedBootstrap.loadClasspath();
-            SharedBootstrap.libraryLoader.addURL(new File(args[0]));
+            if (mindustryJar != null)
+                SharedBootstrap.libraryLoader.addURL(mindustryJar);
+            else
+                SharedBootstrap.load(Dependency.Type.compile);
             SharedBootstrap.loadMain("Main.OzoneMindustry", args);
         } catch (Throwable t) {
             try {

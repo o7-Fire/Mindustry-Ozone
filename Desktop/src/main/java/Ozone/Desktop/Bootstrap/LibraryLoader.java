@@ -26,9 +26,12 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 
 public class LibraryLoader extends URLClassLoader {
     public static File cache = new File("lib/");
+    public static File resourceCache = new File(cache, "resources/");
+    private ArrayList<URL> resources = new ArrayList<>();
 
     static {
         cache.mkdirs();
@@ -52,33 +55,49 @@ public class LibraryLoader extends URLClassLoader {
 
     @Override
     public synchronized void addURL(URL url) {
-        try {
-            if (url.getProtocol().startsWith("http") && url.getFile().endsWith(".jar")) {
-                File temp = new File(cache, url.getFile());
-                temp.getParentFile().mkdirs();
-                if (!temp.exists()) {
-                    try {
-                        loadClass("net.miginfocom.swing.MigLayout");
-                        loadClass("Main.Download").getMethod("main", URL.class, File.class).invoke(null, url, temp);
-                    }catch (Throwable t) {
-                        Download d = new Download(url, temp);
-                        d.run();
-                    }
-                }
-            if (temp.exists())
-                url = temp.toURI().toURL();
-
-        }
+        if (url.getProtocol().startsWith("http") && url.getFile().endsWith(".jar")) try {
+            url = cache(url);
         }catch (Throwable e) {
             Sentry.captureException(e);
         }
         super.addURL(url);
     }
 
+    private URL cache(URL url) {
+        File temp = new File(cache, url.getFile());
+        temp.getParentFile().mkdirs();
+        if (!temp.exists()) {
+            try {
+                loadClass("net.miginfocom.swing.MigLayout");
+                loadClass("Main.Download").getMethod("main", URL.class, File.class).invoke(null, url, temp);
+            }catch (Throwable t) {
+                Download d = new Download(url, temp);
+                d.print(s -> {
+                    System.out.println("[LibraryLoader]: " + s);
+                });
+                d.run();
+                Sentry.captureException(t);
+            }
+        }
+        if (temp.exists()) {
+            try {
+                url = temp.toURI().toURL();
+            }catch (MalformedURLException e) {
+                Sentry.captureException(e);
+            }
+        }
+        return url;
+    }
+
     public synchronized void addURL(File file) throws MalformedURLException {
         if (file.exists())
             addURL(file.toURI().toURL());
         //else Log.errTag("Ozone-LibraryLoader", file.getAbsolutePath() + " doesn't exist");
+    }
+
+    public synchronized void addResource(URL url) {
+        resources.add(url);
+
     }
 
     @Nullable
@@ -91,6 +110,9 @@ public class LibraryLoader extends URLClassLoader {
 
     @Override
     public InputStream getResourceAsStream(String name) {
+        try {
+            return getResource(name).openStream();
+        }catch (Throwable ignored) {}
         return super.getResourceAsStream(name);
     }
 

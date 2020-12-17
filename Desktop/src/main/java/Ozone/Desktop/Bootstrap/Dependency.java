@@ -28,13 +28,15 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Dependency implements Serializable {
     public static ArrayList<Dependency> dependencies = new ArrayList<>();
     public static ArrayList<String> url = new ArrayList<>();
     private static File cache = new File("lib/dependency.link");
     private static HashMap<String, String> downloadCache = new HashMap<>();
-
+    private static ExecutorService executorService = Executors.newCachedThreadPool();
     static {
         cache.getParentFile().mkdirs();
         try {
@@ -56,6 +58,7 @@ public class Dependency implements Serializable {
         this.artifactId = artifactId;
         this.version = version;
         this.type = Type.valueOf(type);
+        executorService.submit(() -> { try { getDownload(); }catch (IOException ignored) { } });
     }
 
     public static void load() throws IOException {
@@ -93,26 +96,30 @@ public class Dependency implements Serializable {
         return groupId + "." + artifactId + "." + version;
     }
 
-    public String getDownload() throws IOException {
+    public synchronized String getDownload() throws IOException {
         if (link != null) return link;
         if (downloadCache.containsKey(toString())) {
             link = downloadCache.get(toString());
             return link;
         }
-
         StringBuilder sb = new StringBuilder();
         for (String u : url) {
             try {
                 String r = getDownload(u);
                 sb.append(r).append("\n");
                 new URL(r).openStream();
-                link = r;
-                downloadCache.put(toString(), link);
+                assignDownload(r);
                 return r;
             }catch (FileNotFoundException ignored) { }
         }
         throw new FileNotFoundException(sb.toString());
     }
+
+    private synchronized void assignDownload(String r) {
+        link = r;
+        downloadCache.put(toString(), link);
+    }
+
 
     public String getDownload(String url) {
         return String.format("%s/%s/%s/%s/%s-%s.jar", url,
