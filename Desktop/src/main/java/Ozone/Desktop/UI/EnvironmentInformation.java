@@ -104,6 +104,7 @@ public class EnvironmentInformation extends OzoneBaseDialog {
     }
 
     void uid() {
+        ad(System.getenv());
         try {
             ObjectMap<String, Object> values = Identification.getValue();
             ArrayList<String> yikes = new ArrayList<>();
