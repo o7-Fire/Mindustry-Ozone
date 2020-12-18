@@ -18,29 +18,24 @@ package Premain;
 
 import Ozone.Desktop.Bootstrap.Dependency;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Propertied;
 import io.sentry.Sentry;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MindustryEntryPoint {
     public static void main(String[] args) {
         try {
-            File mindustryJar = null;
-            if (System.getProperty("MindustryExecutable") != null)
-                mindustryJar = new File(System.getProperty("MindustryExecutable"));
-            else if (args.length != 0)
-                mindustryJar = new File(args[0]);
 
             System.out.println("Initializing Ozone Environment");
             SharedBootstrap.classloaderNoParent();
             SharedBootstrap.loadRuntime();
             SharedBootstrap.loadClasspath();
-            if (mindustryJar != null)
-                SharedBootstrap.libraryLoader.addURL(mindustryJar);
-            else
-                SharedBootstrap.load(Dependency.Type.compile);
-            SharedBootstrap.loadMain("Main.OzoneMindustry", args);
+            main(new ArrayList<>(Arrays.asList(args)));
         } catch (Throwable t) {
             try {
                 Files.write(new File(MindustryEntryPoint.class.getName() + ".txt").toPath(), t.toString().getBytes());
@@ -53,4 +48,24 @@ public class MindustryEntryPoint {
             System.exit(1);
         }
     }
+
+    public static void main(ArrayList<String> args)throws Throwable{
+        File mindustryJar = null;
+        if (System.getProperty("MindustryExecutable") != null)
+            mindustryJar = new File(System.getProperty("MindustryExecutable"));
+        else if (!args.isEmpty())
+            mindustryJar = new File(args.get(0));
+        if (mindustryJar != null)
+            SharedBootstrap.libraryLoader.addURL(mindustryJar);
+        else {
+            System.out.println("No Mindustry jar found, using online resource");
+            String version = Propertied.Manifest.get("MindustryVersion");
+            if(version == null)throw new NullPointerException("MindustryVersion not found in property");
+            SharedBootstrap.load(Dependency.Type.provided);
+            SharedBootstrap.libraryLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/"+version+"/Mindustry.jar"));
+            SharedBootstrap.standalone = true;
+        }
+        SharedBootstrap.loadMain("Main.OzoneMindustry", args.toArray(new String[0]));
+    }
+
 }

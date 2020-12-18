@@ -17,12 +17,16 @@
 package Ozone.Desktop.Pre;
 
 import Ozone.Desktop.Swing.Main;
+import Premain.Catch;
+import Premain.MindustryEntryPoint;
+import io.sentry.Sentry;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 
 import static Main.OzoneInstaller.mindustry;
 
@@ -54,7 +58,18 @@ public class PreInstall {
             m.dialog1.setVisible(false);
             m.frame1.pack();
         });
-        m.buttonExit.addActionListener(e -> System.exit(0));
+        m.buttonExit.addActionListener(e -> {
+            try {
+                MindustryEntryPoint.main(new ArrayList<>());
+            }catch (Throwable t) {
+                try {
+                    Files.write(new File(MindustryEntryPoint.class.getName() + ".txt").toPath(), t.toString().getBytes());
+                }catch (Throwable ignored) { }
+                t.printStackTrace();
+                if (t.getCause() != null) t = t.getCause();
+                Sentry.captureException(t);
+                Catch.errorBox(t.toString(), "Ozone Environment");
+            }});
 
         //Install Button
         m.buttonInstall.addActionListener(e -> {

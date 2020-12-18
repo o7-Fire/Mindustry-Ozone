@@ -1,5 +1,5 @@
 # Project Ozone
-
+![Java CI](https://github.com/o7-Fire/Mindustry-Ozone/workflows/Java%20CI/badge.svg)
 [![](https://jitpack.io/v/o7-Fire/Mindustry-Ozone.svg)](https://jitpack.io/#o7-Fire/Mindustry-Ozone)
 # Download
 
@@ -7,7 +7,7 @@
 [0.9.0:0.11.0][Mindustry v121] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v120/Ozone-Desktop.jar)
 [0.9.0:0.10.2][Mindustry v120] \
-[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/-SNAPSHOT/Desktop--SNAPSHOT.jar) [Snapshot/Latest-Build] (May take a while to build) \
+[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/-SNAPSHOT/Desktop--SNAPSHOT.jar) [Snapshot/Latest-Build]-(May take a while to build) \
 [Other Version](https://jitpack.io/#o7-Fire/Mindustry-Ozone) [Jitpack] \
 [Other Version](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github]
 
@@ -19,7 +19,7 @@
 
 # Build 
 * 0.Install JDK 14
-* 1.run `./gradlew jar`
+* 1.run `./gradlew deploy`
 * 2.you get the mods in `Desktop/build/libs/`
 
 # Install

@@ -31,6 +31,7 @@ public class Download implements Runnable {
         size = -1;
         downloaded = new AtomicLong();
         this.file = file;
+        file.getParentFile().mkdirs();
 
     }
 

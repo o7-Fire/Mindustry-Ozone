@@ -20,7 +20,6 @@
 
 package Ozone.Desktop.Swing;
 
-import mdlaf.MaterialLookAndFeel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -93,7 +92,7 @@ public class Main extends JPanel {
         //======== frame1 ========
         {
             frame1.setResizable(false);
-            frame1.setTitle("Ozone Installer v0.4");
+            frame1.setTitle("Ozone Installer v0.5");
             Container frame1ContentPane = frame1.getContentPane();
             frame1ContentPane.setLayout(new MigLayout(
                     "fill,hidemode 3",
@@ -129,7 +128,7 @@ public class Main extends JPanel {
             frame1ContentPane.add(buttonInstall, "cell 0 4");
 
             //---- buttonExit ----
-            buttonExit.setText("Exit");
+            buttonExit.setText("Run");
             frame1ContentPane.add(buttonExit, "cell 1 4");
             frame1.pack();
             frame1.setLocationRelativeTo(frame1.getOwner());

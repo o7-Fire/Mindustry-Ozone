@@ -28,6 +28,7 @@ import mindustry.gen.Groups;
 import mindustry.gen.Player;
 import mindustry.input.Binding;
 import mindustry.io.JsonIO;
+import mindustry.logic.GlobalConstants;
 import mindustry.maps.Map;
 import mindustry.maps.Maps;
 import mindustry.mod.Mods;
@@ -70,6 +71,10 @@ public class Vars implements Loadable {
      */
     public static final String donationURL = "https://anuke.itch.io/mindustry/purchase";
     /**
+     * URL the links to the wiki's modding guide.
+     */
+    public static final String modGuideURL = "https://mindustrygame.github.io/wiki/modding/1-modding/";
+    /**
      * URL for discord invite.
      */
     public static final String discordURL = "https://discord.gg/mindustry";
@@ -78,9 +83,9 @@ public class Vars implements Loadable {
      */
     public static final String crashReportURL = "http://192.99.169.18/report";
     /**
-     * URL the links to the wiki's modding guide.
+     * maximum size of any block, do not change unless you know what you're doing
      */
-    public static final String modGuideURL = "https://mindustrygame.github.io/wiki/modding/";
+    public static final int maxBlockSize = 16;
     /**
      * URL to the JSON file containing all the global, public servers. Not queried in BE.
      */
@@ -105,6 +110,10 @@ public class Vars implements Loadable {
      * maximum distance between mine and core that supports automatic transferring
      */
     public static final float mineTransferRange = 220f;
+    /**
+     * chance of an invasion per turn, 1 = 100%
+     */
+    public static final float baseInvasionChance = 1f / 100f;
     /**
      * max chat message length
      */
@@ -142,9 +151,9 @@ public class Vars implements Loadable {
      */
     public static final float turnDuration = 2 * Time.toMinutes;
     /**
-     * chance of an invasion per turn, 1 = 100%
+     * main application name, capitalized
      */
-    public static final float baseInvasionChance = 1f / 30f;
+    public static String appName = "Mindustry";
     /**
      * how many turns have to pass before invasions start
      */
@@ -210,10 +219,6 @@ public class Vars implements Loadable {
      * schematic file extension
      */
     public static final String schematicExtension = "msch";
-    /**
-     * main application name, capitalized
-     */
-    public static String appName = "Mindustry";
     /**
      * Whether to load locales.
      */
@@ -330,13 +335,13 @@ public class Vars implements Loadable {
     public static GameState state;
     public static EntityCollisions collisions;
     public static Waves waves;
-    public static Platform platform = new Platform() {
-    };
+    public static Platform platform = new Platform() {};
     public static Mods mods;
     public static Schematics schematics;
     public static BeControl becontrol;
     public static AsyncCore asyncCore;
     public static BaseRegistry bases;
+    public static GlobalConstants constants;
 
     public static Universe universe;
     public static World world;
@@ -365,7 +370,7 @@ public class Vars implements Loadable {
                 String code = stra[i];
                 if (code.contains("_")) {
                     locales[i] = new Locale(code.split("_")[0], code.split("_")[1]);
-                } else {
+                }else {
                     locales[i] = new Locale(code);
                 }
             }
@@ -404,6 +409,7 @@ public class Vars implements Loadable {
         indexer = new BlockIndexer();
         pathfinder = new Pathfinder();
         bases = new BaseRegistry();
+        constants = new GlobalConstants();
 
         state = new GameState();
 

@@ -26,12 +26,11 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 
 public class LibraryLoader extends URLClassLoader {
     public static File cache = new File("lib/");
     public static File resourceCache = new File(cache, "resources/");
-    private ArrayList<URL> resources = new ArrayList<>();
+
 
     static {
         cache.mkdirs();
@@ -95,10 +94,6 @@ public class LibraryLoader extends URLClassLoader {
         //else Log.errTag("Ozone-LibraryLoader", file.getAbsolutePath() + " doesn't exist");
     }
 
-    public synchronized void addResource(URL url) {
-        resources.add(url);
-
-    }
 
     @Nullable
     @Override
@@ -111,7 +106,9 @@ public class LibraryLoader extends URLClassLoader {
     @Override
     public InputStream getResourceAsStream(String name) {
         try {
-            return getResource(name).openStream();
+            URL u = getResource(name);
+            if(u == null)throw new NullPointerException("bruh");
+            return u.openStream();
         }catch (Throwable ignored) {}
         return super.getResourceAsStream(name);
     }

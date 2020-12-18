@@ -46,7 +46,6 @@ jar {
     manifest {
         attributes 'Main-Class': 'Premain.InstallerEntryPoint'
     }
-
     StringBuilder sb = new StringBuilder()
     File txt = new File(rootDir, "src/main/resources/dependencies")
     txt.delete()

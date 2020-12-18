@@ -39,12 +39,12 @@ import java.util.Random;
 public class SharedBootstrap {
 
     public static LibraryLoader libraryLoader;
-    public static boolean customBootstrap;
+    public static boolean customBootstrap, standalone;
     private static boolean runtime, classpath, atomic, compile;
     public static final long startup = System.currentTimeMillis();
 
     static {
-        System.out.println("SharedBootstrap 2.2");
+        System.out.println("SharedBootstrap 2.3");
         Sentry.init(options -> {
             options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
             options.setRelease("Ozone." + Version.semantic + ":" + "Desktop." + Settings.Version.semantic);
