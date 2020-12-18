@@ -19,6 +19,7 @@ package Main;
 import Ozone.Desktop.Pre.PreInstall;
 import Ozone.Desktop.Propertied;
 import Ozone.Desktop.Swing.Main;
+import Ozone.Watcher.Version;
 
 import java.io.File;
 
@@ -40,7 +41,7 @@ public class OzoneInstaller {
             mindustry = new File("mindustry/");//i gave up "yeet"//
         }
         m = new Main();
-        m.label1.setText("Mindustry " + Propertied.Manifest.getOrDefault("MindustryVersion", "Manifest.properties gone ;-;"));
+        m.label1.setText("Mindustry " + Propertied.Manifest.getOrDefault("MindustryVersion", "null") + " [Ozone:"+ Version.semantic+":"+ Settings.Version.semantic+"]");
         PreInstall.install(m);
     }
 

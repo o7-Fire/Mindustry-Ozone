@@ -680,7 +680,7 @@ public class GifDecoder {
                 }
             }
         }
-        float frameDuration = getDelay(0) / getFrameCount();
+        float frameDuration = (float)getDelay(0) / getFrameCount();
         Log.infoTag("GifDecoder", "Duration: " + frameDuration + " second");
         Animation<TextureRegion> result = new Animation<>(frameDuration, texReg, playMode);
 

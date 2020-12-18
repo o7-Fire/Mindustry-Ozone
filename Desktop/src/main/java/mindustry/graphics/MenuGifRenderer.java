@@ -61,7 +61,6 @@ public class MenuGifRenderer implements Disposable {
             url.add(f.file().toURI().toURL().toExternalForm());
         if (url.isEmpty()) throw new NoMenuResource("Gif list is empty");
         random();
-
         Object[] e = animation.getKeyFrames();
         length = e.length;
         Log.infoTag("MenuRenderer", "Loaded " + length + " frames");
@@ -88,7 +87,7 @@ public class MenuGifRenderer implements Disposable {
         if (iteration > length) iteration = 0;
         int h = Core.graphics.getHeight();
         int w = Core.graphics.getWidth();
-        Draw.rect(animation.getKeyFrame(iteration), w / 2, h / 2, w, h);
+        Draw.rect(animation.getKeyFrame(iteration), (float) w / 2, (float) h / 2, w, h);
         iteration++;
         //Draw.rect(animation.getKeyFrame(elapsed), w/2, h/2, w, h);
     }

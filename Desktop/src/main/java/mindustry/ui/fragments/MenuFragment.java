@@ -43,7 +43,7 @@ public class MenuFragment extends Fragment {
 
     @Override
     public void build(Group parent) {
-        renderer = new MenuRenderer();
+        renderer = menuRenderer;
 
         Group group = new WidgetGroup();
         group.setFillParent(true);

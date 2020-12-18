@@ -1,5 +1,7 @@
 package mindustry.graphics;
 
+import Atom.Time.Countdown;
+import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import arc.Core;
 import arc.assets.Loadable;
@@ -43,44 +45,47 @@ public class MenuRenderer implements Disposable, Loadable {
     private int flyers = Mathf.random(15, 35);
     private volatile UnitType flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
     private boolean random;
-
+    private volatile boolean init;
     public MenuRenderer() {
-        if (Random.getBool())
-            try {
-                mf = new MenuGifRenderer();
-            } catch (MenuGifRenderer.NoMenuResource s) {
-                mf = null;
-            } catch (Throwable t) {
-                t.printStackTrace();
-                Sentry.captureException(t);
-            }
-        if (mf != null) return;
-        Thread t =
-                new Thread(() -> {
-                    while (true) {
-                        try {
-                            if (Random.getBool())
-                                flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
-                            else {
-                                random = Random.getBool();
-                            }
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
 
-                        }
-                    }
-                });
-        t.setDaemon(true);
-        t.start();
-        Time.mark();
-        generate();
-        cache();
-        Log.info("Time to generate menu: @", Time.elapsed());
     }
 
     @Override
-    public void loadAsync() {
+    public void loadSync() {
+        if(init)return;
+        init = true;
+        Countdown.start();
+        //if (Random.getBool())
+        try {
+            mf = new MenuGifRenderer();
+            Countdown.stop();
+            Log.info("Time to generate menu: @", Countdown.result());
+            return;
+        }catch (MenuGifRenderer.NoMenuResource ignored) {
 
+        }catch (Throwable t) {
+            t.printStackTrace();
+            Sentry.captureException(t);
+        }
+        Pool.daemon(() -> {
+            while (mf != null) {
+                try {
+                    if (Random.getBool())
+                        flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
+                    else {
+                        random = Random.getBool();
+                    }
+                    Thread.sleep(5000);
+                }catch (InterruptedException e) {
+
+                }
+            }
+        }).start();
+
+        generate();
+        cache();
+        Countdown.stop();
+        Log.info("Time to generate menu: @", Countdown.result());
     }
 
     @Override
@@ -340,10 +345,8 @@ public class MenuRenderer implements Disposable, Loadable {
 
     @Override
     public void dispose() {
-        if (mf != null) {
-            mf.dispose();
-            return;
-        }
+        if (mf != null) mf.dispose();
+        if (batch == null) return;
         batch.dispose();
         shadows.dispose();
     }

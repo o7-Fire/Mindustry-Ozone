@@ -26,6 +26,7 @@ import mindustry.game.Universe;
 import mindustry.game.Waves;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
+import mindustry.graphics.MenuRenderer;
 import mindustry.input.Binding;
 import mindustry.io.JsonIO;
 import mindustry.logic.GlobalConstants;
@@ -541,6 +542,13 @@ public class Vars implements Loadable {
                 bundle.debug("router");
             }
         }
+    }
+
+    public static MenuRenderer menuRenderer;
+    @Override
+    public void loadSync() {
+        menuRenderer = new MenuRenderer();
+        assets.load(menuRenderer);
     }
 
     @Override
