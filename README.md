@@ -26,7 +26,7 @@
 * 0.Get `Ozone-Dekstop.jar`
 * 1.Install **Java 14**
 * 2.Run Ozone installation by opening `Ozone-Desktop.jar` with java `java -jar Ozone-Dekstop.jar`
-* 3.Run Mindustry
+* 3.Run or Run Mindustry
 * 4.fuck its crash
 * 5.you are a failure, can't even install a simple mods
 * 6.nvm its show up again\
