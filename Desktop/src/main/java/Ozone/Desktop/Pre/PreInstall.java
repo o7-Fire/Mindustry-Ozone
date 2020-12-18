@@ -16,6 +16,7 @@
 
 package Ozone.Desktop.Pre;
 
+import Atom.Utility.Pool;
 import Ozone.Desktop.Swing.Main;
 import Premain.Catch;
 import Premain.MindustryEntryPoint;
@@ -59,18 +60,19 @@ public class PreInstall {
             m.frame1.pack();
         });
         m.buttonExit.addActionListener(e -> {
-            try {
-                MindustryEntryPoint.main(new ArrayList<>());
-            }catch (Throwable t) {
+            Pool.daemon(()->{
                 try {
-                    Files.write(new File(MindustryEntryPoint.class.getName() + ".txt").toPath(), t.toString().getBytes());
-                }catch (Throwable ignored) { }
-                t.printStackTrace();
-                if (t.getCause() != null) t = t.getCause();
-                Sentry.captureException(t);
-                Catch.errorBox(t.toString(), "Ozone Environment");
-            }});
-
+                    MindustryEntryPoint.main(new ArrayList<>());
+                }catch (Throwable t) {
+                    try {
+                        Files.write(new File(MindustryEntryPoint.class.getName() + ".txt").toPath(), t.toString().getBytes());
+                    }catch (Throwable ignored) { }
+                    t.printStackTrace();
+                    if (t.getCause() != null) t = t.getCause();
+                    Sentry.captureException(t);
+                    Catch.errorBox(t.toString(), "Ozone Environment");
+                }}).start();
+            });
         //Install Button
         m.buttonInstall.addActionListener(e -> {
             m.labelStatus.setVisible(true);
