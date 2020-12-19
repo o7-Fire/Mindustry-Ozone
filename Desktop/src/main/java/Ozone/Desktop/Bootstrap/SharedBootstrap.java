@@ -39,9 +39,9 @@ import java.util.Random;
 public class SharedBootstrap {
 
     public static LibraryLoader libraryLoader;
-    public static boolean customBootstrap, standalone;
+    public static boolean customBootstrap, standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null;
     private static boolean runtime, classpath, atomic, compile;
-    public static final long startup = System.currentTimeMillis();
+    public static long startup = System.currentTimeMillis();
 
     static {
         System.out.println("SharedBootstrap 2.3");

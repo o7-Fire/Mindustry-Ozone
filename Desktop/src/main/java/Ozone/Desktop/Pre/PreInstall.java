@@ -17,6 +17,7 @@
 package Ozone.Desktop.Pre;
 
 import Atom.Utility.Pool;
+import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Swing.Main;
 import Premain.Catch;
 import Premain.MindustryEntryPoint;
@@ -62,6 +63,8 @@ public class PreInstall {
         m.buttonExit.addActionListener(e -> {
             Pool.daemon(()->{
                 try {
+                    System.gc();
+                    SharedBootstrap.startup = System.currentTimeMillis();
                     MindustryEntryPoint.main(new ArrayList<>());
                 }catch (Throwable t) {
                     try {

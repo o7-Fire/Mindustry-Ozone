@@ -33,6 +33,7 @@ public class SettingsDialog extends SettingsMenuDialog {
             Log.errTag("Ozone", "Can't patch settings");
             return;
         }
+        //gameTable.sliderPref("maxzoom",Translation.add("Max In-Game Zoom"), Vars.renderer.);
         for (Field f : Manifest.getSettings()) {
             try {
                 if (boolean.class.equals(f.getType())) {
@@ -135,4 +136,6 @@ public class SettingsDialog extends SettingsMenuDialog {
 
 
     }
+
+
 }

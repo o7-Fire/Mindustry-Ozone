@@ -4,6 +4,7 @@ import Atom.Time.Countdown;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import arc.Core;
+import arc.assets.AssetDescriptor;
 import arc.assets.Loadable;
 import arc.func.Floatc2;
 import arc.graphics.Camera;
@@ -19,8 +20,10 @@ import arc.util.*;
 import arc.util.noise.RidgedPerlin;
 import arc.util.noise.Simplex;
 import io.sentry.Sentry;
+import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.UnitTypes;
+import mindustry.core.ContentLoader;
 import mindustry.type.UnitType;
 import mindustry.ui.Cicon;
 import mindustry.world.Block;
@@ -43,7 +46,7 @@ public class MenuRenderer implements Disposable, Loadable {
     private float time = 0f;
     private float flyerRot = 45f;
     private int flyers = Mathf.random(15, 35);
-    private volatile UnitType flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
+    private volatile UnitType flyerType ;
     private boolean random;
     private volatile boolean init;
     public MenuRenderer() {
@@ -55,11 +58,11 @@ public class MenuRenderer implements Disposable, Loadable {
         if(init)return;
         init = true;
         Countdown.start();
-        //if (Random.getBool())
+        if (false)
         try {
             mf = new MenuGifRenderer();
             Countdown.stop();
-            Log.info("Time to generate menu: @", Countdown.result());
+            Log.debug("Time to generate menu: @", Countdown.result());
             return;
         }catch (MenuGifRenderer.NoMenuResource ignored) {
 
@@ -68,7 +71,7 @@ public class MenuRenderer implements Disposable, Loadable {
             Sentry.captureException(t);
         }
         Pool.daemon(() -> {
-            while (mf != null) {
+            while (mf == null) {
                 try {
                     if (Random.getBool())
                         flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
@@ -81,16 +84,20 @@ public class MenuRenderer implements Disposable, Loadable {
                 }
             }
         }).start();
-
         generate();
         cache();
         Countdown.stop();
-        Log.info("Time to generate menu: @", Countdown.result());
+        Log.debug("Time to generate menu: @", Countdown.result());
     }
 
     @Override
     public String getName() {
         return "MenuRenderer";
+    }
+
+    @Override
+    public Seq<AssetDescriptor> getDependencies() {
+        return Seq.with(new AssetDescriptor(Vars.class), new AssetDescriptor("contentinit", ContentLoader.class));
     }
 
     private void generate() {
@@ -334,7 +341,7 @@ public class MenuRenderer implements Disposable, Loadable {
         float th = height * tilesize * 1f + tilesize;
         float range = 500f;
         float offset = -100f;
-
+        if(flyerType == null)flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
         for (int i = 0; i < flyers; i++) {
             Tmp.v1.trns(flyerRot, time * (2f + flyerType.speed));
 
@@ -345,9 +352,14 @@ public class MenuRenderer implements Disposable, Loadable {
 
     @Override
     public void dispose() {
-        if (mf != null) mf.dispose();
+
+        if (mf != null)dispose(mf);
         if (batch == null) return;
-        batch.dispose();
-        shadows.dispose();
+       dispose(batch);
+       dispose(shadows);
+    }
+
+    private void dispose(Disposable d){
+        try{d.dispose();}catch (Throwable fuckyoujni){}
     }
 }

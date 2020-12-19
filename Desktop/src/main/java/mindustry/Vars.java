@@ -1,5 +1,6 @@
 package mindustry;
 
+import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Patch.Updater;
 import arc.Core;
 import arc.Events;
@@ -360,6 +361,7 @@ public class Vars implements Loadable {
 
     public static Player player;
 
+
     public static void init() {
         Groups.init();
 
@@ -424,37 +426,8 @@ public class Vars implements Loadable {
         maps.load();
     }
 
-    public static void loadLogger() {
-        if (loadedLogger) return;
-
-        String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
-        String[] stags = {"&lc&fb[D]", "&lb&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
-
-        Seq<String> logBuffer = new Seq<>();
-        Log.logger = (level, text) -> {
-            String result = text;
-            String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
-            System.out.println(rawText);
-
-            result = tags[level.ordinal()] + " " + result;
-            if (!level.equals(Log.LogLevel.debug))
-                Sentry.addBreadcrumb(text, level.name());
-            if (!headless && (ui == null || ui.scriptfrag == null)) {
-                logBuffer.add(result);
-            } else if (!headless) {
-                if (!OS.isWindows) {
-                    for (String code : ColorCodes.values) {
-                        result = result.replace(code, "");
-                    }
-                }
-
-                ui.scriptfrag.addMessage(Log.removeColors(result));
-            }
-        };
-
-        Events.on(ClientLoadEvent.class, e -> logBuffer.each(ui.scriptfrag::addMessage));
-
-        loadedLogger = true;
+    public Vars(){
+        menuRenderer = new MenuRenderer();
     }
 
     public static void loadFileLogger() {
@@ -543,11 +516,44 @@ public class Vars implements Loadable {
             }
         }
     }
-
     public static MenuRenderer menuRenderer;
+
+    public static void loadLogger() {
+        if (loadedLogger) return;
+
+        String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
+        String[] stags = {"&lc&fb[D]", "&lb&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
+
+        Seq<String> logBuffer = new Seq<>();
+        if(SharedBootstrap.debug) Log.level = Log.LogLevel.debug;
+        Log.logger = (level, text) -> {
+            String result = text;
+            String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
+            System.out.println(rawText);
+
+            result = tags[level.ordinal()] + " " + result;
+            if (!text.startsWith("Ozone-Event-"))
+                Sentry.addBreadcrumb(text, level.name());
+            if (!headless && (ui == null || ui.scriptfrag == null)) {
+                logBuffer.add(result);
+            } else if (!headless) {
+                if (!OS.isWindows) {
+                    for (String code : ColorCodes.values) {
+                        result = result.replace(code, "");
+                    }
+                }
+
+                ui.scriptfrag.addMessage(Log.removeColors(result));
+            }
+        };
+
+        Events.on(ClientLoadEvent.class, e -> logBuffer.each(ui.scriptfrag::addMessage));
+
+        loadedLogger = true;
+    }
+
     @Override
     public void loadSync() {
-        menuRenderer = new MenuRenderer();
         assets.load(menuRenderer);
     }
 

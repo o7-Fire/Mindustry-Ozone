@@ -78,4 +78,10 @@ public class Translation {
         for (String s : normalSinglet) registerWords(s);
 
     }
+
+    public static String add(String text){
+        String s = Thread.currentThread().getStackTrace()[2].getClassName()+ text.toLowerCase().replaceAll(" ", ".");
+        registerWords(s, text);
+        return s;
+    }
 }

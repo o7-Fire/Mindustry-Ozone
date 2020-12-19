@@ -1,5 +1,6 @@
 package mindustry.core;
 
+import Atom.Utility.Random;
 import Ozone.Desktop.Propertied;
 import arc.Core;
 import arc.Files.FileType;
@@ -74,6 +75,20 @@ public class Version {
         return build < 0 ? "custom" : build + (revision == 0 ? "" : "." + revision);
     }
 
+    private static String versionColorized(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (String eh : s.split("\\.")) {
+            Random r = new Random();
+            int he = Integer.parseInt(eh);
+            if(he == 0)he = 10215;
+            r.setSeed(he * 5000000L);
+            int i = r.nextInt(12777215 - 7000000 + 1) + 12777215;
+            String e = String.format("[#%06x]", i);
+            sb.append(e).append(eh).append(".");
+        }
+        return sb.toString().substring(0 , sb.length()-1);
+    }
+
     /**
      * get menu version without colors
      */
@@ -81,6 +96,6 @@ public class Version {
         if (build == -1) {
             return "custom build";
         }
-        return (type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision) + " [ [royal]Ozone[accent]:[pink]" + Ozone.Watcher.Version.semantic + "[accent]:[green]" + Settings.Version.semantic + "[white] ]";
+        return (type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision) + " [royal]Ozone[white] " + versionColorized(Ozone.Watcher.Version.semantic) + " [white]:  " + versionColorized(Settings.Version.semantic) + "[white]";
     }
 }
