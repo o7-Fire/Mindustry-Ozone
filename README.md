@@ -28,7 +28,7 @@
 * 0.Get `Ozone-Dekstop.jar`
 * 1.Install **Java 14**
 * 2.Run Ozone installation by opening `Ozone-Desktop.jar` with java `java -jar Ozone-Dekstop.jar`
-* 3.Run or Run Mindustry
+* 3.Run, Start, Run or Install Mindustry
 * 4.fuck its crash
 * 5.you are a failure, can't even install a simple mods
 * 6.nvm its show up again\
@@ -45,6 +45,7 @@ or
 * Raid pattern detection
 * Systematic player logging
 * Bots powered moderation
+why the fuck we adding moderation tools if the client meant for griefing
 
 > Raiding tools
 * Spamming tools
