@@ -17,7 +17,6 @@
 package Bot.Interface.Shared;
 
 import Ozone.Commands.Task.Task;
-import arc.struct.Seq;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -25,42 +24,44 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public interface BotInterface extends Remote {
-    default void addTask(Task t) throws RemoteException {
-
-    }
-    default void addTask(Task t, Consumer<Object> onEnd) throws RemoteException {
-
-    }
-    default ArrayList<Task> getTask()throws RemoteException{
-        return null;
-    }
-
-    default void clearTask() throws RemoteException {
-
-    }
-
-    default void kill() throws RemoteException {
-
-    }
-
-    default void connect(String ip, int port) throws RemoteException {
-
-    }
-
-    default void sendChat(String s) throws RemoteException {
-
-    }
-
-    default String getType() throws RemoteException {
-        return null;
-    }
-
-    default boolean alive() throws RemoteException {
-        return false;
-    }
-
-    default int getID() throws RemoteException {
-        return 0;
-    }
-
+	default void addTask(Task t) throws RemoteException {
+	
+	}
+	
+	default void addTask(Task t, Consumer<Object> onEnd) throws RemoteException {
+	
+	}
+	
+	default ArrayList<Task> getTask() throws RemoteException {
+		return null;
+	}
+	
+	default void clearTask() throws RemoteException {
+	
+	}
+	
+	default void kill() throws RemoteException {
+	
+	}
+	
+	default void connect(String ip, int port) throws RemoteException {
+	
+	}
+	
+	default void sendChat(String s) throws RemoteException {
+	
+	}
+	
+	default String getType() throws RemoteException {
+		return null;
+	}
+	
+	default boolean alive() throws RemoteException {
+		return false;
+	}
+	
+	default int getID() throws RemoteException {
+		return 0;
+	}
+	
 }

@@ -19,16 +19,15 @@ package Ozone.Commands;
 import Ozone.Commands.Task.Task;
 
 public abstract class Completable extends Task {
-    boolean completed;
-
-    @Override
-    public void taskCompleted() {
-        if (completed)
-            super.taskCompleted();
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return completed;
-    }
+	boolean completed;
+	
+	@Override
+	public void taskCompleted() {
+		if (completed) super.taskCompleted();
+	}
+	
+	@Override
+	public boolean isCompleted() {
+		return completed;
+	}
 }

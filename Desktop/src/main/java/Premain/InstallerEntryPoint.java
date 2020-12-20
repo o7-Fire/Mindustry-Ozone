@@ -24,24 +24,24 @@ import java.nio.file.Files;
 
 
 public class InstallerEntryPoint {
-
-    //Standalone only
-    public static void main(String[] args) {
-        try {
-            SharedBootstrap.classloaderNoParent();
-            SharedBootstrap.loadRuntime();
-            SharedBootstrap.loadMain("Main.OzoneInstaller", args);
-            //SharedBootstrap.loadMain("Premain.MindustryEntryPoint", args);
-        }catch (Throwable t) {
-            try {
-                Files.write(new File(InstallerEntryPoint.class.getName() + ".txt").toPath(), t.getMessage().getBytes());
-            }catch (Throwable ignored) {
-            }
-            t.printStackTrace();
-            if (t.getCause() != null) t = t.getCause();
-            Sentry.captureException(t);
-            Catch.errorBox(t.toString(), "Ozone Installer");
-            System.exit(1);
-        }
-    }
+	
+	//Standalone only
+	public static void main(String[] args) {
+		try {
+			SharedBootstrap.classloaderNoParent();
+			SharedBootstrap.loadRuntime();
+			SharedBootstrap.loadMain("Main.OzoneInstaller", args);
+			//SharedBootstrap.loadMain("Premain.MindustryEntryPoint", args);
+		}catch (Throwable t) {
+			try {
+				Files.write(new File(InstallerEntryPoint.class.getName() + ".txt").toPath(), t.getMessage().getBytes());
+			}catch (Throwable ignored) {
+			}
+			t.printStackTrace();
+			if (t.getCause() != null) t = t.getCause();
+			Sentry.captureException(t);
+			Catch.errorBox(t.toString(), "Ozone Installer");
+			System.exit(1);
+		}
+	}
 }

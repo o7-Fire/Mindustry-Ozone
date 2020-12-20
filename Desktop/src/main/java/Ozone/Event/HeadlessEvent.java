@@ -16,5 +16,4 @@
 
 package Ozone.Event;
 
-public class HeadlessEvent {
-}
+public class HeadlessEvent {}

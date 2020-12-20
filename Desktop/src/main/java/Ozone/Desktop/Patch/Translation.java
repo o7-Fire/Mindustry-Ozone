@@ -21,28 +21,30 @@ import java.util.Map;
 
 import static Ozone.Interface.registerWords;
 import static Ozone.Patch.Translation.*;
+
 public class Translation {
-    private static volatile boolean init = false;
-    static HashMap<String, String> deskUI = new HashMap<>();
-    public static void Init() {
-        if (init) return;
-        init = true;
-        deskUI.put("EnvironmentInformation", "Environment Information");
-        deskUI.put("DebugMenuDialog", "Debug Menu");
-        commands.put("javac", "run single line of java code");
-        commands.put("library", "manage runtime library");
-        commands.put("debug", "System.out.println(\"yeet\")");
-        settings.put("logMessage", "Log Every Message[Being Reworked]");
-        settings.put("disableDefaultGif", "Disable default GIF list");
-        generalSettings.put("BotController.serverPort", "Base Port");
-        generalSettings.put("BotController.serverName", "Base Port");
-        generalSettings.put("showPlayerID", "Show Player ID");
-        generalSettings.put("showPlayerTyping", "Show Player Typing Status");
-        generalSettings.put("showPlayerShooting", "Show Player Shooting Status");
-        registerWords("load.mods", "Ozone");
-        registerWords("BotsController", "Bots Controller");
-        for (Map.Entry<String, String> s : deskUI.entrySet()) {
-            registerWords("Ozone.Desktop.UI." + s.getKey(), s.getValue());
-        }
-    }
+	static HashMap<String, String> deskUI = new HashMap<>();
+	private static volatile boolean init = false;
+	
+	public static void Init() {
+		if (init) return;
+		init = true;
+		deskUI.put("EnvironmentInformation", "Environment Information");
+		deskUI.put("DebugMenuDialog", "Debug Menu");
+		commands.put("javac", "run single line of java code");
+		commands.put("library", "manage runtime library");
+		commands.put("debug", "System.out.println(\"yeet\")");
+		settings.put("logMessage", "Log Every Message[Being Reworked]");
+		settings.put("disableDefaultGif", "Disable default GIF list");
+		generalSettings.put("BotController.serverPort", "Base Port");
+		generalSettings.put("BotController.serverName", "Base Port");
+		generalSettings.put("showPlayerID", "Show Player ID");
+		generalSettings.put("showPlayerTyping", "Show Player Typing Status");
+		generalSettings.put("showPlayerShooting", "Show Player Shooting Status");
+		registerWords("load.mods", "Ozone");
+		registerWords("BotsController", "Bots Controller");
+		for (Map.Entry<String, String> s : deskUI.entrySet()) {
+			registerWords("Ozone.Desktop.UI." + s.getKey(), s.getValue());
+		}
+	}
 }

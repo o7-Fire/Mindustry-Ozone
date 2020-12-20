@@ -21,19 +21,19 @@ import arc.backend.sdl.SdlApplication;
 import arc.backend.sdl.SdlConfig;
 
 public class SdlAppWithExtraStep extends SdlApplication {
-    public SdlAppWithExtraStep(ApplicationListener listener, SdlConfig config) {
-        super(listener, config);
-    }
-
-    @Override
-    public void exit() {
-        super.exit();
-        Thread t = new Thread(() -> {
-            try { Thread.sleep(3000); }catch (InterruptedException e) { }
-            System.exit(0);
-        });
-        t.setDaemon(true);//beware of stall
-        t.start();
-
-    }
+	public SdlAppWithExtraStep(ApplicationListener listener, SdlConfig config) {
+		super(listener, config);
+	}
+	
+	@Override
+	public void exit() {
+		super.exit();
+		Thread t = new Thread(() -> {
+			try { Thread.sleep(3000); }catch (InterruptedException e) { }
+			System.exit(0);
+		});
+		t.setDaemon(true);//beware of stall
+		t.start();
+		
+	}
 }

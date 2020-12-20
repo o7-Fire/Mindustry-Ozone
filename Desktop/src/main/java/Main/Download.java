@@ -22,9 +22,9 @@ import java.io.File;
 import java.net.URL;
 
 public class Download {
-    public static void main(URL url, File file) {
-        DownloadSwing d = new DownloadSwing(url, file);
-        d.display();
-        d.run();
-    }
+	public static void main(URL url, File file) {
+		DownloadSwing d = new DownloadSwing(url, file);
+		d.display();
+		d.run();
+	}
 }

@@ -24,51 +24,51 @@ import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
 
 public class BotControllerUI extends BaseDialog {
-    private Interval timer = new Interval();
-    private Label ping = new Label("0 ms"), status = new Label(Status.ONLINE.toString()), id = new Label("0");
-
-    public BotControllerUI() {
-        super("Bot Status");
-        addCloseButton();
-        buttons.button("Refresh", Icon.refresh, this::setup).size(210f, 64f);
-        setup();
-        shown(this::setup);
-        onResize(this::setup);
-        update(this::update);
-    }
-
-    private void update() {
-        if (isShown() && timer.get(200)) {
-            status.setText(Manifest.getStatus().toString());
-            long s = System.currentTimeMillis();
-            try {
-                Manifest.serverInterface.alive();
-            } catch (Throwable ignored) {
-            }
-            s = System.currentTimeMillis() - s;
-            ping.setText(s + " ms");
-            id.setText(Manifest.oxygen.getID() + "");
-        }
-    }
-
-    public void setup() {
-        cont.clear();
-        cont.labelWrap("Host Name:").growX().left();
-        cont.label(() -> System.getProperty("ServerRegName")).growX().right();
-        cont.row();
-        cont.labelWrap("Host Port:").growX().left();
-        cont.label(() -> System.getProperty("ServerRegPort")).growX().right();
-        cont.row();
-        cont.labelWrap("Name:").growX().left();
-        cont.label(() -> System.getProperty("BotName")).growX().right();
-        cont.row();
-        cont.labelWrap("ID:").growX().left();
-        cont.add(id).growX().right();
-        cont.row();
-        cont.labelWrap("Status:").growX().left();
-        cont.add(status).growX().right();
-        cont.row();
-        cont.labelWrap("Ping:").growX().left();
-        cont.add(ping).growX().right();
-    }
+	private Interval timer = new Interval();
+	private Label ping = new Label("0 ms"), status = new Label(Status.ONLINE.toString()), id = new Label("0");
+	
+	public BotControllerUI() {
+		super("Bot Status");
+		addCloseButton();
+		buttons.button("Refresh", Icon.refresh, this::setup).size(210f, 64f);
+		setup();
+		shown(this::setup);
+		onResize(this::setup);
+		update(this::update);
+	}
+	
+	private void update() {
+		if (isShown() && timer.get(200)) {
+			status.setText(Manifest.getStatus().toString());
+			long s = System.currentTimeMillis();
+			try {
+				Manifest.serverInterface.alive();
+			}catch (Throwable ignored) {
+			}
+			s = System.currentTimeMillis() - s;
+			ping.setText(s + " ms");
+			id.setText(Manifest.oxygen.getID() + "");
+		}
+	}
+	
+	public void setup() {
+		cont.clear();
+		cont.labelWrap("Host Name:").growX().left();
+		cont.label(() -> System.getProperty("ServerRegName")).growX().right();
+		cont.row();
+		cont.labelWrap("Host Port:").growX().left();
+		cont.label(() -> System.getProperty("ServerRegPort")).growX().right();
+		cont.row();
+		cont.labelWrap("Name:").growX().left();
+		cont.label(() -> System.getProperty("BotName")).growX().right();
+		cont.row();
+		cont.labelWrap("ID:").growX().left();
+		cont.add(id).growX().right();
+		cont.row();
+		cont.labelWrap("Status:").growX().left();
+		cont.add(status).growX().right();
+		cont.row();
+		cont.labelWrap("Ping:").growX().left();
+		cont.add(ping).growX().right();
+	}
 }

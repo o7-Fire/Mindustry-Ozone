@@ -18,37 +18,35 @@ package Ozone.Experimental.Payload;
 
 import Ozone.Experimental.AttackDiagram;
 import mindustry.Vars;
-import mindustry.core.NetClient;
 import mindustry.ui.dialogs.JoinDialog;
 
 import static mindustry.Vars.logic;
 import static mindustry.Vars.net;
 
 public class BasicConnectDiagram extends AttackDiagram {
-    JoinDialog.Server target;
-    boolean randomName;
-    String name;
-
-    public BasicConnectDiagram(JoinDialog.Server server, boolean randomName){
-        target = server;
-        this.randomName = randomName;
-        if(randomName)
-            onTaskCompleted(s-> Vars.player.name = name);
-    }
-
-    @Override
-    public void run() {
-        Vars.netClient.disconnectQuietly();
-        if(randomName) name = Vars.player.name;
-        logic.reset();
-        net.reset();
-        Vars.netClient.beginConnecting();
-        net.connect(target.ip, target.port, () -> { });
-
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return net.active();
-    }
+	JoinDialog.Server target;
+	boolean randomName;
+	String name;
+	
+	public BasicConnectDiagram(JoinDialog.Server server, boolean randomName) {
+		target = server;
+		this.randomName = randomName;
+		if (randomName) onTaskCompleted(s -> Vars.player.name = name);
+	}
+	
+	@Override
+	public void run() {
+		Vars.netClient.disconnectQuietly();
+		if (randomName) name = Vars.player.name;
+		logic.reset();
+		net.reset();
+		Vars.netClient.beginConnecting();
+		net.connect(target.ip, target.port, () -> { });
+		
+	}
+	
+	@Override
+	public boolean isCompleted() {
+		return net.active();
+	}
 }

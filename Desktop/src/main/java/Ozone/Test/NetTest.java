@@ -24,33 +24,33 @@ import java.net.URL;
 
 public class NetTest extends Test {
 
-    public URL url;
+	public URL url;
 
-    public NetTest() {
-        subTests.add(new SubTest("Downloading Interface Swing", this::downloadGUI));
-        subTests.add(new SubTest("Downloading Interface CLI", this::download));
-        try {
-            url = new URL("https://github.com/Anuken/Mindustry/releases/download/v121.2/Mindustry.jar");
-        }catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	public NetTest() {
+		subTests.add(new SubTest("Downloading Interface Swing", this::downloadGUI));
+		subTests.add(new SubTest("Downloading Interface CLI", this::download));
+		try {
+			url = new URL("https://github.com/Anuken/Mindustry/releases/download/v121.2/Mindustry.jar");
+		}catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    public static File file() {
-        File f = FileUtility.temp();
-        System.out.println(f.getAbsolutePath());
-        return f;
-    }
+	public static File file() {
+		File f = FileUtility.temp();
+		System.out.println(f.getAbsolutePath());
+		return f;
+	}
 
-    public void downloadGUI() {
-        DownloadSwing d = new DownloadSwing(url, file());
-        d.display();
-        d.run();
-    }
+	public void downloadGUI() {
+		DownloadSwing d = new DownloadSwing(url, file());
+		d.display();
+		d.run();
+	}
 
-    public void download() {
-        Download d = new Download(url, file());
-        d.print(s -> Log.info(s));
-        d.run();
-    }
+	public void download() {
+		Download d = new Download(url, file());
+		d.print(s -> Log.info(s));
+		d.run();
+	}
 }

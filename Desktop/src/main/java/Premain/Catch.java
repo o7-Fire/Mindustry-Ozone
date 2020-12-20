@@ -20,10 +20,10 @@ package Premain;
 import javax.swing.*;
 
 public class Catch {
-
-    public static void errorBox(String infoMessage, String titleBar) {
-        try {
-            javax.swing.JOptionPane.showMessageDialog(null, infoMessage, "Error: " + titleBar, JOptionPane.ERROR_MESSAGE);
-        }catch (Throwable ignored) {}
-    }
+	
+	public static void errorBox(String infoMessage, String titleBar) {
+		try {
+			javax.swing.JOptionPane.showMessageDialog(null, infoMessage, "Error: " + titleBar, JOptionPane.ERROR_MESSAGE);
+		}catch (Throwable ignored) {}
+	}
 }

@@ -25,23 +25,23 @@ import arc.Events;
 import java.rmi.registry.Registry;
 
 public class Manifest {
-    public static OxygenMindustry oxygen;
-    public static Registry registry;
-    public static ServerInterface serverInterface;
-    public static BotControllerUI botUI;
-
-    static {
-        Events.on(DesktopEvent.InitUI.class, s -> {
-            botUI = new BotControllerUI();
-        });
-    }
-
-    public static Status getStatus() {
-        try {
-            serverInterface.alive();
-            return Status.ONLINE;
-        } catch (Throwable ignored) {
-            return Status.OFFLINE;
-        }
-    }
+	public static OxygenMindustry oxygen;
+	public static Registry registry;
+	public static ServerInterface serverInterface;
+	public static BotControllerUI botUI;
+	
+	static {
+		Events.on(DesktopEvent.InitUI.class, s -> {
+			botUI = new BotControllerUI();
+		});
+	}
+	
+	public static Status getStatus() {
+		try {
+			serverInterface.alive();
+			return Status.ONLINE;
+		}catch (Throwable ignored) {
+			return Status.OFFLINE;
+		}
+	}
 }

@@ -19,15 +19,15 @@ package Ozone.Experimental;
 import Ozone.Commands.Task.Task;
 
 public abstract class AttackDiagram extends Task implements Runnable {
-    protected boolean complete;
-
-    @Override
-    public void run() {
-
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return complete;
-    }
+	protected boolean complete;
+	
+	@Override
+	public void run() {
+	
+	}
+	
+	@Override
+	public boolean isCompleted() {
+		return complete;
+	}
 }

@@ -22,40 +22,40 @@ import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
 
 public class OzoneBaseDialog extends BaseDialog {
-    public Drawable icon = Icon.book;
-
-    public OzoneBaseDialog(String title, DialogStyle style) {
-        this(title, style, true);
-    }
-
-    public OzoneBaseDialog(String title, DialogStyle style, boolean setup) {
-        super(title, style);
-        if (!setup) return;
-        addCloseButton();
-        setup();
-        shown(this::setup);
-        onResize(this::setup);
-        update(this::update);
-    }
-
-
-    public OzoneBaseDialog(String title) {
-        this(title, Core.scene.getStyle(DialogStyle.class));
-    }
-
-    public OzoneBaseDialog(String title, boolean setup) {
-        this(title, Core.scene.getStyle(DialogStyle.class), setup);
-    }
-
-    public OzoneBaseDialog() {
-        this("Goddam fill this title");
-    }
-
-    void update() {
-
-    }
-
-    void setup() {
-
-    }
+	public Drawable icon = Icon.book;
+	
+	public OzoneBaseDialog(String title, DialogStyle style) {
+		this(title, style, true);
+	}
+	
+	public OzoneBaseDialog(String title, DialogStyle style, boolean setup) {
+		super(title, style);
+		if (!setup) return;
+		addCloseButton();
+		setup();
+		shown(this::setup);
+		onResize(this::setup);
+		update(this::update);
+	}
+	
+	
+	public OzoneBaseDialog(String title) {
+		this(title, Core.scene.getStyle(DialogStyle.class));
+	}
+	
+	public OzoneBaseDialog(String title, boolean setup) {
+		this(title, Core.scene.getStyle(DialogStyle.class), setup);
+	}
+	
+	public OzoneBaseDialog() {
+		this("Goddam fill this title");
+	}
+	
+	void update() {
+	
+	}
+	
+	void setup() {
+	
+	}
 }

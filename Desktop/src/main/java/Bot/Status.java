@@ -19,24 +19,17 @@ package Bot;
 import arc.graphics.Color;
 
 public enum Status {
-    ONLINE(Color.green),
-    OFFLINE(Color.gray),
-    CONNECTING(Color.cyan),
-    CONNECTED(Color.green),
-    DISCONNECTING(Color.acid),
-    ERROR(Color.red),
-    LAUNCHING(Color.coral),
-    LAUNCHED(Color.blue);
-
-    String color;
-
-    Status(Color color) {
-        this.color = "[#" + color.toString() + "]";
-    }
-
-
-    @Override
-    public String toString() {
-        return color + name() + "[white]";
-    }
+	ONLINE(Color.green), OFFLINE(Color.gray), CONNECTING(Color.cyan), CONNECTED(Color.green), DISCONNECTING(Color.acid), ERROR(Color.red), LAUNCHING(Color.coral), LAUNCHED(Color.blue);
+	
+	String color;
+	
+	Status(Color color) {
+		this.color = "[#" + color.toString() + "]";
+	}
+	
+	
+	@Override
+	public String toString() {
+		return color + name() + "[white]";
+	}
 }

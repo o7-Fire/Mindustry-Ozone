@@ -17,7 +17,7 @@
 package Ozone.Event;
 
 public class DesktopEvent {
-    public static class InitUI {
+	public static class InitUI {
 
-    }
+	}
 }

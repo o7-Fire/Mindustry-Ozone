@@ -28,40 +28,40 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Identification {
-    public static ObjectMap<String, Object> getValue() throws NoSuchFieldException, IllegalAccessException {
-        Field f = Core.settings.getClass().getDeclaredField("values");
-        f.setAccessible(true);
-        return (ObjectMap<String, Object>) f.get(Core.settings);
-    }
-
-    public static void changeID() throws NoSuchFieldException, IllegalAccessException {
-        ObjectMap<String, Object> values = getValue();
-        ArrayList<String> yikes = new ArrayList<>();
-        for (String s : values.keys()) yikes.add(s);
-        String[] keys = yikes.toArray(new String[0]);
-        List<String> key = Arrays.stream(keys).filter(s -> s.startsWith("usid-") || s.startsWith("uuid")).collect(Collectors.toList());
-
-        for (String s : key) Core.settings.put(s, getRandomUID());
-
-    }
-
-    public static String getRandomUID() {
-        byte[] bytes = new byte[8];
-        (new Rand()).nextBytes(bytes);
-        return new String(Base64Coder.encode(bytes));
-    }
-
-    public static String getUsid(String ip) {
-        if (ip.contains("/")) {
-            ip = ip.substring(ip.indexOf("/") + 1);
-        }
-
-        if (Core.settings.getString("usid-" + ip, (String) null) != null) {
-            return Core.settings.getString("usid-" + ip, (String) null);
-        }else {
-            String result = getRandomUID();
-            Core.settings.put("usid-" + ip, result);
-            return result;
-        }
-    }
+	public static ObjectMap<String, Object> getValue() throws NoSuchFieldException, IllegalAccessException {
+		Field f = Core.settings.getClass().getDeclaredField("values");
+		f.setAccessible(true);
+		return (ObjectMap<String, Object>) f.get(Core.settings);
+	}
+	
+	public static void changeID() throws NoSuchFieldException, IllegalAccessException {
+		ObjectMap<String, Object> values = getValue();
+		ArrayList<String> yikes = new ArrayList<>();
+		for (String s : values.keys()) yikes.add(s);
+		String[] keys = yikes.toArray(new String[0]);
+		List<String> key = Arrays.stream(keys).filter(s -> s.startsWith("usid-") || s.startsWith("uuid")).collect(Collectors.toList());
+		
+		for (String s : key) Core.settings.put(s, getRandomUID());
+		
+	}
+	
+	public static String getRandomUID() {
+		byte[] bytes = new byte[8];
+		(new Rand()).nextBytes(bytes);
+		return new String(Base64Coder.encode(bytes));
+	}
+	
+	public static String getUsid(String ip) {
+		if (ip.contains("/")) {
+			ip = ip.substring(ip.indexOf("/") + 1);
+		}
+		
+		if (Core.settings.getString("usid-" + ip, (String) null) != null) {
+			return Core.settings.getString("usid-" + ip, (String) null);
+		}else {
+			String result = getRandomUID();
+			Core.settings.put("usid-" + ip, result);
+			return result;
+		}
+	}
 }

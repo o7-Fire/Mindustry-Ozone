@@ -15,7 +15,8 @@
  */
 
 package Ozone.Test;
+
 @FunctionalInterface
 public interface Testable {
-    void run() throws Throwable;
+	void run() throws Throwable;
 }

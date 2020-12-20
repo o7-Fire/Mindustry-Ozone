@@ -33,35 +33,35 @@ import mindustry.mod.Mod;
  * @author Itzbenz
  */
 public class Ozone extends Mod {
-
-    public Ozone() {
-        Events.on(DesktopEvent.InitUI.class, s -> {
-            if (!Vars.headless) {
-                Manifest.botControllerDialog = new BotControllerDialog();
-                Manifest.modsMenu = new ModsMenu();
-                Manifest.envInf = new EnvironmentInformation();
-                Manifest.dbgMenu = new DebugMenuDialog();
-            }
-        });
-
-        if (Core.settings != null) {
-            Core.settings.put("crashreport", false);
-            Core.settings.put("uiscalechanged", false);//shut
-        }
-    }
-
-
-    @Override
-    public void init() {
-        DesktopPatcher.register();
-        Main.init();
-    }
-
-    @Override
-    public void loadContent() {
-        DesktopPatcher.async();
-        Main.loadContent();
-    }
+	
+	public Ozone() {
+		Events.on(DesktopEvent.InitUI.class, s -> {
+			if (!Vars.headless) {
+				Manifest.botControllerDialog = new BotControllerDialog();
+				Manifest.modsMenu = new ModsMenu();
+				Manifest.envInf = new EnvironmentInformation();
+				Manifest.dbgMenu = new DebugMenuDialog();
+			}
+		});
+		
+		if (Core.settings != null) {
+			Core.settings.put("crashreport", false);
+			Core.settings.put("uiscalechanged", false);//shut
+		}
+	}
+	
+	
+	@Override
+	public void init() {
+		DesktopPatcher.register();
+		Main.init();
+	}
+	
+	@Override
+	public void loadContent() {
+		DesktopPatcher.async();
+		Main.loadContent();
+	}
 
     /*
     public Ozone() {

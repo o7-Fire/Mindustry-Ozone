@@ -25,43 +25,42 @@ import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
 
 public class ModsMenu extends BaseDialog {
-    public ModsMenu() {
-        super("Menu");
-        addCloseButton();
-        shown(this::setup);
-        onResize(this::setup);
-    }
-
-    void setup() {
-        cont.clear();
-        cont.button("@mods", Icon.book, Vars.ui.mods::show).growX();// a sacrifice indeed
-        cont.row();
-        if (!Manifest.isBot())
-            cont.button(Core.bundle.get("BotsController"), Icon.android, Manifest.botControllerDialog::show).growX();
-        else
-            cont.button(Core.bundle.get("BotsController"), Icon.android, Bot.Manifest.botUI::show).growX();
-        cont.row();
-        generic();
-        cont.button("Reset UID", Icon.refresh, () -> {
-            Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", () -> {
-                try {
-                    Identification.changeID();
-                }catch (Throwable e) {
-                    Sentry.captureException(e);
-                    Vars.ui.showException(e);
-                }
-            });
-        }).growX();
-
-    }
-
-    void generic() {
-        add(Manifest.envInf);
-        add(Manifest.dbgMenu);
-    }
-
-    void add(OzoneBaseDialog dialog) {
-        cont.button(Core.bundle.get(dialog.getClass().getName()), dialog.icon, dialog::show).growX();
-        cont.row();
-    }
+	public ModsMenu() {
+		super("Menu");
+		addCloseButton();
+		shown(this::setup);
+		onResize(this::setup);
+	}
+	
+	void setup() {
+		cont.clear();
+		cont.button("@mods", Icon.book, Vars.ui.mods::show).growX();// a sacrifice indeed
+		cont.row();
+		if (!Manifest.isBot())
+			cont.button(Core.bundle.get("BotsController"), Icon.android, Manifest.botControllerDialog::show).growX();
+		else cont.button(Core.bundle.get("BotsController"), Icon.android, Bot.Manifest.botUI::show).growX();
+		cont.row();
+		generic();
+		cont.button("Reset UID", Icon.refresh, () -> {
+			Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", () -> {
+				try {
+					Identification.changeID();
+				}catch (Throwable e) {
+					Sentry.captureException(e);
+					Vars.ui.showException(e);
+				}
+			});
+		}).growX();
+		
+	}
+	
+	void generic() {
+		add(Manifest.envInf);
+		add(Manifest.dbgMenu);
+	}
+	
+	void add(OzoneBaseDialog dialog) {
+		cont.button(Core.bundle.get(dialog.getClass().getName()), dialog.icon, dialog::show).growX();
+		cont.row();
+	}
 }

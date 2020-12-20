@@ -34,48 +34,47 @@ import mindustry.net.Net;
 import java.io.File;
 
 public class DesktopPatcher {
-    public static File cache = new File(Vars.dataDirectory.file(), "cache/");
-    public static void async() {
-        if (false) {
-            if (Ozone.Desktop.Manifest.messageLog.exists()) {//try to load
-                Ozone.Desktop.Manifest.tryLoadLogMessage();
-            }
-            Events.run(EventExtended.Connect.Disconnected, Ozone.Desktop.Manifest::trySaveLogMessage);
-        }
-    }
-
-
-
-    public static String getServer() {
-        try {
-            Net.NetProvider n = Reflect.getField(Vars.net.getClass(), "provider", Vars.net);
-            ArcNetProvider arc = (ArcNetProvider) n;
-            Client c = Reflect.getField(arc.getClass(), "client", arc);
-            return c.getRemoteAddressTCP().getHostName() + ":" + c.getRemoteAddressTCP().getPort();
-        }catch (Throwable t) {
-            Sentry.captureException(t);
-            Log.err(t);
-            return "Null";
-        }
-    }
-
-
-
-    public static void register() {
-
-
-        Ozone.Manifest.settings.add(Desktop.class);
-        Events.run(Internal.Init.CommandsRegister, Commands::Init);
-        Events.run(Internal.Init.TranslationRegister, Translation::Init);
-        Events.run(Internal.Init.PatchRegister, () -> {
-            Vars.control.input = new DesktopInput();
-        });
-        Events.on(EventType.ClientLoadEvent.class, s -> {
-            Core.settings.getBoolOnce("CrashReportv1", () -> {
-                Vars.ui.showConfirm("Anonymous Data Reporter", "We collect your anonymous insensitive data (crash-log) so we can fix thing, no turning back", () -> {
-                });
-            });
-            Log.infoTag("Bootstrap", "Startup in " + (System.currentTimeMillis() - SharedBootstrap.startup) + " ms");
+	public static File cache = new File(Vars.dataDirectory.file(), "cache/");
+	
+	public static void async() {
+		if (false) {
+			if (Ozone.Desktop.Manifest.messageLog.exists()) {//try to load
+				Ozone.Desktop.Manifest.tryLoadLogMessage();
+			}
+			Events.run(EventExtended.Connect.Disconnected, Ozone.Desktop.Manifest::trySaveLogMessage);
+		}
+	}
+	
+	
+	public static String getServer() {
+		try {
+			Net.NetProvider n = Reflect.getField(Vars.net.getClass(), "provider", Vars.net);
+			ArcNetProvider arc = (ArcNetProvider) n;
+			Client c = Reflect.getField(arc.getClass(), "client", arc);
+			return c.getRemoteAddressTCP().getHostName() + ":" + c.getRemoteAddressTCP().getPort();
+		}catch (Throwable t) {
+			Sentry.captureException(t);
+			Log.err(t);
+			return "Null";
+		}
+	}
+	
+	
+	public static void register() {
+		
+		
+		Ozone.Manifest.settings.add(Desktop.class);
+		Events.run(Internal.Init.CommandsRegister, Commands::Init);
+		Events.run(Internal.Init.TranslationRegister, Translation::Init);
+		Events.run(Internal.Init.PatchRegister, () -> {
+			Vars.control.input = new DesktopInput();
+		});
+		Events.on(EventType.ClientLoadEvent.class, s -> {
+			Core.settings.getBoolOnce("CrashReportv1", () -> {
+				Vars.ui.showConfirm("Anonymous Data Reporter", "We collect your anonymous insensitive data (crash-log) so we can fix thing, no turning back", () -> {
+				});
+			});
+			Log.infoTag("Bootstrap", "Startup in " + (System.currentTimeMillis() - SharedBootstrap.startup) + " ms");
             /*
             long need = Manifest.library.stream().filter(library -> !library.downloaded()).count();
             if (need == 0) return;
@@ -108,9 +107,9 @@ public class DesktopPatcher {
             }
 
              */
-
-
-        });
-
-    }
+			
+			
+		});
+		
+	}
 }

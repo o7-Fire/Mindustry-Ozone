@@ -36,43 +36,43 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Manifest {
-
-    public static OzoneMenu menu;
-    public static CommandsListFrag commFrag;
-    public static ArrayList<Class<?>> settings = new ArrayList<>();
-    public static String lastServer = "";
-
-    public static String getMindustryVersion() {
-        return Version.build + (Version.revision == 0 ? "" : "." + Version.revision);
-    }
-
-    public static String getCurrentServerIP() {
-        if (!Vars.net.active()) return lastServer;
-        try {
-            Net.NetProvider n = Reflect.getField(Vars.net.getClass(), "provider", Vars.net);
-            if (!(n instanceof ArcNetProvider)) return null;
-            ArcNetProvider arc = (ArcNetProvider) n;
-            Client c = Reflect.getField(arc.getClass(), "client", arc);
-            return c.getRemoteAddressTCP().getHostName() + ":" + c.getRemoteAddressTCP().getPort();
-        }catch (Throwable ignored) { }
-        return lastServer;
-
-    }
-
-    public static void toast(String text) {
-        Table table = new Table();
-        table.touchable = Touchable.disabled;
-        table.setFillParent(true);
-        table.actions(Actions.fadeOut(4.0F, Interp.fade), Actions.remove());
-        table.bottom().add(text).style(Styles.outlineLabel).padBottom(80);
-        Core.scene.add(table);
-    }
-
-    public static ArrayList<Field> getSettings() {
-        ArrayList<Field> f = new ArrayList<>();
-        //must static class
-        for (Class<?> c : settings)
-            f.addAll(Arrays.asList(c.getDeclaredFields()));
-        return f;
-    }
+	
+	public static OzoneMenu menu;
+	public static CommandsListFrag commFrag;
+	public static ArrayList<Class<?>> settings = new ArrayList<>();
+	public static String lastServer = "";
+	
+	public static String getMindustryVersion() {
+		return Version.build + (Version.revision == 0 ? "" : "." + Version.revision);
+	}
+	
+	public static String getCurrentServerIP() {
+		if (!Vars.net.active()) return lastServer;
+		try {
+			Net.NetProvider n = Reflect.getField(Vars.net.getClass(), "provider", Vars.net);
+			if (!(n instanceof ArcNetProvider)) return null;
+			ArcNetProvider arc = (ArcNetProvider) n;
+			Client c = Reflect.getField(arc.getClass(), "client", arc);
+			return c.getRemoteAddressTCP().getHostName() + ":" + c.getRemoteAddressTCP().getPort();
+		}catch (Throwable ignored) { }
+		return lastServer;
+		
+	}
+	
+	public static void toast(String text) {
+		Table table = new Table();
+		table.touchable = Touchable.disabled;
+		table.setFillParent(true);
+		table.actions(Actions.fadeOut(4.0F, Interp.fade), Actions.remove());
+		table.bottom().add(text).style(Styles.outlineLabel).padBottom(80);
+		Core.scene.add(table);
+	}
+	
+	public static ArrayList<Field> getSettings() {
+		ArrayList<Field> f = new ArrayList<>();
+		//must static class
+		for (Class<?> c : settings)
+			f.addAll(Arrays.asList(c.getDeclaredFields()));
+		return f;
+	}
 }

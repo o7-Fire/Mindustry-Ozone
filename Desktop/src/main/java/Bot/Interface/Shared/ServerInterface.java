@@ -21,14 +21,14 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface ServerInterface extends Remote {
-
-
-    default String name() throws RemoteException {
-        return null;
-    }
-
-    default boolean alive() throws RemoteException {
-        return false;
-    }
-
+	
+	
+	default String name() throws RemoteException {
+		return null;
+	}
+	
+	default boolean alive() throws RemoteException {
+		return false;
+	}
+	
 }
