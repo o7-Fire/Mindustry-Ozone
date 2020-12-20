@@ -44,7 +44,7 @@ or
 * Anti-Spam
 * Raid pattern detection
 * Systematic player logging
-* Bots powered moderation
+* Bots powered moderation\
 why the fuck we adding moderation tools if the client meant for griefing
 
 > Raiding tools
