@@ -327,6 +327,8 @@ public class Commands {
     public static void infoPos(ArrayList<String> a) {
         tellUser("Player x,y: " + Vars.player.x + ", " + Vars.player.y);
         tellUser("Tile x,y: " + Vars.player.tileX() + ", " + Vars.player.tileY());
+        if(Vars.player.tileOn() != null)
+            tellUser("Class: " + Vars.player.tileOn().build.getClass().getName());
     }
 
     public static void help(ArrayList<String> a) {

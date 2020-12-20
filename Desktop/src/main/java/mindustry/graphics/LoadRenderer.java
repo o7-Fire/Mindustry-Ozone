@@ -71,15 +71,15 @@ public class LoadRenderer implements Disposable {
     }
 
     public void draw() {
-          if (!preview) {
-              if (lastFrameTime == 0) {
-                  lastFrameTime = Time.millis();
-              }
+        if (!preview) {
+            if (lastFrameTime == 0) {
+                lastFrameTime = Time.millis();
+            }
 
-              float timespace = Time.timeSinceMillis(lastFrameTime) / 1000f;
-              renderTimes.add(timespace);
-              lastFrameTime = Time.millis();
-          }
+            float timespace = Time.timeSinceMillis(lastFrameTime) / 1000f;
+            renderTimes.add(timespace);
+            lastFrameTime = Time.millis();
+        }
 
         if (fx.getWidth() != graphics.getWidth() || fx.getHeight() != graphics.getHeight()) {
             fx.resize(graphics.getWidth(), graphics.getHeight());
@@ -193,7 +193,7 @@ public class LoadRenderer implements Disposable {
                         floats.add(w / 2f + (w / 2f - epad) * sx, y1);
                         floats.add(w / 2f + (w / 2f - epad) * sx, y2);
                         floats.add(w / 2f + sx * mpad + sx * Math.abs(y2 - y1), y2);
-                    } else { //portrait
+                    }else { //portrait
                         float py2 = h / 2f + (h / 2f - epad) * sy;
                         float testval = sy < 0 ? Math.min(y2, y1) : Math.max(y2, y1);
 
@@ -231,7 +231,7 @@ public class LoadRenderer implements Disposable {
                     if (panei == 0) {
                         layout.setText(font, assetText);
                         font.draw(assetText, minx + pad, maxy - pad + Math.max(0, layout.height - (maxy - miny)));
-                    } else if (panei == 1) {
+                    }else if (panei == 1) {
                         float height = maxy - miny;
                         float barpad = s * 8f;
 
@@ -273,7 +273,7 @@ public class LoadRenderer implements Disposable {
                         }
 
                         Draw.color(color);
-                    } else if (panei == 2) {
+                    }else if (panei == 2) {
 
                         float barw = 30f * s;
                         float barspace = 40f * s;
@@ -293,7 +293,7 @@ public class LoadRenderer implements Disposable {
                             for (int j = 0; j < barmax; j++) {
                                 if (j >= height) {
                                     Draw.color(color, Color.black, 0.7f);
-                                } else {
+                                }else {
                                     Draw.color(dst);
                                 }
                                 Fill.square(cx, miny + j * barspace + barw / 2f + barpad, barw / 2f);
@@ -301,7 +301,7 @@ public class LoadRenderer implements Disposable {
                         }
                         Draw.color(color);
 
-                    } else if (panei == 3) {
+                    }else if (panei == 3) {
                         Draw.flush();
 
                         float vx = floats.get(6), vy = floats.get(7), vw = (maxx - vx), vh = (maxy - vy), cx = vx + vw / 2f, cy = vy + vh / 2f;
@@ -378,7 +378,7 @@ public class LoadRenderer implements Disposable {
                                         );
                                     }
                                 }
-                            } else {
+                            }else {
                                 //X
                                 Lines.line(vx, vy, vx + vw, vy + vh);
                                 Lines.line(vx, vy + vh, vx + vw, vy);

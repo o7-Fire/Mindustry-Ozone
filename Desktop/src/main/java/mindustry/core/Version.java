@@ -48,7 +48,7 @@ public class Version {
             for (Map.Entry<String, String> e : h.entrySet())
                 scope.setTag("Mindustry-" + e.getKey(), e.getValue());
         });
-        h.put("Ozone-Version", Ozone.Watcher.Version.semantic+":"+Settings.Version.semantic);
+        h.put("Ozone-Version", Ozone.Watcher.Version.semantic + ":" + Settings.Version.semantic);
         Fi file = OS.isAndroid || OS.isIos ? Core.files.internal("version.properties") : new Fi("version.properties", FileType.internal);
 
         ObjectMap<String, String> map = new ObjectMap<>();
@@ -62,11 +62,11 @@ public class Version {
             try {
                 build = Integer.parseInt(split[0]);
                 revision = Integer.parseInt(split[1]);
-            } catch (Throwable e) {
+            }catch (Throwable e) {
                 e.printStackTrace();
                 build = -1;
             }
-        } else {
+        }else {
             build = Strings.canParseInt(map.get("build")) ? Integer.parseInt(map.get("build")) : -1;
         }
     }
@@ -80,13 +80,13 @@ public class Version {
         for (String eh : s.split("\\.")) {
             Random r = new Random();
             int he = Integer.parseInt(eh);
-            if(he == 0)he = 10215;
+            if (he == 0) he = 10215;
             r.setSeed(he * 5000000L);
             int i = r.nextInt(12777215 - 7000000 + 1) + 12777215;
             String e = String.format("[#%06x]", i);
             sb.append(e).append(eh).append(".");
         }
-        return sb.toString().substring(0 , sb.length()-1);
+        return sb.toString().substring(0, sb.length() - 1);
     }
 
     /**

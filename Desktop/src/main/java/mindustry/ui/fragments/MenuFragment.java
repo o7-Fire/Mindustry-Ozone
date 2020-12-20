@@ -1,6 +1,8 @@
 package mindustry.ui.fragments;
 
+import Atom.Utility.Encoder;
 import Atom.Utility.Random;
+import Atom.Utility.Utility;
 import Ozone.Desktop.Manifest;
 import Ozone.Desktop.Patch.Updater;
 import arc.Core;
@@ -19,6 +21,7 @@ import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.scene.ui.layout.WidgetGroup;
 import arc.util.Align;
+import io.sentry.Sentry;
 import mindustry.core.Version;
 import mindustry.game.EventType.DisposeEvent;
 import mindustry.game.EventType.ResizeEvent;
@@ -27,6 +30,10 @@ import mindustry.graphics.MenuRenderer;
 import mindustry.ui.Fonts;
 import mindustry.ui.MobileButton;
 import mindustry.ui.Styles;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import static mindustry.Vars.*;
 
@@ -62,11 +69,11 @@ public class MenuFragment extends Fragment {
                 if (Random.getBool()) {
                     buildDesktop();
                     Events.on(ResizeEvent.class, event -> buildDesktop());
-                } else {
+                }else {
                     buildMobile();
                     Events.on(ResizeEvent.class, event -> buildMobile());
                 }
-            } else {
+            }else {
                 buildMobile();
                 Events.on(ResizeEvent.class, event -> buildMobile());
             }
@@ -79,14 +86,31 @@ public class MenuFragment extends Fragment {
             parent.fill(c -> c.bottom().right().button("", Styles.discordt, ui.discord::show).size(84, 45).name("discord"));
         }
         parent.fill(c -> c.bottom().right().button("Update", Icon.refresh, () -> {
-            if (Updater.newRelease.get())
-                ui.showConfirm("New Release", "A new compatible release appeared", () -> {
-                    Updater.update(Updater.getRelease(false));
-                });
-            else
-                ui.showConfirm("New Build", "A new compatible build appeared", () -> {
-                    Updater.update(Updater.getBuild(false));
-                });
+            try {
+                StringBuilder sb = new StringBuilder();
+                InputStream is;
+                if (Updater.newRelease.get()) is = Updater.getRelease(true).openStream();
+                else is = Updater.getBuild(true).openStream();
+                HashMap<String, String> h = Encoder.parseProperty(is);
+                h.replace("TimeStamp", Utility.getDate(Long.parseLong(h.get("TimeMilis"))));
+                for (Map.Entry<String, String> e : h.entrySet()) {
+                    //String s = Propertied.Manifest.get(e.getKey());
+                    //if (s == null) continue;
+                    sb.append(e.getKey()).append(": ").append(e.getValue()).append("\n");
+                }
+                if (Updater.newRelease.get()) {
+                    ui.showConfirm("New Release", "A new compatible release appeared\n" + sb.toString(), () -> {
+                        Updater.update(Updater.getRelease(false));
+                    });
+                }else {
+                    ui.showConfirm("New Build", "A new compatible build appeared\n" + sb.toString(), () -> {
+                        Updater.update(Updater.getBuild(false));
+                    });
+                }
+            }catch (Throwable t) {
+                ui.showException(t);
+                Sentry.captureException(t);
+            }
         }).size(200, 60).name("buildcheck").visible(() -> Updater.newBuild.get() || Updater.newRelease.get()).update(Element::updateVisibility));
 
 
@@ -145,7 +169,7 @@ public class MenuFragment extends Fragment {
                 //if(platform.canDonate()) table.add(donate);
                 if (!ios) table.add(exit);
             }).colspan(4);
-        } else {
+        }else {
             container.marginTop(0f);
             container.add(play);
             container.add(maps);
@@ -212,7 +236,7 @@ public class MenuFragment extends Fragment {
     private void checkPlay(Runnable run) {
         if (!mods.hasContentErrors()) {
             run.run();
-        } else {
+        }else {
             ui.showInfo("@mod.noerrorplay");
         }
     }
@@ -240,7 +264,7 @@ public class MenuFragment extends Fragment {
                 if (currentMenu == out[0]) {
                     currentMenu = null;
                     fadeOutMenu();
-                } else {
+                }else {
                     if (b.submenu != null) {
                         currentMenu = out[0];
                         submenu.clearChildren();
@@ -249,7 +273,7 @@ public class MenuFragment extends Fragment {
                         submenu.add().height((Core.graphics.getHeight() - out[0].getY(Align.topLeft)) / Scl.scl(1f));
                         submenu.row();
                         buttons(submenu, b.submenu);
-                    } else {
+                    }else {
                         currentMenu = null;
                         fadeOutMenu();
                         b.runnable.run();

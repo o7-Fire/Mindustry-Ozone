@@ -27,25 +27,25 @@ import java.util.concurrent.Future;
 public class DownloadPatch {
     public static void main(String[] args) throws Throwable, InterruptedException {
         ExecutorService es = Executors.newCachedThreadPool();
-     String trg = "https://raw.githubusercontent.com/Anuken/Mindustry/master/core/src/mindustry/";
-     File target = new File("Tools/src/main/java/mindustry/");
-     target.mkdirs();
-     ArrayList<File> files = recurse(new File("Desktop/src/main/java/mindustry"));
-     ArrayList<String> list = new ArrayList<>();
-     files.forEach(f ->{
-         list.add(f.getPath().substring(32));
-     });
-     ArrayList<Future> f = new ArrayList<>();
-     for(String s : list)
-         f.add(es.submit(()->{
-             try {
-                 Download d = new Download(new URL(trg + s), new File(target, s));
-                 d.print(see -> System.out.println(see));
-                 d.run();
-             }catch (Throwable ignored){}
-         }));
-     for(Future fe : f)
-         fe.get();
+        String trg = "https://raw.githubusercontent.com/Anuken/Mindustry/master/core/src/mindustry/";
+        File target = new File("Tools/src/main/java/mindustry/");
+        target.mkdirs();
+        ArrayList<File> files = recurse(new File("Desktop/src/main/java/mindustry"));
+        ArrayList<String> list = new ArrayList<>();
+        files.forEach(f -> {
+            list.add(f.getPath().substring(32));
+        });
+        ArrayList<Future> f = new ArrayList<>();
+        for (String s : list)
+            f.add(es.submit(() -> {
+                try {
+                    Download d = new Download(new URL(trg + s), new File(target, s));
+                    d.print(see -> System.out.println(see));
+                    d.run();
+                }catch (Throwable ignored) {}
+            }));
+        for (Future fe : f)
+            fe.get();
     }
 
     public static ArrayList<File> recurse(File f) {

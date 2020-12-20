@@ -5,6 +5,7 @@ import Ozone.Event.DesktopEvent;
 import Ozone.Experimental.Evasion.Identification;
 import arc.Core;
 import arc.Events;
+import arc.Net;
 import arc.graphics.Color;
 import arc.input.KeyCode;
 import arc.math.Mathf;
@@ -17,6 +18,7 @@ import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Strings;
 import arc.util.Time;
+import arc.util.Timer;
 import arc.util.serialization.Jval;
 import mindustry.Vars;
 import mindustry.core.Version;
@@ -44,6 +46,9 @@ public class JoinDialog extends BaseDialog {
     int totalHosts;
     int refreshes;
     boolean showHidden;
+    String lastIp;
+    int lastPort;
+    Timer.Task ping;
 
     public JoinDialog() {
         super("@joingame");
@@ -75,7 +80,7 @@ public class JoinDialog extends BaseDialog {
                 Server server = new Server();
                 server.setIP(Core.settings.getString("ip"));
                 servers.add(server);
-            } else {
+            }else {
                 renaming.setIP(Core.settings.getString("ip"));
             }
             saveServers();
@@ -128,7 +133,7 @@ public class JoinDialog extends BaseDialog {
                     if (server.lastHost != null) {
                         Events.fire(new ClientPreConnectEvent(server.lastHost));
                         safeConnect(server.ip, server.port, server.lastHost.version);
-                    } else {
+                    }else {
                         connect(server.ip, server.port);
                     }
                 }
@@ -193,7 +198,7 @@ public class JoinDialog extends BaseDialog {
         for (Server other : servers) {
             if (other.lastHost != null) {
                 setupServer(other, other.lastHost);
-            } else {
+            }else {
                 refreshServer(other);
             }
         }
@@ -226,18 +231,18 @@ public class JoinDialog extends BaseDialog {
 
         if (host.version == -1) {
             versionString = Core.bundle.format("server.version", Core.bundle.get("server.custombuild"), "");
-        } else if (host.version == 0) {
+        }else if (host.version == 0) {
             versionString = Core.bundle.get("server.outdated");
-        } else if (host.version < Version.build && Version.build != -1) {
+        }else if (host.version < Version.build && Version.build != -1) {
             versionString = Core.bundle.get("server.outdated") + "\n" +
                     Core.bundle.format("server.version", host.version, "");
-        } else if (host.version > Version.build && Version.build != -1) {
+        }else if (host.version > Version.build && Version.build != -1) {
             versionString = Core.bundle.get("server.outdated.client") + "\n" +
                     Core.bundle.format("server.version", host.version, "");
-        } else if (host.version == Version.build && Version.type.equals(host.versionType)) {
+        }else if (host.version == Version.build && Version.type.equals(host.versionType)) {
             //not important
             versionString = "";
-        } else {
+        }else {
             versionString = Core.bundle.format("server.version", host.version, host.versionType);
         }
 
@@ -367,44 +372,45 @@ public class JoinDialog extends BaseDialog {
                 continue;
             }
 
+            Table[] groupTable = {null};
+
             //table containing all groups
-            global.table(g -> {
-                for (String address : group.addresses) {
-                    String resaddress = address.contains(":") ? address.split(":")[0] : address;
-                    int resport = address.contains(":") ? Strings.parseInt(address.split(":")[1]) : port;
-                    net.pingHost(resaddress, resport, res -> {
-                        if (refreshes != cur) return;
-                        res.port = resport;
+            for (String address : group.addresses) {
+                String resaddress = address.contains(":") ? address.split(":")[0] : address;
+                int resport = address.contains(":") ? Strings.parseInt(address.split(":")[1]) : port;
+                net.pingHost(resaddress, resport, res -> {
+                    if (refreshes != cur) return;
+                    res.port = resport;
 
-                        //add header
-                        if (g.getChildren().isEmpty()) {
-                            g.table(head -> {
-                                if (!group.name.isEmpty()) {
-                                    head.add(group.name).color(Color.lightGray).padRight(4);
+                    //add header
+                    if (groupTable[0] == null) {
+                        global.table(t -> groupTable[0] = t).row();
+
+                        groupTable[0].table(head -> {
+                            if (!group.name.isEmpty()) {
+                                head.add(group.name).color(Color.lightGray).padRight(4);
+                            }
+                            head.image().height(3f).growX().color(Color.lightGray);
+
+                            //button for showing/hiding servers
+                            ImageButton[] image = {null};
+                            image[0] = head.button(hidden ? Icon.eyeOffSmall : Icon.eyeSmall, Styles.accenti, () -> {
+                                group.setHidden(!group.hidden());
+                                image[0].getStyle().imageUp = group.hidden() ? Icon.eyeOffSmall : Icon.eyeSmall;
+                                if (group.hidden() && !showHidden) {
+                                    groupTable[0].remove();
                                 }
-                                head.image().height(3f).growX().color(Color.lightGray);
+                            }).size(40f).get();
+                            image[0].addListener(new Tooltip(t -> t.background(Styles.black6).margin(4).label(() -> !group.hidden() ? "@server.shown" : "@server.hidden")));
+                        }).width(targetWidth()).padBottom(-2).row();
+                    }
 
-                                //button for showing/hiding servers
-                                ImageButton[] image = {null};
-                                image[0] = head.button(hidden ? Icon.eyeOffSmall : Icon.eyeSmall, Styles.accenti, () -> {
-                                    group.setHidden(!group.hidden());
-                                    image[0].getStyle().imageUp = group.hidden() ? Icon.eyeOffSmall : Icon.eyeSmall;
-                                    if (group.hidden() && !showHidden) {
-                                        g.remove();
-                                    }
-                                }).size(40f).get();
-                                image[0].addListener(new Tooltip(t -> t.background(Styles.black6).margin(4).label(() -> !group.hidden() ? "@server.shown" : "@server.hidden")));
-                            }).width(targetWidth()).padBottom(-2).row();
-                        }
+                    addGlobalHost(res, groupTable[0]);
 
-                        addGlobalHost(res, g);
-
-                        g.margin(5f);
-                        g.pack();
-                    }, e -> {
-                    });
-                }
-            }).row();
+                    groupTable[0].margin(5f);
+                    groupTable[0].pack();
+                }, e -> {});
+            }
         }
     }
 
@@ -414,7 +420,16 @@ public class JoinDialog extends BaseDialog {
 
         container.button(b -> buildServer(host, b), Styles.cleart, () -> {
             Events.fire(new ClientPreConnectEvent(host));
-            safeConnect(host.address, host.port, host.version);
+            if (!Core.settings.getBool("server-disclaimer", false)) {
+                ui.showCustomConfirm("@warning", "@servers.disclaimer", "@ok", "@back", () -> {
+                    Core.settings.put("server-disclaimer", true);
+                    safeConnect(host.address, host.port, host.version);
+                }, () -> {
+                    Core.settings.put("server-disclaimer", false);
+                });
+            }else {
+                safeConnect(host.address, host.port, host.version);
+            }
         }).width(w).row();
     }
 
@@ -425,7 +440,7 @@ public class JoinDialog extends BaseDialog {
             local.add("@hosts.none").pad(10f);
             local.add().growX();
             local.button(Icon.refresh, this::refreshLocal).pad(-12f).padLeft(0).size(70f);
-        } else {
+        }else {
             local.background(null);
         }
     }
@@ -463,10 +478,31 @@ public class JoinDialog extends BaseDialog {
             logic.reset();
             net.reset();
             Vars.netClient.beginConnecting();
-            net.connect(ip, port, () -> {
+            net.connect(lastIp = ip, lastPort = port, () -> {
                 hide();
                 add.hide();
             });
+        });
+    }
+
+    public void reconnect() {
+        if (lastIp == null || lastIp.isEmpty()) return;
+        ui.loadfrag.show("@reconnecting");
+
+        ping = Timer.schedule(() -> {
+            net.pingHost(lastIp, lastPort, host -> {
+                if (ping == null) return;
+                ping.cancel();
+                ping = null;
+                connect(lastIp, lastPort);
+            }, exception -> {});
+        }, 1, 1);
+
+        ui.loadfrag.setButton(() -> {
+            ui.loadfrag.hide();
+            if (ping == null) return;
+            ping.cancel();
+            ping = null;
         });
     }
 
@@ -474,7 +510,7 @@ public class JoinDialog extends BaseDialog {
         if (version != Version.build && Version.build != -1 && version != -1) {
             ui.showInfo("[scarlet]" + (version > Version.build ? KickReason.clientOutdated : KickReason.serverOutdated).toString() + "\n[]" +
                     Core.bundle.format("server.versions", Version.build, version));
-        } else {
+        }else {
             connect(ip, port);
         }
     }
@@ -493,9 +529,16 @@ public class JoinDialog extends BaseDialog {
             Core.settings.remove("server-list");
         }
 
+        var url = becontrol.active() ? serverJsonBeURL : serverJsonV6URL;
+        Log.info("Fetching community servers at @", url);
+
         //get servers
-        Core.net.httpGet(becontrol.active() ? serverJsonBeURL : serverJsonV6URL, result -> {
+        Core.net.httpGet(url, result -> {
             try {
+                if (result.getStatus() != Net.HttpStatus.OK) {
+                    Log.warn("Failed to fetch community servers: @", result.getStatus());
+                    return;
+                }
 
                 Jval val = Jval.read(result.getResultAsString());
                 Core.app.post(() -> {
@@ -506,21 +549,22 @@ public class JoinDialog extends BaseDialog {
                             String[] addresses;
                             if (child.has("addresses") || (child.has("address") && child.get("address").isArray())) {
                                 addresses = (child.has("addresses") ? child.get("addresses") : child.get("address")).asArray().map(Jval::asString).toArray(String.class);
-                            } else {
+                            }else {
                                 addresses = new String[]{child.getString("address", "<invalid>")};
                             }
                             defaultServers.add(new ServerGroup(name, addresses));
                         });
-                        Log.info("Fetched @ global servers.", defaultServers.size);
-                    } catch (Throwable ignored) {
+                        Log.info("Fetched @ community servers.", defaultServers.size);
+                    }catch (Throwable e) {
                         Log.err("Failed to parse community servers.");
+                        Log.err(e);
                     }
                 });
-            } catch (Throwable e) {
-                Log.err("Failed to fetch communitycommunity servers.");
+            }catch (Throwable e) {
+                Log.err("Failed to fetch community servers.");
+                Log.err(e);
             }
-        }, t -> {
-        });
+        }, Log::err);
     }
 
     private void saveServers() {
@@ -545,11 +589,11 @@ public class JoinDialog extends BaseDialog {
                     int idx = ip.lastIndexOf(':');
                     this.ip = ip.substring(0, idx);
                     this.port = Integer.parseInt(ip.substring(idx + 1));
-                } catch (Exception e) {
+                }catch (Exception e) {
                     this.ip = ip;
                     this.port = Vars.port;
                 }
-            } else {
+            }else {
                 this.ip = ip;
                 this.port = Vars.port;
             }

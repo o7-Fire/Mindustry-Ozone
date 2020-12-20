@@ -55,9 +55,9 @@ public class MindustryEntryPoint {
             mindustryJar = new File(System.getProperty("MindustryExecutable"));
         else if (!args.isEmpty())
             mindustryJar = new File(args.get(0));
-        if (mindustryJar != null)
+        if (mindustryJar != null && mindustryJar.exists())
             SharedBootstrap.libraryLoader.addURL(mindustryJar);
-        else {
+        else{
             System.out.println("No Mindustry jar found, using online resource");
             String version = Propertied.Manifest.get("MindustryVersion");
             if(version == null)throw new NullPointerException("MindustryVersion not found in property");

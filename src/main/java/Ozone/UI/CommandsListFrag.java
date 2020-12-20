@@ -60,7 +60,7 @@ public class CommandsListFrag extends Fragment {
                 pane.labelWrap(Commands.commandsList.size() + " Commands in total").marginLeft(20);
                 pane.row();
                 sField = pane.field(commands, (res) -> commands = res).fillX().growX().get();
-                pane.button(Icon.export, () -> Vars.ui.showTextInput("Commands", "How many times you want to run this",
+                pane.button(Icon.exportSmall, () -> Vars.ui.showTextInput("Commands", "How many times you want to run this",
                         2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay ? in tick, 10 frame is the lowest standard, 1 frame if you persist",
                                 6, "100", true, d -> Commands.commandsQueue.addLast(new CommandsSpam(c, d, commands)))));
                 pane.row();

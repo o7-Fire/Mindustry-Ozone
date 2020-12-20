@@ -153,10 +153,6 @@ public class Vars implements Loadable {
      */
     public static final float turnDuration = 2 * Time.toMinutes;
     /**
-     * main application name, capitalized
-     */
-    public static String appName = "Mindustry";
-    /**
      * how many turns have to pass before invasions start
      */
     public static final int invasionGracePeriod = 20;
@@ -221,6 +217,10 @@ public class Vars implements Loadable {
      * schematic file extension
      */
     public static final String schematicExtension = "msch";
+    /**
+     * main application name, capitalized
+     */
+    public static String appName = "Mindustry";
     /**
      * Whether to load locales.
      */
@@ -360,7 +360,11 @@ public class Vars implements Loadable {
     public static NetClient netClient;
 
     public static Player player;
+    public static MenuRenderer menuRenderer;
 
+    public Vars() {
+        menuRenderer = new MenuRenderer();
+    }
 
     public static void init() {
         Groups.init();
@@ -426,10 +430,6 @@ public class Vars implements Loadable {
         maps.load();
     }
 
-    public Vars(){
-        menuRenderer = new MenuRenderer();
-    }
-
     public static void loadFileLogger() {
         if (loadedFileLogger) return;
 
@@ -445,12 +445,12 @@ public class Vars implements Loadable {
                 try {
                     writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " + Log.removeColors(text) + "\n");
                     writer.flush();
-                } catch (IOException e) {
+                }catch (IOException e) {
                     e.printStackTrace();
                     //ignore it
                 }
             };
-        } catch (Exception e) {
+        }catch (Exception e) {
             //handle log file not being found
             Log.err(e);
         }
@@ -487,7 +487,7 @@ public class Vars implements Loadable {
             if (!headless) {
                 Time.run(10f, () -> ui.showInfo("Note: You have successfully loaded an external translation bundle."));
             }
-        } catch (Throwable e) {
+        }catch (Throwable e) {
             //no external bundle found
 
             Fi handle = Core.files.internal("bundles/bundle");
@@ -495,12 +495,12 @@ public class Vars implements Loadable {
             String loc = settings.getString("locale");
             if (loc.equals("default")) {
                 locale = Locale.getDefault();
-            } else {
+            }else {
                 Locale lastLocale;
                 if (loc.contains("_")) {
                     String[] split = loc.split("_");
                     lastLocale = new Locale(split[0], split[1]);
-                } else {
+                }else {
                     lastLocale = new Locale(loc);
                 }
 
@@ -516,7 +516,6 @@ public class Vars implements Loadable {
             }
         }
     }
-    public static MenuRenderer menuRenderer;
 
     public static void loadLogger() {
         if (loadedLogger) return;
@@ -525,7 +524,7 @@ public class Vars implements Loadable {
         String[] stags = {"&lc&fb[D]", "&lb&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
 
         Seq<String> logBuffer = new Seq<>();
-        if(SharedBootstrap.debug) Log.level = Log.LogLevel.debug;
+        if (SharedBootstrap.debug) Log.level = Log.LogLevel.debug;
         Log.logger = (level, text) -> {
             String result = text;
             String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
@@ -536,7 +535,7 @@ public class Vars implements Loadable {
                 Sentry.addBreadcrumb(text, level.name());
             if (!headless && (ui == null || ui.scriptfrag == null)) {
                 logBuffer.add(result);
-            } else if (!headless) {
+            }else if (!headless) {
                 if (!OS.isWindows) {
                     for (String code : ColorCodes.values) {
                         result = result.replace(code, "");

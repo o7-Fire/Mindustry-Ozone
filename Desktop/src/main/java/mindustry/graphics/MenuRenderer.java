@@ -46,30 +46,31 @@ public class MenuRenderer implements Disposable, Loadable {
     private float time = 0f;
     private float flyerRot = 45f;
     private int flyers = Mathf.random(15, 35);
-    private volatile UnitType flyerType ;
+    private volatile UnitType flyerType;
     private boolean random;
     private volatile boolean init;
+
     public MenuRenderer() {
 
     }
 
     @Override
     public void loadSync() {
-        if(init)return;
+        if (init) return;
         init = true;
         Countdown.start();
         if (false)
-        try {
-            mf = new MenuGifRenderer();
-            Countdown.stop();
-            Log.debug("Time to generate menu: @", Countdown.result());
-            return;
-        }catch (MenuGifRenderer.NoMenuResource ignored) {
+            try {
+                mf = new MenuGifRenderer();
+                Countdown.stop();
+                Log.debug("Time to generate menu: @", Countdown.result());
+                return;
+            }catch (MenuGifRenderer.NoMenuResource ignored) {
 
-        }catch (Throwable t) {
-            t.printStackTrace();
-            Sentry.captureException(t);
-        }
+            }catch (Throwable t) {
+                t.printStackTrace();
+                Sentry.captureException(t);
+            }
         Pool.daemon(() -> {
             while (mf == null) {
                 try {
@@ -341,7 +342,8 @@ public class MenuRenderer implements Disposable, Loadable {
         float th = height * tilesize * 1f + tilesize;
         float range = 500f;
         float offset = -100f;
-        if(flyerType == null)flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
+        if (flyerType == null)
+            flyerType = Structs.select(UnitTypes.eclipse, UnitTypes.toxopid, UnitTypes.horizon, UnitTypes.quasar, UnitTypes.poly, UnitTypes.fortress, UnitTypes.pulsar);
         for (int i = 0; i < flyers; i++) {
             Tmp.v1.trns(flyerRot, time * (2f + flyerType.speed));
 
@@ -353,13 +355,13 @@ public class MenuRenderer implements Disposable, Loadable {
     @Override
     public void dispose() {
 
-        if (mf != null)dispose(mf);
+        if (mf != null) dispose(mf);
         if (batch == null) return;
-       dispose(batch);
-       dispose(shadows);
+        dispose(batch);
+        dispose(shadows);
     }
 
-    private void dispose(Disposable d){
-        try{d.dispose();}catch (Throwable fuckyoujni){}
+    private void dispose(Disposable d) {
+        try {d.dispose();}catch (Throwable fuckyoujni) {}
     }
 }

@@ -147,7 +147,7 @@ public class PlayerListFragment extends Fragment {
 
                         if (netServer.admins.isAdmin(id, connection.address)) {
                             ui.showConfirm("@confirm", Core.bundle.format("confirmunadmin", user.name()), () -> netServer.admins.unAdminPlayer(id));
-                        } else {
+                        }else {
                             ui.showConfirm("@confirm", Core.bundle.format("confirmadmin", user.name()), () -> netServer.admins.adminPlayer(id, user.usid()));
                         }
                     }).update(b -> b.setChecked(user.admin))
@@ -158,7 +158,7 @@ public class PlayerListFragment extends Fragment {
                     t.button(Icon.zoom, Styles.clearPartiali, () -> Call.adminRequest(user, AdminAction.trace));
 
                 }).padRight(12).size(bs + 10f, bs);
-            } else if (!user.isLocal() && !user.admin && net.client() && Groups.player.size() >= 3 && player.team() == user.team()) { //votekick
+            }else if (!user.isLocal() && !user.admin && net.client() && Groups.player.size() >= 3 && player.team() == user.team()) { //votekick
                 button.add().growY();
 
                 button.button(Icon.hammer, Styles.clearPartiali,
@@ -193,7 +193,7 @@ public class PlayerListFragment extends Fragment {
         visible = !visible;
         if (visible) {
             rebuild();
-        } else {
+        }else {
             Core.scene.setKeyboardFocus(null);
             sField.clearText();
         }
@@ -223,13 +223,13 @@ public class PlayerListFragment extends Fragment {
                         table.checkPref(f.getName(), f.getBoolean(null), s -> {
                             try {
                                 f.setBoolean(null, s);
-                            } catch (IllegalAccessException e) {
+                            }catch (IllegalAccessException e) {
                                 e.printStackTrace();
                                 Sentry.captureException(e);
                             }
                         });
                         f.setBoolean(null, Core.settings.getBool(f.getName(), f.getBoolean(null)));
-                    } catch (IllegalAccessException e) {
+                    }catch (IllegalAccessException e) {
                         e.printStackTrace();
                         Sentry.captureException(e);
                     }
