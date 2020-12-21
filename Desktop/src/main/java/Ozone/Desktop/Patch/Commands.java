@@ -55,12 +55,12 @@ public class Commands {
 		register("info-pos", new Command(Commands::infoPos, Icon.move));
 	}
 	
-	public static void infoPos(ArrayList<String> arg) {
+	public static void infoPos() {
 		tellUser("Mouse x,y: " + Vars.player.mouseX + ", " + Vars.player.mouseY);
-		Ozone.Commands.Commands.infoPos(arg);
+		Ozone.Commands.Commands.infoPos();
 	}
 	
-	public static void debug(ArrayList<String> arg) {
+	public static void debug() {
 		if (!debugMode) {
 			tellUser("The debug mode mason, what do they mean");
 			return;

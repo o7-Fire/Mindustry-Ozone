@@ -84,11 +84,11 @@ public class Commands {
 		Pathfinding.render.clear();
 	}
 	
-	public static void shuffleConfigurable(ArrayList<String> arg) {
+	public static void shuffleConfigurable() {
 	
 	}
 	
-	public static void messageLog(ArrayList<String> arg) {
+	public static void messageLog() {
 	
 	}
 	
@@ -102,7 +102,7 @@ public class Commands {
 		else commandsList.replace(name, command);
 	}
 	
-	public static void shuffleSorter(ArrayList<String> s) {
+	public static void shuffleSorter() {
 		Future<Tile> f = Interface.getTile(tile -> {
 			if (tile.build == null) return false;
 			return tile.build.interactable(Vars.player.team()) && (tile.build.block() instanceof Sorter || tile.block() instanceof ItemSource);
@@ -140,7 +140,7 @@ public class Commands {
 		
 	}
 	
-	public static void taskClear(ArrayList<String> s) {
+	public static void taskClear() {
 		TaskInterface.reset();
 		tellUser("Task cleared");
 	}
@@ -200,11 +200,11 @@ public class Commands {
 		}
 	}
 	
-	public static void forceExit(ArrayList<String> s) {
-		throw new RuntimeException("Force Exit: " + Utility.joiner(Utility.getArray(s), ", "));
+	public static void forceExit(ArrayList<String> ar) {
+		throw new RuntimeException("Force Exit: " + Utility.joiner(Utility.getArray(ar), ", "));
 	}
 	
-	public static void infoUnit(ArrayList<String> s) {
+	public static void infoUnit() {
 		tellUser(Vars.player.unit().getClass().getCanonicalName());
 	}
 	
@@ -219,7 +219,7 @@ public class Commands {
 		ArrayList<String> mesArg = new ArrayList<>(Arrays.asList(message.split(" ")));
 		if (!commandsList.containsKey(mesArg.get(0).toLowerCase())) {
 			tellUser("Commands not found");
-			help(new ArrayList<>());
+			help();
 			return true;
 		}
 		Command comm = commandsList.get(mesArg.get(0).toLowerCase());
@@ -234,7 +234,7 @@ public class Commands {
 		return true;
 	}
 	
-	public static void randomKick(ArrayList<String> s) {
+	public static void randomKick() {
 		ArrayList<Player> players = new ArrayList<>();
 		for (Player p : Groups.player)
 			players.add(p);
@@ -299,7 +299,7 @@ public class Commands {
 		Manifest.menu.hide();
 	}
 	
-	public static void infoPos(ArrayList<String> a) {
+	public static void infoPos() {
 		tellUser("Player x,y: " + Vars.player.x + ", " + Vars.player.y);
 		tellUser("Tile x,y: " + Vars.player.tileX() + ", " + Vars.player.tileY());
 		if (Vars.player.tileOn() != null && Vars.player.tileOn().build != null)
@@ -315,17 +315,17 @@ public class Commands {
 			if (commandsQueue.first().isCompleted()) commandsQueue.removeFirst();
 		});
 		
-		register("help", new Command(Commands::help, Icon.infoCircle));
-		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
-		register("chat-repeater", new Command(Commands::chatRepeater, Icon.hammer));
+	
 		register("task-move", new Command(Commands::taskMove));
-		register("info-pos", new Command(Commands::infoPos, Icon.move));
 		register("info-pathfinding", new Command(Commands::infoPathfinding));
+		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer by nexity");
+		register("task-deconstruct", new Command(Commands::taskDeconstruct));
+		register("send-colorize", new Command(Commands::sendColorize));
+		
+		//Commands with icon support no-argument-commands
 		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
 		register("info-unit", new Command(Commands::infoUnit, Icon.units));
 		register("force-exit", new Command(Commands::forceExit, Icon.exit));
-		register("task-deconstruct", new Command(Commands::taskDeconstruct));
-		register("send-colorize", new Command(Commands::sendColorize));
 		register("task-clear", new Command(Commands::taskClear, Icon.cancel));
 		register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
 		register("message-log", new Command(Commands::messageLog, Icon.rotate));
@@ -333,6 +333,9 @@ public class Commands {
 		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
 		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
 		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
+		register("info-pos", new Command(Commands::infoPos, Icon.move));
+		register("help", new Command(Commands::help, Icon.infoCircle));
+		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
 		Events.fire(Internal.Init.CommandsRegister);
 		
 		Log.infoTag("Ozone", "Commands Center Initialized");
@@ -362,7 +365,7 @@ public class Commands {
 		
 	}
 	
-	public static void help(ArrayList<String> a) {
+	public static void help() {
 		ArrayList<String> as = new ArrayList<>();
 		as.add("Prefix: \""+Core.commandsPrefix+"\"");
 		as.add("Available Commands:");
@@ -387,7 +390,7 @@ public class Commands {
 	 * @author Nexity
 	 * its obvious its my code
 	 */
-	public static void chaosKick(ArrayList<String> unused) {
+	public static void chaosKick() {
 		falseVote = !falseVote;
 		if (falseVote) {
 			Thread s1 = new Thread(() -> {
@@ -447,11 +450,11 @@ public class Commands {
 		}
 		
 		public Command(Runnable r, TextureRegionDrawable icon){
-			this(s ->{r.run();}, icon);
+			this.method = strings -> {r.run();};
+			this.icon = icon;
 		}
-		
-		public Command(Consumer<ArrayList<String>> method, TextureRegionDrawable icon) {
-			this.method = method;
+		public Command(Consumer<ArrayList<String>> r, TextureRegionDrawable icon){
+			this.method = r;
 			this.icon = icon;
 		}
 	}
