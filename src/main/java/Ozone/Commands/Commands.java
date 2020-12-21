@@ -63,6 +63,7 @@ public class Commands {
 	public static HashMap<String, Command> commandsList = new HashMap<>();
 	
 	private volatile static boolean falseVote = false;
+	private volatile static boolean chatting = false;
 	private static boolean init = false;
 	
 	public static void init() {
