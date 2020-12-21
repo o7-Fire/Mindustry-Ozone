@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package Ozone.Commands;
-
-import Ozone.Commands.Task.Task;
+package Ozone.Commands.Task;
 
 public abstract class Completable extends Task {
-	boolean completed;
+	protected boolean completed;
 	
 	@Override
 	public void taskCompleted() {

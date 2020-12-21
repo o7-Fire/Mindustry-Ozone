@@ -22,17 +22,22 @@ import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import arc.Events;
 import arc.backend.sdl.jni.SDL;
+import arc.math.Mathf;
 import arc.struct.ObjectMap;
 import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.game.EventType;
 import mindustry.gen.Building;
+import mindustry.gen.Call;
 import mindustry.gen.Groups;
+import mindustry.type.Item;
 import mindustry.world.Tile;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.Future;
+
+import static mindustry.Vars.player;
 
 public class Interface {
 	protected static final ObjectMap<String, String> bundle = new ObjectMap<>();
@@ -44,6 +49,30 @@ public class Interface {
 		else Vars.ui.showErrorMessage(title + "\n" + description);
 	}
 	
+	public static void dropItem(){
+		Call.dropItem(Mathf.random(120f));
+	}
+	
+	public static boolean depositItem(Building tile){
+		if(tile == null || !tile.isValid() || tile.items == null || !tile.interactable(player.team()) || player.unit().item() == null) return false;
+		int amount = Math.min(1, tile.getMaximumAccepted(player.unit().item()));
+		if(amount > 0){
+			int accepted = tile.acceptStack(player.unit().item(), Vars.player.unit().stack.amount, player.unit());
+			Call.transferItemTo(player.unit(), player.unit().item(), accepted, player.unit().x, player.unit().y, tile);
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean withdrawItem(Building tile, Item item){
+		if(tile == null || !tile.isValid() || tile.items == null || !tile.items.has(item) || !tile.interactable(player.team())) return false;
+		int amount = Math.min(1, player.unit().maxAccepted(item));
+		if(amount > 0){
+			Call.requestItem(player, tile, item, amount);
+			return true;
+		}
+		return false;
+	}
 	
 	public synchronized static void registerWords(String key, String value) {
 		bundle.put(key, value);

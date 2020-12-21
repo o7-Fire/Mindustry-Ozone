@@ -47,7 +47,7 @@ public class Translation {
 		registerWords("ozone.javaEditor.run", "Run");
 		registerWords("ozone.commandsUI", "Commands GUI");
 		commands.put("help", "help desk");
-		commands.put("chaos-kick", "vote everyone everytime everywhere");
+		commands.put("chaos-kick", "vote everyone everytime everywhere -Nexity");
 		commands.put("task-move", "move using current unit with pathfinding algorithm");
 		commands.put("info-pos", "get current info pos");
 		commands.put("info-pathfinding", "get Pathfinding overlay");
