@@ -4,6 +4,9 @@
 ![](https://img.shields.io/github/v/release/Anuken/Mindustry?label=Mindustry-Latest)
 ![](https://img.shields.io/badge/java-14-orange)
 ![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fo7-Fire%2FMindustry-Ozone.svg?type=shield)
+<h4 align="center">Visitor's count :eyes:</h4>
+<p align="center"><img src="https://profile-counter.glitch.me/%7Bsketchyirishman%7D/count.svg" alt="sketchyirishman :: Visitor's Count" /></p>
+
 
 # Download
 [Download](https://jitpack.iocom/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
