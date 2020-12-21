@@ -8,7 +8,7 @@
 
 </div>
 
-
+![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fo7-Fire%2FMindustry-Ozone.svg?type=shield)
 # Download
 [Download](https://jitpack.iocom/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
 [0.9.0:0.11.4][Mindustry v121.4] \
