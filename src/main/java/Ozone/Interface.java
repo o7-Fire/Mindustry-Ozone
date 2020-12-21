@@ -26,6 +26,8 @@ import arc.struct.ObjectMap;
 import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.game.EventType;
+import mindustry.gen.Building;
+import mindustry.gen.Groups;
 import mindustry.world.Tile;
 
 import java.io.File;
@@ -79,6 +81,17 @@ public class Interface {
 		System.exit(0);
 	}
 	
+	
+	public static Future<Building> getBuild(Filter<Building> buildFilter){
+		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
+		return Pool.submit(()->{
+			ArrayList<Building> list = new ArrayList<>();
+			for(Building b : Groups.build)
+				if(buildFilter.accept(b))
+					list.add(b);
+			return Random.getRandom(list);
+		});
+	}
 	
 	public static Future<Tile> getTile(Filter<Tile> filter) {
 		if (!Vars.state.getState().equals(GameState.State.playing)) return null;

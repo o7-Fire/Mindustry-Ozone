@@ -26,6 +26,7 @@ import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
+import Ozone.Watcher.BlockTracker;
 import Settings.Core;
 import arc.Events;
 import arc.scene.ui.Dialog;
@@ -57,6 +58,7 @@ public class Main {
 		TaskInterface.init();
 		initEvent();
 		Pathfinding.init();
+		BlockTracker.init();
 	}
 	
 	

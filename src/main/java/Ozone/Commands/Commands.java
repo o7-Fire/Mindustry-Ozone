@@ -38,10 +38,7 @@ import arc.util.Log;
 import mindustry.Vars;
 import mindustry.ai.Astar;
 import mindustry.game.EventType;
-import mindustry.gen.Call;
-import mindustry.gen.Groups;
-import mindustry.gen.Icon;
-import mindustry.gen.Player;
+import mindustry.gen.*;
 import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.Tile;
@@ -75,8 +72,8 @@ public class Commands {
 			commandsQueue.first().update();
 			if (commandsQueue.first().isCompleted()) commandsQueue.removeFirst();
 		});
-		
-		
+		//register("message-log", new Command(Commands::messageLog, Icon.rotate));
+		//register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
 		register("task-move", new Command(Commands::taskMove));
 		register("info-pathfinding", new Command(Commands::infoPathfinding));
 		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer by nexity");
@@ -89,8 +86,6 @@ public class Commands {
 		register("force-exit", new Command(Commands::forceExit, Icon.exit));
 		register("task-clear", new Command(Commands::taskClear, Icon.cancel));
 		register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
-		register("message-log", new Command(Commands::messageLog, Icon.rotate));
-		register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
 		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
 		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
 		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
@@ -137,35 +132,34 @@ public class Commands {
 	}
 	
 	public static void shuffleSorter() {
-		Future<Tile> f = Interface.getTile(tile -> {
-			if (tile.build == null) return false;
-			return tile.build.interactable(Vars.player.team()) && (tile.build.block() instanceof Sorter || tile.block() instanceof ItemSource);
-		});
-		if (f == null) {
-			tellUser("wtf ?");
-			return;
-		}
-		commandsQueue.add(new Task() {
-			boolean completed = false;
-			
-			@Override
-			public boolean isCompleted() {
-				return completed;
+		
+		commandsQueue.add(new Completable() {
+			Future<Building> f = null;
+			{
+				f = Interface.getBuild(build -> {
+					if (build == null) return false;
+					return build.interactable(Vars.player.team()) && (build.block() instanceof Sorter || build.block() instanceof ItemSource);
+				});
+				if (f == null) {
+					tellUser("wtf ? shuffle sorter future is null");
+					completed = true;
+				}
 			}
-			
+		
 			@Override
 			public void update() {
+				if(f == null)return;
 				if (!f.isDone()) return;
 				if (completed) return;
 				completed = true;
 				try {
-					Tile t = f.get();
-					if (t == null) {
+					Building t = f.get();
+					if (t == null || t.tile == null) {
 						tellUser("block can't be find");
 						return;
 					}
 					Item target = Random.getRandom(Vars.content.items().toArray(Item.class));
-					t.build.configure(target);
+					t.tile().build.configure(target);
 				}catch (InterruptedException | ExecutionException e) {
 					Log.errTag("Ozone-Executor", "Failed to get tile:\n" + e.toString());
 				}
@@ -335,7 +329,7 @@ public class Commands {
 	
 	public static void infoPos() {
 		tellUser("Player x,y: " + Vars.player.x + ", " + Vars.player.y);
-		tellUser("Tile x,y: " + Vars.player.tileX() + ", " + Vars.player.tileY());
+		tellUser("TileOn x,y: " + Vars.player.tileX() + ", " + Vars.player.tileY());
 		if (Vars.player.tileOn() != null && Vars.player.tileOn().build != null)
 			tellUser("TileOn: Class: " + Vars.player.tileOn().build.getClass().getName());
 	}
