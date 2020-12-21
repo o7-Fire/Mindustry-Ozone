@@ -20,7 +20,6 @@ import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import io.sentry.Sentry;
 
 import java.io.File;
-import java.nio.file.Files;
 
 public class BotEntryPoint {
 	//Bot Launcher Only
@@ -37,10 +36,7 @@ public class BotEntryPoint {
 			SharedBootstrap.libraryLoader.addURL(new File(System.getProperty("MindustryExecutable")));
 			SharedBootstrap.loadMain("Main.OxygenMindustry", args);
 		}catch (Throwable t) {
-			try {
-				Files.write(new File(BotEntryPoint.class.getName() + ".txt").toPath(), (t.toString() + t.getMessage()).getBytes());
-			}catch (Throwable ignored) {
-			}
+			Catch.write(t);
 			t.printStackTrace();
 			if (t.getCause() != null) t = t.getCause();
 			Sentry.captureException(t);

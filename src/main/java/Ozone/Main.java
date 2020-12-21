@@ -40,6 +40,7 @@ import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 
 public class Main {
 	private static boolean init = false;
@@ -51,6 +52,7 @@ public class Main {
 		loadSettings();
 		patch();
 		Commands.init();
+		patchTranslation();
 		initUI();
 		TaskInterface.init();
 		initEvent();
@@ -187,7 +189,6 @@ public class Main {
 			Log.infoTag("Ozone", "Patching");
 			Events.fire(Internal.Init.PatchRegister);
 			Translation.register();
-			patchTranslation();
 			Vars.ui.settings = new SettingsDialog();
 			Vars.enableConsole = true;
 			Log.infoTag("Ozone", "Patching Complete");
@@ -209,6 +210,7 @@ public class Main {
 			modified.put(s, getRandomHexColor() + modified.get(s) + "[white]");
 		}
 		arc.Core.bundle.setProperties(modified);
+		for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet()) c.getValue().description = Commands.getTranslation(c.getKey());
 	}
 	
 	protected static void initUI() {

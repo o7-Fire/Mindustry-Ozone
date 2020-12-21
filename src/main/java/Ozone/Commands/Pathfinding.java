@@ -52,8 +52,8 @@ public class Pathfinding {
 			
 			for (Tile t : h.tiles) {
 				if (draw) {
-					x = t.drawx();
-					y = t.drawy();
+					x = t.drawx() * 1.2f;
+					y = t.drawy() * 1.2f;
 				}else {
 					Lines.stroke(h.thick, b ? h.color : h.second);
 					Lines.line(x, y, t.drawx(), t.drawy());

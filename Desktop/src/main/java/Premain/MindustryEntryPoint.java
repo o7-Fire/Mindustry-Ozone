@@ -23,7 +23,6 @@ import io.sentry.Sentry;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -37,12 +36,9 @@ public class MindustryEntryPoint {
 			SharedBootstrap.loadClasspath();
 			main(new ArrayList<>(Arrays.asList(args)));
 		}catch (Throwable t) {
-			try {
-				Files.write(new File(MindustryEntryPoint.class.getName() + ".txt").toPath(), t.toString().getBytes());
-			}catch (Throwable ignored) {
-			}
 			t.printStackTrace();
 			if (t.getCause() != null) t = t.getCause();
+			Catch.write(t);
 			Sentry.captureException(t);
 			Catch.errorBox(t.toString(), "Ozone Environment");
 			System.exit(1);

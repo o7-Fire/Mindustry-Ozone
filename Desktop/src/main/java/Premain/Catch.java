@@ -18,8 +18,26 @@ package Premain;
 
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 
 public class Catch {
+	
+	
+	public static void write(Throwable t){
+		File f = new File(Thread.currentThread().getStackTrace()[2].getClassName() + ".txt");
+		try {
+			StringWriter out    = new StringWriter();
+			PrintWriter  writer = new PrintWriter(out);
+			t.printStackTrace(writer);
+			FileOutputStream fs = new FileOutputStream(f);
+			fs.write(out.toString().getBytes(StandardCharsets.UTF_8));
+			fs.close();
+		}catch (Throwable ignored){}
+	}
 	
 	public static void errorBox(String infoMessage, String titleBar) {
 		try {

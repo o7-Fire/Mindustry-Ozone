@@ -89,13 +89,25 @@ public class Commands {
 		register("message-log", new Command(Commands::messageLog, Icon.rotate));
 		register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
 		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
+		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
+		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
 		Events.fire(Internal.Init.CommandsRegister);
-		for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet())
-			c.getValue().description = Commands.getTranslation(c.getKey());
+		
 		Log.infoTag("Ozone", "Commands Center Initialized");
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
 	}
 	
+	public static void hudFragToast(ArrayList<String> arg){
+		String s = "["+Random.getRandomHexColor()+"]Test "+Random.getString(16);
+		if(!arg.isEmpty()) s = Utility.joiner(arg, " ");
+		Vars.ui.hudfrag.showToast(s);
+	}
+	
+	public static void hudFrag(ArrayList<String> arg){
+		String s = "["+Random.getRandomHexColor()+"]Test "+Random.getString(16);
+		if(!arg.isEmpty()) s = Utility.joiner(arg, " ");
+		Vars.ui.hudfrag.setHudText(s);
+	}
 	public static void clearPathfindingOverlay(ArrayList<String> arg) {
 		tellUser("Clearing: " + Pathfinding.render.size() + " overlay");
 		Pathfinding.render.clear();
@@ -324,13 +336,24 @@ public class Commands {
 	}
 	
 	public static void help(ArrayList<String> a) {
-		StringBuilder sb = new StringBuilder();
-		//sb.append("\n").append("Prefix: ").append(Settings.commandsPrefix).append("\n");
-		sb.append("Available Commands:").append("\n");
+		ArrayList<String> as = new ArrayList<>();
+		as.add("Prefix: \""+Core.commandsPrefix+"\"");
+		as.add("Available Commands:");
+		int target = 5;
 		for (Map.Entry<String, Command> s : commandsList.entrySet()) {
-			sb.append(s.getKey()).append(": ").append(s.getValue().description).append("\n");
+			if(target < s.getKey().length())
+				target = s.getKey().length() + 2;
 		}
-		tellUser(sb.toString());
+		for (Map.Entry<String, Command> s : commandsList.entrySet()) {
+			StringBuilder local = new StringBuilder();
+			local.append(s.getKey());
+			while (local.length() < target)
+				local.append(" ");
+			local.append(":").append(s.getValue().description).append("\n");
+			as.add(local.toString());
+		}
+		for(String s : as)
+			tellUser(s);
 	}
 	
 	public static void taskMove(ArrayList<String> s) {
@@ -396,19 +419,6 @@ public class Commands {
 			this.method = method;
 			icon = null;
 		}
-		
-		public Command(Consumer<ArrayList<String>> method, String description) {
-			this.method = method;
-			this.description = getTranslation(description);
-			icon = null;
-		}
-		
-		public Command(Consumer<ArrayList<String>> method, String description, TextureRegionDrawable icon) {
-			this.method = method;
-			this.description = getTranslation(description);
-			this.icon = icon;
-		}
-		
 		
 		public Command(Consumer<ArrayList<String>> method, TextureRegionDrawable icon) {
 			this.method = method;
