@@ -406,18 +406,19 @@ public class Commands {
 		}
 	}
 	
-public static void chatPropaganda(ArrayList<String> arg) {
-        chatting = !chatting;
-        if (chatting) {
-            Thread s1 = new Thread(() -> {
-                while (true) {
-                    if (chatting) {
-                        Call.sendChatMessage(Utility.joiner(arg, " ") + Math.random());
-                        try {
-                            Thread.sleep(3100);
-                        } catch (Throwable ignored) {
-                        }
-                    }
+	public static void chatPropaganda() {
+		chatting = !chatting;
+		if (chatting) {
+			Thread s1 = new Thread(() -> {
+				while (true) {
+					if (chatting) {
+						Call.sendChatMessage("join fire o7: https://discord.gg/2tqguRj random numbers: " + Math.random());
+						try {
+							Thread.sleep(3100);
+						} catch (Throwable ignored) {
+						}
+					}
+				}
 			});
 			s1.start();
 			tellUser("propaganda started");
