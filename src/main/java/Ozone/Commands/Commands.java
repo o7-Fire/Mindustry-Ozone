@@ -384,7 +384,7 @@ public class Commands {
 		}
 	}
 	
-	public static void chatPropaganda(ArrayList<String> unused) {
+	public static void chatPropaganda() {
 		chatting = !chatting;
 		if (chatting) {
 			Thread s1 = new Thread(() -> {
