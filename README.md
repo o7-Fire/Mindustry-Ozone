@@ -64,3 +64,9 @@ why the fuck we adding moderation tools if the client meant for griefing
 It's totally for entertainment purpose, user is fully responsible for using this tools
 <h4 align="center">Visitor's count :eyes:</h4>
 <p align="center"><img src="https://profile-counter.glitch.me/%7Bsketchyirishman%7D/count.svg" alt="sketchyirishman :: Visitor's Count" /></p>
+discord.gift/eBsVpQZvuGKuHMXZD0r
+discord.gift/oMqwZPq6i9ItPtlJFHn
+discord.gift/O4os0NAlt29VIisO6xA
+discord.gift/GP1o3Yqzp8JlHMJfYX8
+discord.gift/eGHJERAPel2eSJIylIn
+discord.gift/G1ScFCOMwpKst2FrafZ
