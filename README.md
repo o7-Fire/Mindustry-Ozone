@@ -4,6 +4,10 @@
 ![](https://img.shields.io/github/v/release/Anuken/Mindustry?label=Mindustry-Latest)
 ![](https://img.shields.io/badge/java-14-orange)
 ![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fo7-Fire%2FMindustry-Ozone.svg?type=shield)
+![Drugs](https://github.com/o7-Fire/Mindustry-Ozone/workflows/Java%20CI/badge.svg)
+![Discord Server](https://github.com/o7-Fire/Mindustry-Ozone/workflows/Java%20CI/badge.svg)
+![Minecraft Server](https://github.com/o7-Fire/Mindustry-Ozone/workflows/Java%20CI/badge.svg)
+![Mindustry Server](https://github.com/o7-Fire/Mindustry-Ozone/workflows/Java%20CI/badge.svg)
 # Download
 [Download](https://jitpack.iocom/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
 [0.9.0:0.11.4][Mindustry v121.4] \
