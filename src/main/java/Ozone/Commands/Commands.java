@@ -50,8 +50,8 @@ import mindustry.world.blocks.sandbox.ItemSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -60,13 +60,47 @@ import java.util.function.Consumer;
 public class Commands {
 	
 	public static final Queue<Task> commandsQueue = new Queue<>();
-	public static HashMap<String, Command> commandsList = new HashMap<>();
+	public static Map<String, Command> commandsList = new TreeMap<>();
 	
 	private volatile static boolean falseVote = false;
 	
 	private static boolean init = false;
 	
 	private volatile static boolean chatting = false;
+	public static void init() {
+		if (init) return;
+		init = true;
+		Events.run(EventType.Trigger.update, () -> {
+			if (commandsQueue.isEmpty()) return;
+			commandsQueue.first().update();
+			if (commandsQueue.first().isCompleted()) commandsQueue.removeFirst();
+		});
+		
+		
+		register("task-move", new Command(Commands::taskMove));
+		register("info-pathfinding", new Command(Commands::infoPathfinding));
+		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer by nexity");
+		register("task-deconstruct", new Command(Commands::taskDeconstruct));
+		register("send-colorize", new Command(Commands::sendColorize));
+		
+		//Commands with icon support no-argument-commands
+		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
+		register("info-unit", new Command(Commands::infoUnit, Icon.units));
+		register("force-exit", new Command(Commands::forceExit, Icon.exit));
+		register("task-clear", new Command(Commands::taskClear, Icon.cancel));
+		register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
+		register("message-log", new Command(Commands::messageLog, Icon.rotate));
+		register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
+		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
+		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
+		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
+		register("info-pos", new Command(Commands::infoPos, Icon.move));
+		register("help", new Command(Commands::help, Icon.infoCircle));
+		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
+		Events.fire(Internal.Init.CommandsRegister);
+		Log.infoTag("Ozone", "Commands Center Initialized");
+		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
+	}
 	
 	public static void hudFragToast(ArrayList<String> arg){
 		String s = "["+Random.getRandomHexColor()+"]Test "+Random.getString(16);
@@ -306,41 +340,6 @@ public class Commands {
 			tellUser("TileOn: Class: " + Vars.player.tileOn().build.getClass().getName());
 	}
 	
-	public static void init() {
-		if (init) return;
-		init = true;
-		Events.run(EventType.Trigger.update, () -> {
-			if (commandsQueue.isEmpty()) return;
-			commandsQueue.first().update();
-			if (commandsQueue.first().isCompleted()) commandsQueue.removeFirst();
-		});
-		
-	
-		register("task-move", new Command(Commands::taskMove));
-		register("info-pathfinding", new Command(Commands::infoPathfinding));
-		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer by nexity");
-		register("task-deconstruct", new Command(Commands::taskDeconstruct));
-		register("send-colorize", new Command(Commands::sendColorize));
-		
-		//Commands with icon support no-argument-commands
-		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
-		register("info-unit", new Command(Commands::infoUnit, Icon.units));
-		register("force-exit", new Command(Commands::forceExit, Icon.exit));
-		register("task-clear", new Command(Commands::taskClear, Icon.cancel));
-		register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
-		register("message-log", new Command(Commands::messageLog, Icon.rotate));
-		register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
-		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
-		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
-		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
-		register("info-pos", new Command(Commands::infoPos, Icon.move));
-		register("help", new Command(Commands::help, Icon.infoCircle));
-		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
-		Events.fire(Internal.Init.CommandsRegister);
-		
-		Log.infoTag("Ozone", "Commands Center Initialized");
-		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
-	}
 	
 	public static void taskMove(ArrayList<String> s) {
 		if (s.size() < 2) {
@@ -379,7 +378,7 @@ public class Commands {
 			local.append(s.getKey());
 			while (local.length() < target)
 				local.append(" ");
-			local.append(":").append(s.getValue().description).append("\n");
+			local.append(":").append(s.getValue().description);
 			as.add(local.toString());
 		}
 		for(String s : as)
