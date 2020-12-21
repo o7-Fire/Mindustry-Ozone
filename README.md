@@ -3,6 +3,7 @@
 ![](https://img.shields.io/jitpack/v/github/o7-Fire/Mindustry-Ozone?label=Mindustry-Ozone)
 ![](https://img.shields.io/github/v/release/Anuken/Mindustry?label=Mindustry-Latest)
 ![](https://img.shields.io/badge/java-14-orange)
+Mindustry Ozone client but volas shenanigens.
 # Download
 [Download](https://jitpack.iocom/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
 [0.9.0:0.11.4][Mindustry v121.4] \
