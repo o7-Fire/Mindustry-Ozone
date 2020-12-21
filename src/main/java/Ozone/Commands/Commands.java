@@ -76,6 +76,7 @@ public class Commands {
 		
 		register("help", new Command(Commands::help, Icon.infoCircle));
 		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
+		register("chat-propaganda", new Command(Commands::chatPropaganda, Icon.hammer));
 		register("task-move", new Command(Commands::taskMove));
 		register("info-pos", new Command(Commands::infoPos, Icon.move));
 		register("info-pathfinding", new Command(Commands::infoPathfinding));
@@ -358,6 +359,7 @@ public class Commands {
 	
 	/**
 	 * @author Nexity
+	 * its obvious its my code
 	 */
 	public static void chaosKick(ArrayList<String> unused) {
 		falseVote = !falseVote;
@@ -377,6 +379,27 @@ public class Commands {
 			tellUser("kicking started");
 		}else {
 			tellUser("kicking ended");
+		}
+	}
+	
+	public static void chatPropaganda(ArrayList<String> unused) {
+		chatting = !chatting;
+		if (chatting) {
+			Thread s1 = new Thread(() -> {
+				while (true) {
+					if (chatting) {
+						Call.sendChatMessage("join fire o7: https://discord.gg/2tqguRj random numbers: " + Math.random());
+						try {
+							Thread.sleep(3100);
+						} catch (Throwable ignored) {
+						}
+					}
+				}
+			});
+			s1.start();
+			tellUser("propaganda started");
+		}else {
+			tellUser("propaganda ended");
 		}
 	}
 	
