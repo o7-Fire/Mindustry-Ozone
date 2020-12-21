@@ -35,13 +35,18 @@ public class BlockTracker {
 	}
 
 	private static void update(){
+		if(Settings.Core.blockDebug)
 		if(Vars.state.isPlaying()){
 			if(Core.input.keyDown(KeyCode.controlLeft))
 				if (Core.input.keyDown(KeyCode.mouseLeft))
 					target = Vars.world.tileWorld(Vars.player.mouseX, Vars.player.mouseY);
 				
-			if (target != null) if (target.build != null)
-				Vars.ui.hudfrag.setHudText(FieldTool.getFieldDetails(target.build));
+			if (target != null)
+				if (target.build != null)
+					Vars.ui.hudfrag.setHudText(FieldTool.getFieldDetails(target.build).replace("\n", "[white]\n"));
+				else
+					Vars.ui.hudfrag.setHudText(FieldTool.getFieldDetails(target).replace("\n", "[white]\n"));
+			
 		}
 	}
 }

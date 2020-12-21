@@ -22,6 +22,7 @@ import Ozone.Desktop.Propertied;
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Manifest;
 import arc.Core;
+import arc.audio.Sound;
 import arc.func.Prov;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.Label;
@@ -34,8 +35,10 @@ import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.Version;
 import mindustry.gen.Icon;
+import mindustry.gen.Sounds;
 
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,7 +125,17 @@ public class EnvironmentInformation extends OzoneBaseDialog {
 		
 		for (Map.Entry<Object, Object> s : System.getProperties().entrySet())
 			ad(s.getKey().toString(), s.getValue().toString());
-		
+		for(Field f : Sounds.class.getFields()){
+			table.button(f.getName()+".ogg", Icon.play, ()->{
+				try {
+					Sound s = (Sound) Sounds.class.getField(f.getName()).get(null);
+					s.play(100);
+				}catch (Throwable e) {
+					Vars.ui.showException(e);
+				}
+			}).growX();
+			table.row();
+		}
 		for (ObjectMap.Entry<String, TextureRegionDrawable> s : Icon.icons.entries()) {
 			table.button(s.key, s.value, () -> {}).growX().disabled(true);
 			table.row();

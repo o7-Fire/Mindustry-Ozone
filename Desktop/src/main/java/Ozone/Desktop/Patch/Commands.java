@@ -25,6 +25,7 @@ import Settings.Core;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.gen.Icon;
+import mindustry.world.Tile;
 
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -57,6 +58,10 @@ public class Commands {
 	
 	public static void infoPos() {
 		tellUser("Mouse x,y: " + Vars.player.mouseX + ", " + Vars.player.mouseY);
+		Tile mouseTile = Vars.world.tileWorld(Vars.player.mouseX, Vars.player.mouseY);
+		if(mouseTile != null)
+			if(mouseTile.build != null)
+				tellUser("MouseTile: Class: " + mouseTile.build.getClass().getName());
 		Ozone.Commands.Commands.infoPos();
 	}
 	
