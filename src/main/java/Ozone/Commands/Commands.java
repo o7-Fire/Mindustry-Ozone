@@ -63,41 +63,10 @@ public class Commands {
 	public static HashMap<String, Command> commandsList = new HashMap<>();
 	
 	private volatile static boolean falseVote = false;
-	private volatile static boolean chatting = false;
+	
 	private static boolean init = false;
 	
-	public static void init() {
-		if (init) return;
-		init = true;
-		Events.run(EventType.Trigger.update, () -> {
-			if (commandsQueue.isEmpty()) return;
-			commandsQueue.first().update();
-			if (commandsQueue.first().isCompleted()) commandsQueue.removeFirst();
-		});
-		
-		register("help", new Command(Commands::help, Icon.infoCircle));
-		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
-		register("chat-propaganda", new Command(Commands::chatPropaganda, Icon.hammer));
-		register("task-move", new Command(Commands::taskMove));
-		register("info-pos", new Command(Commands::infoPos, Icon.move));
-		register("info-pathfinding", new Command(Commands::infoPathfinding));
-		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
-		register("info-unit", new Command(Commands::infoUnit, Icon.units));
-		register("force-exit", new Command(Commands::forceExit, Icon.exit));
-		register("task-deconstruct", new Command(Commands::taskDeconstruct));
-		register("send-colorize", new Command(Commands::sendColorize));
-		register("task-clear", new Command(Commands::taskClear, Icon.cancel));
-		register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
-		register("message-log", new Command(Commands::messageLog, Icon.rotate));
-		register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
-		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
-		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
-		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
-		Events.fire(Internal.Init.CommandsRegister);
-		
-		Log.infoTag("Ozone", "Commands Center Initialized");
-		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
-	}
+	private volatile static boolean chatting = false;
 	
 	public static void hudFragToast(ArrayList<String> arg){
 		String s = "["+Random.getRandomHexColor()+"]Test "+Random.getString(16);
@@ -337,25 +306,37 @@ public class Commands {
 			tellUser("TileOn: Class: " + Vars.player.tileOn().build.getClass().getName());
 	}
 	
-	public static void help(ArrayList<String> a) {
-		ArrayList<String> as = new ArrayList<>();
-		as.add("Prefix: \""+Core.commandsPrefix+"\"");
-		as.add("Available Commands:");
-		int target = 5;
-		for (Map.Entry<String, Command> s : commandsList.entrySet()) {
-			if(target < s.getKey().length())
-				target = s.getKey().length() + 2;
-		}
-		for (Map.Entry<String, Command> s : commandsList.entrySet()) {
-			StringBuilder local = new StringBuilder();
-			local.append(s.getKey());
-			while (local.length() < target)
-				local.append(" ");
-			local.append(":").append(s.getValue().description).append("\n");
-			as.add(local.toString());
-		}
-		for(String s : as)
-			tellUser(s);
+	public static void init() {
+		if (init) return;
+		init = true;
+		Events.run(EventType.Trigger.update, () -> {
+			if (commandsQueue.isEmpty()) return;
+			commandsQueue.first().update();
+			if (commandsQueue.first().isCompleted()) commandsQueue.removeFirst();
+		});
+		
+		register("help", new Command(Commands::help, Icon.infoCircle));
+		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
+		register("chat-repeater", new Command(Commands::chatRepeater, Icon.hammer));
+		register("task-move", new Command(Commands::taskMove));
+		register("info-pos", new Command(Commands::infoPos, Icon.move));
+		register("info-pathfinding", new Command(Commands::infoPathfinding));
+		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
+		register("info-unit", new Command(Commands::infoUnit, Icon.units));
+		register("force-exit", new Command(Commands::forceExit, Icon.exit));
+		register("task-deconstruct", new Command(Commands::taskDeconstruct));
+		register("send-colorize", new Command(Commands::sendColorize));
+		register("task-clear", new Command(Commands::taskClear, Icon.cancel));
+		register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
+		register("message-log", new Command(Commands::messageLog, Icon.rotate));
+		register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
+		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
+		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
+		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
+		Events.fire(Internal.Init.CommandsRegister);
+		
+		Log.infoTag("Ozone", "Commands Center Initialized");
+		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
 	}
 	
 	public static void taskMove(ArrayList<String> s) {
@@ -381,6 +362,27 @@ public class Commands {
 		
 	}
 	
+	public static void help(ArrayList<String> a) {
+		ArrayList<String> as = new ArrayList<>();
+		as.add("Prefix: \""+Core.commandsPrefix+"\"");
+		as.add("Available Commands:");
+		int target = 5;
+		for (Map.Entry<String, Command> s : commandsList.entrySet()) {
+			if(target < s.getKey().length())
+				target = s.getKey().length() + 2;
+		}
+		for (Map.Entry<String, Command> s : commandsList.entrySet()) {
+			StringBuilder local = new StringBuilder();
+			local.append(s.getKey());
+			while (local.length() < target)
+				local.append(" ");
+			local.append(":").append(s.getValue().description).append("\n");
+			as.add(local.toString());
+		}
+		for(String s : as)
+			tellUser(s);
+	}
+
 	/**
 	 * @author Nexity
 	 * its obvious its my code
@@ -405,14 +407,14 @@ public class Commands {
 			tellUser("kicking ended");
 		}
 	}
-	
-	public static void chatPropaganda() {
+
+	public static void chatRepeater(ArrayList<String> arg) {
 		chatting = !chatting;
 		if (chatting) {
 			Thread s1 = new Thread(() -> {
 				while (true) {
-					if (chatting) {
-						Call.sendChatMessage("join fire o7: https://discord.gg/2tqguRj random numbers: " + Math.random());
+					if (chatting && Vars.net.active()) {
+						Call.sendChatMessage(Utility.joiner(arg, " ") + Math.random());
 						try {
 							Thread.sleep(3100);
 						} catch (Throwable ignored) {
@@ -421,9 +423,9 @@ public class Commands {
 				}
 			});
 			s1.start();
-			tellUser("propaganda started");
+			tellUser("chatRepeater started");
 		}else {
-			tellUser("propaganda ended");
+			tellUser("chatRepeater ended");
 		}
 	}
 	
