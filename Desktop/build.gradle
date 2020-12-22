@@ -49,7 +49,7 @@ jar {
         attributes 'Main-Class': 'Premain.InstallerEntryPoint'
     }
     StringBuilder sb = new StringBuilder()
-    File txt = new File(rootDir, "Desktop/src/main/resources/dependencies")
+    File txt = new File(rootDir, "/Desktop/src/main/resources/dependencies")
     txt.delete()
     configurations.compileOnly.allDependencies.each { dep ->
         sb.append('groupId=').append(dep.group).append('\n')
