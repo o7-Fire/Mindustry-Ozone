@@ -16,6 +16,5 @@ dependencies {
 
 jar {
     archiveFileName = "Ozone-Manifest.jar"
-    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     from{new File(rootDir, "src/main/resources/Manifest.properties")}
 }
