@@ -28,15 +28,15 @@ public class Catch {
 	
 	
 	public static void write(Throwable t){
-		File f = new File(Thread.currentThread().getStackTrace()[2].getClassName() + ".txt");
+		File f = new File("crash-report-" + Thread.currentThread().getStackTrace()[2].getClassName() + ".txt");
 		try {
-			StringWriter out    = new StringWriter();
-			PrintWriter  writer = new PrintWriter(out);
+			StringWriter out = new StringWriter();
+			PrintWriter writer = new PrintWriter(out);
 			t.printStackTrace(writer);
 			FileOutputStream fs = new FileOutputStream(f);
 			fs.write(out.toString().getBytes(StandardCharsets.UTF_8));
 			fs.close();
-		}catch (Throwable ignored){}
+		}catch (Throwable ignored) {}
 	}
 	
 	public static void errorBox(String infoMessage, String titleBar) {

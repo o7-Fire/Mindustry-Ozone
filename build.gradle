@@ -36,8 +36,8 @@ allprojects {
         else
             modsBuilder = System.getProperty("user.name")
 
-        def atomMeta = new File("src/main/resources/Manifest.properties")
-        def manifestMeta = new File("Manifest/main/resources/Manifest.properties")
+        def atomMeta = new File(rootDir, "src/main/resources/Manifest.properties")
+        def manifestMeta = new File(rootDir, "Manifest/src/main/resources/Manifest.properties")
         try {
             atomMeta.delete()
             atomMeta.createNewFile()
