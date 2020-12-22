@@ -36,7 +36,7 @@ allprojects {
         else
             modsBuilder = System.getProperty("user.name")
 
-        def atomMeta = new File(sourceSets.main.resources.srcDirs[0], "Manifest.properties")
+        def atomMeta = new File("src/main/resources/Manifest.properties")
         try {
             atomMeta.delete()
             atomMeta.createNewFile()
@@ -89,6 +89,7 @@ task deploy(type: Jar) {
 
 jar {
     archiveFileName = "Ozone.jar"
+
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }

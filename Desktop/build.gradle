@@ -42,7 +42,6 @@ jar {
     dependsOn ":makeJar"
     archiveFileName = "Ozone-Desktop.jar"
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-
     manifest {
         attributes 'Main-Class': 'Premain.InstallerEntryPoint'
     }
