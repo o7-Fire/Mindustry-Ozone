@@ -34,6 +34,7 @@ import static Main.OzoneInstaller.mindustry;
 
 public class PreInstall {
 	static boolean yet;
+	volatile static boolean meh;
 	
 	public static void install(Main m) {
 		m.label4.setText(mindustry.getAbsolutePath());
@@ -61,11 +62,13 @@ public class PreInstall {
 			m.frame1.pack();
 		});
 		m.buttonExit.addActionListener(e -> {
-			Pool.daemon(() -> {
+			if (!meh) Pool.daemon(() -> {
 				try {
+					meh = true;
 					System.gc();
 					SharedBootstrap.startup = System.currentTimeMillis();
 					MindustryEntryPoint.main(new ArrayList<>());
+					meh = false;
 				}catch (Throwable t) {
 					try {
 						Files.write(new File(MindustryEntryPoint.class.getName() + ".txt").toPath(), t.toString().getBytes());
