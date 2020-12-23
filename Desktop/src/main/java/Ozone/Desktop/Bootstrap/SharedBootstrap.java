@@ -37,7 +37,7 @@ public class SharedBootstrap {
 	public static boolean customBootstrap, standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null;
 	public static long startup = System.currentTimeMillis();
 	private static boolean runtime, classpath, atomic, compile;
-	private static final String bootstrap = "SharedBootstrap 2.5";
+	public static final String bootstrap = "SharedBootstrap 2.5", mainClass;
 	private static Splash splash = null;
 	
 	static {
@@ -47,6 +47,13 @@ public class SharedBootstrap {
 			splash = new Splash(u);
 			splash.setLabel(bootstrap);
 		}catch (Throwable ignored) {}
+		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+		if (trace.length > 0) {
+			mainClass = trace[trace.length - 1].getClassName();
+		}else {
+			mainClass = null;
+		}
+		
 		setSplash("Initializing Sentry");
 		Sentry.init(options -> {
 			options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
@@ -117,9 +124,11 @@ public class SharedBootstrap {
 	
 	public static void loadMain(String classpath, String[] arg) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		setSplash("Finished");
-		splash.setVisible(false);
-		splash.dispose();
-		splash = null;
+		if (splash != null) {
+			splash.setVisible(false);
+			splash.dispose();
+			splash = null;
+		}
 		SharedBootstrap.libraryLoader.loadClass(classpath).getMethod("main", String[].class).invoke(null, (Object) arg);
 	}
 	

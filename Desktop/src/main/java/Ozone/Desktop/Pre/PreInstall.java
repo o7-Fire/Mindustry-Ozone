@@ -63,12 +63,11 @@ public class PreInstall {
 		});
 		m.buttonExit.addActionListener(e -> {
 			if (!meh) Pool.daemon(() -> {
+				meh = true;
 				try {
-					meh = true;
 					System.gc();
 					SharedBootstrap.startup = System.currentTimeMillis();
 					MindustryEntryPoint.main(new ArrayList<>());
-					meh = false;
 				}catch (Throwable t) {
 					try {
 						Files.write(new File(MindustryEntryPoint.class.getName() + ".txt").toPath(), t.toString().getBytes());
@@ -78,6 +77,7 @@ public class PreInstall {
 					Sentry.captureException(t);
 					Catch.errorBox(t.toString(), "Ozone Environment");
 				}
+				meh = false;
 			}).start();
 		});
 		//Install Button

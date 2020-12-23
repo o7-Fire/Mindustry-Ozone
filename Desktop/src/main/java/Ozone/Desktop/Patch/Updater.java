@@ -43,7 +43,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Updater {
 	
 	public final static AtomicBoolean newRelease = new AtomicBoolean(false), newBuild = new AtomicBoolean(false);
-	public static volatile ArrayList<String> commitMessage = null;
 	private static volatile boolean init;
 	private static volatile String last = "-SNAPSHOT";
 	
@@ -52,33 +51,6 @@ public class Updater {
 		init = true;
 		Log.debug("Update Daemon Started");
 		
-		Pool.daemon(() -> {
-			ArrayList<Future<String>> list = new ArrayList<>();
-			ArrayList<String> ls = new ArrayList<>();
-			try {
-				URL u = new URL("https://api.github.com/repos/o7-Fire/Mindustry-Ozone/commits?per_page=80");
-				JsonArray js = JsonParser.parseString(new String(u.openStream().readAllBytes())).getAsJsonArray();
-				for (JsonElement je : js) {
-					list.add(Pool.submit(() -> {
-						try {
-							JsonObject jo = je.getAsJsonObject();
-							JsonObject commit = jo.get("commit").getAsJsonObject();
-							return commit.get("message").getAsString();
-						}catch (Throwable t) {
-							return "";
-						}
-					}));
-				}
-				for (Future<String> f : list) {
-					try {
-						ls.add(f.get());
-					}catch (Throwable ignored) {}
-				}
-			}catch (Throwable t) {
-				Sentry.captureException(t);
-			}
-			commitMessage = ls;
-		}).start();
 		
 		Pool.daemon(() -> {
 			Future a = Pool.submit(() -> {
@@ -160,7 +132,6 @@ public class Updater {
 	public static void update(URL url) {
 		Vars.ui.loadfrag.show("Downloading");
 		try {
-			
 			Download.main(url, new File(Updater.class.getProtectionDomain().getCodeSource().getLocation().toURI()));
 			Vars.ui.loadfrag.hide();
 		}catch (Throwable t) {
