@@ -16,7 +16,6 @@
 
 package Premain;
 
-import Ozone.Desktop.Bootstrap.Dependency;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Propertied;
 import io.sentry.Sentry;
@@ -55,7 +54,6 @@ public class MindustryEntryPoint {
 			System.out.println("No Mindustry jar found, using online resource");
 			String version = Propertied.Manifest.get("MindustryVersion");
 			if (version == null) throw new NullPointerException("MindustryVersion not found in property");
-			SharedBootstrap.load(Dependency.Type.provided);
 			SharedBootstrap.libraryLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/Mindustry.jar"));
 			SharedBootstrap.standalone = true;
 		}

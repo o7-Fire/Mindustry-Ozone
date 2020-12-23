@@ -59,7 +59,7 @@ allprojects {
         sb.append("ModsBuilder").append("=").append(modsBuilder).append("\n")
         sb.append("TimeStamp").append("=").append(formatter.format(Locale.UK, "%tl:%tM:%tS %tp %tB %te, %tY", c, c, c, c, c, c, c).toString()).append("\n")
         sb.append("TimeMilis").append("=").append(String.valueOf(System.currentTimeMillis())).append("\n")
-        sb.append("ManifestVersion").append("=").append("v2.1").append("\n")
+        sb.append("ManifestVersion").append("=").append("v2.2").append("\n")
         sb.append("Note").append("=").append(Note)
         if(atomMeta.exists()) {
             Files.write(atomMeta.toPath(), sb.toString().getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);

@@ -15,5 +15,7 @@
  */
 
 package Ozone.UI;
+//TODO figure out what todo
+public class WorldSettingFrag {
 
-public class WorldSettingFrag {}
+}

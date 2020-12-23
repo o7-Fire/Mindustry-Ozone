@@ -26,11 +26,17 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class LibraryLoader extends URLClassLoader {
 	public static File cache = new File("lib/");
-	public static File resourceCache = new File(cache, "resources/");
-	
+	public volatile boolean loaded;
+	private ExecutorService es = Executors.newCachedThreadPool();
 	
 	static {
 		cache.mkdirs();
@@ -51,15 +57,47 @@ public class LibraryLoader extends URLClassLoader {
 		defineClass(name, h, 0, h.length);
 	}
 	
-	
 	@Override
-	public synchronized void addURL(URL url) {
-		if (url.getProtocol().startsWith("http") && url.getFile().endsWith(".jar")) try {
-			url = cache(url);
-		}catch (Throwable e) {
-			Sentry.captureException(e);
+	public void addURL(URL url) {
+		if (url.getProtocol().startsWith("http") && url.getFile().endsWith(".jar")) {
+			try {
+				super.addURL(es.submit(() -> {
+					if (url.getProtocol().startsWith("http") && url.getFile().endsWith(".jar")) try {
+						return (cache(url));
+					}catch (Throwable e) {
+						Sentry.captureException(e);
+					}
+					return (url);
+				}).get());
+			}catch (InterruptedException | ExecutionException ignored) { }
+		}else {
+			super.addURL(url);
 		}
-		super.addURL(url);
+	}
+	
+	public void addURL(File f) throws MalformedURLException {
+		if (f.exists()) addURL(f.toURI().toURL());
+	}
+	
+	public void addURL(List<URL> urlList) {
+		if (loaded) throw new IllegalStateException("Classloader is already running");
+		ArrayList<Future<URL>> ar = new ArrayList<>();
+		for (URL u : urlList)
+			ar.add(es.submit(() -> {
+				if (u.getProtocol().startsWith("http") && u.getFile().endsWith(".jar")) try {
+					return (cache(u));
+				}catch (Throwable e) {
+					Sentry.captureException(e);
+				}
+				return (u);
+			}));
+		for (Future<URL> f : ar) {
+			try {
+				addURL(f.get());
+			}catch (InterruptedException | ExecutionException ignored) {
+			
+			}
+		}
 	}
 	
 	private URL cache(URL url) {
@@ -72,7 +110,7 @@ public class LibraryLoader extends URLClassLoader {
 			}catch (Throwable t) {
 				Download d = new Download(url, temp);
 				d.print(s -> {
-					System.out.println("[LibraryLoader]: " + s);
+					System.out.println("[LibraryLoader-" + temp.getName() + "]" + s);
 				});
 				d.run();
 				Sentry.captureException(t);
@@ -87,12 +125,6 @@ public class LibraryLoader extends URLClassLoader {
 		}
 		return url;
 	}
-	
-	public synchronized void addURL(File file) throws MalformedURLException {
-		if (file.exists()) addURL(file.toURI().toURL());
-		//else Log.errTag("Ozone-LibraryLoader", file.getAbsolutePath() + " doesn't exist");
-	}
-	
 	
 	@Nullable
 	@Override
@@ -112,8 +144,10 @@ public class LibraryLoader extends URLClassLoader {
 		return super.getResourceAsStream(name);
 	}
 	
+	
 	@Override
-	public Class<?> loadClass(String name) throws ClassNotFoundException {
+	public synchronized Class<?> loadClass(String name) throws ClassNotFoundException {
+		
 		//Note: don't mess with java
 		if (!name.startsWith(this.getClass().getPackageName()))
 			try { return super.loadClass(name); }catch (Throwable ignored) {}

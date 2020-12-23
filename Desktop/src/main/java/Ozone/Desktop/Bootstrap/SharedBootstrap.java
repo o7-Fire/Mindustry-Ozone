@@ -65,40 +65,38 @@ public class SharedBootstrap {
 		if (atomic) throw new IllegalStateException("Atom dependency already loaded");
 		atomic = true;
 		ArrayList<String> se = (ArrayList<String>) libraryLoader.loadClass("Main.LoadAtom").getMethod("main", String[].class).invoke(null, (Object) new String[0]);
-		for (String s : se)
-			libraryLoader.addURL(new URL(s));
+		ArrayList<URL> ur = new ArrayList<>();
+		for (String s : se) ur.add(new URL(s));
+		libraryLoader.addURL(ur);
 	}
 	
 	public static void load(Dependency.Type type) throws IOException {
 		Dependency.load();
+		ArrayList<URL> h = new ArrayList<>();
 		for (Dependency d : Dependency.dependencies) {
 			if (!d.type.equals(type)) continue;
-			libraryLoader.addURL(new URL(d.getDownload()));
+			h.add(new URL(d.getDownload()));
 		}
+		libraryLoader.addURL(h);
 		Dependency.save();
 	}
 	
 	public static void loadRuntime() throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		if (runtime) throw new IllegalStateException("Runtime dependency already loaded");
 		runtime = true;
-		Dependency.load();
-		for (Dependency d : Dependency.dependencies) {
-			if (!d.type.equals(Dependency.Type.runtime)) continue;
-			libraryLoader.addURL(new URL(d.getDownload()));
-		}
+		load(Dependency.Type.runtime);
 		loadAtomic();
-		Dependency.save();
 	}
 	
 	public static void loadClasspath() throws MalformedURLException {
 		if (classpath) throw new IllegalStateException("Classpath dependency already loaded");
 		classpath = true;
 		for (String s : System.getProperty("java.class.path").split(System.getProperty("os.name").toUpperCase().contains("WIN") ? ";" : ":"))
-			//if(s.contains("gson"))continue;else
 			libraryLoader.addURL(new File(s));
 	}
 	
 	public static void loadMain(String classpath, String[] arg) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		SharedBootstrap.libraryLoader.loaded = true;
 		SharedBootstrap.libraryLoader.loadClass(classpath).getMethod("main", String[].class).invoke(null, (Object) arg);
 		
 	}
