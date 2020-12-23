@@ -21,19 +21,14 @@ import Ozone.Desktop.Propertied;
 import Ozone.Watcher.Version;
 import io.sentry.Scope;
 import io.sentry.Sentry;
-import io.sentry.protocol.User;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 
 
 public class SharedBootstrap {
@@ -58,28 +53,12 @@ public class SharedBootstrap {
 	}
 	
 	public static void registerSentry(Scope scope) {
-		User user = new User();
-		String id = "null";
-		try {
-			File cred = new File("lib/cred");
-			byte[] h = new byte[512];
-			new Random().nextBytes(h);
-			if (!cred.exists()) Files.write(cred.toPath(), h, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-			id = String.valueOf(ByteBuffer.wrap(Files.readAllBytes(cred.toPath())).getLong());
-		}catch (Throwable e) {
-			Sentry.captureException(e);
-		}
-		user.setId(id);
-		scope.setUser(user);
 		scope.setTag("Ozone.Desktop.Version", Settings.Version.semantic);
 		scope.setTag("Ozone.Core.Version", Version.semantic);
 		scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
 		scope.setTag("Java.Version", System.getProperty("java.version"));
 		for (Map.Entry<String, String> e : Propertied.Manifest.entrySet())
 			scope.setTag(e.getKey(), e.getValue());
-		StringBuilder sb = new StringBuilder("Library List:\n");
-		for (URL u : libraryLoader.getURLs()) sb.append("-").append(u.toString()).append("\n");
-		scope.setContexts("Loaded.Library", sb.toString());
 	}
 	
 	protected static void loadAtomic() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
