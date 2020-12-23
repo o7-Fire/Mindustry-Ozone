@@ -16,6 +16,7 @@
 
 package Ozone.Desktop.Pre;
 
+import Ozone.Desktop.Swing.DownloadBar;
 import Ozone.Desktop.Swing.SPreLoad;
 import Ozone.Pre.Download;
 
@@ -31,6 +32,7 @@ public class DownloadSwing extends Download {
 	private JLabel label = null;
 	private JFrame frame = null;
 	private SPreLoad swing = null;
+	private DownloadBar dbar = null;
 	private long lastRecordTime = 0, lastRecord = 0;
 	private boolean displayed = false;
 	
