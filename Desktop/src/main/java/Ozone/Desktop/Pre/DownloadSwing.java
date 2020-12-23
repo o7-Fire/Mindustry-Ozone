@@ -95,8 +95,8 @@ public class DownloadSwing extends Download {
 			if (lastRecord != 0) {
 				float down = downloaded.get() - lastRecord;
 				down = down / 100000;
-				if (DownloadBar != null) DownloadBar.setDesk(file.getAbsolutePath() + "      " + down + " Mb/Second");
-				if (label != null) label.setText(file.getAbsolutePath() + "    " + down + " Mb/Second");
+				if (DownloadBar != null) DownloadBar.setDesk(getUserReading(size) + "      " + down + " Mb/Second");
+				if (label != null) label.setText(getUserReading(size) + "    " + down + " Mb/Second");
 			}
 			lastRecord = downloaded.get();
 			lastRecordTime = System.currentTimeMillis();
