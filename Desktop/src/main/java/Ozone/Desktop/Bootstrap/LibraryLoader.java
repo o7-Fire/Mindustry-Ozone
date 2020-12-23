@@ -35,7 +35,6 @@ import java.util.concurrent.Future;
 
 public class LibraryLoader extends URLClassLoader {
 	public static File cache = new File("lib/");
-	public volatile boolean loaded;
 	private ExecutorService es = Executors.newCachedThreadPool();
 	
 	static {
@@ -80,7 +79,6 @@ public class LibraryLoader extends URLClassLoader {
 	}
 	
 	public void addURL(List<URL> urlList) {
-		if (loaded) throw new IllegalStateException("Classloader is already running");
 		ArrayList<Future<URL>> ar = new ArrayList<>();
 		for (URL u : urlList)
 			ar.add(es.submit(() -> {
@@ -110,7 +108,9 @@ public class LibraryLoader extends URLClassLoader {
 			}catch (Throwable t) {
 				Download d = new Download(url, temp);
 				d.print(s -> {
-					System.out.println("[LibraryLoader-" + temp.getName() + "]" + s);
+					s = "[LibraryLoader-" + temp.getName() + "]" + s;
+					SharedBootstrap.setSplash(s);
+					System.out.println(s);
 				});
 				d.run();
 				Sentry.captureException(t);
