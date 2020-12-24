@@ -26,5 +26,6 @@ public class Download {
 		DownloadSwing d = new DownloadSwing(url, file);
 		d.display();
 		d.run();
+		
 	}
 }

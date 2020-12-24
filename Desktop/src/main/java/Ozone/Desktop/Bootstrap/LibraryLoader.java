@@ -103,16 +103,19 @@ public class LibraryLoader extends URLClassLoader {
 		temp.getParentFile().mkdirs();
 		if (!temp.exists()) {
 			try {
-				loadClass("net.miginfocom.swing.MigLayout");
-				loadClass("Main.Download").getMethod("main", URL.class, File.class).invoke(null, url, temp);
+				Main.Download.main(url, temp);
 			}catch (Throwable t) {
-				Download d = new Download(url, temp);
-				d.print(s -> {
-					s = "[LibraryLoader-" + temp.getName() + "]" + s;
-					SharedBootstrap.setSplash(s);
-					System.out.println(s);
-				});
-				d.run();
+				try {
+					Download d = new Download(url, temp);
+					d.print(s -> {
+						s = "[LibraryLoader-" + temp.getName() + "]" + s;
+						SharedBootstrap.setSplash(s);
+						System.out.println(s);
+					});
+					d.run();
+				}catch (Throwable et) {
+					Sentry.captureException(et);
+				}
 				Sentry.captureException(t);
 			}
 		}

@@ -42,6 +42,7 @@ import mindustry.world.Tile;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -67,15 +68,15 @@ public class Vars implements Loadable {
 	/**
 	 * global charset, since Android doesn't support the Charsets class
 	 */
-	public static final Charset charset = Charset.forName("UTF-8");
-	/**
-	 * URL for itch.io donations.
-	 */
-	public static final String donationURL = "https://anuke.itch.io/mindustry/purchase";
+	public static final Charset charset = StandardCharsets.UTF_8;
 	/**
 	 * URL the links to the wiki's modding guide.
 	 */
 	public static final String modGuideURL = "https://mindustrygame.github.io/wiki/modding/1-modding/";
+	/**
+	 * URL for itch.io donations.
+	 */
+	public static final String donationURL = "https://anuke.itch.io/mindustry/purchase";
 	/**
 	 * URL for discord invite.
 	 */
@@ -157,6 +158,10 @@ public class Vars implements Loadable {
 	 */
 	public static final int invasionGracePeriod = 20;
 	/**
+	 * main application name, capitalized
+	 */
+	public static String appName = "Mindustry";
+	/**
 	 * min armor fraction damage; e.g. 0.05 = at least 5% damage
 	 */
 	public static final float minArmorDamage = 0.1f;
@@ -200,10 +205,6 @@ public class Vars implements Loadable {
 	 * schematic file extension
 	 */
 	public static final String schematicExtension = "msch";
-	/**
-	 * main application name, capitalized
-	 */
-	public static String appName = "Mindustry";
 	/**
 	 * Whether to load locales.
 	 */

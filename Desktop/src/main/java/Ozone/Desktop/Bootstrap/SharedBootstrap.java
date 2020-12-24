@@ -37,7 +37,7 @@ public class SharedBootstrap {
 	public static boolean customBootstrap, standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null;
 	public static long startup = System.currentTimeMillis();
 	private static boolean runtime, classpath, atomic, compile;
-	public static final String bootstrap = "SharedBootstrap 2.5", mainClass;
+	public static final String bootstrap = "SharedBootstrap 2.6", mainClass;
 	private static Splash splash = null;
 	
 	static {
