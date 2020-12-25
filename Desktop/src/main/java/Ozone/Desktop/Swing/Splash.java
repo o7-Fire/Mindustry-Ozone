@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop.Bootstrap;
+package Ozone.Desktop.Swing;
 
 import javax.swing.*;
 import java.net.URL;

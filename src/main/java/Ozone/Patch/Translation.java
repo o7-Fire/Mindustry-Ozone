@@ -17,6 +17,8 @@
 package Ozone.Patch;
 
 import Ozone.Event.Internal;
+import Ozone.Main;
+import Settings.Core;
 import arc.Events;
 
 import java.util.ArrayList;
@@ -81,8 +83,15 @@ public class Translation {
 	}
 	
 	public static String add(String text) {
+		return add(Thread.currentThread().getStackTrace()[2].toString() + text.toLowerCase().replaceAll(" ", "."), text);
+		
+	}
+	
+	public static String add(String id, String text) {
 		String s = Thread.currentThread().getStackTrace()[2].getClassName() + text.toLowerCase().replaceAll(" ", ".");
 		registerWords(s, text);
+		s = text;
+		if (Core.colorPatch) s = Main.getRandomHexColor() + s + "[white]";
 		return s;
 	}
 }

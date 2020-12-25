@@ -18,6 +18,7 @@ package Ozone.Desktop.Bootstrap;
 
 
 import Ozone.Desktop.Propertied;
+import Ozone.Desktop.Swing.Splash;
 import Ozone.Watcher.Version;
 import io.sentry.Scope;
 import io.sentry.Sentry;
