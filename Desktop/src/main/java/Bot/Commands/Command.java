@@ -14,32 +14,8 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop.UI;
+package Bot.Commands;
 
-import Bot.BotClient;
-import mindustry.gen.Icon;
+public abstract class Command {
 
-public class BotCommandDialog extends OzoneBaseDialog {
-	BotClient botClient;
-	
-	public BotCommandDialog(BotClient b) {
-		super("Bot Commands");
-		botClient = b;
-		buttons.button("Refresh", Icon.refresh, this::setup).size(210f, 64f);
-	}
-	
-	void setup() {
-		cont.clear();
-		if (!botClient.connected()) {
-			cont.labelWrap("[red]RMI not connected").growX().growY();
-			return;
-		}
-		cont.button("Follow Me", ()->{
-		
-		}).growX();
-		cont.row();
-		cont.button("Do Nothing", ()->{
-		
-		}).growX();
-	}
 }

@@ -349,7 +349,7 @@ public class Vars implements Loadable {
 	public Vars() {
 		menuRenderer = new MenuRenderer();
 	}
-	
+
 	public static void init() {
 		Groups.init();
 		

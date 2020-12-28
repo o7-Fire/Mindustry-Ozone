@@ -107,10 +107,11 @@ public class BotControllerDialog extends OzoneBaseDialog {
 		BotClient botClient;
 		Label log = new Label("Log"), ping = new Label("0 ms"), status = new Label(Status.OFFLINE.toString()), id = new Label("0");
 		Interval timer = new Interval();
-		
+		BotCommandDialog bcd;
 		public BotInfoDialog(BotClient b) {
 			super("Bot " + Strings.stripColors(b.name));
 			botClient = b;
+			bcd = new BotCommandDialog(b);
 			addCloseButton();
 			buttons.button("Refresh", Icon.refresh, this::setup).size(210f, 64f);
 			setup();
@@ -154,7 +155,7 @@ public class BotControllerDialog extends OzoneBaseDialog {
 			cont.labelWrap("Status:").growX().left();
 			cont.add(status).growX().right();
 			cont.button("Commands", Icon.commandAttack, () -> {
-			
+				bcd.show();
 			}).disabled(i -> !botClient.launched() || !botClient.connected()).growX();
 			cont.row();
 			cont.labelWrap("Ping:").growX().left();

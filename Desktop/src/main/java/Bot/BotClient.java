@@ -16,6 +16,7 @@
 
 package Bot;
 
+import Atom.Reflect.Reflect;
 import Atom.Utility.Random;
 import Bot.Interface.Shared.BotInterface;
 import Main.Ozone;
@@ -44,8 +45,8 @@ public class BotClient {
 	public String name, rmiName;
 	public Process process;
 	public InputStream is, er;
-	BotInterface rmi;
-	private Status status;
+	private volatile BotInterface rmi;
+	private volatile Status status;
 	
 	public BotClient(String name) {
 		this.name = name;
@@ -108,11 +109,11 @@ public class BotClient {
 	}
 	
 	
-	public synchronized Status getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 	
-	public synchronized void setStatus(Status s) {
+	protected void setStatus(Status s) {
 		status = s;
 	}
 	
@@ -181,12 +182,7 @@ public class BotClient {
 					Thread.sleep(500);
 					if (!rmi.alive()) break;
 					if (!status.equals(Status.CONNECTED)) setStatus(Status.ONLINE);
-				}catch (Throwable remoteException) {
-					Sentry.captureException(remoteException);
-					remoteException.printStackTrace();
-					Log.err(remoteException);
-					break;
-				}
+				}catch (Throwable remoteException) { break; }
 			}
 			setStatus(Status.OFFLINE);
 			rmi = null;
