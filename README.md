@@ -8,7 +8,6 @@
 
 
 # Download
-[OpenVPN (as built in vpn)](https://openvpn.net/downloads/openvpn-connect-v3-windows.msi)
 [Latest Version Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v122/Ozone-Desktop.jar)
 [23.784.89.183][Mindustry v122] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
@@ -36,7 +35,6 @@
 # Install
 * 0.Get `Ozone-Dekstop.jar`
 * 1.Install **Java 14**
-* 1.5 Install OpenVPN (download at top) if not you need nord vpn or some other vpn
 * 2.Run Ozone installation by opening `Ozone-Desktop.jar` with java `java -jar Ozone-Dekstop.jar`
 * 3.Run, Start, Run or Install Mindustry
 * 4.fuck its crash
