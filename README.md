@@ -8,8 +8,9 @@
 
 
 # Download
-[Pre-Release-Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/ffea8cec84/Desktop-ffea8cec84.jar)
-[0.10.0:0.11.8][Mindustry v122] \
+[OpenVPN (as built in vpn)](https://openvpn.net/downloads/openvpn-connect-v3-windows.msi)
+[Latest Version Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v122/Ozone-Desktop.jar)
+[23.784.89.183][Mindustry v122] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
 [0.9.0:0.11.3][Mindustry v121.4] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/a8805a30a5/Desktop-a8805a30a5.jar)
@@ -23,8 +24,8 @@
 
 # Minimum Requirement
 * Java 14 and added to %PATH%
-* 45687546786546753473456354534635465634+ thread CPU or 45634564653354645673656736735 thread of highly fast CPU
-* 4567645374567456747624368723487652647356782435674323467554356345642768472347254 GB+ of RAM for bots operation
+* 4+ thread CPU or 2 thread of highly fast CPU
+* 4 GB+ of RAM for bots operation
 * GPU doesn't matter, unless you use improvised shader
 
 # Build 
@@ -35,6 +36,7 @@
 # Install
 * 0.Get `Ozone-Dekstop.jar`
 * 1.Install **Java 14**
+* 1.5 Install OpenVPN (download at top) if not you need nord vpn or some other vpn
 * 2.Run Ozone installation by opening `Ozone-Desktop.jar` with java `java -jar Ozone-Dekstop.jar`
 * 3.Run, Start, Run or Install Mindustry
 * 4.fuck its crash
@@ -53,13 +55,15 @@ or
 * Raid pattern detection
 * Systematic player logging
 * Bots powered moderation\
-why the fuck we adding moderation tools if the client meant for griefing
+> why the fuck we adding moderation tools if the client meant for griefing
 
 > Raiding tools
-* Spamming tools
+* Spamming tools (done)
 * Bots powered spam
 * Integrated proxy controller
 * Bots powered raiding
+* delete all conveyors
+* break drills and resource maker by 1%
 * Resource drainer
 * Nuker
 
