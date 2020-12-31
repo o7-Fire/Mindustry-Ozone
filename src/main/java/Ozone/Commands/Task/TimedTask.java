@@ -14,8 +14,20 @@
  * limitations under the License.
  */
 
-package Settings;
+package Ozone.Commands.Task;
 
-public class Version {
-	public static final String semantic = "0.11.8";
+import arc.util.Interval;
+
+public abstract class TimedTask extends Task {
+	protected Interval timer = new Interval();
+	protected int time = 20;
+	
+	protected void setTime(int time){
+		this.time = 20;
+	}
+	
+	@Override
+	public boolean isCompleted() {
+		return timer.get(time);
+	}
 }

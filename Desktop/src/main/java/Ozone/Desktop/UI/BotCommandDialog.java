@@ -29,10 +29,17 @@ public class BotCommandDialog extends OzoneBaseDialog {
 	}
 	
 	void setup() {
+		cont.clear();
 		if (!botClient.connected()) {
 			cont.labelWrap("[red]RMI not connected").growX().growY();
 			return;
 		}
+		cont.button("Follow Me", ()->{
 		
+		}).growX();
+		cont.row();
+		cont.button("Do Nothing", ()->{
+		
+		}).growX();
 	}
 }

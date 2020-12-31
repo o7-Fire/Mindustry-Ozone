@@ -18,22 +18,18 @@ package Ozone.Desktop.Bootstrap;
 
 
 import Ozone.Desktop.Propertied;
+import Ozone.Desktop.Swing.Splash;
 import Ozone.Watcher.Version;
 import io.sentry.Scope;
 import io.sentry.Sentry;
-import io.sentry.protocol.User;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 
 
 public class SharedBootstrap {
@@ -42,86 +38,99 @@ public class SharedBootstrap {
 	public static boolean customBootstrap, standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null;
 	public static long startup = System.currentTimeMillis();
 	private static boolean runtime, classpath, atomic, compile;
+	public static final String bootstrap = "SharedBootstrap 2.6", mainClass;
+	private static Splash splash = null;
 	
 	static {
-		System.out.println("SharedBootstrap 2.3");
+		System.out.println(bootstrap);
+		try {
+			URL u = ClassLoader.getSystemResource("gif/loading.gif");
+			splash = new Splash(u);
+			splash.setLabel(bootstrap);
+		}catch (Throwable ignored) {}
+		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+		if (trace.length > 0) {
+			mainClass = trace[trace.length - 1].getClassName();
+		}else {
+			mainClass = null;
+		}
+		
+		setSplash("Initializing Sentry");
 		Sentry.init(options -> {
 			options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
 			options.setRelease("Ozone." + Version.semantic + ":" + "Desktop." + Settings.Version.semantic);
 			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "no").startsWith("v") ? "release" : "dev");
 		});
+		setSplash("Configuring Sentry Scope");
 		Sentry.configureScope(SharedBootstrap::registerSentry);
 	}
 	
 	public static void classloaderNoParent() {
+		setSplash("New LibraryLoader");
 		SharedBootstrap.libraryLoader = new LibraryLoader(new URL[]{SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation()}, null);
 	}
 	
-	public static void registerSentry(Scope scope) {
-		User user = new User();
-		String id = "null";
-		try {
-			File cred = new File("lib/cred");
-			byte[] h = new byte[512];
-			new Random().nextBytes(h);
-			if (!cred.exists()) Files.write(cred.toPath(), h, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-			id = String.valueOf(ByteBuffer.wrap(Files.readAllBytes(cred.toPath())).getLong());
-		}catch (Throwable e) {
-			Sentry.captureException(e);
+	protected static void setSplash(String t) {
+		if (splash != null) {
+			splash.setLabel(t);
+			System.out.println(t);
 		}
-		user.setId(id);
-		scope.setUser(user);
+	}
+	
+	public static void registerSentry(Scope scope) {
 		scope.setTag("Ozone.Desktop.Version", Settings.Version.semantic);
 		scope.setTag("Ozone.Core.Version", Version.semantic);
 		scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
 		scope.setTag("Java.Version", System.getProperty("java.version"));
 		for (Map.Entry<String, String> e : Propertied.Manifest.entrySet())
 			scope.setTag(e.getKey(), e.getValue());
-		StringBuilder sb = new StringBuilder("Library List:\n");
-		for (URL u : libraryLoader.getURLs()) sb.append("-").append(u.toString()).append("\n");
-		scope.setContexts("Loaded.Library", sb.toString());
 	}
 	
 	protected static void loadAtomic() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		if (atomic) throw new IllegalStateException("Atom dependency already loaded");
+		setSplash("Loading Atomic Library");
 		atomic = true;
 		ArrayList<String> se = (ArrayList<String>) libraryLoader.loadClass("Main.LoadAtom").getMethod("main", String[].class).invoke(null, (Object) new String[0]);
-		for (String s : se)
-			libraryLoader.addURL(new URL(s));
+		ArrayList<URL> ur = new ArrayList<>();
+		for (String s : se) ur.add(new URL(s));
+		libraryLoader.addURL(ur);
 	}
 	
 	public static void load(Dependency.Type type) throws IOException {
 		Dependency.load();
+		setSplash("Loading " + type.name() + " Library");
+		ArrayList<URL> h = new ArrayList<>();
 		for (Dependency d : Dependency.dependencies) {
 			if (!d.type.equals(type)) continue;
-			libraryLoader.addURL(new URL(d.getDownload()));
+			h.add(new URL(d.getDownload()));
 		}
+		libraryLoader.addURL(h);
 		Dependency.save();
 	}
 	
 	public static void loadRuntime() throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		if (runtime) throw new IllegalStateException("Runtime dependency already loaded");
 		runtime = true;
-		Dependency.load();
-		for (Dependency d : Dependency.dependencies) {
-			if (!d.type.equals(Dependency.Type.runtime)) continue;
-			libraryLoader.addURL(new URL(d.getDownload()));
-		}
+		load(Dependency.Type.runtime);
 		loadAtomic();
-		Dependency.save();
 	}
 	
 	public static void loadClasspath() throws MalformedURLException {
 		if (classpath) throw new IllegalStateException("Classpath dependency already loaded");
+		setSplash("Loading " + "Classpath" + " Library");
 		classpath = true;
 		for (String s : System.getProperty("java.class.path").split(System.getProperty("os.name").toUpperCase().contains("WIN") ? ";" : ":"))
-			//if(s.contains("gson"))continue;else
 			libraryLoader.addURL(new File(s));
 	}
 	
 	public static void loadMain(String classpath, String[] arg) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		setSplash("Finished");
+		if (splash != null) {
+			splash.setVisible(false);
+			splash.dispose();
+			splash = null;
+		}
 		SharedBootstrap.libraryLoader.loadClass(classpath).getMethod("main", String[].class).invoke(null, (Object) arg);
-		
 	}
 	
 	

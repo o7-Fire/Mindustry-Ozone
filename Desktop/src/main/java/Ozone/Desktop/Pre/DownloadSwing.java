@@ -16,11 +16,10 @@
 
 package Ozone.Desktop.Pre;
 
-import Ozone.Desktop.Swing.SPreLoad;
+import Ozone.Desktop.Swing.DownloadBar;
 import Ozone.Pre.Download;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.net.URL;
 
@@ -30,7 +29,7 @@ public class DownloadSwing extends Download {
 	private JProgressBar progressBar = null;
 	private JLabel label = null;
 	private JFrame frame = null;
-	private SPreLoad swing = null;
+	private DownloadBar DownloadBar = null;
 	private long lastRecordTime = 0, lastRecord = 0;
 	private boolean displayed = false;
 	
@@ -63,27 +62,17 @@ public class DownloadSwing extends Download {
 	public void display() {
 		if (displayed) return;
 		displayed = true;
-		swing = new SPreLoad();
-		swing.progressBar1.setMinimum(0);
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		int width = gd.getDisplayMode().getWidth();
-		int height = gd.getDisplayMode().getHeight();
-		swing.frame1.setSize(Math.round(width / 1.3F), height / 3);
-		swing.label2.setText("Connecting....");
-		swing.label1.setText("Downloading: " + url.toString());
-		swing.frame1.pack();
-		swing.progressBar1.setMaximum(100);
-		swing.frame1.setVisible(true);
-		swing.frame1.pack();
+		DownloadBar = new DownloadBar();
+		DownloadBar.setTitle(url.toString());
+		DownloadBar.setDesk(file.getAbsolutePath());
 	}
 	
 	protected void setMax(long max) {
 		if (progressBar != null) progressBar.setMaximum(1000);
-		if (swing != null) {
-			swing.progressBar1.setMaximum(1000);
-			if (getSize() < 10000000) swing.label2.setText(file.getName() + " " + (getSize() / 1000) + " KB");
-			else swing.label2.setText(file.getName() + " " + (getSize() / 1000000) + " MB");
-			swing.frame1.pack();
+		if (DownloadBar != null) {
+			DownloadBar.setMax(1000);
+			if (getSize() < 10000000) DownloadBar.setDesk(file.getName() + " " + (getSize() / 1000) + " KB");
+			else DownloadBar.setDesk(file.getName() + " " + (getSize() / 1000000) + " MB");
 		}
 		if (label != null) {
 			if (getSize() < 10000000) label.setText(file.getName() + " " + (getSize() / 1000) + " KB");
@@ -106,13 +95,13 @@ public class DownloadSwing extends Download {
 			if (lastRecord != 0) {
 				float down = downloaded.get() - lastRecord;
 				down = down / 100000;
-				if (swing != null) swing.label2.setText(down + " Mb/Second");
-				if (label != null) label.setText(down + " Mb/Second");
+				if (DownloadBar != null) DownloadBar.setDesk(getUserReading(size) + "      " + down + " Mb/Second");
+				if (label != null) label.setText(getUserReading(size) + "    " + down + " Mb/Second");
 			}
 			lastRecord = downloaded.get();
 			lastRecordTime = System.currentTimeMillis();
 		}
-		if (swing != null) swing.progressBar1.setValue(getProgress());
+		if (DownloadBar != null) DownloadBar.setValue(getProgress());
 		if (frame != null) frame.pack();
 	}
 	
@@ -120,8 +109,7 @@ public class DownloadSwing extends Download {
 	@Override
 	protected void close() {
 		super.close();
-		swing.frame1.setVisible(false);
-		swing.frame1.dispose();
+		if (DownloadBar != null) DownloadBar.setVisible(false);
 		
 	}
 }

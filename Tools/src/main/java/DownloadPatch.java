@@ -40,7 +40,7 @@ public class DownloadPatch {
             f.add(es.submit(() -> {
                 try {
                     Download d = new Download(new URL(trg + s), new File(target, s));
-                    d.print(see -> System.out.println(see));
+                    d.print(System.out::println);
                     d.run();
                 }catch (Throwable ignored) {}
             }));

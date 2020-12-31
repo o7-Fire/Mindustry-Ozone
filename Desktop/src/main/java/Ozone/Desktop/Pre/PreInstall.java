@@ -34,6 +34,7 @@ import static Main.OzoneInstaller.mindustry;
 
 public class PreInstall {
 	static boolean yet;
+	volatile static boolean meh;
 	
 	public static void install(Main m) {
 		m.label4.setText(mindustry.getAbsolutePath());
@@ -61,7 +62,8 @@ public class PreInstall {
 			m.frame1.pack();
 		});
 		m.buttonExit.addActionListener(e -> {
-			Pool.daemon(() -> {
+			if (!meh) Pool.daemon(() -> {
+				meh = true;
 				try {
 					System.gc();
 					SharedBootstrap.startup = System.currentTimeMillis();
@@ -75,6 +77,7 @@ public class PreInstall {
 					Sentry.captureException(t);
 					Catch.errorBox(t.toString(), "Ozone Environment");
 				}
+				meh = false;
 			}).start();
 		});
 		//Install Button

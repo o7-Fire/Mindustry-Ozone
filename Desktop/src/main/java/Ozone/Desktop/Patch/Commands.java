@@ -70,7 +70,6 @@ public class Commands {
 			tellUser("The debug mode mason, what do they mean");
 			return;
 		}
-		
 		if (i == 5) {
 			tellUser("pls dont");
 		}else if (i == 10) tellUser("stop pls");

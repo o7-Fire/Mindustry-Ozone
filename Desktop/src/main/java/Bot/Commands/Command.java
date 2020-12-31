@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package Ozone.Commands;
+package Bot.Commands;
 
-import Ozone.Commands.Task.Task;
+public abstract class Command {
 
-public abstract class Completable extends Task {
-	boolean completed;
-	
-	@Override
-	public void taskCompleted() {
-		if (completed) super.taskCompleted();
-	}
-	
-	@Override
-	public boolean isCompleted() {
-		return completed;
-	}
 }

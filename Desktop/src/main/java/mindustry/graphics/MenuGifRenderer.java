@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 
+//TODO Cleanup
 public class MenuGifRenderer implements Disposable {
 	Animation<TextureRegion> animation;
 	float elapsed;

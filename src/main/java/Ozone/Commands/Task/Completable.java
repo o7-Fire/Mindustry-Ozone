@@ -14,8 +14,18 @@
  * limitations under the License.
  */
 
-package Settings;
+package Ozone.Commands.Task;
 
-public class Version {
-	public static final String semantic = "0.11.8";
+public abstract class Completable extends Task {
+	protected boolean completed;
+	
+	@Override
+	public void taskCompleted() {
+		if (completed) super.taskCompleted();
+	}
+	
+	@Override
+	public boolean isCompleted() {
+		return completed;
+	}
 }

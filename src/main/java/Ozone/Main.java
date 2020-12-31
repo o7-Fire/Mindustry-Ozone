@@ -211,11 +211,14 @@ public class Main {
 			modified.put(s, getRandomHexColor() + modified.get(s) + "[white]");
 		}
 		arc.Core.bundle.setProperties(modified);
-		for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet()) c.getValue().description = Commands.getTranslation(c.getKey());
+		for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet())
+			c.getValue().description = Commands.getTranslation(c.getKey());
 	}
 	
+	public static Dialog.DialogStyle ozoneStyle;
+	
 	protected static void initUI() {
-		Dialog.DialogStyle ozoneStyle = new Dialog.DialogStyle() {
+		ozoneStyle = new Dialog.DialogStyle() {
 			{
 				stageBackground = Styles.none;
 				titleFont = Fonts.def;

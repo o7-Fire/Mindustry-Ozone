@@ -1,0 +1,8 @@
+name: "Ozone-Mindustry"
+displayName: "Ozone Mindustry"
+author: "Itzbenz"
+main: "Premain.EntryPoint"
+description: "o7-Fire Ozone Project."
+version: 1.2
+minGameVersion: 121
+hidden: true

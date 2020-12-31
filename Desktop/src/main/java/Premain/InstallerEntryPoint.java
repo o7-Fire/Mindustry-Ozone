@@ -21,12 +21,16 @@ import io.sentry.Sentry;
 
 
 public class InstallerEntryPoint {
+	static long start = System.currentTimeMillis();
 	
 	//Standalone only
 	public static void main(String[] args) {
 		try {
+			long a, b, c;
 			SharedBootstrap.classloaderNoParent();
+			a = System.currentTimeMillis();
 			SharedBootstrap.loadRuntime();
+			b = System.currentTimeMillis();
 			SharedBootstrap.loadMain("Main.OzoneInstaller", args);
 			//SharedBootstrap.loadMain("Premain.MindustryEntryPoint", args);
 		}catch (Throwable t) {

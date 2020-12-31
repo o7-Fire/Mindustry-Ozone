@@ -16,6 +16,7 @@
 
 package Main;
 
+import Atom.Utility.Pool;
 import Bot.Interface.Shared.BotInterface;
 import Bot.Interface.Shared.ServerInterface;
 import Ozone.Commands.Task.Task;
@@ -53,10 +54,6 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import static Bot.Manifest.*;
-import static arc.Core.app;
-import static arc.util.Log.format;
-import static arc.util.Log.logger;
-import static mindustry.Vars.appName;
 
 public class OxygenMindustry extends ClientLauncher implements BotInterface {
 	// protected static String[] tags = {"&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", ""};
@@ -97,7 +94,7 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 	}
 	
 	private static void watcher() {
-		Thread t = new Thread(() -> {
+		Pool.daemon(() -> {
 			while (true) {
 				try {
 					Thread.sleep(500);
@@ -108,13 +105,11 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 				}
 			}
 			oxygen.kill();
-		});
-		t.setDaemon(true);
-		t.start();
+		}).start();
 	}
 	
 	public static void preInit() {
-		appName = "Oxygen-Mindustry-Bot";
+		Vars.appName = "Oxygen-Mindustry-Bot";
 		Events.on(EventType.ClientCreateEvent.class, s -> {
 			logger();
 		});
@@ -122,8 +117,8 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 	
 	public static void logger() {
 		
-		logger = (level1, text) -> {
-			String result = "[" + dateTime.format(LocalDateTime.now()) + "] " + format(tags[level1.ordinal()] + " " + text + "[white]");
+		Log.logger = (level1, text) -> {
+			String result = "[" + dateTime.format(LocalDateTime.now()) + "] " + Log.format(tags[level1.ordinal()] + " " + text + "[white]");
 			System.out.println(result);
 			Sentry.addBreadcrumb(text, level1.name());
 		};
@@ -158,7 +153,7 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 	
 	@Override
 	public void init() {
-		Fi f = new Fi(OS.getAppDataDirectoryString(appName)).child("mods/");
+		Fi f = new Fi(OS.getAppDataDirectoryString(Vars.appName)).child("mods/");
 		f.mkdirs();
 		f = f.child("Ozone.jar");
 		File ozone = new File(OxygenMindustry.class.getProtectionDomain().getCodeSource().getLocation().getFile());
@@ -216,7 +211,7 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 	
 	@Override
 	public boolean alive() {
-		return app.isHeadless();
+		return Core.app != null;
 	}
 	
 	@Override
@@ -227,11 +222,11 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 	@Override
 	public void kill() {
 		Log.info("SIGKILL Signal Received");
-		app.exit();
+		Core.app.exit();
 	}
 	
 	@Override
 	public String getType() {
-		return app.getType().name();
+		return Core.app.getClass().getName();
 	}
 }

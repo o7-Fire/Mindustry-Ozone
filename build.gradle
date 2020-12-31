@@ -36,27 +36,37 @@ allprojects {
         else
             modsBuilder = System.getProperty("user.name")
 
-        def atomMeta = new File(sourceSets.main.resources.srcDirs[0], "Manifest.properties")
+        def atomMeta = new File(rootDir, "src/main/resources/Manifest.properties")
+        def manifestMeta = new File(rootDir, "Manifest/src/main/resources/Manifest.properties")
         try {
             atomMeta.delete()
             atomMeta.createNewFile()
         }catch(ignored){}
+        try {
+            manifestMeta.delete()
+            manifestMeta.createNewFile()
+        }catch(ignored){}
+
+        Date d = new Date();
+        Formatter formatter = new Formatter();
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        StringBuilder sb = new StringBuilder();
+        sb.append("AtomHash").append("=").append(atomHash).append("\n")
+        sb.append("ArcHash").append("=").append(arcHash).append("\n")
+        sb.append("MindustryVersion").append("=").append(mindustryVersion).append("\n")
+        sb.append("VHash").append("=").append(version).append("\n")
+        sb.append("ModsBuilder").append("=").append(modsBuilder).append("\n")
+        sb.append("TimeStamp").append("=").append(formatter.format(Locale.UK, "%tl:%tM:%tS %tp %tB %te, %tY", c, c, c, c, c, c, c).toString()).append("\n")
+        sb.append("TimeMilis").append("=").append(String.valueOf(System.currentTimeMillis())).append("\n")
+        sb.append("ManifestVersion").append("=").append("v2.2").append("\n")
+        sb.append("Note").append("=").append(Note)
         if(atomMeta.exists()) {
-            Date d = new Date();
-            Formatter formatter = new Formatter();
-            Calendar c = Calendar.getInstance();
-            c.setTime(d);
-            StringBuilder sb = new StringBuilder();
-            sb.append("AtomHash").append("=").append(atomHash).append("\n")
-            sb.append("ArcHash").append("=").append(arcHash).append("\n")
-            sb.append("MindustryVersion").append("=").append(mindustryVersion).append("\n")
-            sb.append("VHash").append("=").append(version).append("\n")
-            sb.append("ModsBuilder").append("=").append(modsBuilder).append("\n")
-            sb.append("TimeStamp").append("=").append(formatter.format(Locale.UK, "%tl:%tM:%tS %tp %tB %te, %tY", c, c, c, c, c, c, c).toString()).append("\n")
-            sb.append("TimeMilis").append("=").append(String.valueOf(System.currentTimeMillis())).append("\n")
-            sb.append("ManifestVersion").append("=").append("v2.1").append("\n")
             Files.write(atomMeta.toPath(), sb.toString().getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
         }
+        if(manifestMeta.exists())
+            Files.write(manifestMeta.toPath(), sb.toString().getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+
 
 
     }
@@ -89,6 +99,7 @@ task deploy(type: Jar) {
 
 jar {
     archiveFileName = "Ozone.jar"
+
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }

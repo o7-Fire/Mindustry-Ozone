@@ -14,18 +14,35 @@
  * limitations under the License.
  */
 
-package Main;
+package Ozone.Desktop.Swing;
 
-import Ozone.Desktop.Pre.DownloadSwing;
-
-import java.io.File;
+import javax.swing.*;
 import java.net.URL;
 
-public class Download {
-	public static void main(URL url, File file) {
-		DownloadSwing d = new DownloadSwing(url, file);
-		d.display();
-		d.run();
-		
+public class Splash {
+	JWindow window = new JWindow();
+	JLabel label;
+	
+	public Splash(URL gif) {
+		label = new JLabel("", new ImageIcon(gif), SwingConstants.CENTER);
+		window.setAlwaysOnTop(true);
+		window.getContentPane().add(label);
+		window.pack();
+		window.setLocationRelativeTo(null);
+		window.setVisible(true);
+	}
+	
+	public void dispose() {
+		window.dispose();
+	}
+	
+	public void setLabel(String t) {
+		label.setText(t);
+		window.setLocationRelativeTo(null);
+		window.pack();
+	}
+	
+	public void setVisible(boolean b) {
+		window.setVisible(b);
 	}
 }

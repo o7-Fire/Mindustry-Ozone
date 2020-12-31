@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-package Settings;
+package Bot.Commands;
 
-public class Version {
-	public static final String semantic = "0.11.8";
-}
+public class Follow extends Command {}

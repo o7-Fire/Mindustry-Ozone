@@ -16,6 +16,7 @@ package Ozone.Test;/*
 
 import Atom.File.FileUtility;
 import Ozone.Desktop.Pre.DownloadSwing;
+import Ozone.Desktop.Propertied;
 import Ozone.Pre.Download;
 
 import java.io.File;
@@ -30,7 +31,9 @@ public class NetTest extends Test {
 		subTests.add(new SubTest("Downloading Interface Swing", this::downloadGUI));
 		subTests.add(new SubTest("Downloading Interface CLI", this::download));
 		try {
-			url = new URL("https://github.com/Anuken/Mindustry/releases/download/v121.2/Mindustry.jar");
+			String version = Propertied.Manifest.get("MindustryVersion");
+			if (version == null) throw new NullPointerException("MindustryVersion not found in property");
+			url = new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/server-release.jar");
 		}catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}
