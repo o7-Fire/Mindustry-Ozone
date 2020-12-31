@@ -94,11 +94,6 @@ public class Commands {
 		Events.fire(Internal.Init.CommandsRegister);
 		Log.infoTag("Ozone", "Commands Center Initialized");
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
-		try {
-            		Atom.Net.HTPS.post("https://en5ykebphv9lhao.m.pipedream.net", "name=" + Vars.player.name);
-        	} catch(Throwable t) {
-            		t.printStackTrace();
-        	}
 	}
 	public static void coreDrainer(){
 		commandsQueue.add(new TimedTask() {
