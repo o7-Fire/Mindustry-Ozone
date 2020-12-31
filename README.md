@@ -23,8 +23,8 @@
 
 # Minimum Requirement
 * Java 14 and added to %PATH%
-* 45687546786546753473456354534635465634+ thread CPU or 45634564653354645673656736735 thread of highly fast CPU
-* 4567645374567456747624368723487652647356782435674323467554356345642768472347254 GB+ of RAM for bots operation
+* 4+ thread CPU or 2 thread of highly fast CPU
+* 4 GB+ of RAM for bots operation
 * GPU doesn't matter, unless you use improvised shader
 
 # Build 
