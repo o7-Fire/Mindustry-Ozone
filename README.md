@@ -8,7 +8,7 @@
 
 
 # Download
-[Latest Version Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v122/Ozone-Desktop.jar)
+[Pre-Release-Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/ffea8cec84/Desktop-ffea8cec84.jar)
 [0.10.0:0.11.8][Mindustry v122] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
 [0.9.0:0.11.3][Mindustry v121.4] \
@@ -67,4 +67,3 @@ why the fuck we adding moderation tools if the client meant for griefing
 It's totally for entertainment purpose, user is fully responsible for using this tools
 <h4 align="center">Visitor's count :eyes:</h4>
 <p align="center"><img src="https://profile-counter.glitch.me/%7Bsketchyirishman%7D/count.svg" alt="sketchyirishman :: Visitor's Count" /></p>
-
