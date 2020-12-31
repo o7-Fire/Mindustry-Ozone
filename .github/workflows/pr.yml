@@ -16,6 +16,7 @@ jobs:
         java-version: 14
     - name: Change wrapper permissions
       run: chmod +x ./gradlew
+
     - name: Build mod jar
       run: ./gradlew deploy -PgHash="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
     - name: Upload built jar file
