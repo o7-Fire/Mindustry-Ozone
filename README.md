@@ -8,7 +8,7 @@
 
 
 # Download
-[Latest Version Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v122/Ozone-Desktop.jar)
+[Pre-Release-Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/ffea8cec84/Desktop-ffea8cec84.jar)
 [0.10.0:0.11.8][Mindustry v122] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
 [0.9.0:0.11.3][Mindustry v121.4] \
@@ -23,8 +23,8 @@
 
 # Minimum Requirement
 * Java 14 and added to %PATH%
-* 4+ thread CPU or 2 thread of highly fast CPU
-* 4 GB+ of RAM for bots operation
+* 45687546786546753473456354534635465634+ thread CPU or 45634564653354645673656736735 thread of highly fast CPU
+* 4567645374567456747624368723487652647356782435674323467554356345642768472347254 GB+ of RAM for bots operation
 * GPU doesn't matter, unless you use improvised shader
 
 # Build 
