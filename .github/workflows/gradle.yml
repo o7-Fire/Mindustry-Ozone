@@ -41,4 +41,4 @@ jobs:
           body: |
             Ozone Mod Build ${{ github.run_number }}  Check Actions Tab for .jar
           draft: false
-          prerelease: false
+          prerelease: true
