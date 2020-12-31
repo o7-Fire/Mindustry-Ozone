@@ -30,3 +30,17 @@ jobs:
         name: Ozone-Manifest
         path: src/main/resources/Manifest.properties
 
+    - name: Create Release
+      if: strategy.job-index == 0
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          body: |
+           Ozone Build ${{ github.run_number }} check actions tab for .jar
+          draft: false
+          prerelease: true
+      
