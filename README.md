@@ -53,16 +53,14 @@ or
 * Raid pattern detection
 * Systematic player logging
 * Bots powered moderation\
-> why the fuck we adding moderation tools if the client meant for griefing
+why the fuck we adding moderation tools if the client meant for griefing
 
 > Raiding tools
-* Spamming tools (done)
+* Spamming tools
 * Bots powered spam
 * Built in VPN
 - its harder than expected
 * Bots powered raiding
-* delete all conveyors
-* break drills and resource maker by 1%
 * Resource drainer
 * Nuker
 
