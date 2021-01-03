@@ -58,6 +58,7 @@ public class Commands {
 	public static Map<String, Command> commandsList = new TreeMap<>();
 	
 	private volatile static boolean falseVote = false;
+	private volatile static boolean drainingcore = false;
 	
 	private static boolean init = false;
 	
@@ -79,6 +80,7 @@ public class Commands {
 		register("send-colorize", new Command(Commands::sendColorize));
 		
 		//Commands with icon support no-argument-commands (user input is optional)
+		register("draincore", new Command(Commands::draincore, Icon.hammer));
 		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
 		register("info-unit", new Command(Commands::infoUnit, Icon.units));
 		register("force-exit", new Command(Commands::forceExit, Icon.exit));
@@ -432,6 +434,26 @@ public class Commands {
 			tellUser("chatRepeater started");
 		}else {
 			tellUser("chatRepeater ended");
+		}
+	}
+	
+	public static void draincore() {
+		drainingcore = !drainingcore;
+		if (drainingcore) {
+			Thread s1 = new Thread(() -> {
+				while (drainingcore) {
+					Interface.withdrawItem(Vars.player.closestCore(), Vars.player.closestCore().items().first());
+					Interface.dropItem();
+					try {
+						Thread.sleep(20);
+					} catch (Throwable ignored) {
+					}
+				}
+			});
+			s1.start();
+			tellUser("draining core");
+		}else {
+			tellUser("stopped draining core");
 		}
 	}
 	
