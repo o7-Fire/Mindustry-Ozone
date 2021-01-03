@@ -445,7 +445,7 @@ public class Commands {
 					Interface.withdrawItem(Vars.player.closestCore(), Vars.player.closestCore().items().first());
 					Interface.dropItem();
 					try {
-						Thread.sleep(20);
+						Thread.sleep(500);
 					} catch (Throwable ignored) {
 					}
 				}
