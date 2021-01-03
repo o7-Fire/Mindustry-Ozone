@@ -8,7 +8,7 @@
 
 
 # Download
-[Pre-Release-Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/ffea8cec84/Desktop-ffea8cec84.jar)
+[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v122/Desktop-v122.jar)
 [0.10.0:0.11.8][Mindustry v122] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
 [0.9.0:0.11.3][Mindustry v121.4] \
