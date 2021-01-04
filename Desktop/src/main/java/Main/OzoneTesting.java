@@ -54,11 +54,11 @@ public class OzoneTesting {
 		Countdown.start();
 		Updater.init();
 		ArrayList<Test.Result> r = tests.runSync();
-		Log.info("Test Result: \n" + Test.getResult(r));
+		Log.info("Test Result:");
+		for (String s : Test.getResult(r).split("\n")) Log.info(s);
 		Countdown.stop();
 		Log.info("Finished in " + Countdown.result());
-		for (Test.Result rs : r)
-			if (!rs.success) System.exit(1);
+		for (Test.Result rs : r) if (!rs.success) System.exit(1);
 		System.exit(0);
 	}
 	

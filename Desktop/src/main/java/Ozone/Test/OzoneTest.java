@@ -49,6 +49,7 @@ public class OzoneTest extends Test {
 		
 		add("Manifest Validation", () -> {
 			assert Propertied.Manifest.size() > 4 : "Invalid Manifest";
+			Log.info(Propertied.Manifest.size() + " Manifest");
 		});
 	}
 }
