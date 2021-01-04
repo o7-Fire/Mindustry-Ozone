@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Itzbenz
+ * Copyright 2021 Itzbenz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,32 +19,22 @@ package Premain;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import io.sentry.Sentry;
 
+import java.util.Arrays;
 
-public class InstallerEntryPoint {
-	static long start = System.currentTimeMillis();
-	
-	//Standalone only
+public class TestEntryPoint {
 	public static void main(String[] args) {
-		if (System.getProperty("ozoneTest") != null) {
-			TestEntryPoint.main(args);
-			return;
-		}
+		if (System.getProperty("ozoneTest") == null) System.setProperty("ozoneTest", "true");
 		try {
-			long a, b, c;
 			SharedBootstrap.classloaderNoParent();
-			a = System.currentTimeMillis();
 			SharedBootstrap.loadRuntime();
-			b = System.currentTimeMillis();
 			SharedBootstrap.loadClasspath();
-			SharedBootstrap.requireDisplay();
-			SharedBootstrap.loadMain("Main.OzoneInstaller", args);
-			//SharedBootstrap.loadMain("Premain.MindustryEntryPoint", args);
+			SharedBootstrap.loadMindustry(Arrays.asList(args));
+			SharedBootstrap.loadMain("Main.OzoneTest", args);
 		}catch (Throwable t) {
 			Catch.write(t);
 			t.printStackTrace();
 			if (t.getCause() != null) t = t.getCause();
 			Sentry.captureException(t);
-			Catch.errorBox(t.toString(), "Ozone Installer");
 			System.exit(1);
 		}
 	}

@@ -48,7 +48,7 @@ public class Version {
 			for (Map.Entry<String, String> e : h.entrySet())
 				scope.setTag("Mindustry-" + e.getKey(), e.getValue());
 		});
-		h.put("Ozone-Version", Ozone.Watcher.Version.semantic + ":" + Settings.Version.semantic);
+		h.put("Ozone-Version", Ozone.Version.core + ":" + Ozone.Version.desktop);
 		Fi file = OS.isAndroid || OS.isIos ? Core.files.internal("version.properties") : new Fi("version.properties", FileType.internal);
 		
 		ObjectMap<String, String> map = new ObjectMap<>();
@@ -97,7 +97,7 @@ public class Version {
 		if (build == -1) {
 			return "custom build";
 		}
-		return (type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision) + " [royal]Ozone[white] " + versionColorized(Ozone.Watcher.Version.semantic) + " [white]:  " + versionColorized(Settings.Version.semantic) + "[white]";
+		return (type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision) + " [royal]Ozone[white] " + versionColorized(Ozone.Version.core) + " [white]:  " + versionColorized(Ozone.Version.desktop) + "[white]";
 	}
 	
 	private static String versionColorized(String s) {

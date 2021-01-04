@@ -55,7 +55,10 @@ public class Updater {
 		Pool.daemon(() -> {
 			Future a = Pool.submit(() -> {
 				try {
-					newBuild.set(latest(Encoder.parseProperty(getBuild(true).openStream())));
+					HashMap<String, String> h = Encoder.parseProperty(getBuild(true).openStream());
+					newBuild.set(latest(h));
+					if (newBuild.get()) Log.infoTag("Updater", "New Latest Build Found: " + h.get("VHash"));
+					else Log.debug("Latest Build Incompatible or Unavailable");
 				}catch (Throwable e) {
 					Sentry.captureException(e);
 				}
@@ -63,7 +66,10 @@ public class Updater {
 			
 			Future b = Pool.submit(() -> {
 				try {
-					newRelease.set(latest(Encoder.parseProperty(getRelease(true).openStream())));
+					HashMap<String, String> h = Encoder.parseProperty(getRelease(true).openStream());
+					newRelease.set(latest(h));
+					if (newRelease.get()) Log.infoTag("Updater", "New Release Build Found: " + h.get("VHash"));
+					else Log.debug("Latest Release Is Already Installed or Unavailable");
 				}catch (Throwable e) {
 					Sentry.captureException(e);
 				}
@@ -89,9 +95,11 @@ public class Updater {
 							if (h == null) continue;
 							last = h;
 							newBuild.set(true);
+							if (newBuild.get()) Log.infoTag("Updater", "New Latest Build Found: " + h);
 							return;
 						}catch (Throwable ignored) {}
 					}
+					Log.debug("No Latest Compatible Build Found on Pool");
 				}catch (Throwable e) {
 					Sentry.captureException(e);
 				}

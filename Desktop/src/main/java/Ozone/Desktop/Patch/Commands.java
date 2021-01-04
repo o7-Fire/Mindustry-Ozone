@@ -51,8 +51,7 @@ public class Commands {
 		});
 		register("javac", new Command(Commands::javac));
 		//register("library", new Command(Commands::library));
-		if(SharedBootstrap.debug)
-			register("debug", new Command(Commands::debug, Icon.pause));
+		if (SharedBootstrap.debug) register("debug", new Command(Commands::debug, Icon.pause));
 		register("info-pos", new Command(Commands::infoPos, Icon.move));
 	}
 	

@@ -20,7 +20,6 @@ import Ozone.Desktop.Propertied;
 import Ozone.Pre.Download;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class NetTest extends Test {
@@ -34,7 +33,7 @@ public class NetTest extends Test {
 			String version = Propertied.Manifest.get("MindustryVersion");
 			if (version == null) throw new NullPointerException("MindustryVersion not found in property");
 			url = new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/server-release.jar");
-		}catch (MalformedURLException e) {
+		}catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
 	}

@@ -98,11 +98,14 @@ public class Commands {
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
 		
 	}
-	public static void coreDrainer(){
+	
+	//wtf is this
+	public static void coreDrainer() {
 		commandsQueue.add(new TimedTask() {
 			{
 				time = 200;
 			}
+			
 			@Override
 			public void update() {
 			

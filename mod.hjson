@@ -1,8 +1,8 @@
 name: "Ozone-Mindustry"
 displayName: "Ozone Mindustry"
-author: "Itzbenz"
+author: "o7-Fire"
 main: "Premain.EntryPoint"
 description: "o7-Fire Ozone Project."
-version: 1.2
-minGameVersion: 121
+version: 0.0.0
+minGameVersion: 122
 hidden: true

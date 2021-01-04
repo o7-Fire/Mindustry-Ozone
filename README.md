@@ -2,7 +2,7 @@
 ![Java CI](https://github.com/o7-Fire/Mindustry-Ozone/workflows/Java%20CI/badge.svg)
 ![](https://img.shields.io/jitpack/v/github/o7-Fire/Mindustry-Ozone?label=Mindustry-Ozone)
 ![](https://img.shields.io/github/v/release/Anuken/Mindustry?label=Mindustry-Latest)
-![](https://img.shields.io/badge/java-14-orange)
+![](https://img.shields.io/badge/java-14.0.2-orange)
 ![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fo7-Fire%2FMindustry-Ozone.svg?type=shield)
 
 
@@ -25,7 +25,15 @@
 ### Java
 
 [AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot) [OpenJDK 14]\
-[Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14]
+[Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14]\
+Funny commands to install java 14
+
+```
+  - wget https://github.com/sormuras/bach/raw/master/install-jdk.sh
+  - source install-jdk.sh --feature 14
+  - jshell --version
+  - java --version
+```
 
 # Minimum Requirement
 

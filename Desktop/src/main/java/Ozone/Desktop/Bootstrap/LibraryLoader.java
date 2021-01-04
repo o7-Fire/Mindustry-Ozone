@@ -103,6 +103,7 @@ public class LibraryLoader extends URLClassLoader {
 		temp.getParentFile().mkdirs();
 		if (!temp.exists()) {
 			try {
+				SharedBootstrap.requireDisplay();
 				Main.Download.main(url, temp);
 			}catch (Throwable t) {
 				try {
@@ -114,9 +115,9 @@ public class LibraryLoader extends URLClassLoader {
 					});
 					d.run();
 				}catch (Throwable et) {
-					Sentry.captureException(et);
+					Sentry.captureException(et.initCause(t));
+					et.printStackTrace();
 				}
-				Sentry.captureException(t);
 			}
 		}
 		if (temp.exists()) {

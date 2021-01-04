@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Itzbenz
+ * Copyright 2021 Itzbenz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,16 @@
  * limitations under the License.
  */
 
-package Ozone.Watcher;
+package Ozone;
+
+import Ozone.Desktop.Propertied;
 
 public class Version {
-	public static final String semantic = "0.10.0";
+	public static String desktop;
+	public static String core;
+	
+	static {
+		desktop = Propertied.Manifest.getOrDefault("Version.Desktop", "0.12.0-[Manifest Failed]");
+		core = Propertied.Manifest.getOrDefault("Version.Core", "0.11.0-[Manifest Failed]");
+	}
 }

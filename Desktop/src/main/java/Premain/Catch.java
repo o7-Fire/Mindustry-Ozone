@@ -17,6 +17,8 @@
 package Premain;
 
 
+import Ozone.Desktop.Bootstrap.SharedBootstrap;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,6 +43,7 @@ public class Catch {
 	
 	public static void errorBox(String infoMessage, String titleBar) {
 		try {
+			SharedBootstrap.requireDisplay();
 			javax.swing.JOptionPane.showMessageDialog(null, infoMessage, "Error: " + titleBar, JOptionPane.ERROR_MESSAGE);
 		}catch (Throwable ignored) {}
 	}

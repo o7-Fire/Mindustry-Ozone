@@ -19,6 +19,8 @@ package Ozone.Test;
 import Atom.Utility.Log;
 import Atom.Utility.Pool;
 import io.sentry.Sentry;
+import io.sentry.SentryTransaction;
+import io.sentry.SpanStatus;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ConfigurationBuilder;
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.Future;
 
-public abstract class Test {
+public class Test {
 	protected static Result successDefault = new Result("Success", true), failedDefault = new Result("Failed", false);
 	protected static Log Log;
 	private static int staticTest = 0;
@@ -39,6 +41,49 @@ public abstract class Test {
 	
 	public Test() {
 	
+	}
+	
+	public static String getResult(ArrayList<Test.Result> results) {
+		StringBuilder sb = new StringBuilder();
+		if (results.isEmpty()) sb.append("No Result Found");
+		for (Test.Result r : results)
+			sb.append(r.reason).append(":\n").append(r.success ? "Success" : "Failed").append(" in ").append(r.duration).append("ms\n");
+		return sb.toString();
+	}
+	
+	public static Result test(Testable r, String name) {
+		SentryTransaction transaction = Sentry.startTransaction(name);
+		long start = System.currentTimeMillis();
+		Throwable t = null;
+		try {
+			r.run();
+		}catch (Throwable e) {
+			t = e;
+			e.printStackTrace();
+			Sentry.captureException(e);
+			if (transaction != null) {
+				transaction.setThrowable(e);
+				transaction.setStatus(SpanStatus.INTERNAL_ERROR);
+			}
+		}
+		Result result = new Result(t == null, start);
+		result.reason = name + " " + result.reason;
+		if (t != null) {
+			result.reason += ": " + t.toString();
+			result.t = t;
+		}
+		if (transaction != null) transaction.finish();
+		return result;
+	}
+	
+	public static ArrayList<Result> runTest(ArrayList<SubTest> ar) {
+		ArrayList<Result> results = new ArrayList<>();
+		for (SubTest s : ar) {
+			Log.info("Running: " + s.name + " Test");
+			results.add(test(s.testable, s.name));
+			Log.info(s.name + " Test Finished");
+		}
+		return results;
 	}
 	
 	public static void setLog(Log log) {
@@ -64,34 +109,35 @@ public abstract class Test {
 		return test(r, "Test #" + staticTest++);
 	}
 	
-	public static Result test(Testable r, String name) {
-		long start = System.currentTimeMillis();
-		Throwable t = null;
-		try {
-			r.run();
-		}catch (Throwable e) {
-			t = e;
-			e.printStackTrace();
-			Sentry.captureException(e);
-		}
-		Result result = new Result(t == null, start);
-		result.reason = name + " " + result.reason;
-		if (t != null) {
-			result.reason += ": " + t.toString();
-			result.t = t;
-		}
-		return result;
-	}
-	
 	public static ArrayList<Result> runConcurrentTest(ArrayList<SubTest> ar) {
 		ArrayList<Future<Result>> task = new ArrayList<>();
 		ArrayList<Result> results = new ArrayList<>();
-		for (SubTest s : ar)
-			task.add(Pool.submit(() -> test(s.testable, s.name)));
+		for (SubTest s : ar) {
+			Log.info("Running: " + s.name + " Test");
+			task.add(Pool.submit(() -> {
+				Result r = test(s.testable, s.name);
+				Log.info(s.name + " Test Finished");
+				return r;
+			}));
+		}
 		task.forEach(f -> {
 			try { results.add(f.get()); }catch (Throwable ignored) { }
 		});
 		return results;
+	}
+	
+	public void add(String name, Testable testable) {
+		subTests.add(new SubTest(name, testable));
+	}
+	
+	public void add(SubTest t) {
+		subTests.add(t);
+	}
+	
+	public ArrayList<Result> runSync() {
+		testResult.clear();
+		testResult.addAll(runTest(subTests));
+		return testResult;
 	}
 	
 	public ArrayList<Result> run() {
