@@ -81,7 +81,7 @@ jobs:
       with:
         tag_name: "Snapshot"
         release_name: "0:0"
-        body: "[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/${{ github.sha }}/Desktop-${{ github.sha }}.jar)[0:0][Mindustry v***]\n${{ steps.manifest.outputs.content }}"
+        body: "${{ steps.manifest.outputs.content }}\n[Download-Jitpack](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/${{ github.sha }}/Desktop-${{ github.sha }}.jar)"
         draft: true
 
     - name: Upload Desktop
