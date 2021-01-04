@@ -20,6 +20,8 @@ import Atom.Time.Countdown;
 import Atom.Utility.Random;
 import Ozone.Commands.Commands;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Patch.CommandsDesktop;
+import Ozone.Desktop.Patch.TranslationDesktop;
 import Ozone.Desktop.Patch.Updater;
 import Ozone.Event.Internal;
 import Ozone.Internal.Interface;
@@ -55,12 +57,12 @@ public class OzoneTesting {
 		Log.info("Preparing Test");
 		tests = new OzoneTest();
 		tests.add("Commands, DesktopCommands, Patch, Events", () -> {
-			Events.run(Internal.Init.CommandsRegister, Ozone.Desktop.Patch.Commands::Init);
+			Events.run(Internal.Init.CommandsRegister, CommandsDesktop::Init);
 			Commands.init();
 			assert Commands.commandsList.size() > 5 : "Commands list is less than 5";
 		});
 		tests.add("Translation, DesktopTranslation, Patch, Events", () -> {
-			Events.run(Internal.Init.TranslationRegister, Ozone.Desktop.Patch.Translation::Init);
+			Events.run(Internal.Init.TranslationRegister, TranslationDesktop::Init);
 			Translation.register();
 			Log.info("Translation Patch Size: " + Interface.bundle.size);
 			assert Interface.bundle.size > 5 : "Bundle list is less than 5";

@@ -22,7 +22,7 @@ import java.util.Map;
 import static Ozone.Internal.Interface.registerWords;
 import static Ozone.Patch.Translation.*;
 
-public class Translation {
+public class TranslationDesktop {
 	static HashMap<String, String> deskUI = new HashMap<>();
 	private static volatile boolean init = false;
 	

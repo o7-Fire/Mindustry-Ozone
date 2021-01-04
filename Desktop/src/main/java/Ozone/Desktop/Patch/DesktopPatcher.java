@@ -64,8 +64,8 @@ public class DesktopPatcher {
 		
 		
 		Ozone.Manifest.settings.add(Desktop.class);
-		Events.run(Internal.Init.CommandsRegister, Commands::Init);
-		Events.run(Internal.Init.TranslationRegister, Translation::Init);
+		Events.run(Internal.Init.CommandsRegister, CommandsDesktop::Init);
+		Events.run(Internal.Init.TranslationRegister, TranslationDesktop::Init);
 		Events.run(Internal.Init.PatchRegister, () -> {
 			Vars.control.input = new DesktopInput();
 		});

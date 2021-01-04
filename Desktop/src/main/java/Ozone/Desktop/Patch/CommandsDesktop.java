@@ -35,7 +35,7 @@ import java.util.LinkedHashMap;
 import static Ozone.Commands.Commands.*;
 import static Settings.Core.debugMode;
 
-public class Commands {
+public class CommandsDesktop {
 	private static final LinkedHashMap<Integer, Manifest.Library> libs = new LinkedHashMap<>();
 	private static volatile boolean init = false;
 	private static int i = 0;
@@ -49,10 +49,10 @@ public class Commands {
 			libs.put(i[0], s);
 			i[0]++;
 		});
-		register("javac", new Command(Commands::javac));
+		register("javac", new Command(CommandsDesktop::javac));
 		//register("library", new Command(Commands::library));
-		if (SharedBootstrap.debug) register("debug", new Command(Commands::debug, Icon.pause));
-		register("info-pos", new Command(Commands::infoPos, Icon.move));
+		if (SharedBootstrap.debug) register("debug", new Command(CommandsDesktop::debug, Icon.pause));
+		register("info-pos", new Command(CommandsDesktop::infoPos, Icon.move));
 	}
 	
 	public static void infoPos() {
@@ -106,7 +106,7 @@ public class Commands {
 		}else if (arg.size() == 2) {
 			if (arg.get(0).equalsIgnoreCase("download")) {
 				if (arg.get(1).equalsIgnoreCase("all")) {
-					Manifest.library.forEach(Commands::downloadLib);
+					Manifest.library.forEach(CommandsDesktop::downloadLib);
 					return;
 				}else {
 					try {
