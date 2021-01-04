@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Itzbenz
+ * Copyright 2021 Itzbenz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package Ozone;
+package Ozone.Internal;
 
 
 import Atom.Struct.Filter;
@@ -38,7 +38,7 @@ import java.util.concurrent.Future;
 import static mindustry.Vars.player;
 
 public class Interface {
-	protected static final ObjectMap<String, String> bundle = new ObjectMap<>();
+	public static final ObjectMap<String, String> bundle = new ObjectMap<>();
 	
 	//on load event show this stupid warning
 	public static void warningUI(String title, String description) {
@@ -47,7 +47,7 @@ public class Interface {
 		else Vars.ui.showErrorMessage(title + "\n" + description);
 	}
 	
-	public static void dropItem(){
+	public static void dropItem() {
 		Call.dropItem(Mathf.random(120f));
 	}
 	

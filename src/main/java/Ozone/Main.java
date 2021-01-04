@@ -22,6 +22,7 @@ import Ozone.Commands.Pathfinding;
 import Ozone.Commands.TaskInterface;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
+import Ozone.Internal.Interface;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
 import Ozone.UI.CommandsListFrag;

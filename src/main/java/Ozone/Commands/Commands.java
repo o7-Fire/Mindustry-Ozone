@@ -22,7 +22,7 @@ import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Commands.Task.*;
 import Ozone.Event.Internal;
-import Ozone.Interface;
+import Ozone.Internal.Interface;
 import Ozone.Manifest;
 import Settings.Core;
 import arc.Events;

@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static Ozone.Interface.registerWords;
+import static Ozone.Internal.Interface.registerWords;
 
 public class Translation {
 	public static final ArrayList<String> normalSinglet = new ArrayList<>(Arrays.asList("Run"));

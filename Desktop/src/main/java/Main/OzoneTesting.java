@@ -17,16 +17,24 @@
 package Main;
 
 import Atom.Time.Countdown;
+import Atom.Utility.Random;
 import Ozone.Commands.Commands;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Patch.Updater;
+import Ozone.Event.Internal;
+import Ozone.Internal.Interface;
+import Ozone.Patch.Translation;
 import Ozone.Test.OzoneTest;
 import Ozone.Test.Test;
+import arc.Events;
+import arc.struct.ObjectMap;
 import arc.util.Log;
+import io.sentry.Sentry;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import static arc.util.ColorCodes.*;
 import static arc.util.Log.format;
@@ -39,13 +47,37 @@ public class OzoneTesting {
 	
 	static {
 		logger = (level1, text) -> {
+			Sentry.addBreadcrumb(text, level1.name());
 			String result = bold + lightBlack + "[" + dateTime.format(LocalDateTime.now()) + "] " + reset + format(tags[level1.ordinal()] + " " + text + "&fr");
 			System.out.println(result);
 		};
 		Log.info("Startup in " + Countdown.result(SharedBootstrap.startup));
 		Log.info("Preparing Test");
 		tests = new OzoneTest();
-		tests.add("Commands Test, Events Test, DesktopPatcher Registering", Commands::init);
+		tests.add("Commands, DesktopCommands, Patch, Events", () -> {
+			Events.run(Internal.Init.CommandsRegister, Ozone.Desktop.Patch.Commands::Init);
+			Commands.init();
+			assert Commands.commandsList.size() > 5 : "Commands list is less than 5";
+		});
+		tests.add("Translation, DesktopTranslation, Patch, Events", () -> {
+			Events.run(Internal.Init.TranslationRegister, Ozone.Desktop.Patch.Translation::Init);
+			Translation.register();
+			Log.info("Translation Patch Size: " + Interface.bundle.size);
+			assert Interface.bundle.size > 5 : "Bundle list is less than 5";
+		});
+		
+		tests.add("Color Patcher, Commands Description, Translation Patch", () -> {
+			TreeMap<String, String> modified = new TreeMap<>(), unmodified = new TreeMap<>();
+			for (ObjectMap.Entry<String, String> s : Interface.bundle) {
+				unmodified.put(s.key, s.value);
+			}
+			Log.info("Starting Color Patch");
+			for (String s : unmodified.keySet()) {
+				modified.put(s, Random.getRandomHexColor() + unmodified.get(s) + "[white]");
+			}
+			for (String k : unmodified.keySet())
+				assert !modified.get(k).equals(unmodified.get(k)) : "Modified and Unmodified are same: " + k + ":" + unmodified.get(k);
+		});
 	}
 	
 	public static void main(String[] args) {

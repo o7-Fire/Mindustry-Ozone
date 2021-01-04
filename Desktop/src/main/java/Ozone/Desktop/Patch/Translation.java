@@ -19,7 +19,7 @@ package Ozone.Desktop.Patch;
 import java.util.HashMap;
 import java.util.Map;
 
-import static Ozone.Interface.registerWords;
+import static Ozone.Internal.Interface.registerWords;
 import static Ozone.Patch.Translation.*;
 
 public class Translation {
