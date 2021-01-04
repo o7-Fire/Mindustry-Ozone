@@ -64,6 +64,14 @@ jobs:
           | jq '.[] | select(.draft == true) | .id' \
           | xargs -I '{}' \
         curl -X DELETE -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/$GITHUB_REPOSITORY/releases/{}
+        
+        
+    - name: Read manifest
+      id: manifest
+      uses: juliangruber/read-file-action@v1
+      with:
+       path: ./src/main/resources/Manifest.properties
+     
     # Create new release draft - which is not publicly visible and requires manual acceptance
     - name: Create Release Draft
       id: create_release
@@ -73,7 +81,7 @@ jobs:
       with:
         tag_name: "Snapshot"
         release_name: "0:0"
-        body: "[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/$GITHUB_SHA/Desktop-$GITHUB_SHA.jar)[0:0][Mindustry v***]"
+        body: "[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/$GITHUB_SHA/Desktop-$GITHUB_SHA.jar)[0:0][Mindustry v***]\n${{ steps.manifest.outputs.content }}"
         draft: true
 
     - name: Upload Desktop
