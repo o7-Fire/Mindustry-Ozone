@@ -38,7 +38,7 @@ import java.util.Map;
 public class SharedBootstrap {
 	
 	public static LibraryLoader libraryLoader;
-	public static boolean customBootstrap, standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null;
+	public static boolean customBootstrap, standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null || System.getProperty("ozoneTest") != null;
 	public static long startup = System.currentTimeMillis();
 	public static final String bootstrap = "SharedBootstrap 2.7", mainClass;
 	private static ArrayList<String> loadedList = new ArrayList<>();
@@ -58,13 +58,9 @@ public class SharedBootstrap {
 		Sentry.init(options -> {
 			options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
 			options.setRelease("Ozone." + Version.core + ":" + "Desktop." + Version.desktop);
-			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "no").startsWith("v") ? "release" : "dev");
-			if (System.getProperty("ozoneTest") != null) {
-				options.setEnvironment("test");
-				debug = true;
-			}
 			options.setDebug(debug);
-			
+			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "no").startsWith("v") ? "release" : "dev");
+			if (System.getProperty("ozoneTest") != null) options.setEnvironment("test");
 		});
 		setSplash("Configuring Sentry Scope");
 		Sentry.configureScope(SharedBootstrap::registerSentry);
