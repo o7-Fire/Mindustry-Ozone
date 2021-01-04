@@ -63,6 +63,7 @@ allprojects {
         sb.append("ManifestVersion").append("=").append("v2.3").append("\n")
         sb.append("Version.Core").append("=").append(versionCore).append("\n")
         sb.append("Version.Desktop").append("=").append(versionDesktop).append("\n")
+        sb.append("Version").append("=").append(versionCore+":"+versionDesktop).append("\n")
 
         sb.append("Note").append("=").append(Note)
         if(atomMeta.exists()) {
