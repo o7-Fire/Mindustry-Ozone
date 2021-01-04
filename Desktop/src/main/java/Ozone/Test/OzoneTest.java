@@ -25,18 +25,19 @@ public class OzoneTest extends Test {
 	public OzoneTest() {
 		add("Java Logic", () -> {
 			assert 1 == 1;
-			assert "b".equals("b");
+			assert "b".equals("B".toLowerCase());
 			long a = Random.getInt();
 			long b = Random.getInt(Integer.MAX_VALUE - 1);
 			//if by chance its same, its a ~~miracle~~ bug
 			assert a != b : "2 Random Integer is same how ??: " + a;
 		});
 		
-		add("Strip Colors & Version Class Patch", () -> {
+		add("Strip Colors, Version Class Patch, Version Loading", () -> {
+			Version.init();
 			arc.util.Log.info(Strings.stripColors(Version.combined()));
 		});
 		
-		add("Random Generation", () -> {
+		add("Random Generation, Benchmark", () -> {
 			long s = System.currentTimeMillis();
 			int i = 0;
 			while ((System.currentTimeMillis() - s) < 200) {

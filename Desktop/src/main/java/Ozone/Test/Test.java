@@ -79,7 +79,7 @@ public class Test {
 	public static ArrayList<Result> runTest(ArrayList<SubTest> ar) {
 		ArrayList<Result> results = new ArrayList<>();
 		for (SubTest s : ar) {
-			Log.info("Running: " + s.name + " Test");
+			Log.info("Starting: " + s.name + " Test");
 			results.add(test(s.testable, s.name));
 			Log.info("Finished: " + s.name + " Test");
 		}
