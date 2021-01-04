@@ -16,18 +16,16 @@
 
 package Ozone.Commands.Task;
 
-import arc.util.Interval;
-
 public abstract class TimedTask extends Task {
-	protected Interval timer = new Interval();
-	protected int time = 20;
+	protected long start;
+	protected long time = 100;//millisecond
 	
-	protected void setTime(int time){
-		this.time = 20;
+	protected void setTime(long time) {
+		this.time = time;
 	}
 	
 	@Override
 	public boolean isCompleted() {
-		return timer.get(time);
+		return start < System.currentTimeMillis() - time;
 	}
 }
