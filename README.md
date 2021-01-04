@@ -27,15 +27,7 @@
 ### Java
 
 [AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot) [OpenJDK 14]\
-[Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14]\
-Funny commands to install java 14
-
-```
-  - wget https://github.com/sormuras/bach/raw/master/install-jdk.sh
-  - source install-jdk.sh --feature 14
-  - jshell --version
-  - java --version
-```
+[Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14]
 
 # Minimum Requirement
 
