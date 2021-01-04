@@ -60,7 +60,7 @@ allprojects {
         sb.append("ModsBuilder").append("=").append(modsBuilder).append("\n")
         sb.append("TimeStamp").append("=").append(formatter.format(Locale.UK, "%tl:%tM:%tS %tp %tB %te, %tY", c, c, c, c, c, c, c).toString()).append("\n")
         sb.append("TimeMilis").append("=").append(String.valueOf(System.currentTimeMillis())).append("\n")
-        sb.append("ManifestVersion").append("=").append("v2.3").append("\n")
+        sb.append("ManifestVersion").append("=").append("v2.4").append("\n")
         sb.append("Version.Core").append("=").append(versionCore).append("\n")
         sb.append("Version.Desktop").append("=").append(versionDesktop).append("\n")
         sb.append("Version").append("=").append(versionCore+":"+versionDesktop).append("\n")
