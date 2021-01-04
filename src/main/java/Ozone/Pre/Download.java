@@ -69,7 +69,6 @@ public class Download implements Runnable {
 			
 			}
 		}
-		print("Finished");
 	}
 	
 	protected void setMax(long max) {
@@ -149,7 +148,7 @@ public class Download implements Runnable {
 		file.getParentFile().mkdirs();
 		if (temp.exists()) Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		else throw new FileNotFoundException(temp.getAbsolutePath() + " not found. transfer failure ?");
-		
+		if (pw != null) pw.accept("Finished");
 	}
 	
 	public Future<?> runAsync() {

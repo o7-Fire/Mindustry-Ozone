@@ -17,14 +17,12 @@
 package Main;
 
 import Atom.Time.Countdown;
-import Atom.Utility.Random;
 import Ozone.Commands.Commands;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Patch.Updater;
+import Ozone.Test.OzoneTest;
 import Ozone.Test.Test;
 import arc.util.Log;
-import arc.util.Strings;
-import mindustry.core.Version;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -34,8 +32,8 @@ import static arc.util.ColorCodes.*;
 import static arc.util.Log.format;
 import static arc.util.Log.logger;
 
-public class OzoneTest {
-	public static Test tests = new Test() {};
+public class OzoneTesting {
+	public static Test tests;
 	protected static String[] tags = {"&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", ""};
 	protected static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss"), autosaveDate = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH-mm-ss");
 	
@@ -46,30 +44,8 @@ public class OzoneTest {
 		};
 		Log.info("Startup in " + Countdown.result(SharedBootstrap.startup));
 		Log.info("Preparing Test");
-		tests.add("Java Logic", () -> {
-			assert 1 == 1;
-			assert "b".equals("b");
-			long a = Random.getInt();
-			long b = Random.getInt(Integer.MAX_VALUE - 1);
-			//if by chance its same, its a ~~miracle~~ bug
-			assert a != b : "2 Random Integer is same how ??: " + a;
-		});
-		tests.add("Strip Colors & Version Class Patch", () -> {
-			Log.info(Strings.stripColors(Version.combined()));
-		});
-		tests.add("Random Generation", () -> {
-			long s = System.currentTimeMillis();
-			ArrayList<Integer> h = new ArrayList<>();
-			while ((System.currentTimeMillis() - s) < 200) {
-				h.add(Random.getInt());
-			}
-			Log.info("Generated " + h.size() + " random number in " + (System.currentTimeMillis() - s) + "ms");
-		});
-		tests.add("Commands Test, Events Test, DesktopPatcher Registering", () -> {
-			Commands.init();
-		});
-		
-		
+		tests = new OzoneTest();
+		tests.add("Commands Test, Events Test, DesktopPatcher Registering", Commands::init);
 	}
 	
 	public static void main(String[] args) {
@@ -77,9 +53,12 @@ public class OzoneTest {
 		Test.setLog(new Logggg());
 		Countdown.start();
 		Updater.init();
-		Log.info("Test Result: \n" + Test.getResult(tests.runSync()));
+		ArrayList<Test.Result> r = tests.runSync();
+		Log.info("Test Result: \n" + Test.getResult(r));
 		Countdown.stop();
 		Log.info("Finished in " + Countdown.result());
+		for (Test.Result rs : r)
+			if (!rs.success) System.exit(1);
 		System.exit(0);
 	}
 	

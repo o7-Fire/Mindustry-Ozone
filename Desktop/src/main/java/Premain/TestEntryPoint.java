@@ -29,7 +29,7 @@ public class TestEntryPoint {
 			SharedBootstrap.loadRuntime();
 			SharedBootstrap.loadClasspath();
 			SharedBootstrap.loadMindustry(Arrays.asList(args));
-			SharedBootstrap.loadMain("Main.OzoneTest", args);
+			SharedBootstrap.loadMain("Main.OzoneTesting", args);
 		}catch (Throwable t) {
 			Catch.write(t);
 			t.printStackTrace();
