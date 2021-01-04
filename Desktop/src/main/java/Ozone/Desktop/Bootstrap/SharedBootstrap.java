@@ -54,16 +54,20 @@ public class SharedBootstrap {
 		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
 		if (trace.length > 0) mainClass = trace[trace.length - 1].getClassName();
 		else mainClass = null;
-		setSplash("Initializing Sentry");
+		setSplash("Configuring Sentry");
+		initSentry();
+		Sentry.configureScope(SharedBootstrap::registerSentry);
+	}
+	
+	public static void initSentry() {
 		Sentry.init(options -> {
 			options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
 			options.setRelease("Ozone." + Version.core + ":" + "Desktop." + Version.desktop);
 			options.setDebug(debug);
+			options.setTracesSampleRate(1.0);
 			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "no").startsWith("v") ? "release" : "dev");
 			if (System.getProperty("ozoneTest") != null) options.setEnvironment("test");
-		});
-		setSplash("Configuring Sentry Scope");
-		Sentry.configureScope(SharedBootstrap::registerSentry);
+		}, true);
 	}
 	
 	private static void moduleCheck(String name) {
@@ -101,18 +105,23 @@ public class SharedBootstrap {
 	}
 	
 	public static void registerSentry(Scope scope) {
-		scope.setTag("Ozone.Version", Version.desktop);
-		scope.setTag("Ozone.Core.Version", Version.core);
-		scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
-		scope.setTag("Java.Version", System.getProperty("java.version"));
 		try {
-			long l = ByteBuffer.wrap(System.getenv().toString().getBytes()).getLong();// ?
-			scope.setTag("UserID", String.valueOf(l));//easier to filter asshole
+			scope.setTag("Ozone.Version", Version.desktop);
+			scope.setTag("Ozone.Core.Version", Version.core);
+			scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
+			scope.setTag("Java.Version", System.getProperty("java.version"));
+			try {
+				long l = ByteBuffer.wrap(System.getenv().toString().getBytes()).getLong();// ?
+				scope.setTag("UserID", String.valueOf(l));//easier to filter asshole
+			}catch (Throwable t) {
+				Sentry.captureException(t);
+			}
+			for (Map.Entry<String, String> e : Propertied.Manifest.entrySet())
+				scope.setTag(e.getKey(), e.getValue());
 		}catch (Throwable t) {
+			t.printStackTrace();
 			Sentry.captureException(t);
 		}
-		for (Map.Entry<String, String> e : Propertied.Manifest.entrySet())
-			scope.setTag(e.getKey(), e.getValue());
 	}
 	
 	protected static void loadAtomic() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {

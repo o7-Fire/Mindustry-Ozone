@@ -36,10 +36,13 @@ import java.util.concurrent.Future;
 public class LibraryLoader extends URLClassLoader {
 	public static File cache = new File("lib/");
 	private ExecutorService es = Executors.newCachedThreadPool();
+	private static ArrayList<String> parentFirst = new ArrayList<>();
 	
 	static {
 		cache.mkdirs();
 		registerAsParallelCapable();
+		parentFirst.add(Sentry.class.getPackageName());
+		parentFirst.add(LibraryLoader.class.getPackageName());
 	}
 	
 	
@@ -151,11 +154,12 @@ public class LibraryLoader extends URLClassLoader {
 	
 	@Override
 	public synchronized Class<?> loadClass(String name) throws ClassNotFoundException {
+		for (String s : parentFirst)
+			if (name.startsWith(s))
+				try {return ClassLoader.getSystemClassLoader().loadClass(name);}catch (Throwable ignored) {}
 		
 		//Note: don't mess with java
-		if (!name.startsWith(this.getClass().getPackageName()))
-			try { return super.loadClass(name); }catch (Throwable ignored) {}
-		//Log.infoTag("Ozone-LibraryLoader", name);
+		try { return super.loadClass(name); }catch (Throwable ignored) {}
 		return ClassLoader.getSystemClassLoader().loadClass(name);
 	}
 }
