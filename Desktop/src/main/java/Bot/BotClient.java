@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Itzbenz
+ * Copyright 2021 Itzbenz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,12 @@
 
 package Bot;
 
-import Atom.Reflect.Reflect;
 import Atom.Utility.Random;
 import Bot.Interface.Shared.BotInterface;
 import Main.Ozone;
 import Ozone.Desktop.BotController;
 import Premain.BotEntryPoint;
-import arc.util.Log;
 import arc.util.OS;
-import io.sentry.Sentry;
 
 import java.io.*;
 import java.rmi.NotBoundException;
