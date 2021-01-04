@@ -4,7 +4,7 @@ name: Java CI
 on: [push, pull_request]
 
 jobs:
-  Build-Test:
+  Build-Test-Release:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,7 +38,7 @@ jobs:
         key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
     - name: Build mod jar
-      run: ./gradlew deploy -PgHash="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
+      run: ./gradlew deploy -Pversion="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
   
     - name: Upload built jar file
       uses: actions/upload-artifact@v2
@@ -81,7 +81,7 @@ jobs:
       with:
         tag_name: "Snapshot"
         release_name: "0:0"
-        body: "[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/$GITHUB_SHA/Desktop-$GITHUB_SHA.jar)[0:0][Mindustry v***]\n${{ steps.manifest.outputs.content }}"
+        body: "${{ steps.manifest.outputs.content }}\n#[Download-Jitpack](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/${{ github.sha }}/Desktop-${{ github.sha }}.jar)"
         draft: true
 
     - name: Upload Desktop
