@@ -4,7 +4,7 @@ name: Java CI
 on: [push, pull_request]
 
 jobs:
-  Build-Test:
+  Build-Test-Release:
     runs-on: ubuntu-latest
 
     steps:
