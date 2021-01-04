@@ -62,7 +62,7 @@ public class SharedBootstrap {
 	public static void initSentry() {
 		Sentry.init(options -> {
 			options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
-			options.setRelease("Ozone." + Version.core + ":" + "Desktop." + Version.desktop);
+			options.setRelease(Version.core + ":" + Version.desktop);
 			options.setDebug(debug);
 			options.setTracesSampleRate(1.0);
 			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "no").startsWith("v") ? "release" : "dev");
