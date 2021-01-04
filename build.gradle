@@ -52,7 +52,7 @@ allprojects {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         StringBuilder sb = new StringBuilder();
-        sb.append("#Comment here")
+        sb.append("#Comment here").append("\n")
         sb.append("AtomHash").append("=").append(atomHash).append("\n")
         sb.append("ArcHash").append("=").append(arcHash).append("\n")
         sb.append("MindustryVersion").append("=").append(mindustryVersion).append("\n")
