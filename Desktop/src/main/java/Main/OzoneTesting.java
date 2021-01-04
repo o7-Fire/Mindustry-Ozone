@@ -49,11 +49,12 @@ public class OzoneTesting {
 	}
 	
 	public static void main(String[] args) {
-		Log.info("Running Test");
+		Log.info("Running Test\n");
 		Test.setLog(new Logggg());
 		Countdown.start();
 		Updater.init();
 		ArrayList<Test.Result> r = tests.runSync();
+		Log.info("\n");
 		Log.info("Test Result:");
 		for (String s : Test.getResult(r).split("\n")) Log.info(s);
 		Countdown.stop();

@@ -166,7 +166,7 @@ public class EnvironmentInformation extends OzoneBaseDialog {
 			generate();
 			Core.app.setClipboardText(finalValue);
 			Manifest.toast("Copied");
-		}).expandX().disabled(true).growX();
+		}).expandX().growX();
         /*
         table.button(Icon.copy, () -> {
             Core.app.setClipboardText(finalValue);
