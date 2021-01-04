@@ -60,4 +60,4 @@ jobs:
         key: idontcareanymoreabouthisstupidkey
 
     - name: Ozone Test
-      run: java -jar Desktop/build/libs/Ozone-Desktop.jar -DozoneTest=true
+      run: java -DozoneTest=true -jar Desktop/build/libs/Ozone-Desktop.jar
