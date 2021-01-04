@@ -8,6 +8,7 @@
 
 
 # Download
+### Ozone
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v122/Desktop-v122.jar)
 [0.10.0:0.11.8][Mindustry v122] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
@@ -21,13 +22,20 @@
 [Other Version](https://jitpack.io/#o7-Fire/Mindustry-Ozone) [Jitpack] \
 [Other Version](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github]
 
+### Java
+
+[AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot) [OpenJDK 14]\
+[Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14]
+
 # Minimum Requirement
-* Java 14 and added to %PATH%
+
+* Java 14+ and added to %PATH%
 * 4+ thread CPU or 2 thread of highly fast CPU
 * 4 GB+ of RAM for bots operation
 * GPU doesn't matter, unless you use improvised shader
 
-# Build 
+# Build
+
 * 0.Install JDK 14
 * 1.run `./gradlew deploy`
 * 2.you get the mods in `Desktop/build/libs/`
