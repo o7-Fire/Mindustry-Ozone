@@ -54,8 +54,8 @@ public class OzoneTesting {
 		Countdown.start();
 		Updater.init();
 		ArrayList<Test.Result> r = tests.runSync();
-		Log.info("\n");
-		Log.info("Test Result:");
+		Log.info("\b");
+		Log.info("Test Result: ");
 		for (String s : Test.getResult(r).split("\n")) Log.info(s);
 		Countdown.stop();
 		Log.info("Finished in " + Countdown.result());
