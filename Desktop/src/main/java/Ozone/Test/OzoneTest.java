@@ -48,9 +48,15 @@ public class OzoneTest extends Test {
 			arc.util.Log.info("Generated " + i + " random number in " + (System.currentTimeMillis() - s) + "ms");
 		});
 		
-		add("Manifest Validation", () -> {
+		add("Manifest Validation, Version Validation", () -> {
 			Log.info(Propertied.Manifest.size() + " Manifest");
 			assert Propertied.Manifest.size() == 11 : "Invalid Manifest";
+			//Major Build Validation
+			int a = Version.build;
+			String s = Propertied.Manifest.getOrDefault("MindustryVersion", "-2").substring(1);
+			if (s.contains(".")) s = s.substring(0, s.indexOf('.'));
+			int b = Integer.parseInt(s);
+			assert b == a : "Manifest Build Number Mismatch a:b " + a + ":" + b;
 		});
 	}
 }

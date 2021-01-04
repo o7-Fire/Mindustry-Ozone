@@ -22,7 +22,6 @@ import Ozone.Commands.Commands;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Patch.CommandsDesktop;
 import Ozone.Desktop.Patch.TranslationDesktop;
-import Ozone.Desktop.Patch.Updater;
 import Ozone.Event.Internal;
 import Ozone.Internal.Interface;
 import Ozone.Patch.Translation;
@@ -86,7 +85,6 @@ public class OzoneTesting {
 		Log.info("Running Test\n");
 		Test.setLog(new Logggg());
 		Countdown.start();
-		Updater.init();
 		ArrayList<Test.Result> r = tests.runSync();
 		Log.info("\b");
 		Log.info("Test Result: ");

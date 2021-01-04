@@ -1,11 +1,13 @@
 package mindustry.core;
 
 import Atom.Utility.Random;
+import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Propertied;
 import arc.Core;
 import arc.Files.FileType;
 import arc.files.Fi;
 import arc.struct.ObjectMap;
+import arc.util.Log;
 import arc.util.OS;
 import arc.util.Strings;
 import arc.util.io.PropertiesUtils;
@@ -40,6 +42,10 @@ public class Version {
 	 */
 	public static boolean enabled = true;
 	public static HashMap<String, String> h = new HashMap<>();
+	
+	static {
+		if (SharedBootstrap.debug) Log.level = Log.LogLevel.debug;
+	}
 	
 	public static void init() {
 		if (!enabled) return;

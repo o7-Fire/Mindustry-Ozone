@@ -113,21 +113,6 @@ public class Updater {
 			JsonObject jb = (JsonObject) je;
 			String sha = jb.get("sha").getAsString();
 			if (sha == null) throw new NullPointerException("SHA null" + je.toString());
-            /*
-            Instant instant = Instant.parse(jb.get("commit").getAsJsonObject().get("committer").getAsJsonObject().get("date").getAsString());
-            JsonObject tree = jb.get("commit").getAsJsonObject().get("tree").getAsJsonObject();
-            URL url = null;
-            for(JsonElement e : JsonParser.parseString(new String(new URL(tree.get("url").getAsString()).openStream().readAllBytes())).getAsJsonObject().get("tree").getAsJsonArray()){
-                JsonObject s = (JsonObject) e;
-                if(s.getAsJsonObject().get("path").getAsString().equals("settings.gradle"))
-                    url = new URL(s.getAsJsonObject().get("url").getAsString());
-            }
-
-            HashMap<String, String> h = Encoder.parseProperty(url.openStream());
-            h.put("TimeMilis", String.valueOf(instant.getEpochSecond() * 100));
-
-
-             */
 			HashMap<String, String> h;
 			h = Encoder.parseProperty(getDownload(sha, true).openStream());
 			if (latest(h)) return sha;
