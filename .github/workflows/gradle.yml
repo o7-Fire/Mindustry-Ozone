@@ -1,7 +1,7 @@
 
 name: Java CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   BuildGradle:
@@ -29,4 +29,5 @@ jobs:
       with:
         name: Ozone-Manifest
         path: src/main/resources/Manifest.properties
-
+    - name: Ozone Test
+      uses: java -jar Desktop/build/libs/Ozone-Desktop.jar -DozoneTest=true
