@@ -52,12 +52,5 @@ jobs:
         name: Ozone-Manifest
         path: src/main/resources/Manifest.properties
 
-    # Cache Library
-    - name: Setup Ozone Library Cache
-      uses: actions/cache@v2
-      with:
-        path: ./lib
-        key: idontcareanymoreabouthisstupidkey
-
     - name: Ozone Test
       run: java -DozoneTest=true -jar Desktop/build/libs/Ozone-Desktop.jar
