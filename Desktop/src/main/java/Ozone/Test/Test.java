@@ -81,7 +81,7 @@ public class Test {
 		for (SubTest s : ar) {
 			Log.info("Running: " + s.name + " Test");
 			results.add(test(s.testable, s.name));
-			Log.info(s.name + " Test Finished");
+			Log.info("Finished: " + s.name + " Test");
 		}
 		return results;
 	}
