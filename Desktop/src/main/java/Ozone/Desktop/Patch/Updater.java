@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
-
+//TODO add github provider for release
 public class Updater {
 	
 	public final static AtomicBoolean newRelease = new AtomicBoolean(false), newBuild = new AtomicBoolean(false);
@@ -51,14 +51,38 @@ public class Updater {
 		init = true;
 		Log.debug("Update Daemon Started");
 		
-		
-		Pool.daemon(() -> {
 			Future a = Pool.submit(() -> {
 				try {
-					HashMap<String, String> h = Encoder.parseProperty(getBuild(true).openStream());
-					newBuild.set(latest(h));
-					if (newBuild.get()) Log.infoTag("Updater", "New Latest Build Found: " + h.get("VHash"));
-					else Log.debug("Latest Build Incompatible or Unavailable");
+					HashMap<String, String> he = Encoder.parseProperty(getBuild(true).openStream());
+					newBuild.set(latest(he));
+					if (newBuild.get()) Log.infoTag("Updater", "New Latest Build Found: " + he.get("VHash"));
+					else {
+						Log.debug("Latest Build Incompatible or Unavailable");
+						Pool.daemon(() -> {
+							try {
+								URL u = new URL("https://api.github.com/repos/o7-Fire/Mindustry-Ozone/commits?per_page=" + Random.getInt(2, 15));
+								JsonArray js = JsonParser.parseString(new String(u.openStream().readAllBytes())).getAsJsonArray();
+								ArrayList<Future<String>> list = new ArrayList<>();
+								for (JsonElement je : js) {
+									list.add(Pool.submit(() -> checkJsonGithub(je)));
+								}
+								for (Future<String> f : list) {
+									try {
+										if (newBuild.get()) return;
+										String h = f.get();
+										if (h == null) continue;
+										last = h;
+										newBuild.set(true);
+										if (newBuild.get()) Log.infoTag("Updater", "New Build Found: " + h);
+										return;
+									}catch (Throwable ignored) {}
+								}
+								Log.debug("No Compatible Build Found on Pool");
+							}catch (Throwable e) {
+								Sentry.captureException(e);
+							}
+						}).start();
+					}
 				}catch (Throwable e) {
 					Sentry.captureException(e);
 				}
@@ -81,30 +105,7 @@ public class Updater {
 				b.get();
 			}catch (Throwable ignored) {}
 			if (newBuild.get()) return;
-			Pool.daemon(() -> {
-				try {
-					URL u = new URL("https://api.github.com/repos/o7-Fire/Mindustry-Ozone/commits?per_page=" + Random.getInt(2, 15));
-					JsonArray js = JsonParser.parseString(new String(u.openStream().readAllBytes())).getAsJsonArray();
-					ArrayList<Future<String>> list = new ArrayList<>();
-					for (JsonElement je : js) {
-						list.add(Pool.submit(() -> checkJsonGithub(je)));
-					}
-					for (Future<String> f : list) {
-						try {
-							String h = f.get();
-							if (h == null) continue;
-							last = h;
-							newBuild.set(true);
-							if (newBuild.get()) Log.infoTag("Updater", "New Latest Build Found: " + h);
-							return;
-						}catch (Throwable ignored) {}
-					}
-					Log.debug("No Latest Compatible Build Found on Pool");
-				}catch (Throwable e) {
-					Sentry.captureException(e);
-				}
-			}).start();
-		}).start();
+		
 		
 	}
 	
