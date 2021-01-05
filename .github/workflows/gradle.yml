@@ -38,7 +38,7 @@ jobs:
         key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
     - name: Build mod jar
-      run: ./gradlew deploy --no-daemon -Pversion="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
+      run: ./gradlew deploy -Pversion="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
   
     - name: Upload built jar file
       uses: actions/upload-artifact@v2
