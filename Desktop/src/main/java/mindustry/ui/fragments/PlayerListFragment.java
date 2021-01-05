@@ -11,6 +11,7 @@ import arc.scene.ui.SettingsDialog;
 import arc.scene.ui.TextField;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
 import arc.util.Interval;
 import arc.util.Scaling;
 import arc.util.Strings;
@@ -33,7 +34,7 @@ public class PlayerListFragment extends Fragment {
 	private boolean visible = false;
 	private Interval timer = new Interval();
 	private TextField sField;
-	private boolean found = false;
+	private Seq<Player> players = new Seq<>();
 	
 	@Override
 	public void build(Group parent) {
@@ -89,10 +90,14 @@ public class PlayerListFragment extends Fragment {
 		content.clear();
 		
 		float h = 74f;
-		found = false;
+		boolean found = false;
 		
-		Groups.player.sort(Structs.comparing(Player::team));
-		Groups.player.each(user -> {
+		players.clear();
+		Groups.player.copy(players);
+		
+		players.sort(Structs.comps(Structs.comparing(Player::team), Structs.comparingBool(p -> !p.admin)));
+		
+		for (Player user : players) {
 			found = true;
 			NetConnection connection = user.con;
 			
@@ -172,7 +177,7 @@ public class PlayerListFragment extends Fragment {
 			content.row();
 			content.image().height(4f).color(state.rules.pvp ? user.team().color : Pal.gray).growX();
 			content.row();
-		});
+		}
 		
 		if (!found) {
 			content.add(Core.bundle.format("players.notfound")).padBottom(6).width(350f).maxHeight(h + 14);

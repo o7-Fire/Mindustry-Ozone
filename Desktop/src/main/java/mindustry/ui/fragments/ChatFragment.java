@@ -3,6 +3,7 @@ package mindustry.ui.fragments;
 import Ozone.Commands.Commands;
 import arc.Core;
 import arc.Input.TextInput;
+import arc.func.Boolp;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
@@ -34,6 +35,7 @@ public class ChatFragment extends Table {
 	private boolean shown = false;
 	private TextField chatfield;
 	private Label fieldlabel = new Label(">");
+	private ChatMode mode = ChatMode.normal;
 	private Font font;
 	private GlyphLayout layout = new GlyphLayout();
 	private float offsetx = Scl.scl(4), offsety = Scl.scl(4), fontoffsetx = Scl.scl(2), chatspace = Scl.scl(50);
@@ -83,6 +85,9 @@ public class ChatFragment extends Table {
 					historyPos--;
 					updateChat();
 				}
+				if (input.keyTap(Binding.chat_mode)) {
+					nextMode();
+				}
 				scrollPos = (int) Mathf.clamp(scrollPos + input.axis(Binding.chat_scroll), 0, Math.max(0, messages.size - messagesShown));
 			}
 		});
@@ -131,7 +136,7 @@ public class ChatFragment extends Table {
 		Draw.color(shadowColor);
 		
 		if (shown) {
-			Fill.crect(offsetx, chatfield.y, chatfield.getWidth() + 15f, chatfield.getHeight() - 1);
+			Fill.crect(offsetx, chatfield.y + scene.marginBottom, chatfield.getWidth() + 15f, chatfield.getHeight() - 1);
 		}
 		
 		super.draw();
@@ -144,7 +149,7 @@ public class ChatFragment extends Table {
 		Draw.color(shadowColor);
 		Draw.alpha(shadowColor.a * opacity);
 		
-		float theight = offsety + spacing + getMarginBottom();
+		float theight = offsety + spacing + getMarginBottom() + scene.marginBottom;
 		for (int i = scrollPos; i < messages.size && i < messagesShown + scrollPos && (i < fadetime || shown); i++) {
 			
 			layout.setText(font, messages.get(i).formattedMessage, Color.white, textWidth, Align.bottomLeft, true);
@@ -223,14 +228,35 @@ public class ChatFragment extends Table {
 	}
 	
 	public void updateChat() {
-		chatfield.setText(history.get(historyPos));
-		chatfield.setCursorPosition(chatfield.getText().length());
+		chatfield.setText(mode.normalizedPrefix() + history.get(historyPos));
+		updateCursor();
+	}
+	
+	public void nextMode() {
+		ChatMode prev = mode;
+		
+		do {
+			mode = mode.next();
+		}while (!mode.isValid());
+		
+		if (chatfield.getText().startsWith(prev.normalizedPrefix())) {
+			chatfield.setText(mode.normalizedPrefix() + chatfield.getText().substring(prev.normalizedPrefix().length()));
+		}else {
+			chatfield.setText(mode.normalizedPrefix());
+		}
+		
+		updateCursor();
 	}
 	
 	public void clearChatInput() {
 		historyPos = 0;
 		history.set(0, "");
-		chatfield.setText("");
+		chatfield.setText(mode.normalizedPrefix());
+		updateCursor();
+	}
+	
+	public void updateCursor() {
+		chatfield.setCursorPosition(chatfield.getText().length());
 	}
 	
 	public boolean shown() {
@@ -245,6 +271,36 @@ public class ChatFragment extends Table {
 		fadetime = Math.min(fadetime, messagesShown) + 1f;
 		
 		if (scrollPos > 0) scrollPos++;
+	}
+	
+	private enum ChatMode {
+		normal(""), team("/t"), admin("/a", player::admin);
+		
+		public static final ChatMode[] all = values();
+		public String prefix;
+		public Boolp valid;
+		
+		ChatMode(String prefix) {
+			this.prefix = prefix;
+			this.valid = () -> true;
+		}
+		
+		ChatMode(String prefix, Boolp valid) {
+			this.prefix = prefix;
+			this.valid = valid;
+		}
+		
+		public ChatMode next() {
+			return all[(ordinal() + 1) % all.length];
+		}
+		
+		public String normalizedPrefix() {
+			return prefix.isEmpty() ? "" : prefix + " ";
+		}
+		
+		public boolean isValid() {
+			return valid.get();
+		}
 	}
 	
 	private static class ChatMessage {
@@ -262,5 +318,4 @@ public class ChatFragment extends Table {
 			}
 		}
 	}
-	
 }

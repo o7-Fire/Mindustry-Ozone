@@ -42,7 +42,6 @@ import mindustry.world.Tile;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -68,11 +67,7 @@ public class Vars implements Loadable {
 	/**
 	 * global charset, since Android doesn't support the Charsets class
 	 */
-	public static final Charset charset = StandardCharsets.UTF_8;
-	/**
-	 * URL the links to the wiki's modding guide.
-	 */
-	public static final String modGuideURL = "https://mindustrygame.github.io/wiki/modding/1-modding/";
+	public static final Charset charset = Charset.forName("UTF-8");
 	/**
 	 * URL for itch.io donations.
 	 */
@@ -86,9 +81,9 @@ public class Vars implements Loadable {
 	 */
 	public static final String crashReportURL = "http://192.99.169.18/report";
 	/**
-	 * maximum size of any block, do not change unless you know what you're doing
+	 * URL the links to the wiki's modding guide.
 	 */
-	public static final int maxBlockSize = 16;
+	public static final String modGuideURL = "https://mindustrygame.github.io/wiki/modding/1-modding/";
 	/**
 	 * URL to the JSON file containing all the global, public servers. Not queried in BE.
 	 */
@@ -110,13 +105,13 @@ public class Vars implements Loadable {
 	 */
 	public static final Seq<ServerGroup> defaultServers = Seq.with();
 	/**
+	 * maximum size of any block, do not change unless you know what you're doing
+	 */
+	public static final int maxBlockSize = 16;
+	/**
 	 * maximum distance between mine and core that supports automatic transferring
 	 */
 	public static final float mineTransferRange = 220f;
-	/**
-	 * chance of an invasion per turn, 1 = 100%
-	 */
-	public static final float baseInvasionChance = 1f / 100f;
 	/**
 	 * max chat message length
 	 */
@@ -154,13 +149,13 @@ public class Vars implements Loadable {
 	 */
 	public static final float turnDuration = 2 * Time.toMinutes;
 	/**
+	 * chance of an invasion per turn, 1 = 100%
+	 */
+	public static final float baseInvasionChance = 1f / 100f;
+	/**
 	 * how many turns have to pass before invasions start
 	 */
 	public static final int invasionGracePeriod = 20;
-	/**
-	 * main application name, capitalized
-	 */
-	public static String appName = "Mindustry";
 	/**
 	 * min armor fraction damage; e.g. 0.05 = at least 5% damage
 	 */
@@ -205,6 +200,10 @@ public class Vars implements Loadable {
 	 * schematic file extension
 	 */
 	public static final String schematicExtension = "msch";
+	/**
+	 * main application name, capitalized
+	 */
+	public static String appName = "Mindustry";
 	/**
 	 * Whether to load locales.
 	 */
