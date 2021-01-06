@@ -33,7 +33,7 @@ public class TranslationDesktop {
 		deskUI.put("DebugMenuDialog", "Debug Menu");
 		commands.put("javac", "run single line of java code");
 		commands.put("library", "manage runtime library");
-		commands.put("debug", "System.out.println(\"yeet\")");
+		commands.put("debug", TranslationDesktop.class.getClassLoader().toString());
 		settings.put("logMessage", "Log Every Message[Being Reworked]");
 		settings.put("disableDefaultGif", "Disable default GIF list");
 		generalSettings.put("BotController.serverPort", "Base Port");

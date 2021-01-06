@@ -18,7 +18,6 @@ package Ozone.Desktop.Patch;
 
 import Atom.Reflect.Reflect;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
-import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Settings.Desktop;
 import arc.Core;
@@ -37,12 +36,7 @@ public class DesktopPatcher {
 	public static File cache = new File(Vars.dataDirectory.file(), "cache/");
 	
 	public static void async() {
-		if (false) {
-			if (Ozone.Desktop.Manifest.messageLog.exists()) {//try to load
-				Ozone.Desktop.Manifest.tryLoadLogMessage();
-			}
-			Events.run(EventExtended.Connect.Disconnected, Ozone.Desktop.Manifest::trySaveLogMessage);
-		}
+	
 	}
 	
 	
