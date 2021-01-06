@@ -16,7 +16,7 @@
 
 package mindustry.graphics;
 
-import Atom.Net.HTPS;
+import Atom.Net.Request;
 import Settings.Desktop;
 import arc.Core;
 import arc.files.Fi;
@@ -70,7 +70,7 @@ public class MenuGifRenderer implements Disposable {
 		if (u.getProtocol().startsWith("file")) return u;
 		File target = new File(menu.file(), u.getFile().replaceAll("/", "."));
 		if (target.exists()) return target.toURI().toURL();
-		HTPS.downloadSync(u.toExternalForm(), target);
+		Request.downloadSync(u.toExternalForm(), target);
 		return target.toURI().toURL();
 	}
 	
