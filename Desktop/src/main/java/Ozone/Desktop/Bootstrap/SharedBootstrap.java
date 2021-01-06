@@ -84,6 +84,7 @@ public class SharedBootstrap {
 	protected static void setSplash(String t) {
 		if (splash != null) splash.setLabel(t);
 		System.out.println(t);
+		Sentry.addBreadcrumb(t);
 	}
 	
 	public static void loadMindustry(List<String> args) throws MalformedURLException {
@@ -106,7 +107,7 @@ public class SharedBootstrap {
 	
 	public static void registerSentry(Scope scope) {
 		try {
-			scope.setTag("Ozone.Version", Version.desktop);
+			scope.setTag("Ozone.Desktop.Version", Version.desktop);
 			scope.setTag("Ozone.Core.Version", Version.core);
 			scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
 			scope.setTag("Java.Version", System.getProperty("java.version"));

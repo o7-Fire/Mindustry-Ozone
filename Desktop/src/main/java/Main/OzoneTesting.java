@@ -91,9 +91,15 @@ public class OzoneTesting {
 		for (String s : Test.getResult(r).split("\n")) Log.info(s);
 		Countdown.stop();
 		Log.info("Finished in " + Countdown.result());
-		Sentry.captureException(new RuntimeException("Sentry Test"));
+		Sentry.captureException(new TestFinished());
 		for (Test.Result rs : r) if (!rs.success) System.exit(1);
 		System.exit(0);
+	}
+	
+	private static class TestFinished extends Throwable {
+		public TestFinished() {
+			super("Sentry Test");
+		}
 	}
 	
 	private static class Logggg extends Atom.Utility.Log {
