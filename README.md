@@ -10,8 +10,8 @@
 
 # Download
 ### Ozone
-[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v122.0.3)
-[0.11.1:0.12.2][Mindustry v122.1] \
+[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v122.1)
+[0.11.2:0.12.5][Mindustry v122.1] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v122/Desktop-v122.jar)
 [0.10.0:0.11.8][Mindustry v122] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
