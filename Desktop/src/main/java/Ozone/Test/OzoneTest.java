@@ -16,6 +16,7 @@
 
 package Ozone.Test;
 
+import Atom.Utility.Meth;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Desktop.Propertied;
@@ -44,7 +45,7 @@ public class OzoneTest extends Test {
 			BigInteger sharedKey = publicKey.multiply(privateKey);//gonna be sended to other side, so they can generate common key
 			BigInteger receivedSharedKey = new BigInteger(Random.getLong() + "");//sharedKey from other side
 			sharedKey = sharedKey.multiply(receivedSharedKey);//A common key generated, can be used to encrypt message
-			int commonSeparator = Random.getInt();// can be received from other side after key exchange
+			int commonSeparator = Meth.positive(Random.getInt());// can be received from other side after key exchange
 			Log.info("SharedKey:" + sharedKey);
 			for (int c : message.toCharArray()) s.append(c).append(commonSeparator);
 			Log.info("Encoded Message:\n" + s.toString());
