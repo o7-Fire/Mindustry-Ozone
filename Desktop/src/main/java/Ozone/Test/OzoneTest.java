@@ -62,7 +62,22 @@ public class OzoneTest extends Test {
 			assert decryptedS.equals(s.toString()) : "Encoded message not same";
 			assert decryptedMessage.toString().equals(message) : "Message received not same";
 		});
-		
+		add("Garbage Collector", () -> {
+			System.gc();
+			Runtime runtime = Runtime.getRuntime();
+			for (int i = 5; i < 100000; i += 10000) {
+				StringBuilder s = new StringBuilder("1");
+				for (int j = 1; j < i; j++) {
+					s.append(Random.getInt(0, 9));
+				}
+				System.gc();
+				long memory = runtime.totalMemory() - runtime.freeMemory();
+				BigInteger b = new BigInteger(s.toString());
+				long usedMemory = runtime.totalMemory() - runtime.freeMemory();
+				Log.info("BigInteger Length: " + b.toString().length());
+				Log.info("Used memory: " + (usedMemory - memory));
+			}
+		});
 		add("Strip Colors, Version Class Patch, Version Loading", () -> {
 			Version.init();
 			Log.info(Strings.stripColors(Version.combined()));
