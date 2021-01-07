@@ -21,6 +21,8 @@ import Ozone.Desktop.Propertied;
 import arc.util.Strings;
 import mindustry.core.Version;
 
+import java.math.BigInteger;
+
 public class OzoneTest extends Test {
 	public OzoneTest() {
 		add("Java Logic", () -> {
@@ -30,11 +32,38 @@ public class OzoneTest extends Test {
 			long b = Random.getInt(Integer.MAX_VALUE - 1);
 			//if by chance its same, its a ~~miracle~~ bug
 			assert a != b : "2 Random Integer is same how ??: " + a;
+			
+			//Encryption Number
+			StringBuilder s = new StringBuilder();
+			String message = " a secret message that is";
+			
+			
+			BigInteger privateKey = BigInteger.valueOf(-1531501057L);//Anything
+			BigInteger publicKey = BigInteger.valueOf(13955871395L);//Public key must same on 2 side, can be anything
+			BigInteger receivedSharedKey = BigInteger.valueOf(32952795L);//sharedKey from other side
+			BigInteger sharedKey = publicKey.multiply(privateKey);//gonna be sended to other side, so they can generate common key
+			sharedKey = sharedKey.multiply(receivedSharedKey);//A common key
+			int commonSeparator = 53797982;// can be received from other side after key exchange
+			
+			for (int c : message.toCharArray()) s.append(c).append(commonSeparator);
+			Log.info("Encoded Message:" + s.toString());
+			BigInteger encryptedMessage = new BigInteger(s.toString()).multiply(sharedKey);
+			Log.info("Encrypted Encoded Message: " + encryptedMessage);
+			
+			String decryptedS = encryptedMessage.divide(sharedKey).toString();
+			
+			StringBuilder decryptedMessage = new StringBuilder();
+			for (String se : decryptedS.split(commonSeparator + ""))
+				decryptedMessage.append((char) Integer.parseInt(se));
+			Log.info("Decrypted Encoded Message: " + decryptedS);
+			Log.info("Decrypted Message: " + decryptedMessage);
+			assert decryptedS.equals(s.toString()) : "Encoded message not same";
+			assert decryptedMessage.toString().equals(message) : "Message received not same";
 		});
 		
 		add("Strip Colors, Version Class Patch, Version Loading", () -> {
 			Version.init();
-			arc.util.Log.info(Strings.stripColors(Version.combined()));
+			Log.info(Strings.stripColors(Version.combined()));
 		});
 		
 		add("Random Generation, Benchmark", () -> {

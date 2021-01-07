@@ -31,7 +31,6 @@ public class OzoneInstaller {
 	
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		Main m;
-		
 		try {
 			if (System.getProperty("os.name").toUpperCase().contains("WIN"))
 				mindustry = new File(System.getenv("AppData") + "/Mindustry");//windows
