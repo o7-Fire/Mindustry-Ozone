@@ -39,15 +39,15 @@ public class OzoneTest extends Test {
 			String message = Utility.shuffle(" a secret message that is" + Random.getString());
 			
 			
-			BigInteger privateKey = new BigInteger(Random.getLong() + "" + Random.getLong());//Anything
-			BigInteger publicKey = new BigInteger(Random.getLong() + "" + Random.getLong());//Public key must same on 2 side, can be anything
-			BigInteger receivedSharedKey = new BigInteger(Random.getLong() + "" + Random.getLong());//sharedKey from other side
+			BigInteger privateKey = new BigInteger(Random.getLong() + "");//Anything
+			BigInteger publicKey = new BigInteger(Random.getLong() + "");//Public key must same on 2 side, can be anything
 			BigInteger sharedKey = publicKey.multiply(privateKey);//gonna be sended to other side, so they can generate common key
+			BigInteger receivedSharedKey = new BigInteger(Random.getLong() + "");//sharedKey from other side
 			sharedKey = sharedKey.multiply(receivedSharedKey);//A common key generated, can be used to encrypt message
 			int commonSeparator = Random.getInt();// can be received from other side after key exchange
-			
+			Log.info("SharedKey:" + sharedKey);
 			for (int c : message.toCharArray()) s.append(c).append(commonSeparator);
-			Log.info("Encoded Message:" + s.toString());
+			Log.info("Encoded Message:\n" + s.toString());
 			BigInteger encryptedMessage = new BigInteger(s.toString()).multiply(sharedKey);
 			Log.info("Encrypted Encoded Message: " + encryptedMessage);
 			
