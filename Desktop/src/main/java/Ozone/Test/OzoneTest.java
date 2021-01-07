@@ -31,7 +31,7 @@ public class OzoneTest extends Test {
 			assert 1 == 1;
 			assert "b".equals("B".toLowerCase());
 			long a = Random.getInt();
-			long b = Random.getInt(Integer.MAX_VALUE - 1);
+			long b = Random.getInt();
 			//if by chance its same, its a ~~miracle~~ bug
 			assert a != b : "2 Random Integer is same how ??: " + a;
 			
