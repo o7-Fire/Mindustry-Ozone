@@ -17,6 +17,7 @@
 package Ozone.Test;
 
 import Atom.Utility.Random;
+import Atom.Utility.Utility;
 import Ozone.Desktop.Propertied;
 import arc.util.Strings;
 import mindustry.core.Version;
@@ -35,15 +36,15 @@ public class OzoneTest extends Test {
 			
 			//Encryption Number
 			StringBuilder s = new StringBuilder();
-			String message = " a secret message that is";
+			String message = Utility.shuffle(" a secret message that is" + Random.getString());
 			
 			
-			BigInteger privateKey = BigInteger.valueOf(-1531501057L);//Anything
-			BigInteger publicKey = BigInteger.valueOf(13955871395L);//Public key must same on 2 side, can be anything
-			BigInteger receivedSharedKey = BigInteger.valueOf(32952795L);//sharedKey from other side
+			BigInteger privateKey = new BigInteger(Random.getLong() + "" + Random.getLong());//Anything
+			BigInteger publicKey = new BigInteger(Random.getLong() + "" + Random.getLong());//Public key must same on 2 side, can be anything
+			BigInteger receivedSharedKey = new BigInteger(Random.getLong() + "" + Random.getLong());//sharedKey from other side
 			BigInteger sharedKey = publicKey.multiply(privateKey);//gonna be sended to other side, so they can generate common key
-			sharedKey = sharedKey.multiply(receivedSharedKey);//A common key
-			int commonSeparator = 53797982;// can be received from other side after key exchange
+			sharedKey = sharedKey.multiply(receivedSharedKey);//A common key generated, can be used to encrypt message
+			int commonSeparator = Random.getInt();// can be received from other side after key exchange
 			
 			for (int c : message.toCharArray()) s.append(c).append(commonSeparator);
 			Log.info("Encoded Message:" + s.toString());
