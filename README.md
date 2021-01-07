@@ -20,11 +20,12 @@
 [0.9.0:0.11.0][Mindustry v121] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v120/Ozone-Desktop.jar)
 [0.9.0:0.10.2][Mindustry v120] \
-[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/-SNAPSHOT/Desktop--SNAPSHOT.jar) [Snapshot/Latest-Build]
--(May take a while to build) \
 [Other Version](https://jitpack.io/#o7-Fire/Mindustry-Ozone) [Jitpack] \
 [Other Version](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github]\
-[Other Release](https://github.com/o7-Fire/Mindustry-Ozone/tags) [Github]
+[Other Release](https://github.com/o7-Fire/Mindustry-Ozone/tags) [Github] \
+[Snapshot Build](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/-SNAPSHOT/Desktop--SNAPSHOT.jar) [Jitpack][May take a while to build] \
+[Snapshot Build](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github]
+
 ### Java
 
 [AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot) [OpenJDK 14]\
