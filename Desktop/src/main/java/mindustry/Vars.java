@@ -514,7 +514,14 @@ public class Vars implements Loadable {
 			System.out.println(rawText);
 			
 			result = tags[level.ordinal()] + " " + result;
-			if (!text.startsWith("Ozone-Event-")) Sentry.addBreadcrumb(text, level.name());
+			if (!text.startsWith("Ozone-Event-")) {
+				String t = text;
+				try {
+					if (t.contains(Vars.player.name()))
+						t = t.replaceAll(Vars.player.name, "Vars.player.name");//curb your name
+				}catch (Throwable ignored) {}
+				Sentry.addBreadcrumb(t, level.name());
+			}
 			if (!headless && (ui == null || ui.scriptfrag == null)) {
 				logBuffer.add(result);
 			}else if (!headless) {

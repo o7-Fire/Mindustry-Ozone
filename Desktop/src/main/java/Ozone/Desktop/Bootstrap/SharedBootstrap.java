@@ -44,7 +44,7 @@ public class SharedBootstrap {
 	public static final String bootstrap = "SharedBootstrap 2.7", mainClass;
 	private static ArrayList<String> loadedList = new ArrayList<>();
 	private static Splash splash = null;
-	
+
 	static {
 		System.out.println(bootstrap);
 		try {
@@ -66,7 +66,7 @@ public class SharedBootstrap {
 			options.setRelease(Version.core + ":" + Version.desktop);
 			options.setDebug(debug);
 			options.setTracesSampleRate(1.0);
-			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "no").startsWith("v") ? "release" : "dev");
+			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "no").equals("unspecified") ? "dev" : "release");
 			if (System.getProperty("ozoneTest") != null) options.setEnvironment("test");
 		}, true);
 	}
@@ -114,7 +114,7 @@ public class SharedBootstrap {
 			scope.setTag("Java.Version", System.getProperty("java.version"));
 			try {
 				User u = new User();
-				long l = ByteBuffer.wrap(System.getenv().toString().getBytes()).getLong();// ?
+				long l = ByteBuffer.wrap(System.getenv().toString().getBytes()).getLong();// ? cant reverse it to full byte array
 				u.setId(l + "");
 				scope.setUser(u);//easier to filter asshole
 			}catch (Throwable t) {

@@ -65,7 +65,6 @@ public class PreInstall {
 			if (!meh) Pool.daemon(() -> {
 				meh = true;
 				try {
-					System.gc();
 					SharedBootstrap.startup = System.currentTimeMillis();
 					MindustryEntryPoint.main(new ArrayList<>());
 				}catch (Throwable t) {
@@ -77,8 +76,9 @@ public class PreInstall {
 					Sentry.captureException(t);
 					Catch.errorBox(t.toString(), "Ozone Environment");
 				}
-				meh = false;
 			}).start();
+			else
+				Catch.errorBox("Due to java hostile environment, you can't run mindustry 2 times from this", "Warning-Ozone-Bootstrap");
 		});
 		//Install Button
 		m.buttonInstall.addActionListener(e -> {
