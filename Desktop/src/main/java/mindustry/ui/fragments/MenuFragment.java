@@ -98,6 +98,19 @@ public class MenuFragment extends Fragment {
 					//if (s == null) continue;
 					sb.append(e.getKey()).append(": ").append(e.getValue()).append("\n");
 				}
+				if (Updater.newRelease.get() && Updater.newBuild.get()) {
+					ui.showCustomConfirm("Choose", "", "Release", "Build", () -> {
+						ui.showConfirm("New Release", "A new compatible release appeared\n" + sb.toString(), () -> {
+							Updater.update(Updater.getRelease(false));
+						});
+					}, () -> {
+						ui.showConfirm("New Build", "A new compatible build appeared\n" + sb.toString(), () -> {
+							Updater.update(Updater.getBuild(false));
+						});
+					});
+					return;
+				}
+				
 				if (Updater.newRelease.get()) {
 					ui.showConfirm("New Release", "A new compatible release appeared\n" + sb.toString(), () -> {
 						Updater.update(Updater.getRelease(false));
@@ -111,7 +124,9 @@ public class MenuFragment extends Fragment {
 				ui.showException(t);
 				Sentry.captureException(t);
 			}
-		}).size(200, 60).name("buildcheck").visible(() -> Updater.newBuild.get() || Updater.newRelease.get()).update(Element::updateVisibility));
+		}).size(200, 60).name("buildcheck").visible(() -> {
+			return Updater.newBuild.get() || Updater.newRelease.get();
+		}).update(Element::updateVisibility));
 		
 		
 		String versionText = ((Version.build == -1) ? "[#fc8140aa]" : "[#ffffffba]") + Version.combined();
