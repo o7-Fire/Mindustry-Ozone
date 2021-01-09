@@ -77,6 +77,7 @@ public class EnvironmentInformation extends OzoneBaseDialog {
 		ad("Player Name", Vars.player.name);
 		ad("UUID", Core.settings.getString("uuid"));
 		ad("Current Millis", System.currentTimeMillis());
+		ad("Current Nanos", System.nanoTime());
 		ad("Compilation Time Total (ms)", () -> ManagementFactory.getCompilationMXBean().getTotalCompilationTime());
 		ad("isCompilationTimeMonitoringSupported", () -> ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());
 		ad(Propertied.Manifest);
@@ -88,7 +89,7 @@ public class EnvironmentInformation extends OzoneBaseDialog {
 	void dep() {
 		try {
 			for (URL u : ((LibraryLoader) this.getClass().getClassLoader()).getURLs()) {
-				ad("Library", u.toExternalForm());
+				ad("Library-URL", u.toExternalForm());
 			}
 		}catch (Throwable ignored) {
 		}

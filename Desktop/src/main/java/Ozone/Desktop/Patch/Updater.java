@@ -92,7 +92,7 @@ public class Updater {
 				try {
 					HashMap<String, String> h = Encoder.parseProperty(getRelease(true).openStream());
 					newRelease.set(latest(h));
-					if (newRelease.get()) Log.infoTag("Updater", "New Release Build Found: " + h.get("VHash"));
+					if (newRelease.get()) Log.infoTag("Updater", " Release Found: " + h.get("VHash"));
 					else Log.debug("Latest Release Is Already Installed or Unavailable");
 				}catch (Throwable e) {
 					Sentry.captureException(e);
@@ -137,14 +137,13 @@ public class Updater {
 	
 	public static boolean latest(Map<String, String> target) {
 		Map<String, String> source = Propertied.Manifest;
-		ArrayList<Boolean> check = new ArrayList<>();
 		//Latest
 		try {
 			long a = Long.parseLong(source.getOrDefault("TimeMilis", "0")), b = Long.parseLong(target.getOrDefault("TimeMilis", "-1"));
-			check.add(b > a);
+			if (a > b) return false;
 		}catch (NumberFormatException asshole) {
 			Sentry.captureException(asshole);
-			check.add(false);
+			return false;
 		}
 		//Compatibility
 		try {
@@ -152,12 +151,12 @@ public class Updater {
 			String s = target.getOrDefault("MindustryVersion", "-2").substring(1);
 			if (s.contains(".")) s = s.substring(0, s.indexOf('.'));
 			int b = Integer.parseInt(s);
-			check.add(b == a);
+			if (b != a) return false;
 		}catch (NumberFormatException asshole) {
 			Sentry.captureException(asshole);
-			check.add(false);
+			return false;
 		}
-		return !check.contains(false);
+		return true;
 	}
 	
 	public static URL getBuild(boolean manifest) {
@@ -165,7 +164,20 @@ public class Updater {
 	}
 	
 	public static URL getRelease(boolean manifest) {
-		return getDownload("v" + Version.build, manifest);
+		try {
+			HashMap<String, String> releaseManifest = Encoder.parseProperty(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master/Desktop/release.txt").openStream());
+			String base = "https://github.com/o7-Fire/Mindustry-Ozone/releases/download/";
+			String version = Propertied.Manifest.get("MindustryVersion");
+			if (version == null) throw new NullPointerException("MindustryVersion Null");
+			version = releaseManifest.getOrDefault(version, version);
+			base += version + "/";
+			if (manifest) base += "Manifest.properties";
+			else base += "Ozone-Desktop.jar";
+			return new URL(base);
+		}catch (Throwable t) {
+			Sentry.captureException(t);
+			throw new RuntimeException(t);
+		}
 	}
 	
 	public static URL getDownload(String version, boolean manifest) {

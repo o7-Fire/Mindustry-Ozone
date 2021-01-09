@@ -50,9 +50,13 @@ public class Version {
 	public static void init() {
 		if (!enabled) return;
 		h = Propertied.read("version.properties");
+		HashMap<String, String> hm = new HashMap<>();
+		for (Map.Entry<String, String> s : h.entrySet())
+			hm.put("Mindustry-" + s.getKey(), s.getValue());
+		h = hm;
 		Sentry.configureScope(scope -> {
 			for (Map.Entry<String, String> e : h.entrySet())
-				scope.setTag("Mindustry-" + e.getKey(), e.getValue());
+				scope.setTag(e.getKey(), e.getValue());
 		});
 		h.put("Ozone-Version", Ozone.Version.core + ":" + Ozone.Version.desktop);
 		Fi file = OS.isAndroid || OS.isIos ? Core.files.internal("version.properties") : new Fi("version.properties", FileType.internal);
