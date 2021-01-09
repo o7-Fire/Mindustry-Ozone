@@ -41,7 +41,7 @@ public class Translation {
 		settings.put("colorPatch", "Enable Colorized Text");
 		settings.put("commandsPrefix", "Commands Prefix");
 		settings.put("blockDebug", "Block Debug(ctrl+mouse1)");
-		settings.put("worldLog", "Log World Tiles [red][Heavy RAM Usage]");
+		settings.put("worldLog", "Spam your console with world interaction log");
 		registerWords("ozone.menu", "Ozone Menu");
 		registerWords("ozone.hud", "Ozone HUD");
 		registerWords("ozone.javaEditor", "Java Executor");

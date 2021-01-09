@@ -88,6 +88,12 @@ public class Main {
 			TaskInterface.reset();
 			Commands.commandsQueue.clear();
 		});
+		Events.on(EventType.StateChangeEvent.class, s -> {
+			Log.debug("Ozone-Event-@: State changed from @ to @", s.getClass().getSimpleName(), s.from, s.to);
+			if (s.from.equals(GameState.State.playing) && s.to.equals(GameState.State.menu))
+				Events.fire(EventExtended.Connect.Disconnected);
+		});
+		if (!Core.worldLog) return;
 		Events.on(EventType.ClientPreConnectEvent.class, s -> {
 			Log.debug("Ozone-Event-@: @:@ = @", s.getClass().getSimpleName(), s.host.address, s.host.port, s.host.name);
 			Events.fire(EventExtended.Connect.Connected);
@@ -103,11 +109,7 @@ public class Main {
 			if (s.player == null) return;
 			Log.debug("Ozone-Event-@: @ withdrawn @ @ at @", s.getClass().getSimpleName(), s.player.name(), s.amount, s.item.toString(), s.tile.tile().toString());
 		});
-		Events.on(EventType.StateChangeEvent.class, s -> {
-			Log.debug("Ozone-Event-@: State changed from @ to @", s.getClass().getSimpleName(), s.from, s.to);
-			if (s.from.equals(GameState.State.playing) && s.to.equals(GameState.State.menu))
-				Events.fire(EventExtended.Connect.Disconnected);
-		});
+		
 		Events.on(EventType.UnitCreateEvent.class, s -> {
 			Log.debug("Ozone-Event-@: A @ created at @,@", s.getClass().getSimpleName(), s.unit.getClass().getSimpleName(), s.unit.x(), s.unit.y());
 		});
