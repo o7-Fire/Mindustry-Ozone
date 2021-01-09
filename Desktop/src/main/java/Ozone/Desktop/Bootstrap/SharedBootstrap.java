@@ -22,6 +22,7 @@ import Ozone.Desktop.Swing.Splash;
 import Ozone.Version;
 import io.sentry.Scope;
 import io.sentry.Sentry;
+import io.sentry.protocol.User;
 
 import java.awt.*;
 import java.io.File;
@@ -112,8 +113,10 @@ public class SharedBootstrap {
 			scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
 			scope.setTag("Java.Version", System.getProperty("java.version"));
 			try {
+				User u = new User();
 				long l = ByteBuffer.wrap(System.getenv().toString().getBytes()).getLong();// ?
-				scope.setTag("UserID", String.valueOf(l));//easier to filter asshole
+				u.setId(l + "");
+				scope.setUser(u);//easier to filter asshole
 			}catch (Throwable t) {
 				Sentry.captureException(t);
 			}
