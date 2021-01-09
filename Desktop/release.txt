@@ -1,1 +1,2 @@
-v122=v122.1
+#MindustryVersion=LatestReleaseTag
+v112.1=v122.12
