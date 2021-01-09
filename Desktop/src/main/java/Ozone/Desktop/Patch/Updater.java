@@ -96,6 +96,8 @@ public class Updater {
 					else Log.debug("Latest Release Is Already Installed or Unavailable");
 				}catch (Throwable e) {
 					Sentry.captureException(e);
+					Log.err(e);
+					Log.err("Failed to update");
 				}
 			});
 			try {
@@ -175,7 +177,6 @@ public class Updater {
 			else base += "Ozone-Desktop.jar";
 			return new URL(base);
 		}catch (Throwable t) {
-			Sentry.captureException(t);
 			throw new RuntimeException(t);
 		}
 	}
