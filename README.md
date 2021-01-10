@@ -28,15 +28,14 @@
 
 ### Java
 
-[AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot) [OpenJDK 14]\
-[Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14]
+[AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot) [OpenJDK-OpenJRE 14]\
+[Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14 only require login]
 
-# Minimum Requirement
+# Requirement
 
-* Java 14+ and added to %PATH%
-* 4+ thread CPU or 2 thread of highly fast CPU
-* 4 GB+ of RAM for bots operation
-* GPU doesn't matter, unless you use improvised shader
+* Java 14+ and added to JAVA_HOME (mindustry desktop can run on java 14+)
+* Internet connection (required to download library at runtime)
+* Year 2006+ Computer
 
 # Build
 
