@@ -79,7 +79,7 @@
 - Brainwash nexity to make actually useful code
 - Add proxy ?
 - Auto create efficient miner block pool using bruteforce
-
+- Brainwash nexity to not mess with this README.md
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools
