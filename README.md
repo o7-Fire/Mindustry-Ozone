@@ -58,7 +58,7 @@
 * 3.shit ozone won't load
 * 4.realize running java 8
 * 5.google how to install java 14 on *insert your OS name here*
-* 6.**2 hour later**: that its i give up (totally not based on true story)
+* 6.**2 hour later**: that its i give up (totally not based on a true story)
 
 # Impossible things to do
 
