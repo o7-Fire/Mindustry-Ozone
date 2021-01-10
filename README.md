@@ -52,30 +52,36 @@
 * 4.fuck its crash
 * 5.you are a failure, can't even install a simple mods
 * 6.nvm its show up again\
-or
+  or
 * 0.Copy and paste to %APPDATA%/Mindustry/mods/ (Mindustry user data)
 
-# Feature TODO
-> Fun tools
-* Colorized Text
-* Auto AI
+# Impossible things to do
 
-> Moderation tools
-* Anti-Spam
-* Raid pattern detection
-* Systematic player logging
-* Bots powered moderation\
-why the fuck we adding moderation tools if the client meant for griefing
+- ~~Create mindustry class patcher~~
+- Stop relying on third party library for bootstrap
+- ~~Bootstrap in less than 10 second for first time setup (worst: 40 second)~~
+- Improve download bar (its keep teleporting wtf)
+- Remove useless commands and duplicate
+- Add more commands
+- Somehow create chat filter
+- Stabilize bootstrapper
+- Implement interactive mindustry-world API
+- Implement information center for mindustry-world
+- Somehow fix the horrible updater
+- Create player watcher
+- Add logic display toggle (goddamn those nsfw image)
+- Stabilize Bot Launcher
+- Auto start bot-server when launching bot(or remove that button ?)
+- Make updater much more living(add GUI)
+- Headless ?
+- AI ?
+- Make Bots actually useful
+- Brainwash nexity to make actually useful code
+- Add proxy ?
+- Auto create efficient miner block pool using bruteforce
 
-> Raiding tools
-* Spamming tools
-* Bots powered spam
-* Integrated proxy controller
-* Bots powered raiding
-* Resource drainer
-* Nuker
+# Disclaimer
 
-#Disclaimer
 It's totally for entertainment purpose, user is fully responsible for using this tools
 <h4 align="center">Visitor's count :eyes:</h4>
 <p align="center"><img src="https://profile-counter.glitch.me/%7Bsketchyirishman%7D/count.svg" alt="sketchyirishman :: Visitor's Count" /></p>
