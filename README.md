@@ -47,13 +47,15 @@
 # Install
 * 0.Get `Ozone-Dekstop.jar`
 * 1.Install **Java 14**
-* 2.Run Ozone installation by opening `Ozone-Desktop.jar` with java `java -jar Ozone-Dekstop.jar`
-* 3.Run, Start, Run or Install Mindustry
+* 2.Run Ozone installation by opening `Ozone-Desktop.jar` with java or CLI `java -jar Ozone-Dekstop.jar`
+* 3.Run Mindustry from the installer or from dedicated one
 * 4.fuck its crash
 * 5.you are a failure, can't even install a simple mods
 * 6.nvm its show up again\
   or
 * 0.Copy and paste to %APPDATA%/Mindustry/mods/ (Mindustry user data)
+* 1.Install **Java 14**
+* 2.Run mindustry
 
 # Impossible things to do
 
@@ -81,6 +83,8 @@
 - Auto create efficient miner block pool using bruteforce
 - Brainwash nexity to not mess with this README.md
 - Create AIO script to launch ozone (non java user)
+- Auto Java, switch java version when launched from another version
+
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools
