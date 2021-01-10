@@ -84,7 +84,7 @@
 - Brainwash nexity to not mess with this README.md
 - Create AIO script to launch ozone (non java user)
 - Auto Java, switch java version when launched from another version
-
+- World logger, VCS like system ?
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools
