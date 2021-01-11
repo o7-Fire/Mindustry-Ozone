@@ -26,7 +26,11 @@ import java.util.concurrent.Future;
 
 public class DownloadPatch {
     public static void main(String[] args) throws Throwable, InterruptedException {
-        ExecutorService es = Executors.newCachedThreadPool();
+        ExecutorService es = Executors.newCachedThreadPool(r -> {
+            Thread t = Executors.defaultThreadFactory().newThread(r);
+            t.setDaemon(true);
+            return t;
+        });
         String trg = "https://raw.githubusercontent.com/Anuken/Mindustry/master/core/src/mindustry/";
         File target = new File("Tools/src/main/java/mindustry/");
         target.mkdirs();

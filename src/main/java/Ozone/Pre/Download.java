@@ -31,7 +31,11 @@ import java.util.function.Consumer;
 
 //probably will be relocated to Atom library
 public class Download implements Runnable {
-	protected static ExecutorService es = Executors.newCachedThreadPool();
+	protected static ExecutorService es = Executors.newCachedThreadPool(r -> {
+		Thread t = Executors.defaultThreadFactory().newThread(r);
+		t.setDaemon(true);
+		return t;
+	});
 	// Max size of download buffer.
 	protected static int MAX_BUFFER_SIZE = 8192;
 	protected URL url; // download URL
