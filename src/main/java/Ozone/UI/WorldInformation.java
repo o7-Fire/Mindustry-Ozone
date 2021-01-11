@@ -36,10 +36,10 @@ import mindustry.world.Build;
 import mindustry.world.Tile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -77,19 +77,20 @@ public class WorldInformation extends BaseDialog {
 			Log.debug("World calculation began");
 			SentryTransaction st = Sentry.startTransaction("world-calculation-" + Vars.world.width() + "x" + Vars.world.height());
 			try {
-				ConcurrentHashMap<String, Integer> count = new ConcurrentHashMap<>();
+				TreeMap<String, Integer> mainCount = new TreeMap<>();
 				long totalOre = 0;
 				int total = Vars.world.height() * Vars.world.width();
 				int height = Vars.world.height();
 				AtomicLong buildableTile = new AtomicLong();
 				label.visible = true;
 				label.setText("World calculation began...");
-				ArrayList<Future<?>> futures = new ArrayList<>();
+				ArrayList<Future<HashMap<String, Integer>>> futures = new ArrayList<>();
 				for (int i = 0; i < height; i++) {
 					int finalI = i;
 					int a = i * height;
 					label.setText("World indexing: " + a + "/" + total);
 					futures.add(Pool.submit(() -> {//hail concurrency
+						HashMap<String, Integer> count = new HashMap<>();
 						for (int j = 0; j < Vars.world.width(); j++) {
 							Tile t = Vars.world.tileWorld(finalI, j);
 							if (t == null) continue;
@@ -100,14 +101,16 @@ public class WorldInformation extends BaseDialog {
 							if (Build.validPlace(Blocks.copperWall, Vars.player.team(), t.x, t.y, 0))
 								buildableTile.getAndIncrement();
 						}
+						return count;
 					}));
 				}
 				
 				long futc = futures.size();
 				ArrayList<Future<?>> fut = new ArrayList<>(futures);
-				for (Future<?> f : futures) {
+				for (Future<HashMap<String, Integer>> f : futures) {
 					try {
-						f.get();
+						for (Map.Entry<String, Integer> s : f.get().entrySet())
+							mainCount.put(s.getKey(), mainCount.getOrDefault(s.getKey(), 0) + s.getValue());
 						fut.remove(f);
 						Pool.submit(() -> {
 							String s = "";
@@ -123,12 +126,12 @@ public class WorldInformation extends BaseDialog {
 						
 					}catch (Throwable ignored) { }
 				}
-				for (Map.Entry<String, Integer> s : count.entrySet())
+				for (Map.Entry<String, Integer> s : mainCount.entrySet())
 					if (s.getKey().startsWith("ore-")) totalOre += s.getValue();
 				ad("Total Ores", totalOre);
 				ad("Buildable Tiles", buildableTile);
 				ad("The following block list Measured in tile (1x1)", "");
-				ad(new TreeMap<>(count));
+				ad(mainCount);
 				Log.debug("World calculation finished in @", Countdown.result(l));
 				if ((System.currentTimeMillis() - l) > 3000)
 					Vars.ui.showInfo("World calculation finished: " + Countdown.result(l));
