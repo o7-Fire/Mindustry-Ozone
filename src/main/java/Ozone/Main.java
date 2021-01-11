@@ -25,10 +25,10 @@ import Ozone.Event.Internal;
 import Ozone.Internal.Interface;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
+import Ozone.Settings.BaseSettings;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
 import Ozone.Watcher.BlockTracker;
-import Settings.Core;
 import arc.Events;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
@@ -77,7 +77,7 @@ public class Main {
 			arc.Core.settings.getBoolOnce("ozoneEpilepsyWarning", () -> {
 				Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning", "A very small percentage of people may experience a seizure when exposed to certain visual images, " + "including flashing lights or patterns that may appear on certain UI element in the game.", "Accept", "Decline", () -> {
 				}, () -> {
-					Core.colorPatch = false;
+					BaseSettings.colorPatch = false;
 					arc.Core.settings.put("ozone.colorPatch", false);
 					arc.Core.settings.forceSave();
 				});
@@ -93,7 +93,7 @@ public class Main {
 			if (s.from.equals(GameState.State.playing) && s.to.equals(GameState.State.menu))
 				Events.fire(EventExtended.Connect.Disconnected);
 		});
-		if (!Core.worldLog) return;
+		if (!BaseSettings.worldLog) return;
 		Events.on(EventType.ClientPreConnectEvent.class, s -> {
 			Log.debug("Ozone-Event-@: @:@ = @", s.getClass().getSimpleName(), s.host.address, s.host.port, s.host.name);
 			Events.fire(EventExtended.Connect.Connected);
@@ -164,7 +164,7 @@ public class Main {
 	
 	
 	protected static void loadSettings() {
-		Manifest.settings.add(Core.class);
+		Manifest.settings.add(BaseSettings.class);
 		Events.fire(Internal.Init.SettingsRegister);
 		arc.Core.settings.put("crashreport", false);
 		for (Field f : Manifest.getSettings()) {
@@ -181,7 +181,7 @@ public class Main {
 					f.setFloat(null, arc.Core.settings.getFloat("ozone." + f.getName(), f.getFloat(null)));
 				}
 			}catch (Throwable t) {
-				Log.errTag("Ozone-Settings", "Couldn't load settings for: ozone." + f.getName());
+				Log.errTag("Ozone-Ozone.Settings", "Couldn't load settings for: ozone." + f.getName());
 				Log.err(t);
 			}
 		}
@@ -195,7 +195,7 @@ public class Main {
 			Events.fire(Internal.Init.PatchRegister);
 			Vars.enableConsole = true;
 			Log.infoTag("Ozone", "Patching Complete");
-			if (Core.debugMode) Log.level = (Log.LogLevel.debug);
+			if (BaseSettings.debugMode) Log.level = (Log.LogLevel.debug);
 			Log.debug("Ozone-Debug: @", "Debugs, peoples, debugs");
 		}catch (Throwable t) {
 			Log.infoTag("Ozone", "Patch failed");
@@ -210,7 +210,7 @@ public class Main {
 		for (ObjectMap.Entry<String, String> s : Interface.bundle) {
 			modified.put(s.key, s.value);
 		}
-		if (Core.colorPatch) for (String s : arc.Core.bundle.getKeys()) {
+		if (BaseSettings.colorPatch) for (String s : arc.Core.bundle.getKeys()) {
 			modified.put(s, getRandomHexColor() + modified.get(s) + "[white]");
 		}
 		arc.Core.bundle.setProperties(modified);

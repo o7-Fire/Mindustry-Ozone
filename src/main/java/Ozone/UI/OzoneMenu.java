@@ -20,7 +20,7 @@ package Ozone.UI;
 import Atom.Reflect.Reflect;
 import Ozone.Commands.Commands;
 import Ozone.Manifest;
-import Settings.Core;
+import Ozone.Settings.BaseSettings;
 import arc.input.KeyCode;
 import arc.scene.ui.TextField;
 import arc.util.Interval;
@@ -39,7 +39,7 @@ public class OzoneMenu extends BaseDialog {
 			if (key == KeyCode.escape || key == KeyCode.back) {
 				arc.Core.app.post(this::hide);
 			}else if (key == KeyCode.enter) {
-				Commands.call(Core.commandsPrefix + commands);
+				Commands.call(BaseSettings.commandsPrefix + commands);
 				commands = "";
 				commandsField.clearText();
 			}
@@ -92,7 +92,7 @@ public class OzoneMenu extends BaseDialog {
 			s.label(() -> arc.Core.bundle.get("Commands") + ": ");
 			commandsField = s.field(commands, (res) -> commands = res).fillX().growX().get();
 			s.button(Icon.zoom, () -> {
-				Commands.call(Core.commandsPrefix + commands);
+				Commands.call(BaseSettings.commandsPrefix + commands);
 				//Commands.call(commands);
 				commands = "";
 				commandsField.clearText();

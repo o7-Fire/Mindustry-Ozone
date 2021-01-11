@@ -17,6 +17,7 @@
 package Ozone.Watcher;
 
 import Atom.Reflect.FieldTool;
+import Ozone.Settings.BaseSettings;
 import arc.Core;
 import arc.Events;
 import arc.input.KeyCode;
@@ -34,18 +35,14 @@ public class BlockTracker {
 		Events.run(EventType.Trigger.update, BlockTracker::update);
 	}
 
-	private static void update(){
-		if(Settings.Core.blockDebug)
-		if(Vars.state.isPlaying()){
-			if(Core.input.keyDown(KeyCode.controlLeft))
-				if (Core.input.keyDown(KeyCode.mouseLeft))
-					target = Vars.world.tileWorld(Vars.player.mouseX, Vars.player.mouseY);
-				
-			if (target != null)
-				if (target.build != null)
-					Vars.ui.hudfrag.setHudText(FieldTool.getFieldDetails(target.build).replace("\n", "[white]\n"));
-				else
-					Vars.ui.hudfrag.setHudText(FieldTool.getFieldDetails(target).replace("\n", "[white]\n"));
+	private static void update() {
+		if (BaseSettings.blockDebug) if (Vars.state.isPlaying()) {
+			if (Core.input.keyDown(KeyCode.controlLeft)) if (Core.input.keyDown(KeyCode.mouseLeft))
+				target = Vars.world.tileWorld(Vars.player.mouseX, Vars.player.mouseY);
+			
+			if (target != null) if (target.build != null)
+				Vars.ui.hudfrag.setHudText(FieldTool.getFieldDetails(target.build).replace("\n", "[white]\n"));
+			else Vars.ui.hudfrag.setHudText(FieldTool.getFieldDetails(target).replace("\n", "[white]\n"));
 			
 		}
 	}

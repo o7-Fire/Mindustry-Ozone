@@ -132,7 +132,7 @@ public class SettingsDialog extends SettingsMenuDialog {
 					});
 				}
 			}catch (Throwable t) {
-				Log.errTag("Ozone-Settings", "Couldn't create settings for: ozone." + f.getName());
+				Log.errTag("Ozone-Ozone.Settings", "Couldn't create settings for: ozone." + f.getName());
 				Log.err(t);
 			}
 		}

@@ -24,7 +24,7 @@ import Ozone.Commands.Task.*;
 import Ozone.Event.Internal;
 import Ozone.Internal.Interface;
 import Ozone.Manifest;
-import Settings.Core;
+import Ozone.Settings.BaseSettings;
 import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.Colors;
@@ -257,8 +257,8 @@ public class Commands {
 	}
 	
 	public static boolean call(String message) {
-		if (!message.startsWith(Core.commandsPrefix)) return false;
-		message = message.substring(Core.commandsPrefix.length());
+		if (!message.startsWith(BaseSettings.commandsPrefix)) return false;
+		message = message.substring(BaseSettings.commandsPrefix.length());
 		if (message.isEmpty()) return false;
 		ArrayList<String> mesArg = new ArrayList<>(Arrays.asList(message.split(" ")));
 		if (!commandsList.containsKey(mesArg.get(0).toLowerCase())) {
@@ -376,12 +376,11 @@ public class Commands {
 	
 	public static void help() {
 		ArrayList<String> as = new ArrayList<>();
-		as.add("Prefix: \""+Core.commandsPrefix+"\"");
+		as.add("Prefix: \"" + BaseSettings.commandsPrefix + "\"");
 		as.add("Available Commands:");
 		int target = 5;
 		for (Map.Entry<String, Command> s : commandsList.entrySet()) {
-			if(target < s.getKey().length())
-				target = s.getKey().length() + 2;
+			if (target < s.getKey().length()) target = s.getKey().length() + 2;
 		}
 		for (Map.Entry<String, Command> s : commandsList.entrySet()) {
 			StringBuilder local = new StringBuilder();

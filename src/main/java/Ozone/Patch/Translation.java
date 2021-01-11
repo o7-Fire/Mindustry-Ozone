@@ -18,7 +18,7 @@ package Ozone.Patch;
 
 import Ozone.Event.Internal;
 import Ozone.Main;
-import Settings.Core;
+import Ozone.Settings.BaseSettings;
 import arc.Events;
 
 import java.util.ArrayList;
@@ -36,12 +36,7 @@ public class Translation {
 	public static final HashMap<String, String> keyBinds = new HashMap<>();
 	
 	public static void register() {
-		settings.put("antiSpam", "Enable Anti-Spam");
-		settings.put("debugMode", "Enable Debug Mode");
-		settings.put("colorPatch", "Enable Colorized Text");
-		settings.put("commandsPrefix", "Commands Prefix");
-		settings.put("blockDebug", "Block Debug(ctrl+mouse1)");
-		settings.put("worldLog", "Spam your console with world interaction log");
+
 		registerWords("ozone.menu", "Ozone Menu");
 		registerWords("ozone.hud", "Ozone HUD");
 		registerWords("ozone.javaEditor", "Java Executor");
@@ -91,7 +86,7 @@ public class Translation {
 		String s = Thread.currentThread().getStackTrace()[2].getClassName() + text.toLowerCase().replaceAll(" ", ".");
 		registerWords(s, text);
 		s = text;
-		if (Core.colorPatch) s = Main.getRandomHexColor() + s + "[white]";
+		if (BaseSettings.colorPatch) s = Main.getRandomHexColor() + s + "[white]";
 		return s;
 	}
 }

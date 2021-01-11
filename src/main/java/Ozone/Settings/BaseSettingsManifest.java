@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package Settings;
+package Ozone.Settings;
 
-public class Core {
+import java.io.File;
+
+public class BaseSettingsManifest {
+	static File settingsFile = new File("OzoneSettings.properties");
 	
-	public static boolean colorPatch = false, debugMode = false;
-	public static boolean antiSpam = false, worldLog = false, blockDebug = false;
-	public static String commandsPrefix = ",";
-	
-	
+	{
+		settingsFile.getParentFile().mkdirs();
+		
+	}
 }

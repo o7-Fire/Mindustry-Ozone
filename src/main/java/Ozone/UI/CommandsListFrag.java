@@ -19,7 +19,7 @@ package Ozone.UI;
 import Atom.Utility.Random;
 import Ozone.Commands.Commands;
 import Ozone.Commands.Task.CommandsSpam;
-import Settings.Core;
+import Ozone.Settings.BaseSettings;
 import arc.scene.Group;
 import arc.scene.event.Touchable;
 import arc.scene.ui.TextField;
@@ -79,7 +79,7 @@ public class CommandsListFrag extends Fragment {
 		for (Map.Entry<String, Commands.Command> cl : Commands.commandsList.entrySet()) {
 			Table table = new Table();
 			boolean allowed = cl.getValue().icon != null;
-			String name = (Core.colorPatch ? "[" + Random.getRandomHexColor() + "]" : "") + cl.getKey() + "[white]";
+			String name = (BaseSettings.colorPatch ? "[" + Random.getRandomHexColor() + "]" : "") + cl.getKey() + "[white]";
 			if (allowed)
 				table.button(name, cl.getValue().icon, () -> cl.getValue().method.accept(new ArrayList<>())).growX();
 			else table.button(name, Icon.boxSmall, () -> {
