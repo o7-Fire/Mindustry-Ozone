@@ -34,7 +34,7 @@
 # Requirement
 
 * Java 14+ and added to JAVA_HOME (mindustry desktop can run on java 14+)
-* Internet connection (required to download library at runtime)
+* Internet connection (required to download library at runtime and can impact loading speed)
 * Year 2006+ Computer
 
 # Build
@@ -68,6 +68,7 @@
 - Improve download bar (its keep teleporting wtf)
 - Remove useless commands and duplicate
 - Add more commands
+- Use own custom settings framework
 - Somehow create chat filter
 - Stabilize bootstrapper
 - Implement interactive mindustry-world API
@@ -90,6 +91,7 @@
 - World logger, VCS like system ?
 - Unify library folder
 - Steam support ?
+- Event based key listener
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools
