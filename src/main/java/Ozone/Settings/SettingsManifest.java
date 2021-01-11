@@ -19,6 +19,7 @@ package Ozone.Settings;
 import Atom.Reflect.FieldTool;
 import Atom.Reflect.Reflect;
 import Atom.Time.Countdown;
+import Atom.Utility.Digest;
 import Atom.Utility.Encoder;
 import Ozone.Event.EventExtended;
 import arc.Events;
@@ -100,7 +101,7 @@ public class SettingsManifest {
 	}
 	
 	static String getHash(Class<?> clz) {
-		return String.valueOf(ByteBuffer.wrap(FieldTool.getFieldDetails(null, clz, false, 500).getBytes()).getLong());
+		return String.valueOf(ByteBuffer.wrap(Digest.sha256(FieldTool.getFieldDetails(null, clz, false, 500).getBytes())).getLong());
 	}
 	
 	public synchronized static void saveMap() throws IOException {

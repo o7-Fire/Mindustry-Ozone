@@ -169,28 +169,6 @@ public class Main {
 		Manifest.settings.add(BaseSettings.class);
 		Events.fire(Internal.Init.SettingsRegister);
 		arc.Core.settings.put("crashreport", false);
-		/*
-		for (Field f : Manifest.getSettings()) {
-			try {
-				if (boolean.class.equals(f.getType())) {
-					f.setBoolean(null, arc.Core.settings.getBool("ozone." + f.getName(), f.getBoolean(null)));
-				}else if (String.class.equals(f.getType())) {
-					f.set(null, arc.Core.settings.getString("ozone." + f.getName(), (String) f.get(null)));
-				}else if (int.class.equals(f.getType())) {
-					f.setInt(null, arc.Core.settings.getInt("ozone." + f.getName(), f.getInt(null)));
-				}else if (long.class.equals(f.getType())) {
-					f.setLong(null, arc.Core.settings.getLong("ozone." + f.getName()));
-				}else if (float.class.equals(f.getType())) {
-					f.setFloat(null, arc.Core.settings.getFloat("ozone." + f.getName(), f.getFloat(null)));
-				}
-			}catch (Throwable t) {
-				Log.errTag("Ozone-Ozone.Settings", "Couldn't load settings for: ozone." + f.getName());
-				Log.err(t);
-			}
-		}
-		
-		 */
-		
 	}
 	
 	protected static void patch() {
