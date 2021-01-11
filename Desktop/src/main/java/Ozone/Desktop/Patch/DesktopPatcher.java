@@ -19,7 +19,7 @@ package Ozone.Desktop.Patch;
 import Atom.Reflect.Reflect;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Event.Internal;
-import Settings.Desktop;
+import Ozone.Settings.SettingsDesktop;
 import arc.Core;
 import arc.Events;
 import arc.net.Client;
@@ -55,9 +55,8 @@ public class DesktopPatcher {
 	
 	
 	public static void register() {
-		
-		
-		Ozone.Manifest.settings.add(Desktop.class);
+		if (SettingsDesktop.disableDefaultGif) ;
+		Ozone.Manifest.settings.add(SettingsDesktop.class);
 		Events.run(Internal.Init.CommandsRegister, CommandsDesktop::Init);
 		Events.run(Internal.Init.TranslationRegister, TranslationDesktop::Init);
 		Events.run(Internal.Init.PatchRegister, () -> {

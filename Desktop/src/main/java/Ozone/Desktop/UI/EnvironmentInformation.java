@@ -21,6 +21,7 @@ import Ozone.Desktop.Bootstrap.LibraryLoader;
 import Ozone.Desktop.Propertied;
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Manifest;
+import Ozone.Settings.SettingsManifest;
 import arc.Core;
 import arc.audio.Sound;
 import arc.func.Prov;
@@ -37,6 +38,7 @@ import mindustry.core.Version;
 import mindustry.gen.Icon;
 import mindustry.gen.Sounds;
 
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -82,6 +84,7 @@ public class EnvironmentInformation extends OzoneBaseDialog {
 		ad("isCompilationTimeMonitoringSupported", () -> ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());
 		ad(Propertied.Manifest);
 		ad(Version.h);
+		try { ad(SettingsManifest.getMap()); }catch (IOException e) { }
 		dep();
 		uid();
 	}

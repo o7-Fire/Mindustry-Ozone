@@ -3,6 +3,7 @@ package mindustry.graphics;
 import Atom.Time.Countdown;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
+import Ozone.Settings.BaseSettings;
 import arc.Core;
 import arc.assets.AssetDescriptor;
 import arc.assets.Loadable;
@@ -306,7 +307,7 @@ public class MenuRenderer implements Disposable, Loadable {
 		flyers((x, y) -> {
 			float engineOffset = flyerType.engineOffset, engineSize = flyerType.engineSize, rotation = flyerRot;
 			Color p = Pal.engine;
-			if (Settings.Core.colorPatch) p = Color.valueOf(Random.getRandomHexColor());
+			if (BaseSettings.colorPatch) p = Color.valueOf(Random.getRandomHexColor());
 			Draw.color(p);
 			Fill.circle(x + Angles.trnsx(rotation + 180, engineOffset), y + Angles.trnsy(rotation + 180, engineOffset), engineSize + Mathf.absin(Time.time, 2f, engineSize / 4f));
 			

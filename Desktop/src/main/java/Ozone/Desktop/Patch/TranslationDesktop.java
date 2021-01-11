@@ -20,7 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static Ozone.Internal.Interface.registerWords;
-import static Ozone.Patch.Translation.*;
+import static Ozone.Patch.Translation.commands;
+import static Ozone.Patch.Translation.generalSettings;
 
 public class TranslationDesktop {
 	static HashMap<String, String> deskUI = new HashMap<>();
@@ -34,8 +35,6 @@ public class TranslationDesktop {
 		commands.put("javac", "run single line of java code");
 		commands.put("library", "manage runtime library");
 		commands.put("debug", TranslationDesktop.class.getClassLoader().toString());
-		settings.put("logMessage", "Log Every Message[Being Reworked]");
-		settings.put("disableDefaultGif", "Disable default GIF list");
 		generalSettings.put("BotController.serverPort", "Base Port");
 		generalSettings.put("BotController.serverName", "Base Port");
 		generalSettings.put("showPlayerID", "Show Player ID");

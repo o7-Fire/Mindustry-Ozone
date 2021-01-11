@@ -21,7 +21,7 @@ import Atom.Struct.Stream;
 import Atom.Utility.Utility;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Pre.DownloadSwing;
-import Settings.Core;
+import Ozone.Settings.BaseSettings;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.gen.Icon;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import static Ozone.Commands.Commands.*;
-import static Settings.Core.debugMode;
+import static Ozone.Settings.BaseSettings.debugMode;
 
 public class CommandsDesktop {
 	private static final LinkedHashMap<Integer, Manifest.Library> libs = new LinkedHashMap<>();
@@ -83,7 +83,7 @@ public class CommandsDesktop {
 	
 	public static void library(ArrayList<String> arg) {
 		if (arg.isEmpty()) {
-			tellUser("send help:  \"" + Core.commandsPrefix + "library help\"");
+			tellUser("send help:  \"" + BaseSettings.commandsPrefix + "library help\"");
 			return;
 		}
 		if (arg.size() == 1) {
@@ -125,7 +125,7 @@ public class CommandsDesktop {
 			}
 		}
 		tellUser("No such commands");
-		tellUser("send help:  \"" + Core.commandsPrefix + "library help\"");
+		tellUser("send help:  \"" + BaseSettings.commandsPrefix + "library help\"");
 	}
 	
 	public static void downloadLib(Manifest.Library s) {

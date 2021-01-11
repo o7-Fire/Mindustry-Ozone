@@ -14,8 +14,28 @@
  * limitations under the License.
  */
 
-package Settings;
+package Ozone.Settings;
 
-public class Desktop {
+import Ozone.Patch.Translation;
+
+import java.io.IOException;
+import java.util.HashMap;
+
+public class SettingsDesktop {
 	public static boolean disableDefaultGif;
+	
+	static {
+		HashMap<String, String> t = new HashMap<>();
+		t.put("disableDefaultGif", "Disable default GIF list");
+		Translation.addSettings(t);
+		SettingsManifest.readSettings(SettingsDesktop.class);
+	}
+	
+	public static void save() {
+		try {
+			SettingsManifest.save(SettingsDesktop.class);
+		}catch (IOException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -17,7 +17,7 @@
 package mindustry.graphics;
 
 import Atom.Net.Request;
-import Settings.Desktop;
+import Ozone.Settings.SettingsDesktop;
 import arc.Core;
 import arc.files.Fi;
 import arc.graphics.Texture;
@@ -56,7 +56,7 @@ public class MenuGifRenderer implements Disposable {
 		menu.mkdirs();
 		if (!menu.child("readme.txt").exists())
 			Files.write(menu.child("readme.txt").file().toPath(), readme.getBytes());
-		if (Desktop.disableDefaultGif) url.clear();
+		if (SettingsDesktop.disableDefaultGif) url.clear();
 		for (Fi f : menu.findAll(f -> allowed.contains(f.extension())))
 			url.add(f.file().toURI().toURL().toExternalForm());
 		if (url.isEmpty()) throw new NoMenuResource("Gif list is empty");
