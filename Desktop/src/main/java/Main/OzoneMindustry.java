@@ -59,9 +59,10 @@ public class OzoneMindustry extends DesktopLauncher {
 			handleCrash(var2);
 			throw var2;
 		}
+		if (!SharedBootstrap.debug) return;
 		Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
 		for (Thread t : threadSet)
-			if (!t.isDaemon()) System.out.println(t.getId() + ":" + t.getName() + " alive ? " + t.isAlive());
+			if (!t.isDaemon()) System.out.println(t.getId() + ". " + t.getName() + " alive ? " + t.isAlive());
 		
 		
 	}

@@ -98,7 +98,8 @@ public class OzoneMenu extends BaseDialog {
 				commandsField.clearText();
 			});
 		}).growX().fillX().padBottom(6.0F).bottom().size(arc.Core.graphics.getWidth(), arc.Core.graphics.getHeight() / 12);
-		
+		cont.row();
+		cont.button("World Information", Icon.fileTextFill, () -> Manifest.worldInformation.show()).growX();
 		
 		try {
 			if (Vars.ui.hudfrag.shown) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);

@@ -440,9 +440,6 @@ public class LoadRenderer implements Disposable {
 		
 		//note for translators: this text is unreadable and for debugging/show anyway, so it's not translated
 		if (assets.isLoaded("tech")) {
-			String name = assets.getCurrentLoading() != null ? assets.getCurrentLoading().fileName.toLowerCase() : "system";
-			
-			String key = name.contains("script") ? "scripts" : name.contains("content") ? "content" : name.contains("mod") ? "mods" : name.contains("msav") || name.contains("maps") ? "map" : name.contains("ogg") || name.contains("mp3") ? "sound" : name.contains("png") ? "image" : "system";
 			
 			Font font = assets.get("tech");
 			font.setColor(Pal.accent);

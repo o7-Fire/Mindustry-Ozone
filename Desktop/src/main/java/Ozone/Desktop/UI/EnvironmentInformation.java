@@ -30,7 +30,6 @@ import arc.scene.ui.Label;
 import arc.scene.ui.ScrollPane;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
-import arc.util.Interval;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
@@ -51,7 +50,6 @@ import java.util.stream.Collectors;
 public class EnvironmentInformation extends OzoneBaseDialog {
 	Table table = new Table();
 	ScrollPane scrollPane = new ScrollPane(table);
-	Interval timer = new Interval();
 	boolean b;
 	
 	public EnvironmentInformation() {
@@ -171,13 +169,6 @@ public class EnvironmentInformation extends OzoneBaseDialog {
 			Core.app.setClipboardText(finalValue);
 			Manifest.toast("Copied");
 		}).expandX().growX();
-        /*
-        table.button(Icon.copy, () -> {
-            Core.app.setClipboardText(finalValue);
-            Manifest.toast("Copied");
-        }).right();
-
-         */
 		table.row();
 	}
 }

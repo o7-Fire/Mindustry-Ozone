@@ -23,13 +23,17 @@ import Ozone.Commands.TaskInterface;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Ozone.Internal.Interface;
+import Ozone.Internal.Overlay;
+import Ozone.Internal.TilesOverlay;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
 import Ozone.Settings.BaseSettings;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
+import Ozone.UI.WorldInformation;
 import Ozone.Watcher.BlockTracker;
 import arc.Events;
+import arc.scene.ui.Button;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
 import arc.util.Log;
@@ -46,20 +50,7 @@ import java.util.Map;
 public class Main {
 	private static boolean init = false;
 	
-	public static void init() {
-		if (init) return;
-		init = true;
-		Log.infoTag("Ozone", "Hail o7");
-		loadSettings();
-		patch();
-		Commands.init();
-		patchTranslation();
-		initUI();
-		TaskInterface.init();
-		initEvent();
-		Pathfinding.init();
-		BlockTracker.init();
-	}
+	public static Button.ButtonStyle bOzoneStyle;
 	
 	
 	public static void loadContent() {
@@ -203,6 +194,23 @@ public class Main {
 	
 	public static Dialog.DialogStyle ozoneStyle;
 	
+	public static void init() {
+		if (init) return;
+		init = true;
+		Log.infoTag("Ozone", "Hail o7");
+		loadSettings();
+		patch();
+		Commands.init();
+		patchTranslation();
+		initUI();
+		TaskInterface.init();
+		initEvent();
+		Pathfinding.init();
+		BlockTracker.init();
+		Overlay.init();
+		TilesOverlay.init();
+	}
+	
 	protected static void initUI() {
 		ozoneStyle = new Dialog.DialogStyle() {
 			{
@@ -212,8 +220,10 @@ public class Main {
 				titleFontColor = Pal.accent;
 			}
 		};
+		
 		Vars.ui.settings = new SettingsDialog();
 		Manifest.commFrag = new CommandsListFrag();
+		Manifest.worldInformation = new WorldInformation();
 		Manifest.menu = new OzoneMenu(arc.Core.bundle.get("ozone.hud"), ozoneStyle);
 		Manifest.commFrag.build(Vars.ui.hudGroup);
 	}

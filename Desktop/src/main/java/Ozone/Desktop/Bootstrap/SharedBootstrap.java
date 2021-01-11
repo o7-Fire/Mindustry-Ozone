@@ -46,7 +46,7 @@ public class SharedBootstrap {
 	private static Splash splash = null;
 
 	static {
-		System.out.println(bootstrap + (debug ? "[Debug]" : ""));
+		System.out.println(bootstrap + (debug ? " [Debug]" : ""));
 		try {
 			URL u = ClassLoader.getSystemResource("gif/loading.gif");
 			splash = new Splash(u);

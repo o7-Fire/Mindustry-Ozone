@@ -20,6 +20,7 @@ import Atom.Reflect.Reflect;
 import Ozone.Settings.SettingsManifest;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
+import Ozone.UI.WorldInformation;
 import arc.Core;
 import arc.math.Interp;
 import arc.net.Client;
@@ -41,6 +42,7 @@ public class Manifest {
 	
 	public static OzoneMenu menu;
 	public static CommandsListFrag commFrag;
+	public static WorldInformation worldInformation;
 	public static ArrayList<Class<?>> settings = new ArrayList<>();
 	public static String lastServer = "";
 	

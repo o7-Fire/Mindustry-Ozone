@@ -93,6 +93,7 @@
 - Steam support ?
 - Event based key listener
 - ~~Fix shutdown stall~~
+- Fix javac commands
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools

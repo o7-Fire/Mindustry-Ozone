@@ -33,6 +33,7 @@ import mindustry.type.Item;
 import mindustry.world.Tile;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.Future;
 
 import static mindustry.Vars.player;
@@ -80,19 +81,44 @@ public class Interface {
 		bundle.put(key, key);
 	}
 	
-	
-	public static Future<Building> getBuild(Filter<Building> buildFilter){
+	public static Future<ArrayList<Tile>> getGroupTiles(Tile main, Filter<Tile> filter) {
 		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
-		return Pool.submit(()->{
+		return Pool.submit(() -> {
+			ArrayList<Tile> mains = new ArrayList<>(), mainsBackup = new ArrayList<>();
+			ArrayList<Tile> group = new ArrayList<>();
+			mains.add(main);
+			group.add(main);
+			while (!mains.isEmpty()) {
+				for (Tile t : mains) {
+					for (int i = 0; i < 4; i++) {
+						Tile h = t.nearby(i);
+						if (h == null) continue;
+						if (group.contains(h)) continue;
+						if (filter.accept(h)) {
+							group.add(h);
+							mainsBackup.add(h);
+						}
+					}
+				}
+				mains.clear();
+				mains.addAll(mainsBackup);
+				mainsBackup.clear();
+			}
+			return group;
+		});
+	}
+	
+	public static Future<Building> getBuild(Filter<Building> buildFilter) {
+		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
+		return Pool.submit(() -> {
 			ArrayList<Building> list = new ArrayList<>();
-			for(Building b : Groups.build)
-				if(buildFilter.accept(b))
-					list.add(b);
+			for (Building b : Groups.build)
+				if (buildFilter.accept(b)) list.add(b);
 			return Random.getRandom(list);
 		});
 	}
 	
-	public static Future<Tile> getTile(Filter<Tile> filter) {
+	public static Future<ArrayList<Tile>> getTiles(Filter<Tile> filter) {
 		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
 		return Pool.submit(() -> {
 			ArrayList<Tile> list = new ArrayList<>();
@@ -100,8 +126,13 @@ public class Interface {
 				if (!filter.accept(t)) continue;
 				list.add(t);
 			}
-			return Random.getRandom(list);
+			return list;
 		});
+	}
+	
+	public static Future<Tile> getTile(Filter<Tile> filter) {
+		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
+		return Pool.submit(() -> Random.getRandom(Objects.requireNonNull(getTiles(filter)).get()));
 	}
 }
 
