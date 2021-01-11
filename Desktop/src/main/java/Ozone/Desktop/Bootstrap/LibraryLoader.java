@@ -35,7 +35,11 @@ import java.util.concurrent.Future;
 
 public class LibraryLoader extends URLClassLoader {
 	public static File cache = new File("lib/");
-	private ExecutorService es = Executors.newCachedThreadPool();
+	private ExecutorService es = Executors.newCachedThreadPool(r -> {
+		Thread t = Executors.defaultThreadFactory().newThread(r);
+		t.setDaemon(true);
+		return t;
+	});
 	private static ArrayList<String> parentFirst = new ArrayList<>();
 	
 	static {

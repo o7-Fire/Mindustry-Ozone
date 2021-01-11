@@ -36,7 +36,11 @@ public class Dependency implements Serializable {
 	public static ArrayList<String> url = new ArrayList<>();
 	private static File cache = new File("lib/dependency.link");
 	private static HashMap<String, String> downloadCache = new HashMap<>();
-	private static ExecutorService executorService = Executors.newCachedThreadPool();
+	private static ExecutorService executorService = Executors.newCachedThreadPool(r -> {
+		Thread t = Executors.defaultThreadFactory().newThread(r);
+		t.setDaemon(true);
+		return t;
+	});
 	
 	static {
 		cache.getParentFile().mkdirs();

@@ -36,7 +36,11 @@ import java.util.concurrent.Executors;
 import static Ozone.Desktop.BotController.generateProp;
 
 public class BotClient {
-	public static ExecutorService service = Executors.newCachedThreadPool();
+	public static ExecutorService service = Executors.newCachedThreadPool(r -> {
+		Thread t = Executors.defaultThreadFactory().newThread(r);
+		t.setDaemon(true);
+		return t;
+	});
 	public final StringBuilder sb = new StringBuilder();
 	private final int port;
 	public String name, rmiName;
