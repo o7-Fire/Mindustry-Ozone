@@ -93,7 +93,6 @@ public class OzoneTesting {
 		Log.info("Finished in " + Countdown.result());
 		
 		for (Test.Result rs : r) if (!rs.success) System.exit(1);
-		System.exit(0);
 	}
 	
 	private static class TestFinished extends Throwable {

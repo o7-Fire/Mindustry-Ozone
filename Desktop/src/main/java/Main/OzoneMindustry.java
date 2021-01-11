@@ -63,6 +63,7 @@ public class OzoneMindustry extends DesktopLauncher {
 		for (Thread t : threadSet)
 			if (!t.isDaemon()) System.out.println(t.getId() + ":" + t.getName() + " alive ? " + t.isAlive());
 		
+		
 	}
 	
 	static void handleCrash(Throwable e) {

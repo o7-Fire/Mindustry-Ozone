@@ -32,6 +32,7 @@ public class MindustryEntryPoint {
 			SharedBootstrap.loadClasspath();
 			SharedBootstrap.requireDisplay();
 			main(new ArrayList<>(Arrays.asList(args)));
+			System.exit(0);
 		}catch (Throwable t) {
 			t.printStackTrace();
 			if (t.getCause() != null) t = t.getCause();

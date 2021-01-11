@@ -92,7 +92,7 @@
 - Unify library folder
 - Steam support ?
 - Event based key listener
-- Fix shutdown stall
+- ~~Fix shutdown stall~~
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools

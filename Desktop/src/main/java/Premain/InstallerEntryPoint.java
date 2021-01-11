@@ -38,6 +38,7 @@ public class InstallerEntryPoint {
 			SharedBootstrap.loadClasspath();
 			SharedBootstrap.requireDisplay();
 			SharedBootstrap.loadMain("Main.OzoneInstaller", args);
+			System.exit(0);
 			//SharedBootstrap.loadMain("Premain.MindustryEntryPoint", args);
 		}catch (Throwable t) {
 			Catch.write(t);

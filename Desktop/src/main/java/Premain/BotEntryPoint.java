@@ -35,6 +35,7 @@ public class BotEntryPoint {
 			SharedBootstrap.loadClasspath();
 			SharedBootstrap.libraryLoader.addURL(new File(System.getProperty("MindustryExecutable")));
 			SharedBootstrap.loadMain("Main.OxygenMindustry", args);
+			System.exit(0);
 		}catch (Throwable t) {
 			Catch.write(t);
 			t.printStackTrace();

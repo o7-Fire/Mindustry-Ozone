@@ -39,6 +39,7 @@ public class BotClient {
 	public static ExecutorService service = Executors.newCachedThreadPool(r -> {
 		Thread t = Executors.defaultThreadFactory().newThread(r);
 		t.setDaemon(true);
+		t.setName(t.getName() + "-bot-client");
 		return t;
 	});
 	public final StringBuilder sb = new StringBuilder();
