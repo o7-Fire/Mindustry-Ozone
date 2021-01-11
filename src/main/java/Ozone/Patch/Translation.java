@@ -16,6 +16,7 @@
 
 package Ozone.Patch;
 
+import Atom.Reflect.Reflect;
 import Ozone.Event.Internal;
 import Ozone.Main;
 import Ozone.Settings.BaseSettings;
@@ -28,15 +29,16 @@ import java.util.Map;
 
 import static Ozone.Internal.Interface.registerWords;
 
+//TODO decentralize translation
 public class Translation {
 	public static final ArrayList<String> normalSinglet = new ArrayList<>(Arrays.asList("Run"));
 	public static final ArrayList<String> singlet1 = new ArrayList<>(Arrays.asList("String", "Integer", "Float", "Long", "Boolean", "Commands"));
-	public static final HashMap<String, String> settings = new HashMap<>(), generalSettings = new HashMap<>();
+	public static final HashMap<String, String> generalSettings = new HashMap<>();
 	public static final HashMap<String, String> commands = new HashMap<>();
 	public static final HashMap<String, String> keyBinds = new HashMap<>();
 	
 	public static void register() {
-
+		
 		registerWords("ozone.menu", "Ozone Menu");
 		registerWords("ozone.hud", "Ozone HUD");
 		registerWords("ozone.javaEditor", "Java Executor");
@@ -63,9 +65,7 @@ public class Translation {
 		for (Map.Entry<String, String> s : commands.entrySet()) {
 			registerWords("ozone.commands." + s.getKey(), s.getValue());
 		}
-		for (Map.Entry<String, String> s : settings.entrySet()) {
-			registerWords("setting.ozone." + s.getKey() + ".name", s.getValue());
-		}
+
 		for (Map.Entry<String, String> s : generalSettings.entrySet()) {
 			registerWords("setting." + s.getKey() + ".name", s.getValue());
 		}
@@ -80,6 +80,11 @@ public class Translation {
 	public static String add(String text) {
 		return add(Thread.currentThread().getStackTrace()[2].toString() + text.toLowerCase().replaceAll(" ", "."), text);
 		
+	}
+	
+	public static void addSettings(Map<String, String> map) {
+		for (Map.Entry<String, String> s : map.entrySet())
+			registerWords(Reflect.getCallerClass() + "." + s.getKey(), s.getValue());
 	}
 	
 	public static String add(String id, String text) {

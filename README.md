@@ -68,7 +68,7 @@
 - Improve download bar (its keep teleporting wtf)
 - Remove useless commands and duplicate
 - Add more commands
-- Use own custom settings framework
+- ~~Use own custom settings framework~~
 - Somehow create chat filter
 - Stabilize bootstrapper
 - Implement interactive mindustry-world API
@@ -92,6 +92,7 @@
 - Unify library folder
 - Steam support ?
 - Event based key listener
+- Fix shutdown stall
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools

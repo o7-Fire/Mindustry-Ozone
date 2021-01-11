@@ -17,6 +17,7 @@
 package Ozone;
 
 import Atom.Reflect.Reflect;
+import Ozone.Settings.SettingsManifest;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
 import arc.Core;
@@ -25,6 +26,7 @@ import arc.net.Client;
 import arc.scene.actions.Actions;
 import arc.scene.event.Touchable;
 import arc.scene.ui.layout.Table;
+import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.Version;
 import mindustry.net.ArcNetProvider;
@@ -57,6 +59,22 @@ public class Manifest {
 		}catch (Throwable ignored) { }
 		return lastServer;
 		
+	}
+	
+	public static void saveSettings() {
+		for (Class<?> c : Manifest.settings) {
+			try {
+				c.getDeclaredMethod("save").invoke(null);
+			}catch (Throwable t) {
+				Sentry.captureException(t);
+			}
+		}
+		try {
+			SettingsManifest.saveMap();
+		}catch (Throwable e) {
+			Sentry.captureException(e);
+			Vars.ui.showException(e);
+		}
 	}
 	
 	public static void toast(String text) {

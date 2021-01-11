@@ -30,4 +30,8 @@ public class EventExtended {
 			this.port = port;
 		}
 	}
+	
+	public static class Shutdown {
+	
+	}
 }

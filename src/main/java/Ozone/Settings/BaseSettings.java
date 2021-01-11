@@ -18,7 +18,7 @@ package Ozone.Settings;
 
 import Ozone.Patch.Translation;
 
-import java.lang.reflect.Field;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class BaseSettings {
@@ -35,21 +35,17 @@ public class BaseSettings {
 		t.put("commandsPrefix", "Commands Prefix");
 		t.put("blockDebug", "Block Debug(ctrl+mouse left)");
 		t.put("worldLog", "Spam your console with world interaction log");
-		Translation.settings.putAll(t);
-		
+		Translation.addSettings(t);
+		SettingsManifest.readSettings(BaseSettings.class);
 	}
 	
-	public static void readSettings(Class<?> clazz) {
-		for (Field f : clazz.getFields()) {
-			try {
-				f.set(null, readSettings(f.getName(), f.getType(), f.get(null)));
-			}catch (Throwable e) {
-				throw new RuntimeException(e);
-			}
+	public static void save() {
+		try {
+			SettingsManifest.save(BaseSettings.class);
+		}catch (IOException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
 	}
 	
-	private static Object readSettings(String name, Class<?> type, Object def) {
-		return null;
-	}
+	
 }

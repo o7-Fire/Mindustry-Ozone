@@ -41,7 +41,6 @@ import mindustry.graphics.Pal;
 import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 public class Main {
@@ -73,6 +72,9 @@ public class Main {
 	
 	private static void initEvent() {
 		Vars.loadLogger();
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			Events.fire(EventExtended.Shutdown.class, new EventExtended.Shutdown());
+		}));
 		Events.on(EventType.ClientLoadEvent.class, s -> {
 			arc.Core.settings.getBoolOnce("ozoneEpilepsyWarning", () -> {
 				Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning", "A very small percentage of people may experience a seizure when exposed to certain visual images, " + "including flashing lights or patterns that may appear on certain UI element in the game.", "Accept", "Decline", () -> {
@@ -167,6 +169,7 @@ public class Main {
 		Manifest.settings.add(BaseSettings.class);
 		Events.fire(Internal.Init.SettingsRegister);
 		arc.Core.settings.put("crashreport", false);
+		/*
 		for (Field f : Manifest.getSettings()) {
 			try {
 				if (boolean.class.equals(f.getType())) {
@@ -185,6 +188,8 @@ public class Main {
 				Log.err(t);
 			}
 		}
+		
+		 */
 		
 	}
 	
