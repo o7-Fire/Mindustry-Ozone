@@ -146,3 +146,4 @@ out/production/resources/
 /src/main/resources/dependencies
 /Manifest/src/main/resources/Manifest.properties
 OzoneSettings.properties
+Manifest/out/production/resources/Manifest.properties
