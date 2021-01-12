@@ -18,7 +18,9 @@ package Ozone.UI;
 
 import Atom.Time.Countdown;
 import Atom.Utility.Pool;
+import Atom.Utility.Random;
 import Ozone.Manifest;
+import Ozone.Settings.BaseSettings;
 import arc.Core;
 import arc.scene.ui.Label;
 import arc.scene.ui.ScrollPane;
@@ -70,6 +72,7 @@ public class WorldInformation extends BaseDialog {
 		ad("Bullet Count", Groups.bullet.size());
 		ad("World height", Vars.world.height());
 		ad("World width", Vars.world.width());
+		ad("World square", Vars.world.width() * Vars.world.height());
 		table.add(label).growX();
 		table.row();
 		Pool.submit(() -> {
@@ -91,16 +94,31 @@ public class WorldInformation extends BaseDialog {
 					label.setText("World indexing: " + a + "/" + total);
 					futures.add(Pool.submit(() -> {//hail concurrency
 						HashMap<String, Integer> count = new HashMap<>();
-						for (int j = 0; j < Vars.world.width(); j++) {
-							Tile t = Vars.world.tileWorld(finalI, j);
-							if (t == null) continue;
-							if (t.staticDarkness() != 0) continue;
-							count.put(t.block().toString(), count.getOrDefault(t.block().toString(), 0) + 1);
-							count.put(t.floor().toString(), count.getOrDefault(t.floor().toString(), 0) + 1);
-							count.put(t.overlay().toString(), count.getOrDefault(t.overlay().toString(), 0) + 1);
-							if (Build.validPlace(Blocks.copperWall, Vars.player.team(), t.x, t.y, 0))
-								buildableTile.getAndIncrement();
-						}
+						//Overcautious people be like
+						try {
+							for (int j = 0; j < Vars.world.width(); j++) {
+								try {
+									Tile t = Vars.world.tileWorld(finalI, j);
+									if (t == null) continue;
+									if (t.staticDarkness() != 0) continue;
+									try {
+										count.put(t.floor().toString(), count.getOrDefault(t.floor().toString(), 0) + 1);
+									}catch (Throwable ignored) {}
+									try {
+										count.put(t.overlay().toString(), count.getOrDefault(t.overlay().toString(), 0) + 1);
+									}catch (Throwable ignored) {}
+									try {
+										count.put(t.block().toString(), count.getOrDefault(t.block().getDisplayName(t), 0) + 1);
+									}catch (Throwable ignored) {}
+									try {
+										if (t.build != null)
+											count.put(t.build.getDisplayName(), count.getOrDefault(t.build.getDisplayName(), 0) + 1);
+									}catch (Throwable ignored) {}
+									if (Build.validPlace(Blocks.copperWall, Vars.player.team(), t.x, t.y, 0))
+										buildableTile.getAndIncrement();
+								}catch (Throwable ignored) {}
+							}
+						}catch (Throwable ignored) {}
 						return count;
 					}));
 				}
@@ -128,9 +146,10 @@ public class WorldInformation extends BaseDialog {
 				}
 				for (Map.Entry<String, Integer> s : mainCount.entrySet())
 					if (s.getKey().startsWith("ore-")) totalOre += s.getValue();
+				
+				ad("The following statistic are measured in tile (1x1)", "");
 				ad("Total Ores", totalOre);
 				ad("Buildable Tiles", buildableTile);
-				ad("The following block list Measured in tile (1x1)", "");
 				ad(mainCount);
 				Log.debug("World calculation finished in @", Countdown.result(l));
 				if ((System.currentTimeMillis() - l) > 3000)
@@ -167,6 +186,7 @@ public class WorldInformation extends BaseDialog {
 	
 	void ad(String title, Object value) {
 		if (value == null) value = "null";
+		if (BaseSettings.colorPatch) title = "[" + Random.getRandomHexColor() + "]" + title;
 		Label l = new Label(title + ":");
 		table.add(l).growX();
 		String finalValue = String.valueOf(value);

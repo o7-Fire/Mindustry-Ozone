@@ -85,7 +85,9 @@ public class OzoneMenu extends BaseDialog {
 		cont.button(arc.Core.bundle.get("ozone.commandsUI"), Icon.commandRally, () -> {
 			arc.Core.app.post(this::hide);
 			Manifest.commFrag.toggle();
-		}).size(arc.Core.graphics.getWidth() / 6, arc.Core.graphics.getHeight() / 12);
+		}).growX();
+		cont.row();
+		cont.button("World Information", Icon.fileTextFill, () -> Manifest.worldInformation.show()).growX();
 		cont.row();
 		cont.table((s) -> {
 			s.left();
@@ -93,13 +95,10 @@ public class OzoneMenu extends BaseDialog {
 			commandsField = s.field(commands, (res) -> commands = res).fillX().growX().get();
 			s.button(Icon.zoom, () -> {
 				Commands.call(BaseSettings.commandsPrefix + commands);
-				//Commands.call(commands);
 				commands = "";
 				commandsField.clearText();
 			});
-		}).growX().fillX().padBottom(6.0F).bottom().size(arc.Core.graphics.getWidth(), arc.Core.graphics.getHeight() / 12);
-		cont.row();
-		cont.button("World Information", Icon.fileTextFill, () -> Manifest.worldInformation.show()).growX();
+		}).growX();
 		
 		try {
 			if (Vars.ui.hudfrag.shown) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);

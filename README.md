@@ -94,6 +94,8 @@
 - Event based key listener
 - ~~Fix shutdown stall~~
 - Fix javac commands
+- Logic Code blacklisting
+- Integrated png to draw logic tool
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools
