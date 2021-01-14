@@ -38,19 +38,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 14
-    # Cache Gradle dependencies
-    - name: Setup Gradle Dependencies Cache
-      uses: actions/cache@v2
-      with:
-        path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
-
-    # Cache Gradle Wrapper
-    - name: Setup Gradle Wrapper Cache
-      uses: actions/cache@v2
-      with:
-        path: ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
