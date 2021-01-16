@@ -59,6 +59,7 @@ public class Commands {
 	
 	private volatile static boolean falseVote = false;
 	private volatile static boolean drainingcore = false;
+	private volatile static boolean followingplayer = false;
 	
 	private static boolean init = false;
 	
@@ -80,6 +81,7 @@ public class Commands {
 		register("send-colorize", new Command(Commands::sendColorize));
 		
 		//Commands with icon support no-argument-commands (user input is optional)
+		register("followplayer", new Command(Commands::FollowPlayer, Icon.hammer));
 		register("draincore", new Command(Commands::draincore, Icon.hammer));
 		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
 		register("info-unit", new Command(Commands::infoUnit, Icon.units));
@@ -398,6 +400,31 @@ public class Commands {
 	 * @author Nexity
 	 * its obvious its my code
 	 */
+	
+	public static void FollowPlayer(ArrayList<String> arg) {
+		followingplayer = !followingplayer;
+		if (followingplayer) {
+			Thread s1 = new Thread(() -> {
+				while (followingplayer) {
+					for (Player target : Groups.player) {
+						if (target.name().contains(arg.get(0))) {
+							NetClient.setPosition(target.x, target.y);
+						}
+					}
+					try {
+						Thread.sleep(30);
+					} catch (Throwable ignored) {
+					}
+				}
+			});
+			s1.start();
+			tellUser("your args: " + arg.get(0));
+			tellUser("following player");
+		}else {
+			tellUser("stopped");
+		}
+	}
+	
 	public static void chaosKick() {
 		falseVote = !falseVote;
 		if (falseVote) {
