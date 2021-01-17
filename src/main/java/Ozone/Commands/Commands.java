@@ -471,7 +471,7 @@ public class Commands {
 				while (rotatingconveyor) {
 					for (Tile t : Vars.world.tiles) {
 						if (t.toString().contains("conveyor")) {
-							Call.rotateBlock(Vars.player, t.build, 1);
+							Call.rotateBlock(Vars.player, t.build, true);
 							try {
 								Thread.sleep(250);
 							} catch (Throwable ignored) {
