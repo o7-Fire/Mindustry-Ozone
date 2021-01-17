@@ -63,6 +63,7 @@ public class Commands {
 	private static boolean drainCore = false;
 	private static boolean init = false;
 	private static boolean chatting = false;
+	private volatile static boolean rotatingconveyor = false;
 	
 	
 	public static void hudFragToast(ArrayList<String> arg) {
@@ -117,6 +118,7 @@ public class Commands {
 		register("send-colorize", new Command(Commands::sendColorize));
 		
 		//Commands with icon support no-argument-commands (user input is optional)
+		register("rotate-conveyor", new Command(Commands::rotateconveyor, Icon.rotate));
 		register("follow-player", new Command(Commands::followPlayer, Icon.hammer));
 		register("drain-core", new Command(Commands::drainCore, Icon.hammer));
 		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
@@ -459,6 +461,29 @@ public class Commands {
 			tellUser("chatRepeater started");
 		}else {
 			tellUser("chatRepeater ended");
+		}
+	}
+	
+	public static void rotateconveyor() {
+		rotatingconveyor = !rotatingconveyor;
+		if (rotatingconveyor) {
+			Thread s1 = new Thread(() -> {
+				while (rotatingconveyor) {
+					for (Tile t : Vars.world.tiles) {
+						if (t.toString().contains("conveyor")) {
+							Call.rotateBlock(Vars.player, t.build, 1);
+							try {
+								Thread.sleep(250);
+							} catch (Throwable ignored) {
+							}
+						}
+					}
+				}
+			});
+			s1.start();
+			tellUser("rotating all conveyors");
+		}else {
+			tellUser("stoppted rotating conveyors");
 		}
 	}
 	
