@@ -20,6 +20,7 @@ import Atom.Reflect.Reflect;
 import Ozone.Settings.SettingsManifest;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
+import Ozone.UI.TaskList;
 import Ozone.UI.WorldInformation;
 import arc.Core;
 import arc.math.Interp;
@@ -38,13 +39,24 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static Ozone.Main.ozoneStyle;
+
 public class Manifest {
 	
 	public static OzoneMenu menu;
 	public static CommandsListFrag commFrag;
 	public static WorldInformation worldInformation;
+	public static TaskList taskList;
 	public static ArrayList<Class<?>> settings = new ArrayList<>();
 	public static String lastServer = "";
+	
+	public static void initUI() {
+		taskList = new TaskList();
+		Manifest.commFrag = new CommandsListFrag();
+		Manifest.worldInformation = new WorldInformation();
+		Manifest.menu = new OzoneMenu(arc.Core.bundle.get("ozone.hud"), ozoneStyle);
+		Manifest.commFrag.build(Vars.ui.hudGroup);
+	}
 	
 	public static String getMindustryVersion() {
 		return Version.build + (Version.revision == 0 ? "" : "." + Version.revision);

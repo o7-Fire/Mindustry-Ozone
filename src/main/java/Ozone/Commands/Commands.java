@@ -37,16 +37,14 @@ import mindustry.Vars;
 import mindustry.ai.Astar;
 import mindustry.game.EventType;
 import mindustry.gen.*;
+import mindustry.net.Administration;
 import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Sorter;
 import mindustry.world.blocks.sandbox.ItemSource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -57,75 +55,28 @@ public class Commands {
 	public static final Queue<Task> commandsQueue = new Queue<>();
 	public static Map<String, Command> commandsList = new TreeMap<>();
 	
-	private volatile static boolean falseVote = false;
-	private volatile static boolean drainingcore = false;
-	private volatile static boolean followingplayer = false;
-	
+	/**
+	 * @author Nexity
+	 */
+	static String targetPlayer;//no need to be volatile because its still accessed from same thread
+	private static boolean falseVote = false;
+	private static boolean drainCore = false;
 	private static boolean init = false;
+	private static boolean chatting = false;
 	
-	private volatile static boolean chatting = false;
-	public static void init() {
-		if (init) return;
-		init = true;
-		Events.run(EventType.Trigger.update, () -> {
-			if (commandsQueue.isEmpty()) return;
-			commandsQueue.first().update();
-			if (commandsQueue.first().isCompleted()) commandsQueue.removeFirst();
-		});
-		//register("message-log", new Command(Commands::messageLog, Icon.rotate));
-		//register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
-		register("task-move", new Command(Commands::taskMove));
-		register("info-pathfinding", new Command(Commands::infoPathfinding));
-		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer -Nexity");
-		register("task-deconstruct", new Command(Commands::taskDeconstruct));
-		register("send-colorize", new Command(Commands::sendColorize));
-		
-		//Commands with icon support no-argument-commands (user input is optional)
-		register("followplayer", new Command(Commands::FollowPlayer, Icon.hammer));
-		register("draincore", new Command(Commands::draincore, Icon.hammer));
-		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
-		register("info-unit", new Command(Commands::infoUnit, Icon.units));
-		register("force-exit", new Command(Commands::forceExit, Icon.exit));
-		register("task-clear", new Command(Commands::taskClear, Icon.cancel));
-		register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
-		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
-		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
-		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
-		register("info-pos", new Command(Commands::infoPos, Icon.move));
-		register("help", new Command(Commands::help, Icon.infoCircle));
-		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
-		register("core-drainer", new Command(Commands::coreDrainer, Icon.cancel), "Drain core resource max time: 5 second");
-		Events.fire(Internal.Init.CommandsRegister);
-		Log.infoTag("Ozone", "Commands Center Initialized");
-		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
-		
-	}
 	
-	//wtf is this
-	public static void coreDrainer() {
-		commandsQueue.add(new TimedTask() {
-			{
-				time = 200;
-			}
-			
-			@Override
-			public void update() {
-			
-			}
-		});
-	}
-	
-	public static void hudFragToast(ArrayList<String> arg){
-		String s = "["+Random.getRandomHexColor()+"]Test "+Random.getString(16);
-		if(!arg.isEmpty()) s = Utility.joiner(arg, " ");
+	public static void hudFragToast(ArrayList<String> arg) {
+		String s = "[" + Random.getRandomHexColor() + "]Test " + Random.getString(16);
+		if (!arg.isEmpty()) s = Utility.joiner(arg, " ");
 		Vars.ui.hudfrag.showToast(s);
 	}
 	
-	public static void hudFrag(ArrayList<String> arg){
-		String s = "["+Random.getRandomHexColor()+"]Test "+Random.getString(16);
-		if(!arg.isEmpty()) s = Utility.joiner(arg, " ");
+	public static void hudFrag(ArrayList<String> arg) {
+		String s = "[" + Random.getRandomHexColor() + "]Test " + Random.getString(16);
+		if (!arg.isEmpty()) s = Utility.joiner(arg, " ");
 		Vars.ui.hudfrag.setHudText(s);
 	}
+	
 	public static void clearPathfindingOverlay(ArrayList<String> arg) {
 		tellUser("Clearing: " + Pathfinding.render.size() + " overlay");
 		Pathfinding.render.clear();
@@ -149,40 +100,39 @@ public class Commands {
 		else commandsList.replace(name, command);
 	}
 	
-	public static void shuffleSorter() {
-		
-		commandsQueue.add(new Completable() {
-			Future<Building> f;
-			{
-				f = Interface.getBuild(build -> {
-					if (build == null) return false;
-					return build.interactable(Vars.player.team()) && (build.block() instanceof Sorter || build.block() instanceof ItemSource);
-				});
-				if (f == null) {
-					tellUser("wtf ? shuffle sorter future is null");
-					completed = true;
-				}
-			}
-		
-			@Override
-			public void update() {
-				if(f == null)return;
-				if (!f.isDone()) return;
-				if (completed) return;
-				completed = true;
-				try {
-					Building t = f.get();
-					if (t == null || t.tile == null) {
-						tellUser("block can't be find");
-						return;
-					}
-					Item target = Random.getRandom(Vars.content.items().toArray(Item.class));
-					t.tile().build.configure(target);
-				}catch (InterruptedException | ExecutionException e) {
-					Log.errTag("Ozone-Executor", "Failed to get tile:\n" + e.toString());
-				}
-			}
+	public static void init() {
+		if (init) return;
+		init = true;
+		Events.run(EventType.Trigger.update, () -> {
+			if (commandsQueue.isEmpty()) return;
+			commandsQueue.first().update();
+			if (commandsQueue.first().isCompleted()) commandsQueue.removeFirst();
 		});
+		//register("message-log", new Command(Commands::messageLog, Icon.rotate));
+		//register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
+		register("task-move", new Command(Commands::taskMove));
+		register("info-pathfinding", new Command(Commands::infoPathfinding));
+		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer -Nexity");
+		register("task-deconstruct", new Command(Commands::taskDeconstruct));
+		register("send-colorize", new Command(Commands::sendColorize));
+		
+		//Commands with icon support no-argument-commands (user input is optional)
+		register("follow-player", new Command(Commands::followPlayer, Icon.hammer));
+		register("drain-core", new Command(Commands::drainCore, Icon.hammer));
+		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
+		register("info-unit", new Command(Commands::infoUnit, Icon.units));
+		register("force-exit", new Command(Commands::forceExit, Icon.exit));
+		register("task-clear", new Command(Commands::taskClear, Icon.cancel));
+		register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
+		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
+		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
+		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
+		register("info-pos", new Command(Commands::infoPos, Icon.move));
+		register("help", new Command(Commands::help, Icon.infoCircle));
+		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
+		Events.fire(Internal.Init.CommandsRegister);
+		Log.infoTag("Ozone", "Commands Center Initialized");
+		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
 		
 	}
 	
@@ -387,59 +337,109 @@ public class Commands {
 		for (Map.Entry<String, Command> s : commandsList.entrySet()) {
 			StringBuilder local = new StringBuilder();
 			local.append(s.getKey());
-			while (local.length() < target)
-				local.append(" ");
+			while (local.length() < target) local.append(" ");
 			local.append(":").append(s.getValue().description);
 			as.add(local.toString());
 		}
-		for(String s : as)
+		for (String s : as)
 			tellUser(s);
 	}
-
-	/**
-	 * @author Nexity
-	 * its obvious its my code
-	 */
 	
-	public static void FollowPlayer(ArrayList<String> arg) {
-		followingplayer = !followingplayer;
-		if (followingplayer) {
-			Thread s1 = new Thread(() -> {
-				while (followingplayer) {
-					for (Player target : Groups.player) {
-						if (target.name().contains(arg.get(0))) {
-							NetClient.setPosition(target.x, target.y);
-						}
-					}
-					try {
-						Thread.sleep(30);
-					} catch (Throwable ignored) {
-					}
+	public static void shuffleSorter() {
+		
+		commandsQueue.add(new Completable() {
+			Future<Building> f;
+			
+			{
+				name = "shuffleSorter";
+				f = Interface.getBuild(build -> {
+					if (build == null) return false;
+					return build.interactable(Vars.player.team()) && (build.block() instanceof Sorter || build.block() instanceof ItemSource);
+				});
+				if (f == null) {
+					tellUser("wtf ? shuffle sorter future is null");
+					completed = true;
 				}
-			});
-			s1.start();
-			tellUser("your args: " + arg.get(0));
-			tellUser("following player");
+			}
+			
+			@Override
+			public void update() {
+				if (f == null) return;
+				if (!f.isDone()) return;
+				if (completed) return;
+				completed = true;
+				try {
+					Building t = f.get();
+					if (t == null || t.tile == null) {
+						tellUser("block can't be find");
+						return;
+					}
+					Item target = Random.getRandom(Vars.content.items().toArray(Item.class));
+					t.tile().build.configure(target);
+				}catch (InterruptedException | ExecutionException e) {
+					Log.errTag("Ozone-Executor", "Failed to get tile:\n" + e.toString());
+				}
+			}
+		});
+		
+	}
+	
+	public static void followPlayer(ArrayList<String> arg) {
+		
+		if (!arg.isEmpty()) {
+			tellUser("Searching for: " + arg.get(0));
 		}else {
-			tellUser("stopped");
+			if (targetPlayer != null) {
+				tellUser("Stop following player");
+				targetPlayer = null;
+			}else {
+				tellUser("Empty Argument, use player name or ID");
+			}
+			return;
 		}
+		Player target = Interface.searchPlayer(arg.get(0));
+		if (target == null) {
+			tellUser("Player not found");
+			return;
+		}
+		targetPlayer = arg.get(0);
+		tellUser("Player found distance: " + Pathfinding.distanceTo(Vars.player.tileOn(), target.tileOn()));
+		commandsQueue.add(new Move(target.x, target.y) {{name = "followPlayer:" + target.name();}});
+		
+		commandsQueue.add(new SingleTimeTask(() -> {//basically repeating shit
+			if (targetPlayer == null) return;//gone
+			Player t = Interface.searchPlayer(targetPlayer);
+			if (t == null) tellUser("Player gone, stop following");
+			else followPlayer(new ArrayList<>(Collections.singletonList(t.id + "")));
+		}) {
+			{
+				name = "playerFollower:" + targetPlayer;
+			}
+		});
 	}
 	
 	public static void chaosKick() {
 		falseVote = !falseVote;
 		if (falseVote) {
-			Thread s1 = new Thread(() -> {
-				while (Vars.net.active() && falseVote) for (Player target : Groups.player) {
-					if (!target.name.equals(Vars.player.name)) {
-						Call.sendChatMessage("/votekick " + target.name);
-						try {
-							Thread.sleep(200);
-						}catch (Throwable ignored) {
-						}
-					}
+			commandsQueue.add(new CompletableUpdateBasedTimeTask(() -> {
+				if (Groups.player.size() < 2) {
+					falseVote = false;
+					tellUser("Not enough player, stopping falseVote");
+					return;
+				}
+				Player target = Random.getRandom(Groups.player);
+				if (target == null) target = Random.getRandom(Groups.player);
+				if (target == null) {
+					tellUser("Can't get random player, aborting to avoid recursion");
+					falseVote = false;
+					return;
+				}
+				Call.sendChatMessage("/votekick " + target.name);
+			}, Administration.Config.messageRateLimit.num() * 1000L, () -> falseVote) {
+				{
+					name = "falseVote";
 				}
 			});
-			s1.start();
 			tellUser("kicking started");
 		}else {
 			tellUser("kicking ended");
@@ -449,38 +449,33 @@ public class Commands {
 	public static void chatRepeater(ArrayList<String> arg) {
 		chatting = !chatting;
 		if (chatting) {
-			Thread s1 = new Thread(() -> {
-				while (true) {
-					if (chatting && Vars.net.active()) {
-						Call.sendChatMessage(Utility.joiner(arg, " ") + Math.random());
-						try {
-							Thread.sleep(3100);
-						} catch (Throwable ignored) {
-						}
-					}
+			commandsQueue.add(new CompletableUpdateBasedTimeTask(() -> {
+				Call.sendChatMessage(Utility.joiner(arg, " ") + Math.random());
+			}, Administration.Config.messageRateLimit.num() * 1000L, () -> chatting) {
+				{
+					name = "chatRepeater";
 				}
 			});
-			s1.start();
 			tellUser("chatRepeater started");
 		}else {
 			tellUser("chatRepeater ended");
 		}
 	}
 	
-	public static void draincore() {
-		drainingcore = !drainingcore;
-		if (drainingcore) {
-			Thread s1 = new Thread(() -> {
-				while (drainingcore) {
-					Interface.withdrawItem(Vars.player.closestCore(), Vars.player.closestCore().items().first());
-					Interface.dropItem();
-					try {
-						Thread.sleep(500);
-					} catch (Throwable ignored) {
-					}
+	public static void drainCore() {
+		drainCore = !drainCore;
+		if (drainCore) {
+			commandsQueue.add(new SingleTimeTask(() -> {
+				if (!drainCore) return;
+				Interface.withdrawItem(Vars.player.closestCore(), Vars.player.closestCore().items().first());
+				Interface.dropItem();
+				drainCore = false;
+				drainCore();
+			}) {
+				{
+					name = "drainCore";
 				}
 			});
-			s1.start();
 			tellUser("draining core");
 		}else {
 			tellUser("stopped draining core");

@@ -18,13 +18,8 @@ package Ozone.UI;
 
 import Atom.Time.Countdown;
 import Atom.Utility.Pool;
-import Atom.Utility.Random;
 import Ozone.Manifest;
-import Ozone.Settings.BaseSettings;
-import arc.Core;
 import arc.scene.ui.Label;
-import arc.scene.ui.ScrollPane;
-import arc.scene.ui.layout.Table;
 import arc.util.Log;
 import io.sentry.Sentry;
 import io.sentry.SentryTransaction;
@@ -33,7 +28,6 @@ import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.gen.Groups;
 import mindustry.gen.Icon;
-import mindustry.ui.dialogs.BaseDialog;
 import mindustry.world.Build;
 import mindustry.world.Tile;
 
@@ -41,28 +35,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class WorldInformation extends BaseDialog {
-	Table table = new Table();
-	ScrollPane scrollPane = new ScrollPane(table);
+public class WorldInformation extends ScrollableDialog {
+	
 	private Label label = new Label("World calculation began...");
 	
 	public WorldInformation() {
 		super("World Information");
 		addCloseButton();
-		buttons.button("Refresh", Icon.refresh, this::setup).size(210f, 64f);
+		buttons.button("Refresh", Icon.refresh, this::init).size(210f, 64f);
 	}
 	
 	void setup() {
-		scrollPane = new ScrollPane(table);
-		cont.clear();
-		table.clear();
-		if (!Vars.state.isGame()) return;
 		label = new Label("World calculation began...");
 		label.visible = false;
+		ad(Manifest.taskList);
 		ad("Word Name", Vars.state.map.name());
 		ad("Players Count", Groups.player.size());
 		ad("Drawc Count", Groups.draw.size());
@@ -165,37 +154,12 @@ public class WorldInformation extends BaseDialog {
 				label.visible = false;
 			}
 		});
-		cont.add(scrollPane).growX().growY();
+		
 	}
 	
-	void ad(Map<String, ?> map) {
-		for (Map.Entry<String, ?> s : map.entrySet())
-			ad(s.getKey(), s.getValue());
-	}
-	
-	void ad(String title, Callable<Object> callable) {
-		Pool.submit(() -> {
-			try {
-				ad(title, callable.call());
-			}catch (Throwable e) {
-				e.printStackTrace();
-				Sentry.captureException(e);
-			}
-		});
-	}
-	
-	void ad(String title, Object value) {
-		if (value == null) value = "null";
-		if (BaseSettings.colorPatch) title = "[" + Random.getRandomHexColor() + "]" + title;
-		Label l = new Label(title + ":");
-		table.add(l).growX();
-		String finalValue = String.valueOf(value);
-		table.row();
-		table.field(finalValue, s -> {
-			setup();
-			Core.app.setClipboardText(finalValue);
-			Manifest.toast("Copied");
-		}).expandX().growX();
-		table.row();
+	@Override
+	protected void init() {
+		if (!Vars.state.isGame()) return;
+		super.init();
 	}
 }

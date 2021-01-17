@@ -29,6 +29,7 @@ import mindustry.game.EventType;
 import mindustry.gen.Building;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
+import mindustry.gen.Player;
 import mindustry.type.Item;
 import mindustry.world.Tile;
 
@@ -52,10 +53,22 @@ public class Interface {
 		Call.dropItem(Mathf.random(120f));
 	}
 	
-	public static boolean depositItem(Building tile){
-		if(tile == null || !tile.isValid() || tile.items == null || !tile.interactable(player.team()) || player.unit().item() == null) return false;
+	public static Player searchPlayer(String s) {
+		Player target = null;
+		try {//try ID search
+			int id = Integer.parseInt(s);
+			target = Groups.player.find(f -> f.id == id);
+		}catch (NumberFormatException ignored) {}
+		if (target == null)// if still not found
+			target = Groups.player.find(f -> f.name().equals(s));
+		return player;
+	}
+	
+	public static boolean depositItem(Building tile) {
+		if (tile == null || !tile.isValid() || tile.items == null || !tile.interactable(player.team()) || player.unit().item() == null)
+			return false;
 		int amount = Math.min(1, tile.getMaximumAccepted(player.unit().item()));
-		if(amount > 0){
+		if (amount > 0) {
 			int accepted = tile.acceptStack(player.unit().item(), Vars.player.unit().stack.amount, player.unit());
 			Call.transferItemTo(player.unit(), player.unit().item(), accepted, player.unit().x, player.unit().y, tile);
 			return true;

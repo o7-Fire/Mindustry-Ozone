@@ -28,9 +28,6 @@ import Ozone.Internal.TilesOverlay;
 import Ozone.Patch.SettingsDialog;
 import Ozone.Patch.Translation;
 import Ozone.Settings.BaseSettings;
-import Ozone.UI.CommandsListFrag;
-import Ozone.UI.OzoneMenu;
-import Ozone.UI.WorldInformation;
 import Ozone.Watcher.BlockTracker;
 import arc.Events;
 import arc.scene.ui.Button;
@@ -222,10 +219,7 @@ public class Main {
 		};
 		
 		Vars.ui.settings = new SettingsDialog();
-		Manifest.commFrag = new CommandsListFrag();
-		Manifest.worldInformation = new WorldInformation();
-		Manifest.menu = new OzoneMenu(arc.Core.bundle.get("ozone.hud"), ozoneStyle);
-		Manifest.commFrag.build(Vars.ui.hudGroup);
+		Manifest.initUI();
 	}
 	
 	public static String getRandomHexColor() {

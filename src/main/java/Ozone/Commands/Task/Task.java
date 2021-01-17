@@ -25,9 +25,10 @@ public abstract class Task {
 	protected ArrayList<Consumer<Object>> onTaskCompleted = new ArrayList<>();
 	protected int tick = 1;
 	protected int currentTick = 0;
+	protected String name = null;
 	
 	public String getName() {
-		return this.getClass().getSimpleName();
+		return name == null ? this.getClass().getSimpleName() : name;
 	}
 	
 	public void onTaskCompleted(Consumer<Object> v) {
@@ -44,7 +45,7 @@ public abstract class Task {
 	}
 	
 	public void interrupt() {
-		taskCompleted();
+	
 	}
 	
 	protected void setTick(int tick1) {
@@ -67,5 +68,10 @@ public abstract class Task {
 	
 	public void update() {
 	
+	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + ":" + this.getName();
 	}
 }
