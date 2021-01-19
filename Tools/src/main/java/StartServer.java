@@ -28,8 +28,8 @@ public class StartServer {
             String version = Propertied.Manifest.get("MindustryVersion");
             if (version == null) throw new NullPointerException("MindustryVersion not found in property");
             SharedBootstrap.load(Dependency.Type.provided);
-            SharedBootstrap.libraryLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/server-release.jar"));
-            SharedBootstrap.standalone = true;
+	        SharedBootstrap.ozoneLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/server-release.jar"));
+	        SharedBootstrap.standalone = true;
             SharedBootstrap.loadMain("mindustry.server.ServerLauncher", args);
         }catch (Throwable t) {
             t.printStackTrace();

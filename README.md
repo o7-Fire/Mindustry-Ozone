@@ -61,7 +61,7 @@
 * 6.**2 hour later**: that its i give up (totally not based on a true story)
 
 # Impossible things to do
-
+- In-game Painter because a mere mortal can't draw with by typing code
 - ~~Create mindustry class patcher~~
 - Stop relying on third party library for bootstrap
 - ~~Bootstrap in less than 10 second for first time setup (worst: 40 second)~~
@@ -96,6 +96,11 @@
 - Fix javac commands
 - Logic Code blacklisting
 - Integrated png to draw logic tool
+- Mobile support
+- Schematic Pools
+- Fix the goddamn buggy Pathfinding
+- Ozone Extension Support
+- Video player
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools
