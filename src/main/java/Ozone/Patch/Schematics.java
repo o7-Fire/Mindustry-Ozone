@@ -14,26 +14,23 @@
  * limitations under the License.
  */
 
-public class Meth {
-	public static void main(String[] args) {
-		int sum = 0, sum2;
-		int n = 7;
-		int k = 1;
-		int i;
-		
-		// A summation can be written as a for loop. Here the loop represents a summation from i=1 to n.
-		for (i = k; i <= n; i++) {
-			sum += calc(i);
-			System.out.println(sum + " : " + calc(i));
-		}
-		
-		// You can also use the formula to give an answer for sum.
-		sum2 = n * (n + 1) / 2;
-		sum2 = calc(sum2);
-		System.out.println(sum == sum2 ? "Calculation Valid" : "Invalid: " + sum2);
+package Ozone.Patch;
+
+import Ozone.Internal.Module;
+
+public class Schematics implements Module {
+	
+	@Override
+	public void loadAsync() {
+	
 	}
 	
-	public static int calc(int i) {
-		return i * 3 + 2;
+	@Override
+	public String getName() {
+		return "Schematic-Fetcher";
+	}
+	
+	public void init() {
+		register();
 	}
 }

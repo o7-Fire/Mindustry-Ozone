@@ -26,8 +26,6 @@ import arc.util.Strings;
 import mindustry.Vars;
 import mindustry.desktop.DesktopLauncher;
 
-import java.util.Set;
-
 //basically its a patcher
 public class OzoneMindustry extends DesktopLauncher {
 	public static long start = System.currentTimeMillis() / 1000;
@@ -59,10 +57,6 @@ public class OzoneMindustry extends DesktopLauncher {
 			handleCrash(var2);
 			throw var2;
 		}
-		if (!SharedBootstrap.debug) return;
-		Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-		for (Thread t : threadSet)
-			if (!t.isDaemon()) System.out.println(t.getId() + ". " + t.getName() + " alive ? " + t.isAlive());
 		
 		
 	}

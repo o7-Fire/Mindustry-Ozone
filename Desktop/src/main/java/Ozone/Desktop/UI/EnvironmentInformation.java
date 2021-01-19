@@ -17,7 +17,7 @@
 package Ozone.Desktop.UI;
 
 import Ozone.Desktop.Bootstrap.Dependency;
-import Ozone.Desktop.Bootstrap.LibraryLoader;
+import Ozone.Desktop.Bootstrap.OzoneLoader;
 import Ozone.Desktop.Propertied;
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Manifest;
@@ -89,7 +89,7 @@ public class EnvironmentInformation extends OzoneBaseDialog {
 	
 	void dep() {
 		try {
-			for (URL u : ((LibraryLoader) this.getClass().getClassLoader()).getURLs()) {
+			for (URL u : ((OzoneLoader) this.getClass().getClassLoader()).getURLs()) {
 				ad("Library-URL", u.toExternalForm());
 			}
 		}catch (Throwable ignored) {

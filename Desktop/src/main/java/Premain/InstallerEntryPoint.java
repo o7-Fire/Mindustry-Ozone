@@ -31,12 +31,13 @@ public class InstallerEntryPoint {
 		}
 		try {
 			long a, b, c;
+			SharedBootstrap.requireDisplay();
 			SharedBootstrap.classloaderNoParent();
 			a = System.currentTimeMillis();
 			SharedBootstrap.loadRuntime();
 			b = System.currentTimeMillis();
 			SharedBootstrap.loadClasspath();
-			SharedBootstrap.requireDisplay();
+			
 			SharedBootstrap.loadMain("Main.OzoneInstaller", args);
 			System.exit(0);
 			//SharedBootstrap.loadMain("Premain.MindustryEntryPoint", args);

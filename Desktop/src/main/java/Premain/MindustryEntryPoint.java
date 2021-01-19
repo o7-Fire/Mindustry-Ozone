@@ -30,7 +30,6 @@ public class MindustryEntryPoint {
 			SharedBootstrap.classloaderNoParent();
 			SharedBootstrap.loadRuntime();
 			SharedBootstrap.loadClasspath();
-			SharedBootstrap.requireDisplay();
 			main(new ArrayList<>(Arrays.asList(args)));
 			System.exit(0);
 		}catch (Throwable t) {

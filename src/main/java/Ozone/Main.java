@@ -218,7 +218,7 @@ public class Main {
 			}
 		};
 		
-		Vars.ui.settings = new SettingsDialog();
+		Vars.ui.settings = new SettingsDialog();//how to patch mindustry UI
 		Manifest.initUI();
 	}
 	

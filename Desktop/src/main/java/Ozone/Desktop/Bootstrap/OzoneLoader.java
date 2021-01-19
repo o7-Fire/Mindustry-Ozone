@@ -16,6 +16,7 @@
 
 package Ozone.Desktop.Bootstrap;
 
+import Atom.Utility.Cache;
 import Ozone.Pre.Download;
 import io.sentry.Sentry;
 import org.jetbrains.annotations.Nullable;
@@ -33,28 +34,31 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class LibraryLoader extends URLClassLoader {
+public class OzoneLoader extends URLClassLoader {
 	public static File cache = new File("lib/");
-	private ExecutorService es = Executors.newCachedThreadPool(r -> {
-		Thread t = Executors.defaultThreadFactory().newThread(r);
-		t.setDaemon(true);
-		return t;
-	});
-	private static ArrayList<String> parentFirst = new ArrayList<>();
 	
 	static {
 		cache.mkdirs();
 		registerAsParallelCapable();
 		parentFirst.add(Sentry.class.getPackageName());
-		parentFirst.add(LibraryLoader.class.getPackageName());
+		parentFirst.add(OzoneLoader.class.getPackageName());
 	}
 	
+	private static ArrayList<String> parentFirst = new ArrayList<>();
 	
-	public LibraryLoader(URL[] urls, ClassLoader parent) {
+	private ExecutorService es = Executors.newCachedThreadPool(r -> {
+		Thread t = Executors.defaultThreadFactory().newThread(r);
+		t.setName(t.getName() + "-OzoneLoader");
+		t.setDaemon(true);
+		return t;
+	});
+	
+	
+	public OzoneLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
 	}
 	
-	public LibraryLoader(URL[] urls) {
+	public OzoneLoader(URL[] urls) {
 		super(urls);
 	}
 	
@@ -142,6 +146,9 @@ public class LibraryLoader extends URLClassLoader {
 	public URL getResource(String name) {
 		URL u = super.getResource(name);
 		if (u == null) u = ClassLoader.getSystemResource(name);
+		if (u != null) {
+			try { u = Cache.http(u); }catch (Throwable e) { }
+		}
 		return u;
 	}
 	

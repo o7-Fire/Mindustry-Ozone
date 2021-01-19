@@ -16,7 +16,9 @@
 
 package Ozone;
 
+import Atom.File.Repo;
 import Atom.Reflect.Reflect;
+import Ozone.Internal.Module;
 import Ozone.Settings.SettingsManifest;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
@@ -36,8 +38,12 @@ import mindustry.net.Net;
 import mindustry.ui.Styles;
 
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static Ozone.Main.ozoneStyle;
 
@@ -49,6 +55,24 @@ public class Manifest {
 	public static TaskList taskList;
 	public static ArrayList<Class<?>> settings = new ArrayList<>();
 	public static String lastServer = "";
+	public static Repo repo = new Repo();
+	public static HashMap<Class<? extends Module>, Module> module = new HashMap<>();
+	
+	static {
+		try {
+			repo.addRepo(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master/"));
+		}catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static <T extends Module> T getModule() {
+		for (Map.Entry<Class<? extends Module>, Module> s : module.entrySet())
+			try {
+				return (T) s.getValue();
+			}catch (Throwable ignored) {}
+		return null;
+	}
 	
 	public static void initUI() {
 		taskList = new TaskList();

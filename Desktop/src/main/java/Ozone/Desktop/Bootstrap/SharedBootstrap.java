@@ -34,20 +34,21 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class SharedBootstrap {
 	
-	public static LibraryLoader libraryLoader;
+	public static OzoneLoader ozoneLoader;
 	public static boolean customBootstrap, standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null || System.getProperty("ozoneTest") != null;
 	public static long startup = System.currentTimeMillis();
 	public static final String bootstrap = "SharedBootstrap 2.7", mainClass;
 	private static ArrayList<String> loadedList = new ArrayList<>();
 	private static Splash splash = null;
-
+	
 	static {
 		System.out.println(bootstrap + (debug ? " [Debug]" : ""));
-		try {
+		if (!debug) try {
 			URL u = ClassLoader.getSystemResource("gif/loading.gif");
 			splash = new Splash(u);
 			splash.setLabel(bootstrap);
@@ -66,7 +67,7 @@ public class SharedBootstrap {
 			options.setRelease(Version.core + ":" + Version.desktop);
 			options.setDebug(debug);
 			options.setTracesSampleRate(1.0);
-			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "no").equals("unspecified") ? "dev" : "release");
+			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "unspecified").equals("unspecified") ? "test" : "release");
 			if (System.getProperty("ozoneTest") != null) options.setEnvironment("test");
 		}, true);
 	}
@@ -79,7 +80,7 @@ public class SharedBootstrap {
 	
 	public static void classloaderNoParent() {
 		setSplash("New LibraryLoader");
-		SharedBootstrap.libraryLoader = new LibraryLoader(new URL[]{SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation()}, null);
+		SharedBootstrap.ozoneLoader = new OzoneLoader(new URL[]{SharedBootstrap.class.getProtectionDomain().getCodeSource().getLocation()}, null);
 	}
 	
 	protected static void setSplash(String t) {
@@ -96,12 +97,12 @@ public class SharedBootstrap {
 			mindustryJar = new File(System.getProperty("MindustryExecutable"));
 		else if (!args.isEmpty()) mindustryJar = new File(args.get(0));
 		
-		if (mindustryJar != null && mindustryJar.exists()) SharedBootstrap.libraryLoader.addURL(mindustryJar);
+		if (mindustryJar != null && mindustryJar.exists()) SharedBootstrap.ozoneLoader.addURL(mindustryJar);
 		else {
 			System.out.println("No Mindustry jar found, using online resource");
 			String version = Propertied.Manifest.get("MindustryVersion");
 			if (version == null) throw new NullPointerException("MindustryVersion not found in property");
-			SharedBootstrap.libraryLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/Mindustry.jar"));
+			SharedBootstrap.ozoneLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/Mindustry.jar"));
 			SharedBootstrap.standalone = true;
 		}
 	}
@@ -128,13 +129,13 @@ public class SharedBootstrap {
 		}
 	}
 	
-	protected static void loadAtomic() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+	public static void loadAtomic() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		moduleCheck("Atomic");
 		setSplash("Loading Atomic Library");
-		ArrayList<String> se = (ArrayList<String>) libraryLoader.loadClass("Main.LoadAtom").getMethod("main", String[].class).invoke(null, (Object) new String[0]);
+		ArrayList<String> se = (ArrayList<String>) ozoneLoader.loadClass("Main.LoadAtom").getMethod("main", String[].class).invoke(null, (Object) new String[0]);
 		ArrayList<URL> ur = new ArrayList<>();
 		for (String s : se) ur.add(new URL(s));
-		libraryLoader.addURL(ur);
+		ozoneLoader.addURL(ur);
 	}
 	
 	public static void load(Dependency.Type type) throws IOException {
@@ -146,7 +147,7 @@ public class SharedBootstrap {
 			if (!d.type.equals(type)) continue;
 			h.add(new URL(d.getDownload()));
 		}
-		libraryLoader.addURL(h);
+		ozoneLoader.addURL(h);
 		Dependency.save();
 	}
 	
@@ -159,12 +160,20 @@ public class SharedBootstrap {
 		moduleCheck("Classpath");
 		setSplash("Loading " + "Classpath" + " Library");
 		for (String s : System.getProperty("java.class.path").split(System.getProperty("os.name").toUpperCase().contains("WIN") ? ";" : ":"))
-			libraryLoader.addURL(new File(s));
+			ozoneLoader.addURL(new File(s));
 	}
 	
 	public static void requireDisplay() {
-		if (GraphicsEnvironment.isHeadless())
+		try {
+			if (GraphicsEnvironment.isHeadless())
+				throw new RuntimeException(new IllegalStateException("This operation require GraphicsEnvironment"));
+		}catch (Throwable ignored) {
 			throw new RuntimeException(new IllegalStateException("This operation require GraphicsEnvironment"));
+		}
+	}
+	
+	public static void loadMain(Class<?> main, String[] arg) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		loadMain(main.getName(), arg);
 	}
 	
 	public static void loadMain(String classpath, String[] arg) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
@@ -174,7 +183,11 @@ public class SharedBootstrap {
 			splash.dispose();
 			splash = null;
 		}
-		SharedBootstrap.libraryLoader.loadClass(classpath).getMethod("main", String[].class).invoke(null, (Object) arg);
+		SharedBootstrap.ozoneLoader.loadClass(classpath).getMethod("main", String[].class).invoke(null, (Object) arg);
+		if (!SharedBootstrap.debug) return;
+		Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+		for (Thread t : threadSet)
+			if (!t.isDaemon()) setSplash(t.getId() + ". " + t.getName() + " alive ? " + t.isAlive());
 	}
 	
 	

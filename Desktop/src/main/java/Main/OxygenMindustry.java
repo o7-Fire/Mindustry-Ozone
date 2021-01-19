@@ -81,7 +81,7 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 		oxygen = new OxygenMindustry();
 		h = new SdlAppWithExtraStep(oxygen, new SdlConfig() {
 			{
-				this.title = "Mindustry-Oxygen";
+				this.title = SharedBootstrap.debug ? "[Debug]-" : "" + "Mindustry-Oxygen";
 				this.maximized = true;
 				this.stencil = 8;
 				this.width = 900;

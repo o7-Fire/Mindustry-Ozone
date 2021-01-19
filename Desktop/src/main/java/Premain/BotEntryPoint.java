@@ -33,7 +33,7 @@ public class BotEntryPoint {
 			SharedBootstrap.classloaderNoParent();
 			SharedBootstrap.loadRuntime();
 			SharedBootstrap.loadClasspath();
-			SharedBootstrap.libraryLoader.addURL(new File(System.getProperty("MindustryExecutable")));
+			SharedBootstrap.ozoneLoader.addURL(new File(System.getProperty("MindustryExecutable")));
 			SharedBootstrap.loadMain("Main.OxygenMindustry", args);
 			System.exit(0);
 		}catch (Throwable t) {
