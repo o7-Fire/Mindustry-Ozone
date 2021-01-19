@@ -16,6 +16,7 @@
 
 package Ozone;
 
+import Atom.Reflect.Reflect;
 import Atom.Utility.Random;
 import Ozone.Commands.Commands;
 import Ozone.Commands.Pathfinding;
@@ -23,6 +24,7 @@ import Ozone.Commands.TaskInterface;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Ozone.Internal.Interface;
+import Ozone.Internal.Module;
 import Ozone.Internal.Overlay;
 import Ozone.Internal.TilesOverlay;
 import Ozone.Patch.SettingsDialog;
@@ -34,6 +36,7 @@ import arc.scene.ui.Button;
 import arc.scene.ui.Dialog;
 import arc.struct.ObjectMap;
 import arc.util.Log;
+import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.game.EventType;
@@ -45,14 +48,11 @@ import mindustry.ui.Styles;
 import java.util.Map;
 
 public class Main {
-	private static boolean init = false;
-	
 	public static Button.ButtonStyle bOzoneStyle;
-	
-	
-	public static void loadContent() {
-	
-	}
+	public static Dialog.DialogStyle ozoneStyle;
+	private static boolean init = false;
+	static int iteration = 0;
+	private static boolean moduleLoaded;
 	
 	private static void patchLast() {
 	
@@ -152,7 +152,6 @@ public class Main {
 		});
 	}
 	
-	
 	protected static void loadSettings() {
 		Manifest.settings.add(BaseSettings.class);
 		Events.fire(Internal.Init.SettingsRegister);
@@ -174,7 +173,6 @@ public class Main {
 		}
 	}
 	
-	
 	public static void patchTranslation() {
 		Translation.register();
 		ObjectMap<String, String> modified = arc.Core.bundle.getProperties();
@@ -189,11 +187,31 @@ public class Main {
 			c.getValue().description = Commands.getTranslation(c.getKey());
 	}
 	
-	public static Dialog.DialogStyle ozoneStyle;
+	public static void loadContent() {
+		while (!moduleLoaded) {
+			try { Thread.sleep(100); }catch (InterruptedException e) { }
+		}
+		synchronized (Manifest.module) {
+			for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) s.getValue().loadAsync();
+		}
+	}
 	
 	public static void init() {
 		if (init) return;
 		init = true;
+		for (Class<? extends Module> m : Reflect.getExtendedClass("Ozone", Module.class)) {
+			try {
+				Log.debug("Registering @", m.getName());
+				Module mod = m.getDeclaredConstructor().newInstance();
+				mod.setRegister();
+				Log.info("@ Registered", mod.getName());
+				Manifest.module.put(m, mod);
+			}catch (Throwable e) {
+				Sentry.captureException(e);
+				Log.err(e);
+				throw new RuntimeException(e);
+			}
+		}
 		Log.infoTag("Ozone", "Hail o7");
 		loadSettings();
 		patch();
@@ -206,6 +224,46 @@ public class Main {
 		BlockTracker.init();
 		Overlay.init();
 		TilesOverlay.init();
+		loadModule();
+		Log.debug("Initialized @ module in @ iteration", Manifest.module.size(), iteration);
+		Events.on(EventType.ClientLoadEvent.class, gay -> {
+			for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
+				if (!s.getValue().posted()) {
+					try {
+						Log.debug("Posting @", s.getValue().getName());
+						s.getValue().postInit();
+						s.getValue().setPosted();
+						Log.debug("@ Posted", s.getValue().getName());
+					}catch (Throwable throwable) {
+						Sentry.captureException(throwable);
+						Log.err(throwable);
+						Log.err("Error while posting module @", s.getKey().getName());
+						throw new RuntimeException(throwable);
+					}
+					
+				}
+		});
+	}
+	
+	private static void loadModule() {
+		iteration++;
+		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
+			if (s.getValue().canLoad()) {
+				try {
+					Log.debug("Initializing @", s.getValue().getName());
+					s.getValue().init();
+					s.getValue().setLoaded();
+					Log.debug("@ Initialized", s.getValue().getName());
+				}catch (Throwable throwable) {
+					Sentry.captureException(throwable);
+					Log.err(throwable);
+					Log.err("Error while loading module @", s.getKey().getName());
+					throw new RuntimeException(throwable);
+				}
+			}
+		}
+		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
+			if (!s.getValue().loaded()) loadModule();
 	}
 	
 	protected static void initUI() {

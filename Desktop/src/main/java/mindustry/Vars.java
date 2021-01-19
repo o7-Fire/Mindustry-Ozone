@@ -42,6 +42,8 @@ import mindustry.world.Tile;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -500,6 +502,8 @@ public class Vars implements Loadable {
 		}
 	}
 	
+	public static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
+	
 	public static void loadLogger() {
 		if (loadedLogger) return;
 		
@@ -509,6 +513,7 @@ public class Vars implements Loadable {
 		Seq<String> logBuffer = new Seq<>();
 		if (SharedBootstrap.debug) Log.level = Log.LogLevel.debug;
 		Log.logger = (level, text) -> {
+			text = "[" + dateTime.format(LocalDateTime.now()) + "] " + text;
 			String result = text;
 			String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
 			System.out.println(rawText);

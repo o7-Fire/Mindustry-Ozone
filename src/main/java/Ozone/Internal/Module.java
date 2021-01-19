@@ -26,39 +26,65 @@ import static Ozone.Internal.InformationCenter.*;
 
 public interface Module extends Loadable {
 	
-	default void init() {
+	default void init() throws Throwable {
 	
 	}
 	
-	default void postInit() {
+	default void postInit() throws Throwable {
 	
 	}
 	
 	
-	default void register() {//invoked from outside
-		reg(moduleRegistered);
+	default void setRegister() {//invoked from outside
+		try {
+			reg(moduleRegistered);
+		}catch (IllegalStateException i) {
+			throw new RuntimeException("Module: \"" + getName() + "\" already registered");
+		}
 	}
 	
-	default void loaded() {//invoked from outside
-		reg(moduleLoaded);
+	default void setLoaded() {//invoked from outside
+		try {
+			reg(moduleLoaded);
+		}catch (IllegalStateException i) {
+			throw new RuntimeException("Module: \"" + getName() + "\" already loaded");
+		}
 	}
 	
-	default void posted() {reg(modulePost);}
+	default void setPosted() {
+		try {
+			reg(modulePost);
+		}catch (IllegalStateException i) {
+			throw new RuntimeException("Module: \"" + getName() + "\" already posted");
+		}
+	}
+	
+	default boolean loaded() {
+		return moduleLoaded.contains(getName());
+	}
+	
+	default boolean registered() {
+		return moduleRegistered.contains(getName());
+	}
+	
+	default boolean posted() {
+		return modulePost.contains(getName());
+	}
 	
 	default ArrayList<Class<? extends Module>> dependOnModule() {
 		return new ArrayList<>();
 	}
 	
 	default boolean canLoad() {
-		if (moduleLoaded.contains(getName())) return false;
+		if (loaded()) return false;
 		if (!moduleRegistered.contains(getName())) return false;
 		ArrayList<Class<? extends Module>> dep = dependOnModule();
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) dep.remove(s.getKey());
 		return dep.isEmpty();
 	}
 	
-	default void reg(ArrayList<String> ar) {
-		if (ar.contains(getName())) throw new RuntimeException("Module: \"" + getName() + "\" already registered");
+	default void reg(ArrayList<String> ar) throws IllegalStateException {
+		if (ar.contains(getName())) throw new IllegalStateException();
 		ar.add(getName());
 	}
 }

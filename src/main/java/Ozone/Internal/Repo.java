@@ -14,32 +14,14 @@
  * limitations under the License.
  */
 
-package Ozone.Patch;
+package Ozone.Internal;
 
-import Ozone.Internal.Module;
-import Ozone.Internal.RepoCached;
+import java.net.URL;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-public class Schematics implements Module {
+public class Repo extends Atom.File.Repo implements Module {
 	
 	@Override
-	public void loadAsync() {
-	
-	}
-	
-	@Override
-	public String getName() {
-		return "Schematic-Fetcher";
-	}
-	
-	@Override
-	public ArrayList<Class<? extends Module>> dependOnModule() {
-		return new ArrayList<>(Arrays.asList(RepoCached.class));
-	}
-	
-	public void init() {
-	
+	public void init() throws Throwable {
+		addRepo(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master"));
 	}
 }

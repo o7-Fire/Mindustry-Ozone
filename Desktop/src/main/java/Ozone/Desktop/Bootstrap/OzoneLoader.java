@@ -36,6 +36,7 @@ import java.util.concurrent.Future;
 
 public class OzoneLoader extends URLClassLoader {
 	public static File cache = new File("lib/");
+	private static ArrayList<String> parentFirst = new ArrayList<>();
 	
 	static {
 		cache.mkdirs();
@@ -44,7 +45,6 @@ public class OzoneLoader extends URLClassLoader {
 		parentFirst.add(OzoneLoader.class.getPackageName());
 	}
 	
-	private static ArrayList<String> parentFirst = new ArrayList<>();
 	
 	private ExecutorService es = Executors.newCachedThreadPool(r -> {
 		Thread t = Executors.defaultThreadFactory().newThread(r);
