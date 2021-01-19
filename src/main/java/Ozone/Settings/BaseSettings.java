@@ -16,12 +16,19 @@
 
 package Ozone.Settings;
 
+import Atom.Reflect.Reflect;
+import Ozone.Event.Internal;
+import Ozone.Internal.Module;
+import Ozone.Manifest;
 import Ozone.Patch.Translation;
+import arc.Events;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class BaseSettings {
+public class BaseSettings implements Module {
 	
 	public static boolean colorPatch = false, debugMode = false;
 	public static boolean antiSpam = false, worldLog = false, blockDebug = false;
@@ -37,6 +44,18 @@ public class BaseSettings {
 		t.put("worldLog", "Spam your console with world interaction log");
 		Translation.addSettings(t);
 		SettingsManifest.readSettings(BaseSettings.class);
+	}
+	
+	@Override
+	public void init() throws Throwable {
+		Manifest.settings.add(BaseSettings.class);
+		Events.fire(Internal.Init.SettingsRegister);
+		arc.Core.settings.put("crashreport", false);
+	}
+	
+	@Override
+	public List<Class<? extends Module>> dependOnModule() {
+		return new ArrayList<>(Reflect.getExtendedClass("Ozone", BaseSettings.class));
 	}
 	
 	public static void save() {

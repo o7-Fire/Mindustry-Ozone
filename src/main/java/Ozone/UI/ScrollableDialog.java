@@ -33,8 +33,12 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 public abstract class ScrollableDialog extends OzoneDialog {
-	Table table = new Table();
-	ScrollPane scrollPane = new ScrollPane(table);
+	protected Table table = new Table();
+	protected ScrollPane scrollPane = new ScrollPane(table);
+	
+	public ScrollableDialog() {
+		super();
+	}
 	
 	public ScrollableDialog(String title, DialogStyle style) {
 		super(title, style);
@@ -44,7 +48,13 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		super(title);
 	}
 	
-	abstract void setup();
+	@Override
+	protected void ctor() {
+		super.ctor();
+		buttons.button("Refresh", Icon.refresh, this::init).size(210f, 64f);
+	}
+	
+	protected abstract void setup();
 	
 	protected void init() {
 		scrollPane = new ScrollPane(table);
@@ -54,34 +64,34 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		cont.add(scrollPane).growX().growY();
 	}
 	
-	void ad(Map<String, ?> map) {
+	protected void ad(Map<String, ?> map) {
 		for (Map.Entry<String, ?> s : map.entrySet())
 			ad(s.getKey(), s.getValue());
 	}
 	
-	void ad(String name, Drawable i, BaseDialog bd) {
+	protected void ad(String name, Drawable i, BaseDialog bd) {
 		table.button(name, i, bd::show).growX();
 		table.row();
 	}
 	
-	void ad(OzoneDialog od) {
+	protected void ad(OzoneDialog od) {
 		ad(od.icon(), od);
 	}
 	
-	void ad(Drawable i, BaseDialog od) {
+	protected void ad(Drawable i, BaseDialog od) {
 		ad(od.title.getText().toString(), i, od);
 	}
 	
-	void ad(BaseDialog bd) {
+	protected void ad(BaseDialog bd) {
 		ad(bd.title.getText().toString(), bd);
 	}
 	
-	void ad(String name, BaseDialog od) {
+	protected void ad(String name, BaseDialog od) {
 		table.button(name, Icon.info, od::show).growX();
 		table.row();
 	}
 	
-	void ad(String title, Callable<Object> callable) {
+	protected void ad(String title, Callable<Object> callable) {
 		Pool.submit(() -> {
 			try {
 				ad(title, callable.call());
@@ -92,12 +102,12 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		});
 	}
 	
-	void ad(String text) {
+	protected void ad(String text) {
 		table.add(text).growX();
 		table.row();
 	}
 	
-	void ad(String title, Object value) {
+	protected void ad(String title, Object value) {
 		if (value == null) value = "null";
 		if (BaseSettings.colorPatch) title = "[" + Random.getRandomHexColor() + "]" + title;
 		Label l = new Label(title + ":");

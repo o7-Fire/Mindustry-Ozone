@@ -18,6 +18,7 @@ package Ozone.Desktop.UI;
 
 import Ozone.Desktop.Manifest;
 import Ozone.Experimental.Evasion.Identification;
+import Ozone.UI.OzoneDialog;
 import arc.Core;
 import io.sentry.Sentry;
 import mindustry.Vars;
@@ -55,12 +56,13 @@ public class ModsMenu extends BaseDialog {
 	}
 	
 	void generic() {
-		add(Manifest.envInf);
-		add(Manifest.dbgMenu);
+		ad(Manifest.envInf);
+		ad(Manifest.dbgMenu);
+		ad(Manifest.moduleFrag);
 	}
 	
-	void add(OzoneBaseDialog dialog) {
-		cont.button(Core.bundle.get(dialog.getClass().getName()), dialog.icon, dialog::show).growX();
+	void ad(OzoneDialog dialog) {
+		cont.button(Core.bundle.get(dialog.getClass().getName()), dialog.icon(), dialog::show).growX();
 		cont.row();
 	}
 }

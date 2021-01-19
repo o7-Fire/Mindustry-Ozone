@@ -67,7 +67,7 @@ public class SharedBootstrap {
 			options.setRelease(Version.core + ":" + Version.desktop);
 			options.setDebug(debug);
 			options.setTracesSampleRate(1.0);
-			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "unspecified").equals("unspecified") ? "test" : "release");
+			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "unspecified").equals("unspecified") ? "dev" : "release");
 			if (System.getProperty("ozoneTest") != null) options.setEnvironment("test");
 		}, true);
 	}

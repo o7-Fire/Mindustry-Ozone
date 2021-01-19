@@ -17,10 +17,12 @@
 package Ozone.Patch;
 
 import Atom.Reflect.Reflect;
-import Ozone.Event.Internal;
-import Ozone.Main;
+import Atom.Utility.Random;
+import Ozone.Commands.Commands;
+import Ozone.Internal.Interface;
+import Ozone.Internal.Module;
 import Ozone.Settings.BaseSettings;
-import arc.Events;
+import arc.struct.ObjectMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,12 +32,38 @@ import java.util.Map;
 import static Ozone.Internal.Interface.registerWords;
 
 //TODO decentralize translation
-public class Translation {
+public class Translation implements Module {
 	public static final ArrayList<String> normalSinglet = new ArrayList<>(Arrays.asList("Run"));
 	public static final ArrayList<String> singlet1 = new ArrayList<>(Arrays.asList("String", "Integer", "Float", "Long", "Boolean", "Commands"));
 	public static final HashMap<String, String> generalSettings = new HashMap<>();
 	public static final HashMap<String, String> commands = new HashMap<>();
 	public static final HashMap<String, String> keyBinds = new HashMap<>();
+	
+	public static String getRandomHexColor() {
+		return "[" + Random.getRandomHexColor() + "]";
+	}
+	
+	public static String add(String id, String text) {
+		String s = Thread.currentThread().getStackTrace()[2].getClassName() + text.toLowerCase().replaceAll(" ", ".");
+		registerWords(s, text);
+		s = text;
+		if (BaseSettings.colorPatch) s = getRandomHexColor() + s + "[white]";
+		return s;
+	}
+	
+	@Override
+	public void postInit() throws Throwable {
+		ObjectMap<String, String> modified = arc.Core.bundle.getProperties();
+		for (ObjectMap.Entry<String, String> s : Interface.bundle) {
+			modified.put(s.key, s.value);
+		}
+		if (BaseSettings.colorPatch) for (String s : arc.Core.bundle.getKeys()) {
+			modified.put(s, getRandomHexColor() + modified.get(s) + "[white]");
+		}
+		arc.Core.bundle.setProperties(modified);
+		for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet())
+			c.getValue().description = Commands.getTranslation(c.getKey());
+	}
 	
 	public static void register() {
 		
@@ -61,7 +89,6 @@ public class Translation {
 		commands.put("task-clear", "clear all bot task");
 		commands.put("message-log", "see message log, recommend to export it instead");
 		commands.put("shuffle-configurable", "shuffle every configurable block, literally almost everything");
-		Events.fire(Internal.Init.TranslationRegister);
 		for (Map.Entry<String, String> s : commands.entrySet()) {
 			registerWords("ozone.commands." + s.getKey(), s.getValue());
 		}
@@ -77,6 +104,11 @@ public class Translation {
 		
 	}
 	
+	@Override
+	public void init() throws Throwable {
+		register();
+	}
+	
 	public static String add(String text) {
 		return add(Thread.currentThread().getStackTrace()[2].toString() + text.toLowerCase().replaceAll(" ", "."), text);
 		
@@ -87,11 +119,8 @@ public class Translation {
 			registerWords(Reflect.getCallerClass() + "." + s.getKey(), s.getValue());
 	}
 	
-	public static String add(String id, String text) {
-		String s = Thread.currentThread().getStackTrace()[2].getClassName() + text.toLowerCase().replaceAll(" ", ".");
-		registerWords(s, text);
-		s = text;
-		if (BaseSettings.colorPatch) s = Main.getRandomHexColor() + s + "[white]";
-		return s;
+	@Override
+	public ArrayList<Class<? extends Module>> dependOnModule() {
+		return new ArrayList<>(Reflect.getExtendedClass("Ozone", Translation.class));
 	}
 }

@@ -16,22 +16,20 @@
 
 package Ozone.Desktop.Patch;
 
+import Ozone.Patch.Translation;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import static Ozone.Internal.Interface.registerWords;
-import static Ozone.Patch.Translation.commands;
-import static Ozone.Patch.Translation.generalSettings;
 
-public class TranslationDesktop {
+public class TranslationDesktop extends Translation {
 	static HashMap<String, String> deskUI = new HashMap<>();
-	private static volatile boolean init = false;
 	
-	public static void Init() {
-		if (init) return;
-		init = true;
+	public static void register() {
 		deskUI.put("EnvironmentInformation", "Environment Information");
 		deskUI.put("DebugMenuDialog", "Debug Menu");
+		deskUI.put("ModuleFrag", "Module List");
 		commands.put("javac", "run single line of java code");
 		commands.put("library", "manage runtime library");
 		commands.put("debug", TranslationDesktop.class.getClassLoader().toString());
@@ -45,5 +43,9 @@ public class TranslationDesktop {
 		for (Map.Entry<String, String> s : deskUI.entrySet()) {
 			registerWords("Ozone.Desktop.UI." + s.getKey(), s.getValue());
 		}
+	}
+	
+	public void init() {
+		register();
 	}
 }

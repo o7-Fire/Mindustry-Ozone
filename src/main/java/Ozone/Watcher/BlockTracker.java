@@ -17,6 +17,7 @@
 package Ozone.Watcher;
 
 import Atom.Reflect.FieldTool;
+import Ozone.Internal.Module;
 import Ozone.Settings.BaseSettings;
 import arc.Core;
 import arc.Events;
@@ -25,16 +26,13 @@ import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.world.Tile;
 
-public class BlockTracker {
-	private static volatile boolean init;
+public class BlockTracker implements Module {
 	private static Tile target = null;
-
-	public static void init(){
-		if (init)return;
-		init = true;
+	
+	public void init() {
 		Events.run(EventType.Trigger.update, BlockTracker::update);
 	}
-
+	
 	private static void update() {
 		if (BaseSettings.blockDebug) if (Vars.state.isPlaying()) {
 			if (Core.input.keyDown(KeyCode.controlLeft)) if (Core.input.keyDown(KeyCode.mouseLeft))

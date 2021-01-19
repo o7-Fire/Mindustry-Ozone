@@ -25,21 +25,20 @@ import mindustry.game.EventType;
 
 import java.util.ArrayList;
 
-public class Overlay {
+public class Overlay implements Module {
 	public static ArrayList<Overlay> overlay = new ArrayList<>();
-	private static boolean init;
 	private static float f = 2f;
 	public Color color = Color.valueOf(Random.getRandomHexColor());
 	protected ArrayList<Vec2> overlayCoordinate = new ArrayList<>();
+	
+	public Overlay() {}
 	
 	public Overlay(ArrayList<Vec2> vec2s) {
 		overlayCoordinate.addAll(vec2s);
 		
 	}
 	
-	public static void init() {
-		if (init) return;
-		init = true;
+	public void init() {
 		Events.run(EventType.Trigger.draw, Overlay::draw);
 	}
 	

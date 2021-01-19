@@ -19,6 +19,7 @@ package Ozone.Desktop.UI;
 import Bot.BotClient;
 import Bot.Status;
 import Ozone.Desktop.BotController;
+import Ozone.UI.OzoneBaseDialog;
 import arc.Core;
 import arc.scene.ui.Label;
 import arc.scene.ui.ScrollPane;
@@ -45,12 +46,12 @@ public class BotControllerDialog extends OzoneBaseDialog {
 		buttons.button("Start Server", Icon.add, this::startServer).size(210f, 64f).disabled(s -> BotController.serverStarted());
 	}
 	
-	void update() {
+	protected void update() {
 		if (isShown() && timer.get(200)) setup();
 	}
 	
 	//new TextureRegionDrawable(new TextureRegion(Core.assets.get("sprites/schematic-background.png", Texture.class)))
-	void setup() {
+	protected void setup() {
 		cont.clear();
 		if (BotController.botClients.isEmpty()) {
 			cont.button("Such an empty, go create a [orange]Bot", () -> {

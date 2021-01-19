@@ -21,7 +21,7 @@ import Ozone.Patch.Translation;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class SettingsDesktop {
+public class SettingsDesktop extends BaseSettings {
 	public static boolean disableDefaultGif;
 	
 	static {

@@ -27,21 +27,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TilesOverlay {
+public class TilesOverlay implements Module {
 	public static ArrayList<TilesOverlay> overlays = new ArrayList<>();
 	public static float size = 2f;
 	public static float f = 2;
-	private static boolean init;
 	public Color color = Color.valueOf(Random.getRandomHexColor());
 	protected ArrayList<Tile> tiles = new ArrayList<>();
+	
+	public TilesOverlay() {}
 	
 	public TilesOverlay(List<Tile> tiles) {
 		this.tiles.addAll(tiles);
 	}
 	
-	public static void init() {
-		if (init) return;
-		init = true;
+	@Override
+	public void init() {
 		Events.run(EventType.Trigger.draw, TilesOverlay::draw);
 	}
 	

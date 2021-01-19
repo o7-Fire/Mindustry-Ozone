@@ -18,10 +18,7 @@ package Main;
 
 import Ozone.Desktop.Manifest;
 import Ozone.Desktop.Patch.DesktopPatcher;
-import Ozone.Desktop.UI.BotControllerDialog;
-import Ozone.Desktop.UI.DebugMenuDialog;
-import Ozone.Desktop.UI.EnvironmentInformation;
-import Ozone.Desktop.UI.ModsMenu;
+import Ozone.Desktop.UI.*;
 import Ozone.Event.DesktopEvent;
 import Ozone.Main;
 import arc.Core;
@@ -38,9 +35,12 @@ public class Ozone extends Mod {
 		Events.on(DesktopEvent.InitUI.class, s -> {
 			if (!Vars.headless) {
 				Manifest.botControllerDialog = new BotControllerDialog();
-				Manifest.modsMenu = new ModsMenu();
+				Manifest.moduleFrag = new ModuleFrag();
 				Manifest.envInf = new EnvironmentInformation();
 				Manifest.dbgMenu = new DebugMenuDialog();
+				Manifest.modsMenu = new ModsMenu();
+				
+				
 			}
 		});
 		

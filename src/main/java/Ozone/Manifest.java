@@ -42,7 +42,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static Ozone.Main.ozoneStyle;
 
 public class Manifest {
 	
@@ -50,7 +49,7 @@ public class Manifest {
 	public static CommandsListFrag commFrag;
 	public static WorldInformation worldInformation;
 	public static TaskList taskList;
-	public static ArrayList<Class<?>> settings = new ArrayList<>();
+	public static ArrayList<Class<?>> settings = new ArrayList<>();//for GUI purpose
 	public static String lastServer = "";
 	
 	public static final HashMap<Class<? extends Module>, Module> module = new HashMap<>();
@@ -64,13 +63,6 @@ public class Manifest {
 		return null;
 	}
 	
-	public static void initUI() {
-		taskList = new TaskList();
-		Manifest.commFrag = new CommandsListFrag();
-		Manifest.worldInformation = new WorldInformation();
-		Manifest.menu = new OzoneMenu(arc.Core.bundle.get("ozone.hud"), ozoneStyle);
-		Manifest.commFrag.build(Vars.ui.hudGroup);
-	}
 	
 	public static String getMindustryVersion() {
 		return Version.build + (Version.revision == 0 ? "" : "." + Version.revision);

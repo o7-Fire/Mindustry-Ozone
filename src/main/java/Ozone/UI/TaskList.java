@@ -20,7 +20,6 @@ import Atom.Time.Timer;
 import Ozone.Commands.Commands;
 import Ozone.Commands.Task.Task;
 import Ozone.Commands.TaskInterface;
-import mindustry.gen.Icon;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,13 +28,12 @@ public class TaskList extends ScrollableDialog {
 	
 	public TaskList() {
 		super("Task List");
-		addCloseButton();
-		buttons.button("Refresh", Icon.refresh, this::init).size(210f, 64f);
-		init();
+		
+		
 	}
 	
 	@Override
-	protected void setup() {
+	public void setup() {
 		ad("Commands Task");
 		for (Task t : Commands.commandsQueue)
 			ad(t.toString());

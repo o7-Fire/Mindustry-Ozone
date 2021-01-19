@@ -21,9 +21,10 @@ import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Commands.Task.*;
-import Ozone.Event.Internal;
 import Ozone.Internal.Interface;
+import Ozone.Internal.Module;
 import Ozone.Manifest;
+import Ozone.Patch.Translation;
 import Ozone.Settings.BaseSettings;
 import arc.Events;
 import arc.graphics.Color;
@@ -50,7 +51,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class Commands {
+public class Commands implements Module {
 	
 	public static final Queue<Task> commandsQueue = new Queue<>();
 	public static Map<String, Command> commandsList = new TreeMap<>();
@@ -61,7 +62,6 @@ public class Commands {
 	static String targetPlayer;//no need to be volatile because its still accessed from same thread
 	private static boolean falseVote = false;
 	private static boolean drainCore = false;
-	private static boolean init = false;
 	private static boolean chatting = false;
 	private volatile static boolean rotatingconveyor = false;
 	
@@ -101,9 +101,7 @@ public class Commands {
 		else commandsList.replace(name, command);
 	}
 	
-	public static void init() {
-		if (init) return;
-		init = true;
+	public static void register() {
 		Events.run(EventType.Trigger.update, () -> {
 			if (commandsQueue.isEmpty()) return;
 			commandsQueue.first().update();
@@ -132,10 +130,18 @@ public class Commands {
 		register("info-pos", new Command(Commands::infoPos, Icon.move));
 		register("help", new Command(Commands::help, Icon.infoCircle));
 		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
-		Events.fire(Internal.Init.CommandsRegister);
 		Log.infoTag("Ozone", "Commands Center Initialized");
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
-		
+	}
+	
+	@Override
+	public ArrayList<Class<? extends Module>> dependOnModule() {
+		return new ArrayList<>(Arrays.asList(Translation.class));
+	}
+	
+	@Override
+	public void init() {
+		register();
 	}
 	
 	public static void taskClear() {

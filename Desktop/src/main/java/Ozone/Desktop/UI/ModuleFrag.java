@@ -16,32 +16,27 @@
 
 package Ozone.Desktop.UI;
 
-import Bot.BotClient;
-import Ozone.UI.OzoneBaseDialog;
+import Ozone.Internal.Module;
+import Ozone.Manifest;
+import Ozone.UI.ScrollableDialog;
 
-public class BotCommandDialog extends OzoneBaseDialog {
-	BotClient botClient;
+import java.util.HashMap;
+import java.util.Map;
+
+public class ModuleFrag extends ScrollableDialog {
 	
-	public BotCommandDialog(BotClient b) {
-		super("Bot Commands");
-		botClient = b;
-		addRefreshButton();
-		setup();
+	@Override
+	protected void setup() {
+		HashMap<Class<? extends Module>, Module> see = new HashMap<>(Manifest.module);
+		for (Map.Entry<Class<? extends Module>, Module> s : see.entrySet())
+			ad(s);
 	}
 	
-	protected void setup() {
-		cont.clear();
-		if (botClient == null) return;
-		if (!botClient.connected()) {
-			cont.labelWrap("[red]RMI not connected").growX().growY();
-			return;
-		}
-		cont.button("Follow Me", () -> {
-		
-		}).growX();
-		cont.row();
-		cont.button("Do Nothing", () -> {
-		
-		}).growX();
+	void stub() {
+		table.button("----", () -> {}).growX();
+	}
+	
+	void ad(Map.Entry<Class<? extends Module>, Module> s) {
+		table.button(s.getValue().getName(), () -> {}).disabled(!s.getValue().dependOnModule().isEmpty()).growX().row();
 	}
 }

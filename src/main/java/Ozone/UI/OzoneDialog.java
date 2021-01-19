@@ -23,14 +23,25 @@ import mindustry.ui.dialogs.BaseDialog;
 public abstract class OzoneDialog extends BaseDialog {
 	protected Drawable icon = Icon.commandRallySmall;
 	
+	public OzoneDialog() {
+		this("gay");
+		title.setText(this.getClass().getSimpleName());
+	}
+	
 	public OzoneDialog(String title, DialogStyle style) {
 		super(title, style);
-		update(this::update);
+		ctor();
 	}
 	
 	public OzoneDialog(String title) {
 		super(title);
+		ctor();
+	}
+	
+	protected void ctor() {
 		update(this::update);
+		addCloseButton();
+		
 	}
 	
 	public Drawable icon() {

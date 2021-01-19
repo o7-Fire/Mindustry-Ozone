@@ -27,7 +27,6 @@ import io.sentry.SpanStatus;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.gen.Groups;
-import mindustry.gen.Icon;
 import mindustry.world.Build;
 import mindustry.world.Tile;
 
@@ -44,11 +43,10 @@ public class WorldInformation extends ScrollableDialog {
 	
 	public WorldInformation() {
 		super("World Information");
-		addCloseButton();
-		buttons.button("Refresh", Icon.refresh, this::init).size(210f, 64f);
+		
 	}
 	
-	void setup() {
+	public void setup() {
 		label = new Label("World calculation began...");
 		label.visible = false;
 		ad(Manifest.taskList);

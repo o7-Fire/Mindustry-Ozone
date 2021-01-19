@@ -20,15 +20,11 @@ import Ozone.Desktop.Bootstrap.Dependency;
 import Ozone.Desktop.Bootstrap.OzoneLoader;
 import Ozone.Desktop.Propertied;
 import Ozone.Experimental.Evasion.Identification;
-import Ozone.Manifest;
 import Ozone.Settings.SettingsManifest;
+import Ozone.UI.ScrollableDialog;
 import arc.Core;
 import arc.audio.Sound;
-import arc.func.Prov;
 import arc.scene.style.TextureRegionDrawable;
-import arc.scene.ui.Label;
-import arc.scene.ui.ScrollPane;
-import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
 import arc.util.Log;
 import io.sentry.Sentry;
@@ -47,33 +43,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class EnvironmentInformation extends OzoneBaseDialog {
-	Table table = new Table();
-	ScrollPane scrollPane = new ScrollPane(table);
+public class EnvironmentInformation extends ScrollableDialog {
+	
 	boolean b;
 	
 	public EnvironmentInformation() {
 		super("Environment Information");
 		icon = Icon.info;
-		buttons.button("Refresh", Icon.refresh, this::generate).size(210f, 64f);
 		
 	}
 	
-	void setup() {
-		table = new Table();
-		scrollPane = new ScrollPane(table);
-		cont.clear();
-		generate();
-		cont.add(scrollPane).growX().growY();
-	}
-	
-	void update() {
-	
-	}
-	
-	void generate() {
-		table.clearChildren();
-		
+	protected void setup() {
 		ad("Player Name", Vars.player.name);
 		ad("UUID", Core.settings.getString("uuid"));
 		ad("Current Millis", System.currentTimeMillis());
@@ -82,10 +62,11 @@ public class EnvironmentInformation extends OzoneBaseDialog {
 		ad("isCompilationTimeMonitoringSupported", () -> ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());
 		ad(Propertied.Manifest);
 		ad(Version.h);
-		try { ad(SettingsManifest.getMap()); }catch (IOException e) { }
+		try { ad(SettingsManifest.getMap()); }catch (IOException ignored) { }
 		dep();
 		uid();
 	}
+	
 	
 	void dep() {
 		try {
@@ -144,31 +125,5 @@ public class EnvironmentInformation extends OzoneBaseDialog {
 		}
 	}
 	
-	void ad(Map<String, String> map) {
-		for (Map.Entry<String, String> s : map.entrySet())
-			ad(s.getKey(), s.getValue());
-	}
 	
-	void ad(String title, Prov<Object> cons) {
-		try {
-			Object o = cons.get();
-			ad(title, o);
-		}catch (Throwable t) {
-			Sentry.captureException(t);
-		}
-	}
-	
-	void ad(String title, Object value) {
-		if (value == null) value = "null";
-		Label l = new Label(title + ":");
-		table.add(l).growX();
-		String finalValue = String.valueOf(value);
-		table.row();
-		table.field(finalValue, s -> {
-			generate();
-			Core.app.setClipboardText(finalValue);
-			Manifest.toast("Copied");
-		}).expandX().growX();
-		table.row();
-	}
 }

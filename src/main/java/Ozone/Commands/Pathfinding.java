@@ -17,6 +17,7 @@
 package Ozone.Commands;
 
 import Atom.Utility.Random;
+import Ozone.Internal.Module;
 import Ozone.Patch.Hack;
 import arc.Events;
 import arc.graphics.Color;
@@ -37,10 +38,9 @@ import mindustry.world.Tile;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-public class Pathfinding {
+public class Pathfinding implements Module {
 	//TODO don't be stupid
 	public static ArrayList<PathfindingOverlay> render = new ArrayList<>();
-	private static boolean init = false;
 	
 	static void draw() {
 		float x = 0, y = 0;
@@ -64,9 +64,7 @@ public class Pathfinding {
 		}
 	}
 	
-	public static void init() {
-		if (init) return;
-		init = true;
+	public void init() {
 		Events.run(EventType.Trigger.draw, Pathfinding::draw);
 	}
 	

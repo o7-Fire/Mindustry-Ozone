@@ -18,13 +18,14 @@ package Ozone.Desktop.UI;
 
 import Atom.Utility.Pool;
 import Ozone.Test.Test;
+import Ozone.UI.OzoneBaseDialog;
 import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 
 import java.util.ArrayList;
 
-public class DebugMenuDialog extends OzoneBaseDialog {
+public class DebugMenuDialog extends Ozone.UI.OzoneBaseDialog {
 	private volatile boolean running;
 	
 	public DebugMenuDialog() {
@@ -41,7 +42,7 @@ public class DebugMenuDialog extends OzoneBaseDialog {
 		Vars.ui.showInfo(sb.toString());
 	}
 	
-	void setup() {
+	protected void setup() {
 		cont.clear();
 		for (Class<? extends Test> t : Test.getRawTestKit()) {
 			SubTestDialog subTestDialog = new SubTestDialog(t);
@@ -83,7 +84,7 @@ public class DebugMenuDialog extends OzoneBaseDialog {
 		Throwable t;
 		
 		public SubTestDialog(Class<? extends Test> h) {
-			super("Sub Test", false);
+			super("Sub Test");
 			testClass = h;
 			try {
 				test = h.getDeclaredConstructor().newInstance();
@@ -93,11 +94,9 @@ public class DebugMenuDialog extends OzoneBaseDialog {
 				Sentry.captureException(te);
 			}
 			setup();
-			addCloseButton();
-			shown(this::setup);
 		}
 		
-		void setup() {
+		protected void setup() {
 			cont.clear();
 			if (test == null) {
 				cont.add(t.toString()).growX().growY();

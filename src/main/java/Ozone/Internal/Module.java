@@ -20,6 +20,7 @@ import Ozone.Manifest;
 import arc.assets.Loadable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static Ozone.Internal.InformationCenter.*;
@@ -71,14 +72,15 @@ public interface Module extends Loadable {
 		return modulePost.contains(getName());
 	}
 	
-	default ArrayList<Class<? extends Module>> dependOnModule() {
+	
+	default List<Class<? extends Module>> dependOnModule() {
 		return new ArrayList<>();
 	}
 	
 	default boolean canLoad() {
 		if (loaded()) return false;
 		if (!moduleRegistered.contains(getName())) return false;
-		ArrayList<Class<? extends Module>> dep = dependOnModule();
+		ArrayList<Class<? extends Module>> dep = new ArrayList<>(dependOnModule());
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) dep.remove(s.getKey());
 		return dep.isEmpty();
 	}

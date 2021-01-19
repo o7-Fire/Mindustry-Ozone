@@ -17,6 +17,7 @@
 package Ozone.Commands;
 
 import Ozone.Commands.Task.Task;
+import Ozone.Internal.Module;
 import Ozone.Settings.BaseSettings;
 import arc.Events;
 import arc.math.geom.Position;
@@ -30,13 +31,11 @@ import mindustry.world.Tile;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-public class TaskInterface {
+public class TaskInterface implements Module {
 	public static final Queue<Task> taskQueue = new Queue<>();
 	private static volatile boolean init = false;
 	
-	public static void init() {
-		if (init) return;
-		init = true;
+	public void init() {
 		Events.run(EventType.Trigger.update, TaskInterface::update);
 	}
 	

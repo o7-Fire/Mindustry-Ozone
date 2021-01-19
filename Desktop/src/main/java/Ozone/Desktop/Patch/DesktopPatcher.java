@@ -56,9 +56,6 @@ public class DesktopPatcher {
 	
 	public static void register() {
 		if (SettingsDesktop.disableDefaultGif) ;
-		Ozone.Manifest.settings.add(SettingsDesktop.class);
-		Events.run(Internal.Init.CommandsRegister, CommandsDesktop::Init);
-		Events.run(Internal.Init.TranslationRegister, TranslationDesktop::Init);
 		Events.run(Internal.Init.PatchRegister, () -> {
 			Vars.control.input = new DesktopInput();
 		});
