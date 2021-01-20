@@ -104,7 +104,7 @@ public class Download implements Runnable {
 		
 		InputStream stream;
 		FileOutputStream outputStream;
-		File temp = new File(file.getParent(), System.currentTimeMillis() + ".temp");
+		File temp = new File(file.getParent(), System.nanoTime() + ".temp");
 		temp.deleteOnExit();
 		print("Output: " + file.getAbsolutePath());
 		print("URL: " + url.toExternalForm());

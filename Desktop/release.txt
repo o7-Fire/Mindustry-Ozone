@@ -1,2 +1,2 @@
-#MindustryVersion=LatestReleaseTag
-v112.1=v122.12
+#MindustryVersion=LatestReleaseTagGithub
+v122.1=v122.13

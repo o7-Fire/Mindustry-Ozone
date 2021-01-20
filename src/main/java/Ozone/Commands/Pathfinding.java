@@ -87,7 +87,7 @@ public class Pathfinding implements Module {
 		Team team = unit.team;
 		int cost;
 		int type = 0;
-		if (unit instanceof WaterMovec) type = Pathfinder.costWater;
+		if (unit instanceof WaterMovec) type = Pathfinder.costNaval;
 		else if (unit instanceof Legsc) type = Pathfinder.costLegs;
 		else if (!unit.isFlying()) type = Pathfinder.costGround;
 		cost = Hack.pathCost(team, tile, type);
