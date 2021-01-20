@@ -63,6 +63,12 @@ public class Manifest {
 		return null;
 	}
 	
+	public static <T> T getModule(Class<? extends Module> clazz) {
+		try {
+			return (T) module.get(clazz);
+		}catch (Throwable ignored) {}
+		return null;
+	}
 	
 	public static String getMindustryVersion() {
 		return Version.build + (Version.revision == 0 ? "" : "." + Version.revision);

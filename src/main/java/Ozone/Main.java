@@ -17,6 +17,7 @@
 package Ozone;
 
 import Atom.Reflect.Reflect;
+import Atom.Utility.Pool;
 import Ozone.Internal.Module;
 import arc.Events;
 import arc.util.Log;
@@ -30,15 +31,11 @@ public class Main {
 	
 	private static boolean init = false;
 	static int iteration = 0;
-	private static boolean moduleLoaded;
+
 	
 	public static void loadContent() {
-		while (!moduleLoaded) {
-			try { Thread.sleep(100); }catch (InterruptedException ignored) { }//busy waiting ? yes
-		}
-		synchronized (Manifest.module) {
-			for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) s.getValue().loadAsync();
-		}
+	
+	
 	}
 	
 	public static void init() {
@@ -51,7 +48,7 @@ public class Main {
 				Log.debug("Registering @", m.getName());
 				Module mod = m.getDeclaredConstructor().newInstance();
 				mod.setRegister();
-				Log.info("@ Registered", mod.getName());
+				Log.debug("@ Registered", mod.getName());
 				Manifest.module.put(m, mod);
 			}catch (Throwable e) {
 				Sentry.captureException(e);
@@ -83,7 +80,15 @@ public class Main {
 				}
 		});
 		Log.debug("Post completed");
-		moduleLoaded = true;
+		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
+			Pool.submit(() -> {
+				try {
+					s.getValue().loadAsync();
+				}catch (Throwable t) {
+					Log.err(t);
+					Sentry.captureException(t);
+				}
+			});
 	}
 	
 	private static void loadModule() {

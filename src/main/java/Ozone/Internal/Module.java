@@ -26,6 +26,7 @@ import java.util.Map;
 import static Ozone.Internal.InformationCenter.*;
 
 public interface Module extends Loadable {
+
 	
 	default void init() throws Throwable {
 	
@@ -72,6 +73,11 @@ public interface Module extends Loadable {
 		return modulePost.contains(getName());
 	}
 	
+	default List<Class<? extends Module>> dependClean() {
+		ArrayList<Class<? extends Module>> ar = new ArrayList<>(dependOnModule());
+		ar.removeIf(c -> c.getName().equals(this.getClass().getName()));
+		return ar;
+	}
 	
 	default List<Class<? extends Module>> dependOnModule() {
 		return new ArrayList<>();
@@ -80,8 +86,9 @@ public interface Module extends Loadable {
 	default boolean canLoad() {
 		if (loaded()) return false;
 		if (!moduleRegistered.contains(getName())) return false;
-		ArrayList<Class<? extends Module>> dep = new ArrayList<>(dependOnModule());
-		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) dep.remove(s.getKey());
+		ArrayList<Class<? extends Module>> dep = new ArrayList<>(dependClean());
+		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
+			if (s.getValue().loaded()) dep.remove(s.getKey());
 		return dep.isEmpty();
 	}
 	

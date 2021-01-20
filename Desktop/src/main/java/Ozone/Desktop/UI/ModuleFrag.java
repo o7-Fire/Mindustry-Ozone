@@ -16,27 +16,41 @@
 
 package Ozone.Desktop.UI;
 
+import Atom.Reflect.FieldTool;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.UI.ScrollableDialog;
+import arc.Core;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ModuleFrag extends ScrollableDialog {
-	
 	@Override
+	protected void ctor() {
+		super.ctor();
+		shown(this::init);
+	}
+	
+	
 	protected void setup() {
-		HashMap<Class<? extends Module>, Module> see = new HashMap<>(Manifest.module);
-		for (Map.Entry<Class<? extends Module>, Module> s : see.entrySet())
-			ad(s);
+		TreeMap<String, Module> t = new TreeMap<>();
+		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
+			t.put(s.getValue().getName(), s.getValue());
+		for (Map.Entry<String, Module> s : t.entrySet())
+			ad(s.getValue());
 	}
 	
 	void stub() {
 		table.button("----", () -> {}).growX();
 	}
 	
-	void ad(Map.Entry<Class<? extends Module>, Module> s) {
-		table.button(s.getValue().getName(), () -> {}).disabled(!s.getValue().dependOnModule().isEmpty()).growX().row();
+	void ad(Module s) {
+		table.button(Core.bundle.get(s.getName()), () -> {}).growX().tooltip(FieldTool.getFieldDetails(s));
+		for (Class<? extends Module> m : s.dependClean()) {
+			Module mod = Manifest.module.get(m);
+			table.button(Core.bundle.get(mod.getName()), () -> {}).growX().tooltip(FieldTool.getFieldDetails(mod)).disabled(true);
+		}
+		table.row();
 	}
 }

@@ -21,6 +21,7 @@ import Atom.Utility.Random;
 import Ozone.Commands.Commands;
 import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
+import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
 import arc.struct.ObjectMap;
 
@@ -107,6 +108,8 @@ public class Translation implements Module {
 	@Override
 	public void init() throws Throwable {
 		register();
+		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
+			registerWords(s.getValue().getName());
 	}
 	
 	public static String add(String text) {

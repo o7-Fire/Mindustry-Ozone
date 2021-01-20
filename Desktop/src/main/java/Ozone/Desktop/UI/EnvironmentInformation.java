@@ -50,7 +50,7 @@ public class EnvironmentInformation extends ScrollableDialog {
 	public EnvironmentInformation() {
 		super("Environment Information");
 		icon = Icon.info;
-		
+		shown(this::init);
 	}
 	
 	protected void setup() {
