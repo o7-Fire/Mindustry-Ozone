@@ -29,15 +29,23 @@ ext {
 dependencies {
 
 }
-task jarAndroid{
+jar{
     dependsOn ":makeJar"
 
-    doLast{
+    archiveFileName = "Ozone-Android.jar"
         //collect dependencies needed for desugaring
         def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File("$sdkRoot/platforms/android-$sdkVersion/android.jar")])
         def dependencies = files.collect{ "--classpath $it.path" }.join(" ")
 
         //dex and desugar files - this requires d8 in your PATH
-        doExec(sdkRoot + "/build-tools/"+sdkBuildToolVersion+"/"+"d8 $dependencies --min-api 26 --output ${rootProject.archivesBaseName}-Android.jar ${rootProject.archivesBaseName}.jar")
+    doExec(sdkRoot + "/build-tools/"+sdkBuildToolVersion+"/"+"d8 $dependencies --min-api 24 --output ${rootProject.archivesBaseName}-AndroidDex.jar ${rootProject.archivesBaseName}.jar")
+    from(){
+        zipTree(new File(rootDir, "/build/libs/${rootProject.archivesBaseName}-AndroidDex.jar"))
+    }
+    from(rootDir){
+        include "mod.hjson"
+    }
+    from(){
+        new File(rootDir, "src/main/resources/")
     }
 }

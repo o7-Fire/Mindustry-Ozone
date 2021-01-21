@@ -19,12 +19,14 @@ package Premain;
 import Ozone.Bootstrap.OzoneBootstrap;
 import Ozone.Main;
 import arc.Core;
+import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.mod.Mod;
 
 public class EntryPoint extends Mod {
 	
 	public EntryPoint() {
+		Log.info("Ozone Standalone");
 		OzoneBootstrap.init();
 		if (Core.settings != null) {
 			Core.settings.put("crashreport", false);
