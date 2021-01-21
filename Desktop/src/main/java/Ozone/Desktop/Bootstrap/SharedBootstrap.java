@@ -136,7 +136,8 @@ public class SharedBootstrap {
 	public static void loadAtomic() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		moduleCheck("Atomic");
 		setSplash("Loading Atomic Library");
-		ArrayList<String> se = (ArrayList<String>) ozoneLoader.loadClass("Main.LoadAtom").getMethod("main", String[].class).invoke(null, (Object) new String[0]);
+		//ArrayList<String> se = (ArrayList<String>) ozoneLoader.loadClass("Main.LoadAtom").getMethod("main", String[].class).invoke(null, (Object) new String[0]);
+		ArrayList<String> se = Main.LoadAtom.main(new String[0]);
 		ArrayList<URL> ur = new ArrayList<>();
 		for (String s : se) ur.add(new URL(s));
 		ozoneLoader.addURL(ur);
