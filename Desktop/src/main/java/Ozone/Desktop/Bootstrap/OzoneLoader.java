@@ -114,14 +114,14 @@ public class OzoneLoader extends URLClassLoader {
 		temp.getParentFile().mkdirs();
 		if (!temp.exists()) {
 			try {
-				SharedBootstrap.requireDisplay();
+				DesktopBootstrap.requireDisplay();
 				Main.Download.main(url, temp);
 			}catch (Throwable t) {
 				try {
 					Download d = new Download(url, temp);
 					d.print(s -> {
 						s = "[LibraryLoader-" + temp.getName() + "]" + s;
-						SharedBootstrap.setSplash(s);
+						DesktopBootstrap.setSplash(s);
 						System.out.println(s);
 					});
 					d.run();

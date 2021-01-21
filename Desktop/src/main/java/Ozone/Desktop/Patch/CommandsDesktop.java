@@ -19,7 +19,7 @@ package Ozone.Desktop.Patch;
 import Atom.Struct.Stream;
 import Atom.Utility.Utility;
 import Ozone.Commands.Commands;
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Ozone.Internal.Module;
 import arc.util.Log;
 import mindustry.Vars;
@@ -39,7 +39,7 @@ public class CommandsDesktop implements Module {
 	
 	public void init() {
 		register("javac", new Command(CommandsDesktop::javac));
-		if (SharedBootstrap.debug) register("debug", new Command(CommandsDesktop::debug, Icon.pause));
+		if (DesktopBootstrap.debug) register("debug", new Command(CommandsDesktop::debug, Icon.pause));
 		register("info-pos", new Command(CommandsDesktop::infoPos, Icon.move));
 	}
 	

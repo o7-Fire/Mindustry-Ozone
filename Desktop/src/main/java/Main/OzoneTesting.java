@@ -19,12 +19,12 @@ package Main;
 import Atom.Time.Countdown;
 import Atom.Utility.Random;
 import Ozone.Commands.Commands;
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Patch.TranslationDesktop;
 import Ozone.Internal.Interface;
 import Ozone.Patch.Translation;
 import Ozone.Test.OzoneTest;
 import Ozone.Test.Test;
+import Shared.SharedBoot;
 import arc.struct.ObjectMap;
 import arc.util.Log;
 import io.sentry.Sentry;
@@ -49,7 +49,7 @@ public class OzoneTesting {
 			String result = bold + lightBlack + "[" + dateTime.format(LocalDateTime.now()) + "] " + reset + format(tags[level1.ordinal()] + " " + text + "&fr");
 			System.out.println(result);
 		};
-		Log.info("Startup in " + Countdown.result(SharedBootstrap.startup));
+		Log.info("Startup in " + Countdown.result(SharedBoot.startup));
 		Log.info("Preparing Test");
 		tests = new OzoneTest();
 		tests.add("Commands, DesktopCommands, Patch, Events", () -> {

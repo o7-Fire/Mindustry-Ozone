@@ -17,7 +17,7 @@
 package Ozone.Test;
 
 import Atom.Reflect.Reflect;
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Premain.InstallerEntryPoint;
 import arc.Core;
 
@@ -35,8 +35,8 @@ public class Restart extends Test {
 		File jar = new File(Restart.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 		String[] cp = System.getProperty("java.class.path").split(System.getProperty("os.name").toUpperCase().contains("WIN") ? ";" : ":");
 		ArrayList<String> h = new ArrayList<>(Arrays.asList(cp));
-		String main = SharedBootstrap.mainClass;
-		if (main == null) throw new NullPointerException("SharedBootstrap.mainClass is null");
+		String main = DesktopBootstrap.mainClass;
+		if (main == null) throw new NullPointerException("DesktopBootstrap.mainClass is null");
 		Core.app.exit();
 		if (main.equals(InstallerEntryPoint.class.getName())) {
 			Reflect.restart(jar, h);

@@ -44,7 +44,6 @@ import java.util.Map;
 
 
 public class Manifest {
-	
 	public static OzoneMenu menu;
 	public static CommandsListFrag commFrag;
 	public static WorldInformation worldInformation;

@@ -16,7 +16,7 @@
 
 package Premain;
 
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import io.sentry.Sentry;
 
 
@@ -31,16 +31,16 @@ public class InstallerEntryPoint {
 		}
 		try {
 			long a, b, c;
-			SharedBootstrap.requireDisplay();
-			SharedBootstrap.classloaderNoParent();
+			DesktopBootstrap.requireDisplay();
+			DesktopBootstrap.classloaderNoParent();
 			a = System.currentTimeMillis();
-			SharedBootstrap.loadRuntime();
+			DesktopBootstrap.loadRuntime();
 			b = System.currentTimeMillis();
-			SharedBootstrap.loadClasspath();
+			DesktopBootstrap.loadClasspath();
 			
-			SharedBootstrap.loadMain("Main.OzoneInstaller", args);
+			DesktopBootstrap.loadMain("Main.OzoneInstaller", args);
 			//System.exit(0);
-			//SharedBootstrap.loadMain("Premain.MindustryEntryPoint", args);
+			//DesktopBootstrap.loadMain("Premain.MindustryEntryPoint", args);
 		}catch (Throwable t) {
 			Catch.write(t);
 			t.printStackTrace();

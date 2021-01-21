@@ -17,7 +17,7 @@
 package Premain;
 
 import Main.Ozone;
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Ozone.Propertied;
 import arc.backend.sdl.jni.SDL;
 import arc.util.Log;
@@ -36,10 +36,11 @@ public class EntryPoint extends Mod {
 	public Mod OzoneMod = null;
 	
 	public EntryPoint() {
+		if (DesktopBootstrap.debug) Log.level = Log.LogLevel.debug;
 		Log.infoTag("Version", Strings.stripColors(Version.combined()));
 		String required = Propertied.Manifest.getOrDefault("MindustryVersion", "Mindustry Version is gone");
 		try {
-			if (!SharedBootstrap.customBootstrap) {
+			if (!DesktopBootstrap.customBootstrap) {
 				if (!required.contains(String.valueOf(Version.build)))
 					SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_WARNING, "Ozone", "Incompatible mindustry version, require: " + required);
 				startTheRealOne();

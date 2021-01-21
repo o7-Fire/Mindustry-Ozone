@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 public class RunMindustry {
 	public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		SharedBootstrap.classloaderNoParent();
-		SharedBootstrap.loadMindustry();
-		SharedBootstrap.loadMain("mindustry.desktop.DesktopLauncher", args);
+		DesktopBootstrap.classloaderNoParent();
+		DesktopBootstrap.loadMindustry();
+		DesktopBootstrap.loadMain("mindustry.desktop.DesktopLauncher", args);
 		/*
 		ProcessBuilder pb = new ProcessBuilder();
-		pb.command("java", "-jar", SharedBootstrap.ozoneLoader.cache(new URL("https://github.com/Anuken/Mindustry/releases/download/" + Propertied.Manifest.get("MindustryVersion") + "/Mindustry.jar")).toURI().getPath());
+		pb.command("java", "-jar", DesktopBootstrap.ozoneLoader.cache(new URL("https://github.com/Anuken/Mindustry/releases/download/" + Propertied.Manifest.get("MindustryVersion") + "/Mindustry.jar")).toURI().getPath());
 		pb.redirectError(ProcessBuilder.Redirect.INHERIT);
 		pb.redirectInput(ProcessBuilder.Redirect.INHERIT);
 		pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);

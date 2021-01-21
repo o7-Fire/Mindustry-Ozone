@@ -1,7 +1,7 @@
 package mindustry.core;
 
 import Atom.Utility.Random;
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Ozone.Propertied;
 import arc.Core;
 import arc.Files.FileType;
@@ -44,7 +44,7 @@ public class Version {
 	public static HashMap<String, String> h = new HashMap<>();
 	
 	static {
-		if (SharedBootstrap.debug) Log.level = Log.LogLevel.debug;
+		if (DesktopBootstrap.debug) Log.level = Log.LogLevel.debug;
 	}
 	
 	public static void init() {

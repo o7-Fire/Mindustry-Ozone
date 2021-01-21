@@ -15,7 +15,7 @@
  */
 
 import Ozone.Desktop.Bootstrap.Dependency;
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Ozone.Propertied;
 
 import java.net.URL;
@@ -24,13 +24,13 @@ public class StartServer {
     public static void main(String[] args) {
         try {
             args = new String[]{"host", "Ancient_Caldera", "sandbox"};
-            SharedBootstrap.classloaderNoParent();
+            DesktopBootstrap.classloaderNoParent();
             String version = Propertied.Manifest.get("MindustryVersion");
             if (version == null) throw new NullPointerException("MindustryVersion not found in property");
-            SharedBootstrap.load(Dependency.Type.provided);
-	        SharedBootstrap.ozoneLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/server-release.jar"));
-	        SharedBootstrap.standalone = true;
-            SharedBootstrap.loadMain("mindustry.server.ServerLauncher", args);
+            DesktopBootstrap.load(Dependency.Type.provided);
+            DesktopBootstrap.ozoneLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/server-release.jar"));
+            DesktopBootstrap.standalone = true;
+            DesktopBootstrap.loadMain("mindustry.server.ServerLauncher", args);
         }catch (Throwable t) {
             t.printStackTrace();
             System.exit(1);

@@ -17,16 +17,21 @@
 package Ozone.Settings;
 
 import Atom.Reflect.Reflect;
+import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
 import arc.Events;
+import arc.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static Ozone.Settings.SettingsManifest.saveMap;
+import static Ozone.Settings.SettingsManifest.settingsFile;
 
 public class BaseSettings implements Module {
 	
@@ -50,7 +55,14 @@ public class BaseSettings implements Module {
 	public void init() throws Throwable {
 		Manifest.settings.add(BaseSettings.class);
 		Events.fire(Internal.Init.SettingsRegister);
-		arc.Core.settings.put("crashreport", false);
+		Log.info("Settings File for ozone: " + settingsFile.getAbsolutePath());
+		Events.on(EventExtended.Shutdown.class, s -> {
+			try {
+				saveMap();
+			}catch (Throwable e) {
+				e.printStackTrace();
+			}
+		});
 	}
 	
 	@Override

@@ -17,10 +17,10 @@
 package Ozone.Desktop.Pre;
 
 import Atom.Utility.Pool;
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
 import Ozone.Desktop.Swing.Main;
 import Premain.Catch;
 import Premain.MindustryEntryPoint;
+import Shared.SharedBoot;
 import io.sentry.Sentry;
 
 import javax.swing.*;
@@ -65,7 +65,7 @@ public class PreInstall {
 			if (!meh) Pool.daemon(() -> {
 				meh = true;
 				try {
-					SharedBootstrap.startup = System.currentTimeMillis();
+					SharedBoot.startup = System.currentTimeMillis();
 					MindustryEntryPoint.main(new ArrayList<>());
 				}catch (Throwable t) {
 					try {

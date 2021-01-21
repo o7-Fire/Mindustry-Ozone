@@ -1,6 +1,6 @@
 package mindustry;
 
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Ozone.Desktop.Patch.Updater;
 import arc.Core;
 import arc.Events;
@@ -511,7 +511,7 @@ public class Vars implements Loadable {
 		String[] stags = {"&lc&fb[D]", "&lb&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
 		
 		Seq<String> logBuffer = new Seq<>();
-		if (SharedBootstrap.debug) Log.level = Log.LogLevel.debug;
+		if (DesktopBootstrap.debug) Log.level = Log.LogLevel.debug;
 		Log.logger = (level, text) -> {
 			text = "[" + dateTime.format(LocalDateTime.now()) + "] " + text;
 			String result = text;

@@ -19,6 +19,7 @@ package Ozone;
 import Atom.Reflect.Reflect;
 import Atom.Utility.Pool;
 import Ozone.Internal.Module;
+import Shared.SharedBoot;
 import arc.Events;
 import arc.util.Log;
 import io.sentry.Sentry;
@@ -31,7 +32,7 @@ public class Main {
 	
 	private static boolean init = false;
 	static int iteration = 0;
-
+	
 	
 	public static void loadContent() {
 	
@@ -89,6 +90,7 @@ public class Main {
 					Sentry.captureException(t);
 				}
 			});
+		Log.info("Startup in " + (System.currentTimeMillis() - SharedBoot.startup) + " ms");
 	}
 	
 	private static void loadModule() {

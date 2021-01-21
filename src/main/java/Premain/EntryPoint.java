@@ -16,12 +16,21 @@
 
 package Premain;
 
+import Ozone.Bootstrap.OzoneBootstrap;
 import Ozone.Main;
+import arc.Core;
 import io.sentry.Sentry;
 import mindustry.mod.Mod;
 
 public class EntryPoint extends Mod {
 	
+	public EntryPoint() {
+		OzoneBootstrap.init();
+		if (Core.settings != null) {
+			Core.settings.put("crashreport", false);
+			Core.settings.put("uiscalechanged", false);//shut
+		}
+	}
 	
 	@Override
 	public void init() {

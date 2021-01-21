@@ -108,6 +108,10 @@ task deploy(type: Jar) {
 jar {
     archiveFileName = "Ozone.jar"
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    manifest {
+        attributes 'Main-Class': 'Premain.InstallerEntryPoint'
+        attributes 'SplashScreen-Image': 'gif/loading.gif'
+    }
     from(rootDir){
        include "mod.hjson"
     }

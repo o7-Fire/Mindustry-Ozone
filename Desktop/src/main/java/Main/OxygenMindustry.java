@@ -21,7 +21,7 @@ import Bot.Interface.Shared.BotInterface;
 import Bot.Interface.Shared.ServerInterface;
 import Ozone.Commands.Task.Task;
 import Ozone.Commands.TaskInterface;
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import arc.Application;
 import arc.Core;
 import arc.Events;
@@ -72,7 +72,7 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 	
 	public static void main(String[] args) {
 		bot = true;
-		SharedBootstrap.customBootstrap = true;
+		DesktopBootstrap.customBootstrap = true;
 		logger();
 		Log.info("Logger Online");
 		preCheck();
@@ -81,7 +81,7 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 		oxygen = new OxygenMindustry();
 		h = new SdlAppWithExtraStep(oxygen, new SdlConfig() {
 			{
-				this.title = SharedBootstrap.debug ? "[Debug]-" : "" + "Mindustry-Oxygen";
+				this.title = DesktopBootstrap.debug ? "[Debug]-" : "" + "Mindustry-Oxygen";
 				this.maximized = true;
 				this.stencil = 8;
 				this.width = 900;

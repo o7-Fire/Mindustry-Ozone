@@ -16,7 +16,7 @@
 
 package Premain;
 
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import io.sentry.Sentry;
 
 import java.io.File;
@@ -30,11 +30,11 @@ public class BotEntryPoint {
 				throw new RuntimeException("System Property of MindustryExecutable is empty");
 			}
 			System.out.println("Initializing Oxygen Environment");
-			SharedBootstrap.classloaderNoParent();
-			SharedBootstrap.loadRuntime();
-			SharedBootstrap.loadClasspath();
-			SharedBootstrap.ozoneLoader.addURL(new File(System.getProperty("MindustryExecutable")));
-			SharedBootstrap.loadMain("Main.OxygenMindustry", args);
+			DesktopBootstrap.classloaderNoParent();
+			DesktopBootstrap.loadRuntime();
+			DesktopBootstrap.loadClasspath();
+			DesktopBootstrap.ozoneLoader.addURL(new File(System.getProperty("MindustryExecutable")));
+			DesktopBootstrap.loadMain("Main.OxygenMindustry", args);
 			System.exit(0);
 		}catch (Throwable t) {
 			Catch.write(t);

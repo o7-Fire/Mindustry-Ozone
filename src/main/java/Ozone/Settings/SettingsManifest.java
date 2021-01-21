@@ -18,12 +18,8 @@ package Ozone.Settings;
 
 import Atom.Reflect.FieldTool;
 import Atom.Reflect.Reflect;
-import Atom.Time.Countdown;
 import Atom.Utility.Digest;
 import Atom.Utility.Encoder;
-import Ozone.Event.EventExtended;
-import arc.Events;
-import arc.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,27 +39,18 @@ public class SettingsManifest {
 	static volatile long lastFileHash = 0;
 	
 	static {
-		Log.info("Settings File for ozone: " + settingsFile.getAbsolutePath());
 		try {
 			urlSettings = settingsFile.toURI().toURL();
 		}catch (MalformedURLException e) {
 			throw new RuntimeException("Invalid Path for SettingsFile", e);
 		}
-		Events.on(EventExtended.Shutdown.class, s -> {
-			try {
-				saveMap();
-			}catch (Throwable e) {
-				e.printStackTrace();
-			}
-		});
+		
 	}
 	
 	public static ConcurrentHashMap<String, String> getMap() throws IOException {
 		if (cache == null) {
-			long start = System.currentTimeMillis();
 			if (settingsFile.exists()) cache = new ConcurrentHashMap<>(Encoder.parseProperty(urlSettings.openStream()));
 			else cache = new ConcurrentHashMap<>();
-			Log.debug("Loaded @ settings in @", cache.size(), Countdown.result(start));
 		}
 		return cache;
 	}
@@ -85,7 +72,6 @@ public class SettingsManifest {
 				throw new RuntimeException(e);
 			}
 		}
-		Log.debug("Loaded settings for: " + clazz.getName() + " in " + Countdown.result(start));
 	}
 	
 	static void save(Class<?> clz) throws IOException, IllegalAccessException {
@@ -109,7 +95,6 @@ public class SettingsManifest {
 		if (lastFileHash == ByteBuffer.wrap(cache.toString().getBytes()).getLong()) return;
 		long start = System.currentTimeMillis();
 		Files.write(settingsFile.toPath(), Encoder.property(cache).getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-		Log.debug("Saved @ settings in @", cache.size(), Countdown.result(start));
 		lastFileHash = ByteBuffer.wrap(cache.toString().getBytes()).getLong();
 	}
 	

@@ -16,7 +16,7 @@
 
 package Premain;
 
-import Ozone.Desktop.Bootstrap.SharedBootstrap;
+import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import io.sentry.Sentry;
 
 import java.util.ArrayList;
@@ -27,9 +27,9 @@ public class MindustryEntryPoint {
 		try {
 			
 			System.out.println("Initializing Ozone Environment");
-			SharedBootstrap.classloaderNoParent();
-			SharedBootstrap.loadRuntime();
-			SharedBootstrap.loadClasspath();
+			DesktopBootstrap.classloaderNoParent();
+			DesktopBootstrap.loadRuntime();
+			DesktopBootstrap.loadClasspath();
 			main(new ArrayList<>(Arrays.asList(args)));
 			System.exit(0);
 		}catch (Throwable t) {
@@ -44,8 +44,8 @@ public class MindustryEntryPoint {
 	
 	
 	public static void main(ArrayList<String> args) throws Throwable {
-		SharedBootstrap.loadMindustry(args);
-		SharedBootstrap.loadMain("Main.OzoneMindustry", args.toArray(new String[0]));
+		DesktopBootstrap.loadMindustry(args);
+		DesktopBootstrap.loadMain("Main.OzoneMindustry", args.toArray(new String[0]));
 	}
 	
 }
