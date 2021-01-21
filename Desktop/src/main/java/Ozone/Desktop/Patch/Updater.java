@@ -21,7 +21,7 @@ import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Main.Download;
-import Ozone.Desktop.Propertied;
+import Ozone.Propertied;
 import arc.util.Log;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

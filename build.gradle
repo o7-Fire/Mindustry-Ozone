@@ -30,6 +30,22 @@ allprojects {
     }
 
     ext {
+        modHjson =
+                "name: \"Ozone-Mindustry\"\n" +
+                "displayName: \"Ozone Mindustry\"\n" +
+                "author: \"o7-Fire\"\n" +
+                "main: \"Premain.EntryPoint\"\n" +
+                "description: \"o7-Fire Ozone Project.\"\n" +
+                "version: 0.0.0\n" +
+                "minGameVersion: 122\n" +
+                "hidden: true\n"
+        File mod = new File(rootDir, "mod.hjson")
+        mod.parentFile.mkdirs();
+        mod.delete();
+        mod.createNewFile();
+        StringBuilder sbb = new StringBuilder(modHjson);
+        sbb.append("main: \"Ozone.EntryPoint\"")
+        Files.write(mod.toPath(), sbb.toString().getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE)
         modsBuilder = "javac"
         if (project.hasProperty("builder"))
             modsBuilder = builder
@@ -80,7 +96,7 @@ allprojects {
         testImplementation 'junit:junit:4.12'
         implementation 'io.sentry:sentry:4.0.0-alpha.2'
         compileOnly ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
-            because("runtime")
+            because("provided")
         }
         compileOnly ("com.github.Anuken.Arc:arc-core:$arcHash"){
             because("provided")
@@ -104,7 +120,9 @@ task deploy(type: Jar) {
 
 jar {
     archiveFileName = "Ozone.jar"
-
+    from(rootDir){
+       include "mod.hjson"
+    }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }

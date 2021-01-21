@@ -109,7 +109,7 @@ public class OzoneLoader extends URLClassLoader {
 		}
 	}
 	
-	private URL cache(URL url) {
+	public URL cache(URL url) {
 		File temp = new File(cache, url.getFile());
 		temp.getParentFile().mkdirs();
 		if (!temp.exists()) {

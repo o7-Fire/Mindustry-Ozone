@@ -2,7 +2,7 @@ package mindustry.core;
 
 import Atom.Utility.Random;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
-import Ozone.Desktop.Propertied;
+import Ozone.Propertied;
 import arc.Core;
 import arc.Files.FileType;
 import arc.files.Fi;
@@ -90,7 +90,7 @@ public class Version {
 		int dot = str.indexOf('.');
 		if (dot != -1) {
 			int major = Strings.parseInt(str.substring(0, dot), 0), minor = Strings.parseInt(str.substring(dot + 1), 0);
-			return build >= major && revision >= minor;
+			return build > major || (build == major && revision >= minor);
 		}else {
 			return build >= Strings.parseInt(str, 0);
 		}
@@ -121,7 +121,7 @@ public class Version {
 			String e = String.format("[#%06x]", i);
 			sb.append(e).append(eh).append(".");
 		}
-		return sb.toString().substring(0, sb.length() - 1);
+		return sb.substring(0, sb.length() - 1);
 	}
 	
 }

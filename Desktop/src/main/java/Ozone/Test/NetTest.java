@@ -32,8 +32,8 @@ package Ozone.Test;/*
 
 import Atom.File.FileUtility;
 import Ozone.Desktop.Pre.DownloadSwing;
-import Ozone.Desktop.Propertied;
 import Ozone.Pre.Download;
+import Ozone.Propertied;
 
 import java.io.File;
 import java.net.URL;

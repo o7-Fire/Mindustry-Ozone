@@ -18,7 +18,7 @@ package Premain;
 
 import Main.Ozone;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
-import Ozone.Desktop.Propertied;
+import Ozone.Propertied;
 import arc.backend.sdl.jni.SDL;
 import arc.util.Log;
 import arc.util.Strings;

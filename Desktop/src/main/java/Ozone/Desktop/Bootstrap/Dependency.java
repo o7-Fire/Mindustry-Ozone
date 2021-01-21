@@ -16,7 +16,7 @@
 
 package Ozone.Desktop.Bootstrap;
 
-import Ozone.Desktop.Propertied;
+import Ozone.Propertied;
 import io.sentry.Sentry;
 
 import java.io.File;

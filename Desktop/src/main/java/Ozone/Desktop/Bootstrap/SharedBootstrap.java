@@ -17,8 +17,8 @@
 package Ozone.Desktop.Bootstrap;
 
 
-import Ozone.Desktop.Propertied;
 import Ozone.Desktop.Swing.Splash;
+import Ozone.Propertied;
 import Ozone.Version;
 import io.sentry.Scope;
 import io.sentry.Sentry;
@@ -87,6 +87,10 @@ public class SharedBootstrap {
 		if (splash != null) splash.setLabel(t);
 		System.out.println(t);
 		Sentry.addBreadcrumb(t);
+	}
+	
+	public static void loadMindustry() throws MalformedURLException {
+		loadMindustry(new ArrayList<>());
 	}
 	
 	public static void loadMindustry(List<String> args) throws MalformedURLException {

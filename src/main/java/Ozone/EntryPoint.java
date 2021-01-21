@@ -16,12 +16,8 @@
 
 package Ozone;
 
-public class Version {
-	public static String desktop;
-	public static String core;
-	
-	static {
-		desktop = Propertied.Manifest.getOrDefault("Version.Desktop", "0.12.0-[Manifest Failed]");
-		core = Propertied.Manifest.getOrDefault("Version.Core", "0.11.0-[Manifest Failed]");
-	}
+import mindustry.mod.Mod;
+
+public class EntryPoint extends Mod {
+
 }

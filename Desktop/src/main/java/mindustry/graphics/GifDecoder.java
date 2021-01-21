@@ -212,7 +212,7 @@ public class GifDecoder {
 	public DixieMap getFrame(int n) {
 		if (frameCount <= 0) return null;
 		n = n % frameCount;
-		return ((GifFrame) frames.elementAt(n)).image;
+		return frames.elementAt(n).image;
 	}
 	
 	/**
@@ -648,7 +648,7 @@ public class GifDecoder {
 		Pixmap frame = getFrame(0);
 		int width = frame.getWidth();
 		int height = frame.getHeight();
-		int vzones = (int) Math.sqrt((double) nrFrames);
+		int vzones = (int) Math.sqrt(nrFrames);
 		int hzones = vzones;
 		
 		while (vzones * hzones < nrFrames) vzones++;

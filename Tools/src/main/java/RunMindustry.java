@@ -15,20 +15,23 @@
  */
 
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
-import Ozone.Desktop.Propertied;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.lang.reflect.InvocationTargetException;
 
 public class RunMindustry {
-	public static void main(String[] args) throws IOException, URISyntaxException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		SharedBootstrap.classloaderNoParent();
+		SharedBootstrap.loadMindustry();
+		SharedBootstrap.loadMain("mindustry.desktop.DesktopLauncher", args);
+		/*
 		ProcessBuilder pb = new ProcessBuilder();
 		pb.command("java", "-jar", SharedBootstrap.ozoneLoader.cache(new URL("https://github.com/Anuken/Mindustry/releases/download/" + Propertied.Manifest.get("MindustryVersion") + "/Mindustry.jar")).toURI().getPath());
 		pb.redirectError(ProcessBuilder.Redirect.INHERIT);
 		pb.redirectInput(ProcessBuilder.Redirect.INHERIT);
 		pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 		pb.start().exitValue();
+		
+		 */
 	}
 }

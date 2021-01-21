@@ -16,7 +16,7 @@
 
 import Ozone.Desktop.Bootstrap.Dependency;
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
-import Ozone.Desktop.Propertied;
+import Ozone.Propertied;
 
 import java.net.URL;
 

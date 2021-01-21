@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package Ozone;
+apply plugin: 'java-library'
 
-public class Version {
-	public static String desktop;
-	public static String core;
-	
-	static {
-		desktop = Propertied.Manifest.getOrDefault("Version.Desktop", "0.12.0-[Manifest Failed]");
-		core = Propertied.Manifest.getOrDefault("Version.Core", "0.11.0-[Manifest Failed]");
-	}
+dependencies {
+    implementation ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
+        because("runtime")
+    }
 }
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"

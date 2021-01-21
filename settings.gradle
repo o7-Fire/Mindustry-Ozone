@@ -1,5 +1,6 @@
-include 'Tools'
 include 'Desktop'
+include 'Tools'
+
 rootProject.name = 'Ozone'
 def use = { ... names ->
     for(String name : names){

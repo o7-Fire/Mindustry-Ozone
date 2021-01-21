@@ -18,8 +18,8 @@ package Ozone.Desktop.UI;
 
 import Ozone.Desktop.Bootstrap.Dependency;
 import Ozone.Desktop.Bootstrap.OzoneLoader;
-import Ozone.Desktop.Propertied;
 import Ozone.Experimental.Evasion.Identification;
+import Ozone.Propertied;
 import Ozone.Settings.SettingsManifest;
 import Ozone.UI.ScrollableDialog;
 import arc.Core;

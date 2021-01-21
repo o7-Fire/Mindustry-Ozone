@@ -288,10 +288,8 @@ public class MenuRenderer implements Disposable, Loadable {
 	private void drawFlyers() {
 		Draw.color(0f, 0f, 0f, 0.4f);
 		TextureRegion icon;
-		if(flyerType != null)
-			icon = random ? flyerType.icon(Cicon.full) : Core.atlas.find("shell");
-		else
-			icon = Core.atlas.find("shell");
+		if (flyerType != null) icon = random ? flyerType.icon(Cicon.full) : Core.atlas.find("shell");
+		else icon = Core.atlas.find("shell");
 		
 		float size = Math.max(icon.width, icon.height) * Draw.scl * 1.6f;
 		

@@ -42,9 +42,6 @@ jar {
     dependsOn ":makeJar"
     archiveFileName = "Ozone-Desktop.jar"
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-    from(rootDir){
-        include "mod.hjson"
-    }
     manifest {
         attributes 'Main-Class': 'Premain.InstallerEntryPoint'
         attributes 'SplashScreen-Image': 'gif/loading.gif'

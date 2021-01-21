@@ -15,7 +15,7 @@
  */
 
 import Ozone.Desktop.Bootstrap.SharedBootstrap;
-import Ozone.Desktop.Propertied;
+import Ozone.Propertied;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

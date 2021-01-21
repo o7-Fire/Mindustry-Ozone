@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop;
+package Ozone;
 
+import Atom.Utility.Encoder;
 import io.sentry.Sentry;
 
 import java.io.InputStream;
@@ -38,7 +39,7 @@ public class Propertied {
 	public static HashMap<String, String> read(String name) {
 		HashMap<String, String> temp;
 		try {
-			temp = parse(new String(getResource(name).readAllBytes()));
+			temp = parse(new String(Encoder.readAllBytes(getResource(name))));
 		}catch (Throwable g) {
 			temp = new HashMap<>();
 			Sentry.captureException(g);
@@ -61,4 +62,5 @@ public class Propertied {
 		}
 		return te;
 	}
+	
 }

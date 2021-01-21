@@ -42,6 +42,7 @@ import mindustry.world.Tile;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -69,7 +70,7 @@ public class Vars implements Loadable {
 	/**
 	 * global charset, since Android doesn't support the Charsets class
 	 */
-	public static final Charset charset = Charset.forName("UTF-8");
+	public static final Charset charset = StandardCharsets.UTF_8;
 	/**
 	 * URL for itch.io donations.
 	 */
@@ -155,9 +156,9 @@ public class Vars implements Loadable {
 	 */
 	public static final float baseInvasionChance = 1f / 100f;
 	/**
-	 * how many turns have to pass before invasions start
+	 * how many minutes have to pass before invasions in a *captured* sector start
 	 */
-	public static final int invasionGracePeriod = 20;
+	public static final float invasionGracePeriod = 20;
 	/**
 	 * min armor fraction damage; e.g. 0.05 = at least 5% damage
 	 */
@@ -346,11 +347,12 @@ public class Vars implements Loadable {
 	
 	public static Player player;
 	public static MenuRenderer menuRenderer;
+	public static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
 	
 	public Vars() {
 		menuRenderer = new MenuRenderer();
 	}
-
+	
 	public static void init() {
 		Groups.init();
 		
@@ -501,8 +503,6 @@ public class Vars implements Loadable {
 			}
 		}
 	}
-	
-	public static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
 	
 	public static void loadLogger() {
 		if (loadedLogger) return;

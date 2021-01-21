@@ -19,7 +19,7 @@ package Ozone.Test;
 import Atom.Utility.Meth;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
-import Ozone.Desktop.Propertied;
+import Ozone.Propertied;
 import arc.util.Strings;
 import mindustry.core.Version;
 
