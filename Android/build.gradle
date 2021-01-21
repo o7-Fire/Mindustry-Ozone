@@ -15,12 +15,29 @@
  */
 
 apply plugin: 'java-library'
-
-dependencies {
-    implementation ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
-        because("runtime")
-    }
-}
-
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
+ext {
+    sdkVersion = '30'
+    sdkRoot = System.getenv("ANDROID_HOME")
+    sdkBuildToolVersion = '30.0.2'
+    doExec = { cmd ->
+        def proc = cmd.execute(null, new File(rootDir, "/build/libs/"))
+        proc.waitForProcessOutput(System.out, System.err)
+    }
+}
+dependencies {
+
+}
+task jarAndroid{
+    dependsOn ":makeJar"
+
+    doLast{
+        //collect dependencies needed for desugaring
+        def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File("$sdkRoot/platforms/android-$sdkVersion/android.jar")])
+        def dependencies = files.collect{ "--classpath $it.path" }.join(" ")
+
+        //dex and desugar files - this requires d8 in your PATH
+        doExec(sdkRoot + "/build-tools/"+sdkBuildToolVersion+"/"+"d8 $dependencies --min-api 26 --output ${rootProject.archivesBaseName}-Android.jar ${rootProject.archivesBaseName}.jar")
+    }
+}
