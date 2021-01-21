@@ -95,7 +95,7 @@ allprojects {
     dependencies {
         testImplementation 'junit:junit:4.12'
         implementation 'io.sentry:sentry:4.0.0-alpha.2'
-        compileOnly ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
+        implementation ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
             because("provided")
         }
         compileOnly ("com.github.Anuken.Arc:arc-core:$arcHash"){
