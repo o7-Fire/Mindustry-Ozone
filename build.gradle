@@ -30,22 +30,7 @@ allprojects {
     }
 
     ext {
-        modHjson =
-                "name: \"Ozone-Mindustry\"\n" +
-                "displayName: \"Ozone Mindustry\"\n" +
-                "author: \"o7-Fire\"\n" +
-                "main: \"Premain.EntryPoint\"\n" +
-                "description: \"o7-Fire Ozone Project.\"\n" +
-                "version: 0.0.0\n" +
-                "minGameVersion: 122\n" +
-                "hidden: true\n"
-        File mod = new File(rootDir, "mod.hjson")
-        mod.parentFile.mkdirs();
-        mod.delete();
-        mod.createNewFile();
-        StringBuilder sbb = new StringBuilder(modHjson);
-        sbb.append("main: \"Ozone.EntryPoint\"")
-        Files.write(mod.toPath(), sbb.toString().getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE)
+
         modsBuilder = "javac"
         if (project.hasProperty("builder"))
             modsBuilder = builder
