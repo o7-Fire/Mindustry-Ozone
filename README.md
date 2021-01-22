@@ -26,12 +26,24 @@
 [Snapshot Build](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/-SNAPSHOT/Desktop--SNAPSHOT.jar) [Jitpack][May take a while to build] \
 [Snapshot Build](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github]
 
+if you hasn't mindustry, install mindustry
+
+* 0.Click actions(https://github.com/o7-Fire/Mindustry-Ozone/actions)
+* 1.Find first succes run, and download Mindustry-Ozone-android.zip
+* 2.Unzip archive
+* 3.Start mindustry and go to mod menu
+* 4.Add unziped jar archive as mod
+* 5.Reopen mindustry
+* 6.Profit
+
 ### Java
+
 `because life never been any harder if you don't install java`\
 [AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot) [OpenJDK-OpenJRE 14]\
 [AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk8&jvmVariant=hotspot) [OpenJDK-OpenJRE 8]\
 [Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14 only require login]\
 [Zulu JDK](https://www.azul.com/downloads/zulu-community/?version=java-8-lts&package=jdk) [OpenJDK-OpenJRE 8]
+
 # Requirement
 
 * Java 14+ and added to JAVA_HOME (mindustry desktop can run on java 14+) (For Ozone-Desktop)
