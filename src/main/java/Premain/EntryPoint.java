@@ -24,10 +24,13 @@ import io.sentry.Sentry;
 import mindustry.mod.Mod;
 
 public class EntryPoint extends Mod {
-	
-	public EntryPoint() {
+	static {
 		Log.info("Ozone Standalone");
 		OzoneBootstrap.init();
+		
+	}
+	
+	public EntryPoint() {
 		if (Core.settings != null) {
 			Core.settings.put("crashreport", true);
 			Core.settings.put("uiscalechanged", false);//shut

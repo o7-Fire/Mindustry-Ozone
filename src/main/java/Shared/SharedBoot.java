@@ -43,9 +43,9 @@ public class SharedBoot {
 		}
 		try {
 			Manifest.class.getClassLoader().loadClass("Ozone.Desktop.Bootstrap.DesktopBootstrap").getName();
-			standalone = true;
-		}catch (Throwable ignored) {
 			standalone = false;
+		}catch (Throwable ignored) {
+			standalone = true;
 		}
 	}
 	

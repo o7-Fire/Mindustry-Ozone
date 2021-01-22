@@ -21,6 +21,7 @@ import arc.util.Log;
 
 public class OzoneBootstrap {
 	public static void init() {
+		SharedBoot.initSentry();
 		if (SharedBoot.debug) {
 			Log.level = Log.LogLevel.debug;
 		}

@@ -36,7 +36,7 @@ import java.util.Set;
 public class DesktopBootstrap {
 	
 	public static OzoneLoader ozoneLoader;
-	public static boolean customBootstrap, standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null || System.getProperty("ozoneTest") != null;
+	public static boolean customBootstrap, debug = SharedBoot.debug;
 	public static final String bootstrap = "DesktopBootstrap 3.0", mainClass;
 	private static ArrayList<String> loadedList = new ArrayList<>();
 	private static Splash splash = null;
@@ -94,7 +94,6 @@ public class DesktopBootstrap {
 			String version = Propertied.Manifest.get("MindustryVersion");
 			if (version == null) throw new NullPointerException("MindustryVersion not found in property");
 			DesktopBootstrap.ozoneLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/Mindustry.jar"));
-			DesktopBootstrap.standalone = true;
 		}
 	}
 	
