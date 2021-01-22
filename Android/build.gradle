@@ -52,6 +52,7 @@ dependencies {
 jar{
     dependsOn ":makeJar"
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    new File(sdkD8).setExecutable(true, false);
     Runtime.getRuntime().exec(sdkD8, new String[0], new File(rootDir, "/build/libs/")).waitForProcessOutput(System.out, System.err)
     archiveFileName = "Ozone-Android.jar"
         //collect dependencies needed for desugaring
