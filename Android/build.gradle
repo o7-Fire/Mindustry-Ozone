@@ -13,22 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+apply plugin: 'java'
 apply plugin: 'java-library'
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 ext {
     minApi = '21'
-    sdkVersion = '30'
+    //automatically detect latest shit
     sdkRoot = System.getenv("ANDROID_HOME")
-    sdkBuildToolVersion = '30.0.2'
+    sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
+    sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
     doExec = { cmd ->
         def proc = cmd.execute(null, new File(rootDir, "/build/libs/"))
         proc.waitForProcessOutput(System.out, System.err)
     }
+    if(new File(sdkJar).exists())
+        println(sdkJar)
+    if(new File(sdkD8).exists())
+        println(sdkD8)
+}
+
+static def getLatestFolder(File fe){
+    ArrayList<File> f = new ArrayList<>();
+    File[] files = fe.listFiles();
+    f.addAll(Arrays.asList(files));
+    f.sort(new Comparator<File>() {
+        @Override
+        public int compare(File o1, File o2) {
+            return o1.getAbsolutePath() <=> o2.getAbsolutePath();
+        }
+    });
+    return f.get(f.size() - 1);
 }
 dependencies {
-    def sdkFile = new File(sdkRoot, "/platforms/android-${sdkVersion}/android.jar")
+    def sdkFile = new File(sdkJar)
     if(sdkFile.exists()) compileOnly files(sdkFile.absolutePath)
 }
 jar{
@@ -36,11 +54,11 @@ jar{
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     archiveFileName = "Ozone-Android.jar"
         //collect dependencies needed for desugaring
-        def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File("$sdkRoot/platforms/android-$sdkVersion/android.jar")])
+        def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(sdkJar)])
         def dependencies = files.collect{ "--classpath $it.path" }.join(" ")
 
         //dex and desugar files - this requires d8 in your PATH
-    doExec(sdkRoot + "/build-tools/"+sdkBuildToolVersion+"/"+"d8 $dependencies --min-api $minApi --output ${rootProject.archivesBaseName}-AndroidDex.jar ${rootProject.archivesBaseName}.jar")
+    doExec(sdkD8 + " $dependencies --min-api $minApi --output ${rootProject.archivesBaseName}-AndroidDex.jar ${rootProject.archivesBaseName}.jar")
     from(){
         zipTree(new File(rootDir, "/build/libs/${rootProject.archivesBaseName}-AndroidDex.jar"))
     }
