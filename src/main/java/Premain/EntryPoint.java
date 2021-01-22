@@ -18,6 +18,7 @@ package Premain;
 
 import Ozone.Bootstrap.OzoneBootstrap;
 import Ozone.Main;
+import Shared.LoggerMode;
 import arc.Core;
 import arc.util.Log;
 import io.sentry.Sentry;
@@ -27,7 +28,7 @@ public class EntryPoint extends Mod {
 	static {
 		Log.info("Ozone Standalone");
 		OzoneBootstrap.init();
-		
+		LoggerMode.loadLogger();
 	}
 	
 	public EntryPoint() {

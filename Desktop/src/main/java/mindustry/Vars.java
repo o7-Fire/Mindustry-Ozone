@@ -1,9 +1,8 @@
 package mindustry;
 
-import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Ozone.Desktop.Patch.Updater;
+import Shared.LoggerMode;
 import arc.Core;
-import arc.Events;
 import arc.Settings;
 import arc.assets.Loadable;
 import arc.files.Fi;
@@ -11,9 +10,10 @@ import arc.graphics.Color;
 import arc.scene.ui.layout.Scl;
 import arc.struct.Seq;
 import arc.struct.StringMap;
-import arc.util.*;
-import arc.util.Log.LogHandler;
-import io.sentry.Sentry;
+import arc.util.I18NBundle;
+import arc.util.Log;
+import arc.util.Structs;
+import arc.util.Time;
 import mindustry.ai.BaseRegistry;
 import mindustry.ai.BlockIndexer;
 import mindustry.ai.Pathfinder;
@@ -21,7 +21,6 @@ import mindustry.ai.WaveSpawner;
 import mindustry.async.AsyncCore;
 import mindustry.core.*;
 import mindustry.entities.EntityCollisions;
-import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.Schematics;
 import mindustry.game.Universe;
 import mindustry.game.Waves;
@@ -39,11 +38,8 @@ import mindustry.net.Net;
 import mindustry.net.ServerGroup;
 import mindustry.world.Tile;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Locale;
@@ -418,31 +414,7 @@ public class Vars implements Loadable {
 	}
 	
 	public static void loadFileLogger() {
-		if (loadedFileLogger) return;
-		
-		settings.setAppName(appName);
-		
-		try {
-			Writer writer = settings.getDataDirectory().child("last_log.txt").writer(false);
-			LogHandler log = Log.logger;
-			//ignore it
-			Log.logger = (level, text) -> {
-				log.log(level, text);
-				
-				try {
-					writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " + Log.removeColors(text) + "\n");
-					writer.flush();
-				}catch (IOException e) {
-					e.printStackTrace();
-					//ignore it
-				}
-			};
-		}catch (Exception e) {
-			//handle log file not being found
-			Log.err(e);
-		}
-		
-		loadedFileLogger = true;
+		LoggerMode.loadLogger();
 	}
 	
 	public static void loadSettings() {
@@ -505,44 +477,7 @@ public class Vars implements Loadable {
 	}
 	
 	public static void loadLogger() {
-		if (loadedLogger) return;
-		
-		String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
-		String[] stags = {"&lc&fb[D]", "&lb&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
-		
-		Seq<String> logBuffer = new Seq<>();
-		if (DesktopBootstrap.debug) Log.level = Log.LogLevel.debug;
-		Log.logger = (level, text) -> {
-			text = "[" + dateTime.format(LocalDateTime.now()) + "] " + text;
-			String result = text;
-			String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
-			System.out.println(rawText);
-			
-			result = tags[level.ordinal()] + " " + result;
-			if (!text.startsWith("Ozone-Event-")) {
-				String t = text;
-				try {
-					if (t.contains(Vars.player.name()))
-						t = t.replaceAll(Vars.player.name, "Vars.player.name");//curb your name
-				}catch (Throwable ignored) {}
-				Sentry.addBreadcrumb(t, level.name());
-			}
-			if (!headless && (ui == null || ui.scriptfrag == null)) {
-				logBuffer.add(result);
-			}else if (!headless) {
-				if (!OS.isWindows) {
-					for (String code : ColorCodes.values) {
-						result = result.replace(code, "");
-					}
-				}
-				
-				ui.scriptfrag.addMessage(Log.removeColors(result));
-			}
-		};
-		
-		Events.on(ClientLoadEvent.class, e -> logBuffer.each(ui.scriptfrag::addMessage));
-		
-		loadedLogger = true;
+		LoggerMode.loadLogger();
 	}
 	
 	@Override
