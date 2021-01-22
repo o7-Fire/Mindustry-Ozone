@@ -24,10 +24,6 @@ ext {
     sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
     sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
 
-    doExec = { cmd ->
-        def proc = cmd.execute(null, new File(rootDir, "/build/libs/"))
-        proc.waitForProcessOutput(System.out, System.err)
-    }
     if(new File(sdkJar).exists())
         println(sdkJar)
     if(new File(sdkD8).exists())
@@ -50,24 +46,23 @@ dependencies {
     def sdkFile = new File(sdkJar)
     if(sdkFile.exists()) compileOnly files(sdkFile.absolutePath)
 }
+
 jar{
-    dependsOn ":makeJar"
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-    new File(sdkD8).setExecutable(true, false);
-    def dir = new File(rootDir, "/build/libs/");
-    dir.mkdirs();
     archiveFileName = "Ozone-Android.jar"
-        //collect dependencies needed for desugaring
+
+
+    //collect dependencies needed for desugaring
     def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(sdkJar)])
     def dependencies = files.collect{ "--classpath $it.path" }.join(" ")
-
-    //dex and desugar files - this requires d8 in your PATH
     def cmd = "${sdkD8} $dependencies --min-api ${minApi} --output ${rootProject.archivesBaseName}-AndroidDex.jar ${rootProject.archivesBaseName}.jar"
-    doLast {
-        println(cmd)
-        Runtime.getRuntime().exec(cmd, new String[0], dir).waitForProcessOutput(System.out, System.err)
-    }
-    //doExec(sdkD8 + " $dependencies --min-api $minApi --output ${rootProject.archivesBaseName}-AndroidDex.jar ${rootProject.archivesBaseName}.jar")
+    def dir = new File(rootDir, "/build/libs/");
+    if(!new File(dir, "Ozone.jar").exists())throw new IllegalStateException("do ./gradlew makeJar before making android")
+    println(cmd)
+    Runtime.getRuntime().exec(cmd, new String[0], dir).waitForProcessOutput(System.out, System.err)
+
+
+
     from(){
         zipTree(new File(rootDir, "/build/libs/${rootProject.archivesBaseName}-AndroidDex.jar"))
     }

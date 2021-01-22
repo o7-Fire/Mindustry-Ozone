@@ -102,6 +102,7 @@ allprojects {
 }
 
 task deploy(type: Jar) {
+    dependsOn ":makeJar"
     dependsOn ":Desktop:jar"//make desktop jar
     dependsOn ":Android:jar"//make android jar
 }
