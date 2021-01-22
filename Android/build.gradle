@@ -23,6 +23,8 @@ ext {
     sdkRoot = System.getenv("ANDROID_HOME")
     sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
     sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
+    if(System.getProperty("user.name").equals("runner"))
+        sdkD8 = new File(sdkRoot, )
     doExec = { cmd ->
         def proc = cmd.execute(null, new File(rootDir, "/build/libs/"))
         proc.waitForProcessOutput(System.out, System.err)
@@ -52,15 +54,15 @@ dependencies {
 jar{
     dependsOn ":makeJar"
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-    new File("/bin/bash -c "+sdkD8).setExecutable(true, false);
-    Runtime.getRuntime().exec(sdkD8, new String[0], new File(rootDir, "/build/libs/")).waitForProcessOutput(System.out, System.err)
+    new File(sdkD8).setExecutable(true, false);
+    Runtime.getRuntime().exec("sudo "+sdkD8, new String[0], new File(rootDir, "/build/libs/")).waitForProcessOutput(System.out, System.err)
     archiveFileName = "Ozone-Android.jar"
         //collect dependencies needed for desugaring
         def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(sdkJar)])
         def dependencies = files.collect{ "--classpath $it.path" }.join(" ")
 
         //dex and desugar files - this requires d8 in your PATH
-    def cmd = "." + "${sdkD8} $dependencies --min-api ${minApi} --output ${rootProject.archivesBaseName}-AndroidDex.jar ${rootProject.archivesBaseName}.jar"
+    def cmd = "${sdkD8} $dependencies --min-api ${minApi} --output ${rootProject.archivesBaseName}-AndroidDex.jar ${rootProject.archivesBaseName}.jar"
     println(cmd)
     Runtime.getRuntime().exec(cmd, new String[0], new File(rootDir, "/build/libs/")).waitForProcessOutput(System.out, System.err)
 
