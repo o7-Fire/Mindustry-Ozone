@@ -33,6 +33,9 @@ jobs:
       with:
         path: ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+      
+    - name: Build core mod jar
+      run: ./gradlew makeJar -Pversion="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
 
     - name: Build mod jar
       run: ./gradlew deploy -Pversion="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
