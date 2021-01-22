@@ -23,8 +23,7 @@ ext {
     sdkRoot = System.getenv("ANDROID_HOME")
     sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
     sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
-    if(System.getProperty("user.name").equals("runner"))
-        sdkD8 = new File(sdkRoot, )
+
     doExec = { cmd ->
         def proc = cmd.execute(null, new File(rootDir, "/build/libs/"))
         proc.waitForProcessOutput(System.out, System.err)
