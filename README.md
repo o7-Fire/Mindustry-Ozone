@@ -27,13 +27,15 @@
 [Snapshot Build](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github]
 
 ### Java
-
+`because life never been any harder if you don't install java`\
 [AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot) [OpenJDK-OpenJRE 14]\
-[Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14 only require login]
-
+[AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk8&jvmVariant=hotspot) [OpenJDK-OpenJRE 8]\
+[Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14 only require login]\
+[Zulu JDK](https://www.azul.com/downloads/zulu-community/?version=java-8-lts&package=jdk) [OpenJDK-OpenJRE 8]
 # Requirement
 
 * Java 14+ and added to JAVA_HOME (mindustry desktop can run on java 14+) (For Ozone-Desktop)
+* Java 8+ and added to JAVA_HOME (mindustry core can run on java 8+) (For Ozone-Core)
 * Internet connection (required to download library at runtime and can impact loading speed) (For Ozone-Desktop)
 * Year 2006+ Computer
 * Android 5.0+ / sdk version 21+
