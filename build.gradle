@@ -47,11 +47,7 @@ allprojects {
 
     ext {
 
-        minApi = '21'
-        //automatically detect latest shit
-        sdkRoot = System.getenv("ANDROID_HOME")
-        sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
-        sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
+
 
         modsBuilder = "javac"
         if (project.hasProperty("builder"))
@@ -144,20 +140,6 @@ jar {
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-
-    //collect dependencies needed for desugaring
-    def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(sdkJar)])
-    def dependencies = files.collect{ "--classpath $it.path" }.join(" ")
-    def cmd = "${sdkD8} $dependencies --min-api ${minApi} --output ${rootProject.archivesBaseName}-AndroidDex.jar ${rootProject.archivesBaseName}.jar"
-    def dir = new File(rootDir, "/build/libs/");
-    dir.mkdirs()
-
-    doLast{
-        if(new File(sdkD8).exists() && new File(sdkJar).exists()) {
-            println(cmd)
-            Runtime.getRuntime().exec(cmd, new String[0], dir).waitForProcessOutput(System.out, System.err)
-        }
     }
 }
 tasks.withType(JavaCompile) {

@@ -18,11 +18,12 @@ apply plugin: 'java-library'
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 ext {
-
+    minApi = '21'
     //automatically detect latest shit
     sdkRoot = System.getenv("ANDROID_HOME")
     sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
     sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
+
 
     if(new File(sdkJar).exists())
         println(sdkJar)
@@ -46,9 +47,12 @@ dependencies {
     def sdkFile = new File(sdkJar)
     if(sdkFile.exists()) compileOnly files(sdkFile.absolutePath)
     implementation rootProject
+
+
 }
 
 task makeJar(type: Jar){
+    dependsOn ":makeJar"
     archiveFileName = "Ozone.jar"
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     from {
@@ -71,14 +75,14 @@ task makeJar(type: Jar){
 }
 
 jar{
-    dependsOn ":makeJar"
+    dependsOn makeJar
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     archiveFileName = "Ozone-Android.jar"
 
 
 
     from(){
-        zipTree(new File(rootDir, "/build/libs/${rootProject.archivesBaseName}-AndroidDex.jar"))
+        zipTree(new File(rootDir, "Android/build/libs/${rootProject.archivesBaseName}-AndroidDex.jar"))
     }
     from(rootDir){
         include "mod.hjson"
