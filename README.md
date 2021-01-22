@@ -10,8 +10,8 @@
 
 # Download
 ### Ozone
-[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v122.12)
-[0.11.2:0.12.7][Mindustry v122.1] \
+[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v122.13)
+[0.14.0:0.12.24][Mindustry v122.1] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v122/Desktop-v122.jar)
 [0.10.0:0.11.8][Mindustry v122] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
@@ -33,34 +33,50 @@
 
 # Requirement
 
-* Java 14+ and added to JAVA_HOME (mindustry desktop can run on java 14+)
-* Internet connection (required to download library at runtime and can impact loading speed)
+* Java 14+ and added to JAVA_HOME (mindustry desktop can run on java 14+) (For Ozone-Desktop)
+* Internet connection (required to download library at runtime and can impact loading speed) (For Ozone-Desktop)
 * Year 2006+ Computer
+* Android 5.0+ / sdk version 21+
 
 # Build
 
 * 0.Install JDK 14
 * 1.run `./gradlew deploy`
-* 2.you get the mods in `Desktop/build/libs/`
+* 2.you get the Desktop mods in `Desktop/build/libs/`
+* 3.you get the Core mods in `build/libs/`
+* 4.you get the Android mods in `Android/build/libs` if you have android sdk set to ANDROID_HOME
 
 # Install
-* 0.Get `Ozone-Dekstop.jar`
-* 1.Install **Java 14**
-* 2.Run Ozone installation by opening `Ozone-Desktop.jar` with java or CLI `java -jar Ozone-Dekstop.jar`
-* 3.Run Mindustry from the installer or from dedicated one
-* 4.fuck its crash
-* 5.you are a failure, can't even install a simple mods
-* 6.nvm its show up again\
-  or
-* 0.Copy and paste to %APPDATA%/Mindustry/mods/ (Mindustry user data)
-* 1.Install **Java 14**
-* 2.Run mindustry
-* 3.shit ozone won't load
-* 4.realize running java 8
-* 5.google how to install java 14 on *insert your OS name here*
-* 6.**2 hour later**: that its i give up (totally not based on a true story)
+
+`Ozone destkop`
+
+- install Java 14
+- `java -jar Mindustry-Ozone.jar` or double click if on Windows
+- click install
+- optional: run to download mindustry and run it
+
+`Ozone core`
+
+- install java 8+
+- `java -jar Mindustry-Ozone.jar` or double click if on Windows
+- it's copied to mindustry mods folder
+
+`Ozone core, desktop, android`
+
+- install java 14 if using ozone-desktop, java 8+ if using ozone-core, don't install java if use android
+- locate Mindustry mods folder
+
+```css
+Android: Android/data/io.anuken.mindustry/files/mods
+Windows: %APPDATA%/Roaming/Mindustry/mods or C:/Users/USERNAME/.AppData/Roaming/Mindustry/mods
+Linux: /home/USERNAME/.local/share/Mindustry/mods/
+```
+
+- copy the jar to the mods folder
+- launch mindustry (for desktop ozone recommend to use *run* instead)
 
 # Impossible things to do
+
 - In-game Painter because a mere mortal can't draw with by typing code
 - ~~Create mindustry class patcher~~
 - Stop relying on third party library for bootstrap
