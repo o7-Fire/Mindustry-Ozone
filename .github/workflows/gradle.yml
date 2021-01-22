@@ -40,17 +40,17 @@ jobs:
     - name: Upload built desktop jar file
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ env.REPOSITORY_NAME }}
+        name: Mindustry-Desktop
         path: Desktop/build/libs/Ozone-Desktop.jar
     - name: Upload built core jar file
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ env.REPOSITORY_NAME }}
+        name: Mindustry-Core
         path: build/libs/Ozone.jar
     - name: Upload built android jar file
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ env.REPOSITORY_NAME }}
+        name: Mindustry-Android
         path: Android/build/libs/Ozone-Android.jar
 
     - name: Upload Manifest
