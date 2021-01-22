@@ -14,6 +14,11 @@ buildscript {
     }
 
 }
+apply plugin: 'java'
+apply plugin: 'java-library'
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
 
 static def getLatestFolder(File fe){
     ArrayList<File> f = new ArrayList<>();
@@ -90,34 +95,38 @@ allprojects {
         if(manifestMeta.exists())
             Files.write(manifestMeta.toPath(), sb.toString().getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 
+        //For every project
+        dependencies{
+            compileOnly ("com.github.Anuken.Arc:arc-core:$arcHash"){
+                because("provided")
+            }
+            compileOnly ("com.github.Anuken.Arc:backend-sdl:$arcHash"){
+                because("provided")
+            }
+            compileOnly ("com.github.Anuken.Mindustry:core:$mindustryVersion"){
+                because("provided")
+            }
 
+            compileOnly( group: 'org.jetbrains', name: 'annotations', version: '20.1.0'){
+                because("compile")
+            }
+        }
 
     }
 
-    dependencies {
-        testImplementation 'junit:junit:4.12'
-        implementation ('io.sentry:sentry:4.0.0-alpha.2'){
-            exclude group: 'com.google.code.gson', module: "gson"
-        }
-        implementation ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
-            because("provided")
-        }
-        compileOnly ("com.github.Anuken.Arc:arc-core:$arcHash"){
-            because("provided")
-        }
-        compileOnly ("com.github.Anuken.Arc:backend-sdl:$arcHash"){
-            because("provided")
-        }
-        compileOnly ("com.github.Anuken.Mindustry:core:$mindustryVersion"){
-            because("provided")
-        }
 
-        compileOnly( group: 'org.jetbrains', name: 'annotations', version: '20.1.0'){
-            because("compile")
-        }
-    }
 }
+//For core
+dependencies {
 
+    implementation ('io.sentry:sentry:4.0.0-alpha.2'){
+        exclude group: 'com.google.code.gson', module: "gson"
+    }
+    implementation ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
+        because("provided")
+    }
+
+}
 task deploy(type: Jar) {
     dependsOn ":Desktop:jar"//make desktop jar
     dependsOn ":Android:jar"//make android jar
