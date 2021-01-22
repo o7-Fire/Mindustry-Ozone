@@ -95,7 +95,7 @@ jobs:
         draft: true
 
     - name: Upload Desktop
-      id: upload-release-asset
+      id: upload-release-desktop
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -105,7 +105,7 @@ jobs:
         asset_name: Ozone-Desktop.jar
         asset_content_type: application/zip
     - name: Upload Core
-      id: upload-release-asset
+      id: upload-release-core
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -115,7 +115,7 @@ jobs:
         asset_name: Ozone-Core.jar
         asset_content_type: application/zip
     - name: Upload Android
-      id: upload-release-asset
+      id: upload-release-android
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
