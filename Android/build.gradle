@@ -18,7 +18,7 @@ apply plugin: 'java-library'
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 ext {
-    minApi = '21'
+
     //automatically detect latest shit
     sdkRoot = System.getenv("ANDROID_HOME")
     sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
@@ -48,18 +48,9 @@ dependencies {
 }
 
 jar{
+    dependsOn ":makeJar"
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     archiveFileName = "Ozone-Android.jar"
-
-
-    //collect dependencies needed for desugaring
-    def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(sdkJar)])
-    def dependencies = files.collect{ "--classpath $it.path" }.join(" ")
-    def cmd = "${sdkD8} $dependencies --min-api ${minApi} --output ${rootProject.archivesBaseName}-AndroidDex.jar ${rootProject.archivesBaseName}.jar"
-    def dir = new File(rootDir, "/build/libs/");
-    if(!new File(dir, "Ozone.jar").exists())throw new IllegalStateException("do ./gradlew makeJar before making android")
-    println(cmd)
-    Runtime.getRuntime().exec(cmd, new String[0], dir).waitForProcessOutput(System.out, System.err)
 
 
 
