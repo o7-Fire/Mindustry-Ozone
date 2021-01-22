@@ -46,9 +46,6 @@ allprojects {
     }
 
     ext {
-
-
-
         modsBuilder = "javac"
         if (project.hasProperty("builder"))
             modsBuilder = builder
@@ -91,8 +88,14 @@ allprojects {
         if(manifestMeta.exists())
             Files.write(manifestMeta.toPath(), sb.toString().getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 
-        //For every project
+        //From core to every project
         dependencies{
+            implementation ('io.sentry:sentry:4.0.0-alpha.2'){
+                exclude group: 'com.google.code.gson', module: "gson"
+            }
+            implementation ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
+                because("provided")
+            }
             compileOnly ("com.github.Anuken.Arc:arc-core:$arcHash"){
                 because("provided")
             }
@@ -112,17 +115,7 @@ allprojects {
 
 
 }
-//For core
-dependencies {
 
-    implementation ('io.sentry:sentry:4.0.0-alpha.2'){
-        exclude group: 'com.google.code.gson', module: "gson"
-    }
-    implementation ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
-        because("provided")
-    }
-
-}
 task deploy(type: Jar) {
     dependsOn ":Desktop:jar"//make desktop jar
     dependsOn ":Android:jar"//make android jar
