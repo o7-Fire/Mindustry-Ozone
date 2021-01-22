@@ -19,7 +19,8 @@ jobs:
 
     - name: Change wrapper permissions
       run: chmod +x ./gradlew
-  
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
     # Cache Gradle dependencies
     - name: Setup Gradle Dependencies Cache
       uses: actions/cache@v2
