@@ -32,7 +32,7 @@ dependencies {
 }
 jar{
     dependsOn ":makeJar"
-
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     archiveFileName = "Ozone-Android.jar"
         //collect dependencies needed for desugaring
         def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File("$sdkRoot/platforms/android-$sdkVersion/android.jar")])
@@ -49,7 +49,7 @@ jar{
     from(){
         new File(rootDir, "src/main/resources/")
     }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    from(){
+        new File(rootDir, "Android/src/main/resources/")
     }
 }
