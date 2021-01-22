@@ -76,6 +76,15 @@ Linux: /home/USERNAME/.local/share/Mindustry/mods/
 
 - copy the jar to the mods folder
 - launch mindustry (for desktop ozone recommend to use *run* instead)
+# Install android only
+if you hasn't mindustry, install mindustry
+* 0.Click actions(https://github.com/o7-Fire/Mindustry-Ozone/actions)
+* 1.Find first succes run, and download Mindustry-Ozone-android.zip
+* 2.Unzip archive
+* 3.Start mindustry and go to mod menu
+* 4.Add unziped jar archive as mod
+* 5.Reopen mindustry
+* 6.Profit
 
 # Impossible things to do
 
