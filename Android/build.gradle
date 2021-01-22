@@ -54,7 +54,8 @@ jar{
     dependsOn ":makeJar"
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     new File(sdkD8).setExecutable(true, false);
-    Runtime.getRuntime().exec("."+sdkD8, new String[0], new File(rootDir, "/build/libs/")).waitForProcessOutput(System.out, System.err)
+    def dir = new File(rootDir, "/build/libs/");
+    dir.mkdirs();
     archiveFileName = "Ozone-Android.jar"
         //collect dependencies needed for desugaring
         def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(sdkJar)])
@@ -63,7 +64,7 @@ jar{
         //dex and desugar files - this requires d8 in your PATH
     def cmd = "${sdkD8} $dependencies --min-api ${minApi} --output ${rootProject.archivesBaseName}-AndroidDex.jar ${rootProject.archivesBaseName}.jar"
     println(cmd)
-    Runtime.getRuntime().exec(cmd, new String[0], new File(rootDir, "/build/libs/")).waitForProcessOutput(System.out, System.err)
+    Runtime.getRuntime().exec(cmd, new String[0], dir).waitForProcessOutput(System.out, System.err)
 
     //doExec(sdkD8 + " $dependencies --min-api $minApi --output ${rootProject.archivesBaseName}-AndroidDex.jar ${rootProject.archivesBaseName}.jar")
     from(){
