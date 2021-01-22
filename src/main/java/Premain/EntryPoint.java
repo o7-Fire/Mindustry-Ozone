@@ -29,7 +29,7 @@ public class EntryPoint extends Mod {
 		Log.info("Ozone Standalone");
 		OzoneBootstrap.init();
 		if (Core.settings != null) {
-			Core.settings.put("crashreport", false);
+			Core.settings.put("crashreport", true);
 			Core.settings.put("uiscalechanged", false);//shut
 		}
 	}

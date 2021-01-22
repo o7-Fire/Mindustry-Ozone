@@ -28,7 +28,8 @@ ext {
     }
 }
 dependencies {
-
+    def sdkFile = new File(sdkRoot, "/platforms/android-${sdkVersion}/android.jar")
+    if(sdkFile.exists()) compileOnly files(sdkFile.absolutePath)
 }
 jar{
     dependsOn ":makeJar"
