@@ -29,7 +29,8 @@ jobs:
       with:
         path: ~/.gradle/caches
         key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
-
+    - name: Set up PATH 
+      run:  echo "${ANDROID_HOME}/build-tools/30.0.1" >> $GITHUB_PATH
     # Cache Gradle Wrapper
     - name: Setup Gradle Wrapper Cache
       uses: actions/cache@v2
