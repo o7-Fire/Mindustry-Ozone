@@ -16,6 +16,9 @@ jobs:
       with:
         java-version: 14
 
+    - name: Clone Atom
+      run: git clone --depth=1 --branch=master https://github.com/o7-Fire/Atomic-Library ../Atom
+
     - name: Change wrapper permissions
       run: chmod +x ./gradlew
 
