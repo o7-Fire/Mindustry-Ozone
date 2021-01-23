@@ -2,9 +2,9 @@ import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 import java.text.SimpleDateFormat
 
-plugins {
-    id 'java'
-}
+apply plugin: 'java'
+apply plugin: 'java-library'
+
 
 repositories {
     mavenCentral()

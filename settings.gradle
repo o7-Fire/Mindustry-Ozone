@@ -1,7 +1,17 @@
+if(JavaVersion.current().ordinal() < JavaVersion.VERSION_14.ordinal()){
+    throw new IllegalStateException("Use JDK 14 bruh. Your version: ${System.properties["java.version"]}")
+}
 include 'Desktop'
 include 'Tools'
-include 'Android'
+
 rootProject.name = 'Ozone'
+def hasSdk = System.getenv("ANDROID_HOME") != null
+if(hasSdk) {
+    include 'Android'
+}else{
+    println("No Android SDK found. Skipping Android module.")
+}
+
 def use = { ... names ->
     for(String name : names){
         include(name)

@@ -12,7 +12,6 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-
 }
 apply plugin: 'java'
 apply plugin: 'java-library'
@@ -20,22 +19,10 @@ apply plugin: 'java-library'
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
-static def getLatestFolder(File fe){
-    ArrayList<File> f = new ArrayList<>();
-    File[] files = fe.listFiles();
-    f.addAll(Arrays.asList(files));
-    f.sort(new Comparator<File>() {
-        @Override
-        public int compare(File o1, File o2) {
-            return o1.getAbsolutePath() <=> o2.getAbsolutePath();
-        }
-    });
-    return f.get(f.size() - 1);
-}
+
 allprojects {
     apply plugin: 'java'
     apply plugin: 'java-library'
-
     repositories {
         mavenLocal()
         mavenCentral()
