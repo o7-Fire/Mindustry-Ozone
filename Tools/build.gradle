@@ -25,4 +25,8 @@ dependencies {
     testCompile "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
     testCompile "com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"
     implementation rootProject
+    implementation (Atom("Atomic")){
+        exclude group: 'com.javassist'
+        because("provided")
+    }
 }

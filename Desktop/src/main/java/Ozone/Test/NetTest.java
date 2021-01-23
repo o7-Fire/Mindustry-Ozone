@@ -30,13 +30,12 @@ package Ozone.Test;/*
  * limitations under the License.
  */
 
-import Atom.File.FileUtility;
-import Ozone.Desktop.Pre.DownloadSwing;
-import Ozone.Pre.Download;
-import Ozone.Propertied;
-
 import java.io.File;
 import java.net.URL;
+
+import Atom.File.FileUtility;
+import Ozone.Desktop.Pre.DownloadSwing;
+import Ozone.Propertied;
 
 public class NetTest extends Test {
 	

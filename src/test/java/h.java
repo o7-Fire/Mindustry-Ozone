@@ -1,17 +1,21 @@
-import Ozone.Pre.Download;
-import org.junit.Test;
-
-import javax.swing.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JWindow;
+import javax.swing.SwingConstants;
+
+import Atom.Net.Download;
+
 public class h {
     URLClassLoader url;
     Runnable r;
-    
-    @Test
+
+
     public void he() throws MalformedURLException {
         JWindow window = new JWindow();
         window.getContentPane().add(new JLabel("Nice", new ImageIcon(new URL("https://cdn.discordapp.com/attachments/724060628763017296/791132176091447296/loading.gif")), SwingConstants.CENTER));
@@ -30,8 +34,8 @@ public class h {
         frame.setSize(300, 100);
         window.dispose();
     }
-    
-    @org.junit.Test
+
+
     public void name() throws Throwable {
         File temp = new File(System.currentTimeMillis() + ".zip");
         temp.deleteOnExit();

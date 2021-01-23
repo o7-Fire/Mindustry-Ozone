@@ -16,10 +16,17 @@
 
 package Ozone.UI;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicLong;
+
 import Atom.Time.Countdown;
 import Atom.Utility.Pool;
 import Ozone.Manifest;
 import arc.scene.ui.Label;
+import arc.struct.ObjectMap;
 import arc.util.Log;
 import io.sentry.Sentry;
 import io.sentry.SentryTransaction;
@@ -29,13 +36,6 @@ import mindustry.content.Blocks;
 import mindustry.gen.Groups;
 import mindustry.world.Build;
 import mindustry.world.Tile;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class WorldInformation extends ScrollableDialog {
 	
@@ -74,13 +74,13 @@ public class WorldInformation extends ScrollableDialog {
 				AtomicLong buildableTile = new AtomicLong();
 				label.visible = true;
 				label.setText("World calculation began...");
-				ArrayList<Future<HashMap<String, Integer>>> futures = new ArrayList<>();
+				ArrayList<Future<ObjectMap<String, Integer>>> futures = new ArrayList<>();
 				for (int i = 0; i < height; i++) {
 					int finalI = i;
 					int a = i * height;
 					label.setText("World indexing: " + a + "/" + total);
 					futures.add(Pool.submit(() -> {//hail concurrency
-						HashMap<String, Integer> count = new HashMap<>();
+						ObjectMap<String, Integer> count = new ObjectMap<>();
 						//Overcautious people be like
 						try {
 							for (int j = 0; j < Vars.world.width(); j++) {
@@ -89,33 +89,39 @@ public class WorldInformation extends ScrollableDialog {
 									if (t == null) continue;
 									if (t.staticDarkness() != 0) continue;
 									try {
-										count.put(t.floor().toString(), count.getOrDefault(t.floor().toString(), 0) + 1);
+										count.put(t.floor().toString(), count.get(t.floor().toString(), 0) + 1);
+									} catch (Throwable ignored) {
+									}
+									try {
+										count.put(t.overlay().toString(), count.get(t.overlay().toString(), 0) + 1);
 									}catch (Throwable ignored) {}
 									try {
-										count.put(t.overlay().toString(), count.getOrDefault(t.overlay().toString(), 0) + 1);
-									}catch (Throwable ignored) {}
-									try {
-										count.put(t.block().toString(), count.getOrDefault(t.block().getDisplayName(t), 0) + 1);
+										count.put(t.block().toString(), count.get(t.block().getDisplayName(t), 0) + 1);
 									}catch (Throwable ignored) {}
 									try {
 										if (t.build != null)
-											count.put(t.build.getDisplayName(), count.getOrDefault(t.build.getDisplayName(), 0) + 1);
+											count.put(t.build.getDisplayName(), count.get(t.build.getDisplayName(), 0) + 1);
 									}catch (Throwable ignored) {}
 									if (Build.validPlace(Blocks.copperWall, Vars.player.team(), t.x, t.y, 0))
 										buildableTile.getAndIncrement();
-								}catch (Throwable ignored) {}
+								} catch (Throwable ignored) {
+								}
 							}
-						}catch (Throwable ignored) {}
+						} catch (Throwable ignored) {
+						}
 						return count;
 					}));
 				}
-				
+
 				long futc = futures.size();
 				ArrayList<Future<?>> fut = new ArrayList<>(futures);
-				for (Future<HashMap<String, Integer>> f : futures) {
+				for (Future<ObjectMap<String, Integer>> f : futures) {
 					try {
-						for (Map.Entry<String, Integer> s : f.get().entrySet())
-							mainCount.put(s.getKey(), mainCount.getOrDefault(s.getKey(), 0) + s.getValue());
+						for (ObjectMap.Entry<String, Integer> s : f.get().entries()) {
+							if (mainCount.get(s.key) == null)
+								mainCount.put(s.key, 0);
+							mainCount.put(s.key, mainCount.get(s.key) + s.value);
+						}
 						fut.remove(f);
 						Pool.submit(() -> {
 							String s = "";
@@ -123,7 +129,7 @@ public class WorldInformation extends ScrollableDialog {
 								s = ((((float) (futc - fut.size()) / futc) * 100)) + "%";
 								s = (futc - fut.size()) + "/" + futc;
 								label.setText("World calculating: " + s);
-							}catch (Throwable t) {
+							} catch (Throwable t) {
 								s = (futc - fut.size()) + "/" + futc;
 								label.setText("World calculating: " + s);
 							}

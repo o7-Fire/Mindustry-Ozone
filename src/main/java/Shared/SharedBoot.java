@@ -57,7 +57,7 @@ public class SharedBoot {
 			options.setRelease(Version.core + ":" + Version.desktop);
 			options.setDebug(debug);
 			options.setTracesSampleRate(1.0);
-			options.setEnvironment(Propertied.Manifest.getOrDefault("VHash", "unspecified").equals("unspecified") ? "dev" : "release");
+			options.setEnvironment(getOrDefault(Propertied.Manifest, "VHash", "unspecified").equals("unspecified") ? "dev" : "release");
 			if (System.getProperty("ozoneTest") != null) options.setEnvironment("test");
 		}, true);
 		Sentry.configureScope(SharedBoot::registerSentry);

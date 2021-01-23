@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import Ozone.Pre.Download;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;

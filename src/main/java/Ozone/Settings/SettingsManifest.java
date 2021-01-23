@@ -16,21 +16,19 @@
 
 package Ozone.Settings;
 
-import Atom.Reflect.FieldTool;
-import Atom.Reflect.Reflect;
-import Atom.Utility.Digest;
-import Atom.Utility.Encoder;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.concurrent.ConcurrentHashMap;
+
+import Atom.File.FileUtility;
+import Atom.Reflect.FieldTool;
+import Atom.Reflect.Reflect;
+import Atom.Utility.Digest;
+import Atom.Utility.Encoder;
 
 public class SettingsManifest {
 	static final File settingsFile = new File("OzoneSettings.properties");
@@ -64,7 +62,6 @@ public class SettingsManifest {
 	}
 	
 	public static void readSettings(Class<?> clazz) {
-		long start = System.currentTimeMillis();
 		for (Field f : clazz.getDeclaredFields()) {
 			try {
 				SettingsManifest.readSettings(f);
@@ -75,27 +72,28 @@ public class SettingsManifest {
 	}
 	
 	static void save(Class<?> clz) throws IOException, IllegalAccessException {
-		if (getMap().getOrDefault(clz.getName() + ".hash", "0").equals(getHash(clz))) return;
+		if ((getMap().get(clz.getName() + ".hash") == null ? "0" : getMap().get(clz.getName() + ".hash")).equals(getHash(clz)))
+			return;
 		for (Field f : clz.getDeclaredFields()) {
 			String name = clz.getName() + "." + f.getName();
 			if (f.getType().isPrimitive() || f.getType().getName().equals(String.class.getName()))
 				if (getMap().containsKey(name)) getMap().replace(name, f.get(null).toString());
 				else getMap().put(name, f.get(null).toString());
 		}
-		if (getMap().contains(clz.getName() + ".hash")) getMap().replace(clz.getName() + ".hash", getHash(clz));
+		if (getMap().contains(clz.getName() + ".hash"))
+			getMap().replace(clz.getName() + ".hash", getHash(clz));
 		else getMap().put(clz.getName() + ".hash", getHash(clz));
 	}
-	
+
 	static String getHash(Class<?> clz) {
 		return String.valueOf(ByteBuffer.wrap(Digest.sha256(FieldTool.getFieldDetails(null, clz, false, 500).getBytes())).getLong());
 	}
-	
-	public synchronized static void saveMap() throws IOException {
+
+	public synchronized static void saveMap() {
 		if (cache == null) return;
 		if (lastFileHash == ByteBuffer.wrap(cache.toString().getBytes()).getLong()) return;
-		long start = System.currentTimeMillis();
-		Files.write(settingsFile.toPath(), Encoder.property(cache).getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+		FileUtility.write(settingsFile, Encoder.property(cache).getBytes());
 		lastFileHash = ByteBuffer.wrap(cache.toString().getBytes()).getLong();
 	}
-	
+
 }

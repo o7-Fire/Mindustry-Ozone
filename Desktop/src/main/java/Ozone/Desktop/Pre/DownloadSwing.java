@@ -16,12 +16,14 @@
 
 package Ozone.Desktop.Pre;
 
-import Ozone.Desktop.Swing.DownloadBar;
-import Ozone.Pre.Download;
-
-import javax.swing.*;
 import java.io.File;
 import java.net.URL;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
+
+import Ozone.Desktop.Swing.DownloadBar;
 
 //probably will be relocated to Atom library
 public class DownloadSwing extends Download {

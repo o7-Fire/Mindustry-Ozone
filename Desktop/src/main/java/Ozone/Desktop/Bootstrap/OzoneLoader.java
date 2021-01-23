@@ -16,9 +16,6 @@
 
 package Ozone.Desktop.Bootstrap;
 
-import Atom.Utility.Cache;
-import Ozone.Pre.Download;
-import io.sentry.Sentry;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -33,6 +30,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import Atom.Utility.Cache;
+import io.sentry.Sentry;
 
 public class OzoneLoader extends URLClassLoader {
 	public static File cache = new File("lib/");
@@ -118,7 +118,7 @@ public class OzoneLoader extends URLClassLoader {
 				Main.Download.main(url, temp);
 			}catch (Throwable t) {
 				try {
-					Download d = new Download(url, temp);
+					Atom.Net.Download d = new Atom.Net.Download(url, temp);
 					d.print(s -> {
 						s = "[LibraryLoader-" + temp.getName() + "]" + s;
 						DesktopBootstrap.setSplash(s);
