@@ -82,7 +82,7 @@ jar{
 
 
     from(){
-        zipTree(new File(rootDir, "Android/build/libs/${rootProject.archivesBaseName}-AndroidDex.jar"))
+        zipTree(new File(rootDir, "Android/build/libs/Ozone-AndroidDex.jar"))
     }
     from(rootDir){
         include "mod.hjson"
