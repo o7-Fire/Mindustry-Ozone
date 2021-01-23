@@ -44,7 +44,8 @@ public class EntryPoint extends Mod {
 			Main.init();
 		}catch (Throwable t) {
 			Sentry.captureException(t);
-			throw t;
+			Log.err(t);
+			throw new RuntimeException(t);
 		}
 	}
 	
@@ -54,7 +55,8 @@ public class EntryPoint extends Mod {
 			Main.loadContent();
 		}catch (Throwable t) {
 			Sentry.captureException(t);
-			throw t;
+			Log.err(t);
+			throw new RuntimeException(t);
 		}
 	}
 }

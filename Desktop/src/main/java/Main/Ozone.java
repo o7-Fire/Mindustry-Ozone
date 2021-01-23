@@ -23,6 +23,8 @@ import Ozone.Event.DesktopEvent;
 import Ozone.Main;
 import arc.Core;
 import arc.Events;
+import arc.util.Log;
+import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.mod.Mod;
 
@@ -53,14 +55,27 @@ public class Ozone extends Mod {
 	
 	@Override
 	public void init() {
-		DesktopPatcher.register();
-		Main.init();
+		
+		try {
+			DesktopPatcher.register();
+			Main.init();
+		}catch (Throwable t) {
+			Sentry.captureException(t);
+			Log.err(t);
+			throw new RuntimeException(t);
+		}
 	}
 	
 	@Override
 	public void loadContent() {
-		DesktopPatcher.async();
-		Main.loadContent();
+		try {
+			DesktopPatcher.async();
+			Main.loadContent();
+		}catch (Throwable t) {
+			Sentry.captureException(t);
+			Log.err(t);
+			throw new RuntimeException(t);
+		}
 	}
 
     /*

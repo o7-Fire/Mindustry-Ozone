@@ -25,6 +25,7 @@ import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
 import arc.struct.ObjectMap;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -123,7 +124,7 @@ public class Translation implements Module {
 	}
 	
 	@Override
-	public ArrayList<Class<? extends Module>> dependOnModule() {
+	public ArrayList<Class<? extends Module>> dependOnModule() throws IOException {
 		return new ArrayList<>(Reflect.getExtendedClass("Ozone", Translation.class));
 	}
 }

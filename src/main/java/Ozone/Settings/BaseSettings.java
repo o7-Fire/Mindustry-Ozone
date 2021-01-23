@@ -66,7 +66,7 @@ public class BaseSettings implements Module {
 	}
 	
 	@Override
-	public List<Class<? extends Module>> dependOnModule() {
+	public List<Class<? extends Module>> dependOnModule() throws IOException {
 		return new ArrayList<>(Reflect.getExtendedClass("Ozone", BaseSettings.class));
 	}
 	

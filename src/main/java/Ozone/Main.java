@@ -25,6 +25,7 @@ import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.game.EventType;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class Main {
@@ -39,7 +40,7 @@ public class Main {
 	
 	}
 	
-	public static void init() {
+	public static void init() throws IOException {
 		if (init) return;
 		init = true;
 		Log.infoTag("Ozone", "Hail o7");
@@ -93,7 +94,7 @@ public class Main {
 		Log.info("Startup in " + (System.currentTimeMillis() - SharedBoot.startup) + " ms");
 	}
 	
-	private static void loadModule() {
+	private static void loadModule() throws IOException {
 		iteration++;
 		boolean antiRecurse = false;
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {

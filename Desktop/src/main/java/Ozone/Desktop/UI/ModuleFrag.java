@@ -22,6 +22,7 @@ import Ozone.Manifest;
 import Ozone.UI.ScrollableDialog;
 import arc.Core;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -47,9 +48,13 @@ public class ModuleFrag extends ScrollableDialog {
 	
 	void ad(Module s) {
 		table.button(Core.bundle.get(s.getName()), () -> {}).growX().tooltip(FieldTool.getFieldDetails(s));
-		for (Class<? extends Module> m : s.dependClean()) {
-			Module mod = Manifest.module.get(m);
-			table.button(Core.bundle.get(mod.getName()), () -> {}).growX().tooltip(FieldTool.getFieldDetails(mod)).disabled(true);
+		try {
+			for (Class<? extends Module> m : s.dependClean()) {
+				Module mod = Manifest.module.get(m);
+				table.button(Core.bundle.get(mod.getName()), () -> {}).growX().tooltip(FieldTool.getFieldDetails(mod)).disabled(true);
+			}
+		}catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 		table.row();
 	}

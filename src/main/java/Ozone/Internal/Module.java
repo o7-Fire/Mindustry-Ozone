@@ -19,6 +19,7 @@ package Ozone.Internal;
 import Ozone.Manifest;
 import arc.assets.Loadable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,17 +74,17 @@ public interface Module extends Loadable {
 		return modulePost.contains(getName());
 	}
 	
-	default List<Class<? extends Module>> dependClean() {
+	default List<Class<? extends Module>> dependClean() throws IOException {
 		ArrayList<Class<? extends Module>> ar = new ArrayList<>(dependOnModule());
 		ar.removeIf(c -> c.getName().equals(this.getClass().getName()));
 		return ar;
 	}
 	
-	default List<Class<? extends Module>> dependOnModule() {
+	default List<Class<? extends Module>> dependOnModule() throws IOException {
 		return new ArrayList<>();
 	}
 	
-	default boolean canLoad() {
+	default boolean canLoad() throws IOException {
 		if (loaded()) return false;
 		if (!moduleRegistered.contains(getName())) return false;
 		ArrayList<Class<? extends Module>> dep = new ArrayList<>(dependClean());
