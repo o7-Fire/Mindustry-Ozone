@@ -17,7 +17,6 @@
 package Ozone.Desktop.Bootstrap;
 
 
-import Atom.Reflect.Reflect;
 import Ozone.Desktop.Swing.Splash;
 import Ozone.Propertied;
 import Shared.SharedBoot;
@@ -45,7 +44,6 @@ public class DesktopBootstrap {
 	static {
 		System.out.println(bootstrap + (debug ? " [Debug]" : ""));
 		if (!debug) try {
-			Reflect.setInternalJson("invalidated");
 			URL u = ClassLoader.getSystemResource("gif/loading.gif");
 			splash = new Splash(u);
 			splash.setLabel(bootstrap);

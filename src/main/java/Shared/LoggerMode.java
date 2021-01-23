@@ -16,8 +16,6 @@
 
 package Shared;
 
-import java.io.Writer;
-
 import Atom.Utility.Utility;
 import arc.Events;
 import arc.struct.Seq;
@@ -28,10 +26,10 @@ import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.EventType;
 
+import java.io.Writer;
+
 import static arc.Core.settings;
-import static mindustry.Vars.appName;
-import static mindustry.Vars.headless;
-import static mindustry.Vars.ui;
+import static mindustry.Vars.*;
 
 public class LoggerMode {
 
@@ -42,15 +40,18 @@ public class LoggerMode {
 		
 		String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
 		String[] stags = {"&lc&fb[D]", "&lb&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
-		settings.setAppName(appName);
+		
 		Seq<String> logBuffer = new Seq<>();
 		if (SharedBoot.debug) Log.level = Log.LogLevel.debug;
-		try { writer = settings.getDataDirectory().child("last_log.txt").writer(false); }catch (Throwable ignored) {}
+		try {
+			settings.setAppName(appName);
+			writer = settings.getDataDirectory().child("last_log.txt").writer(false);
+		}catch (Throwable ignored) {}
 		Log.logger = (level, text) -> {
 			try {
 				writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " + Log.removeColors(text) + "\n");
 				writer.flush();
-			} catch (Throwable ignored) {
+			}catch (Throwable ignored) {
 			}
 			text = "[" + Utility.getDate() + "] " + text;
 			String result = text;

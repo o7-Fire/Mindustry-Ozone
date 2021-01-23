@@ -29,7 +29,6 @@ public class StartServer {
             if (version == null) throw new NullPointerException("MindustryVersion not found in property");
             DesktopBootstrap.load(Dependency.Type.provided);
             DesktopBootstrap.ozoneLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/server-release.jar"));
-            DesktopBootstrap.standalone = true;
             DesktopBootstrap.loadMain("mindustry.server.ServerLauncher", args);
         }catch (Throwable t) {
             t.printStackTrace();
