@@ -6,6 +6,9 @@ sourceCompatibility = "14"
 targetCompatibility = "14"
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation (Atom("Atomic")){
+        because("provided")
+    }
     testImplementation rootProject
     compileOnly (group: 'com.miglayout', name: 'miglayout-core', version: '5.2'){
         because("runtime")

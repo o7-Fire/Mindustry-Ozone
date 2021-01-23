@@ -53,12 +53,12 @@ allprojects {
             modsBuilder = builder
         else
             modsBuilder = System.getProperty("user.name")
-        localAtom = {
-            return  new File(projectDir.parent, '../Atom').exists()
-        }
+
+        localAtom =   new File(projectDir.parent, '../Atomm').exists()
+
 
         Atom = { String name ->
-            if(localAtom()){
+            if(localAtom){
                 return project(":Atom:$name")
             }else{
                 //skip to last submodule
@@ -107,9 +107,7 @@ allprojects {
             implementation ('io.sentry:sentry:4.0.0-alpha.2'){
                 exclude group: 'com.google.code.gson', module: "gson"
             }
-            implementation (Atom("Atomic")){
-                because("provided")
-            }
+
             compileOnly ("com.github.Anuken.Arc:arc-core:$arcHash"){
                 because("provided")
             }
@@ -129,7 +127,11 @@ allprojects {
 
 
 }
-
+dependencies {
+    implementation (Atom("Atomic")){
+        because("provided")
+    }
+}
 task deploy(type: Jar) {
     dependsOn ":Desktop:jar"//make desktop jar
     dependsOn ":Android:jar"//make android jar
