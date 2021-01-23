@@ -16,19 +16,21 @@
 
 package Premain;
 
-import Atom.File.FileUtility;
-import Shared.SharedBoot;
-
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
+import Atom.File.FileUtility;
 
 public class InstallerEntryPoint {
 	public static void main(String[] args) throws IOException {
 		File target = new File(FileUtility.getAppdata(), "/Mindustry/mods/Ozone.jar");
 		System.out.println("Copying to:");
 		System.out.println(target.getAbsolutePath());
-		SharedBoot.copyTo(target);
+		Files.copy(new File(InstallerEntryPoint.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
 		System.out.println("Finished");
-		
+
 	}
 }

@@ -16,6 +16,9 @@
 
 package Shared;
 
+import java.nio.ByteBuffer;
+import java.util.Map;
+
 import Ozone.Manifest;
 import Ozone.Propertied;
 import Ozone.Settings.SettingsManifest;
@@ -24,35 +27,30 @@ import io.sentry.Scope;
 import io.sentry.Sentry;
 import io.sentry.protocol.User;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.Map;
-
 public class SharedBoot {
 	public static boolean standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null || System.getProperty("ozoneTest") != null;
 	public static long startup = System.currentTimeMillis();
-	
 	static {
 		if (!debug) try {
-			debug = SettingsManifest.getMap().getOrDefault("Ozone.Settings.BaseSettings.debugMode", "false").equalsIgnoreCase("true");
-		}catch (Throwable ignored) {
-		
+			debug = getOrDefault(SettingsManifest.getMap(), "Ozone.Settings.BaseSettings.debugMode", "false").equalsIgnoreCase("true");
+		} catch (Throwable ignored) {
+
 		}
 		try {
 			Manifest.class.getClassLoader().loadClass("Ozone.Desktop.Bootstrap.DesktopBootstrap").getName();
 			standalone = false;
-		}catch (Throwable ignored) {
+		} catch (Throwable ignored) {
 			standalone = true;
 		}
 	}
-	
-	public static void copyTo(File target) throws IOException {
-		Files.copy(new File(SharedBoot.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+	public static <T> T getOrDefault(Map<?, T> map, Object key, T def) {
+		T t = map.get(key);
+		if (t == null) return def;
+		return t;
 	}
-	
+
+
 	public static void initSentry() {
 		Sentry.init(options -> {
 			options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
