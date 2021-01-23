@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import Atom.Net.Download;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
