@@ -2,6 +2,7 @@
 */Manifest.properties
 .attach_*
 /dependencies
+/gen/
 ## Java
 Tools/build
 *.class
