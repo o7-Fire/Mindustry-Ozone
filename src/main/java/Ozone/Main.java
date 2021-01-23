@@ -43,10 +43,11 @@ public class Main {
 	
 	public static Collection<Class<? extends Module>> getModule() {
 		try {
-			return Reflect.getExtendedClass("Ozone", Module.class)
+			return Reflect.getExtendedClass("Ozone", Module.class);
 		}catch (Throwable e) {
-			e.printStackTrace();
+			if (Atom.Manifest.internalRepo.getResource())
 		}
+		
 	}
 	
 	public static void init() throws IOException {
