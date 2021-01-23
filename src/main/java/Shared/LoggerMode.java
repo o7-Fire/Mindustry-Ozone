@@ -16,6 +16,9 @@
 
 package Shared;
 
+import java.io.Writer;
+
+import Atom.Utility.Utility;
 import arc.Events;
 import arc.struct.Seq;
 import arc.util.ColorCodes;
@@ -25,15 +28,13 @@ import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.EventType;
 
-import java.io.Writer;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-
 import static arc.Core.settings;
-import static mindustry.Vars.*;
+import static mindustry.Vars.appName;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.ui;
 
 public class LoggerMode {
-	public static SimpleDateFormat dateTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+
 	static Writer writer;
 	
 	public static void loadLogger() {
@@ -49,12 +50,13 @@ public class LoggerMode {
 			try {
 				writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " + Log.removeColors(text) + "\n");
 				writer.flush();
-			}catch (Throwable ignored) {}
-			text = "[" + dateTime.format(LocalDateTime.now()) + "] " + text;
+			} catch (Throwable ignored) {
+			}
+			text = "[" + Utility.getDate() + "] " + text;
 			String result = text;
 			String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
 			System.out.println(rawText);
-			
+
 			result = tags[level.ordinal()] + " " + result;
 			if (!text.startsWith("Ozone-Event-")) {
 				String t = text;

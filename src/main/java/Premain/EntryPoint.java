@@ -26,9 +26,15 @@ import mindustry.mod.Mod;
 
 public class EntryPoint extends Mod {
 	static {
-		Log.info("Ozone Standalone");
-		OzoneBootstrap.init();
-		LoggerMode.loadLogger();
+		try {
+			Log.info("Ozone Standalone");
+			OzoneBootstrap.init();
+			LoggerMode.loadLogger();
+		} catch (Throwable t) {
+			t.printStackTrace();
+			Log.err(t);
+			Sentry.captureException(t);
+		}
 	}
 	
 	public EntryPoint() {
@@ -43,6 +49,7 @@ public class EntryPoint extends Mod {
 		try {
 			Main.init();
 		}catch (Throwable t) {
+			t.printStackTrace();
 			Sentry.captureException(t);
 			Log.err(t);
 			throw new RuntimeException(t);
@@ -54,6 +61,7 @@ public class EntryPoint extends Mod {
 		try {
 			Main.loadContent();
 		}catch (Throwable t) {
+			t.printStackTrace();
 			Sentry.captureException(t);
 			Log.err(t);
 			throw new RuntimeException(t);
