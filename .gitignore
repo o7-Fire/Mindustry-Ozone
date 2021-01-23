@@ -1,4 +1,5 @@
 /*.properties
+*/Manifest.properties
 .attach_*
 /dependencies
 ## Java

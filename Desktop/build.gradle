@@ -15,8 +15,8 @@ dependencies {
     }
     implementation rootProject
 
-    compileOnly ("com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"){
-        because("runtime")
+    implementation (Atom("Desktop")){
+        because("provided")
     }
     compileOnly ("com.github.Anuken.Mindustry:desktop:$mindustryVersion"){
         because("provided")

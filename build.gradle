@@ -53,7 +53,19 @@ allprojects {
             modsBuilder = builder
         else
             modsBuilder = System.getProperty("user.name")
+        localAtom = {
+            return  new File(projectDir.parent, '../Atom').exists()
+        }
 
+        Atom = { String name ->
+            if(localAtom()){
+                return project(":Atom:$name")
+            }else{
+                //skip to last submodule
+                if(name.contains(':')) name = name.split(':').last()
+                return "com.github.o7-Fire.Atomic-Library:$name:$atomHash"
+            }
+        }
         def atomMeta = new File(rootDir, "src/main/resources/Manifest.properties")
         def manifestMeta = new File(rootDir, "Manifest/src/main/resources/Manifest.properties")
         try {
@@ -95,7 +107,7 @@ allprojects {
             implementation ('io.sentry:sentry:4.0.0-alpha.2'){
                 exclude group: 'com.google.code.gson', module: "gson"
             }
-            implementation ("com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"){
+            implementation (Atom("Atomic")){
                 because("provided")
             }
             compileOnly ("com.github.Anuken.Arc:arc-core:$arcHash"){
