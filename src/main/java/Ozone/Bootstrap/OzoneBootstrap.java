@@ -16,6 +16,7 @@
 
 package Ozone.Bootstrap;
 
+import Ozone.Version;
 import Shared.SharedBoot;
 import arc.util.Log;
 
@@ -25,5 +26,6 @@ public class OzoneBootstrap {
 		if (SharedBoot.debug) {
 			Log.level = Log.LogLevel.debug;
 		}
+		Log.info("Ozone-Version", Version.core);
 	}
 }
