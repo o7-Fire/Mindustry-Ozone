@@ -16,6 +16,12 @@
 
 package Ozone.Settings;
 
+import Atom.File.FileUtility;
+import Atom.Reflect.FieldTool;
+import Atom.Reflect.Reflect;
+import Atom.Utility.Digest;
+import Atom.Utility.Encoder;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -23,12 +29,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentHashMap;
-
-import Atom.File.FileUtility;
-import Atom.Reflect.FieldTool;
-import Atom.Reflect.Reflect;
-import Atom.Utility.Digest;
-import Atom.Utility.Encoder;
 
 public class SettingsManifest {
 	static final File settingsFile = new File("OzoneSettings.properties");
@@ -54,17 +54,19 @@ public class SettingsManifest {
 	}
 	
 	static void readSettings(Field f) throws IllegalAccessException, IOException {
+		
 		f.setAccessible(true);
 		Class<?> clz = f.getDeclaringClass();
 		String name = clz.getName() + "." + f.getName();
 		if (!getMap().containsKey(name)) return;
 		f.set(null, Reflect.parseStringToPrimitive(getMap().get(name), f.getType()));
+		
 	}
 	
 	public static void readSettings(Class<?> clazz) {
 		for (Field f : clazz.getDeclaredFields()) {
 			try {
-				SettingsManifest.readSettings(f);
+				if (f.getType().isPrimitive() || f.getType().equals(String.class)) SettingsManifest.readSettings(f);
 			}catch (Throwable e) {
 				throw new RuntimeException(e);
 			}

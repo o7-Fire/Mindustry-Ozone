@@ -24,6 +24,7 @@ import Ozone.Manifest;
 import Ozone.Patch.Translation;
 import arc.Events;
 import arc.util.Log;
+import io.sentry.Sentry;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +49,13 @@ public class BaseSettings implements Module {
 		t.put("blockDebug", "Block Debug(ctrl+mouse left)");
 		t.put("worldLog", "Spam your console with world interaction log");
 		Translation.addSettings(t);
-		SettingsManifest.readSettings(BaseSettings.class);
+		try {
+			SettingsManifest.readSettings(BaseSettings.class);
+		}catch (Throwable et) {
+			Sentry.captureException(et);
+			Log.err(et);
+			
+		}
 	}
 	
 	@Override
@@ -67,7 +74,13 @@ public class BaseSettings implements Module {
 	
 	@Override
 	public List<Class<? extends Module>> dependOnModule() throws IOException {
-		return new ArrayList<>(Reflect.getExtendedClass("Ozone", BaseSettings.class));
+		ArrayList<Class<? extends Module>> arrayList = new ArrayList<>();
+		
+		try {
+			arrayList.addAll(Reflect.getExtendedClass("Ozone", BaseSettings.class));
+		}catch (Throwable ignored) {}
+		return arrayList;
+		
 	}
 	
 	public static void save() {

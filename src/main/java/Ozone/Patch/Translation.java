@@ -125,6 +125,10 @@ public class Translation implements Module {
 	
 	@Override
 	public ArrayList<Class<? extends Module>> dependOnModule() throws IOException {
-		return new ArrayList<>(Reflect.getExtendedClass("Ozone", Translation.class));
+		ArrayList<Class<? extends Module>> arr = new ArrayList<>();
+		try {
+			arr.addAll(Reflect.getExtendedClass("Ozone", Translation.class));
+		}catch (Throwable ignored) {}
+		return arr;
 	}
 }
