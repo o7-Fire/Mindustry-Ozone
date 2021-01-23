@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
+import Atom.Net.Download;
 import Ozone.Desktop.Swing.DownloadBar;
 
 //probably will be relocated to Atom library

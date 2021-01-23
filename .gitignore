@@ -11,6 +11,7 @@ Tools/build
 /cache/
 /build/
 /*.txt
+Android/build/
 /lib/
 *.war
 *.ear

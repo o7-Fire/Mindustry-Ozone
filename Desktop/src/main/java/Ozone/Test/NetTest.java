@@ -34,6 +34,7 @@ import java.io.File;
 import java.net.URL;
 
 import Atom.File.FileUtility;
+import Atom.Net.Download;
 import Ozone.Desktop.Pre.DownloadSwing;
 import Ozone.Propertied;
 
