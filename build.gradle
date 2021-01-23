@@ -142,7 +142,7 @@ allprojects {
 dependencies {
     implementation (Atom("Atomic")){
         exclude group: 'com.javassist', module: 'javassist'
-        exclude group: 'org.reflections', moduke: 'reflections'
+        exclude group: 'org.reflections', module: 'reflections'
         because("provided")
     }
 }

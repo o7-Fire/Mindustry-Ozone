@@ -16,9 +16,6 @@
 
 package Ozone;
 
-import java.io.IOException;
-import java.util.Map;
-
 import Atom.Reflect.Reflect;
 import Atom.Utility.Pool;
 import Ozone.Internal.Module;
@@ -27,6 +24,10 @@ import arc.Events;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.game.EventType;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
 
 public class Main {
 	
@@ -40,13 +41,21 @@ public class Main {
 	
 	}
 	
+	public static Collection<Class<? extends Module>> getModule() {
+		try {
+			return Reflect.getExtendedClass("Ozone", Module.class)
+		}catch (Throwable e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void init() throws IOException {
 		if (init) return;
 		init = true;
 		Log.infoTag("Ozone", "Hail o7");
 		Log.debug("Registering module\n");
-
-		for (Class<? extends Module> m : Reflect.getExtendedClass("Ozone", Module.class)) {
+		
+		for (Class<? extends Module> m : getModule()) {
 			try {
 				Log.debug("Registering @", m.getName());
 				Module mod = m.getDeclaredConstructor().newInstance();
