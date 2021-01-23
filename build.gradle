@@ -56,7 +56,19 @@ allprojects {
 
         localAtom =   new File(projectDir.parent, '../Atomm').exists()
 
-
+        modhjson = "name: \"Ozone-Mindustry\"\n" +
+                "displayName: \"Ozone Mindustry\"\n" +
+                "author: \"o7-Fire\"\n" +
+                "main: \"Premain.EntryPoint\"\n" +
+                "description: \"o7-Fire Ozone Project.\"\n" +
+                "minGameVersion: 123\n" +
+                "hidden: true\n"
+        modhjson += "version: " + versionCore+":"+versionDesktop
+        try{
+            File f = new File(rootDir, "mod.hjson")
+            f.delete()
+            Files.write(f.toPath(), modhjson.toString().getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+        }catch(Throwable){}
         Atom = { String name ->
             if(localAtom){
                 return project(":Atom:$name")

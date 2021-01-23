@@ -3,6 +3,6 @@ displayName: "Ozone Mindustry"
 author: "o7-Fire"
 main: "Premain.EntryPoint"
 description: "o7-Fire Ozone Project."
-version: 0.0.0
-minGameVersion: 122
+minGameVersion: 123
 hidden: true
+version: 0.14.0:0.12.24
