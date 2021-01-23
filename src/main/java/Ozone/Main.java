@@ -17,6 +17,7 @@
 package Ozone;
 
 import Atom.Reflect.Reflect;
+import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
 import Ozone.Internal.Module;
 import Shared.SharedBoot;
@@ -26,6 +27,7 @@ import io.sentry.Sentry;
 import mindustry.game.EventType;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
 
@@ -45,7 +47,16 @@ public class Main {
 		try {
 			return Reflect.getExtendedClass("Ozone", Module.class);
 		}catch (Throwable e) {
-			if (Atom.Manifest.internalRepo.getResource())
+			if (!Atom.Manifest.internalRepo.resourceExists("reflections/core-reflections.json"))
+				throw new RuntimeException(e);
+			else {
+				try {
+					InputStream is = Atom.Manifest.internalRepo.getResourceAsStream("reflections/core-reflections.json");
+					return Reflect.getExtendedClassFromJson(Encoder.readString(is), Module.class);
+				}catch (Throwable t) {
+					throw new RuntimeException(t);
+				}
+			}
 		}
 		
 	}
