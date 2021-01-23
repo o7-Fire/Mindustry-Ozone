@@ -52,7 +52,6 @@ public class EntryPoint extends Mod {
 			t.printStackTrace();
 			Sentry.captureException(t);
 			Log.err(t);
-			throw new RuntimeException(t);
 		}
 	}
 	
@@ -64,7 +63,6 @@ public class EntryPoint extends Mod {
 			t.printStackTrace();
 			Sentry.captureException(t);
 			Log.err(t);
-			throw new RuntimeException(t);
 		}
 	}
 }
