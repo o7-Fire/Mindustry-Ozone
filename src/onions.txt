@@ -1,0 +1,4 @@
+#as always # is comment
+#srt subtitle : mp3 audio
+#separator = new line
+http://o7.ddns.net/ozone/Al-Qaeda_Calls_Off_Attack_On_Nations_Capitol_To_Spare_Life_Of_Twilight_Author_-_English.srt=http://o7.ddns.net/ozone/Al-Qaeda_Calls_Off_Attack_On_Nations_Capitol_To_Spare_Life_Of_Twilight_Author.mp3

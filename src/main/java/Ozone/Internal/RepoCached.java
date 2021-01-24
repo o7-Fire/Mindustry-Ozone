@@ -16,13 +16,24 @@
 
 package Ozone.Internal;
 
-import Atom.File.RepoCache;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import java.net.URL;
+import Atom.File.RepoCache;
+import Ozone.Manifest;
 
 public class RepoCached extends RepoCache implements Module {
-	@Override
-	public void init() throws Throwable {
-		addRepo(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master"));
-	}
+    @Override
+    public void init() throws Throwable {
+        Repo rc = Manifest.getModule(Repo.class);
+        assert rc != null;
+        repos.addAll(rc.getRepos());
+    }
+
+    @Override
+    public List<Class<? extends Module>> dependOnModule() throws IOException {
+        return new ArrayList<>(Arrays.asList(Repo.class));
+    }
 }

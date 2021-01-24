@@ -19,9 +19,11 @@ package Ozone.Internal;
 import java.net.URL;
 
 public class Repo extends Atom.File.Repo implements Module {
-	
+
 	@Override
 	public void init() throws Throwable {
 		addRepo(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master"));
+		addRepo(new URL("http://o7.ddns.net/ozone"));
+
 	}
 }

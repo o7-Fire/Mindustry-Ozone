@@ -16,6 +16,11 @@
 
 package Ozone;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Map;
+
 import Atom.Reflect.Reflect;
 import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
@@ -25,11 +30,6 @@ import arc.Events;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.game.EventType;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Map;
 
 public class Main {
 	
@@ -131,7 +131,6 @@ public class Main {
 					Sentry.captureException(throwable);
 					Log.err(throwable);
 					Log.err("Error while loading module @", s.getKey().getName());
-					throw new RuntimeException(throwable);
 				}
 			}
 		}
