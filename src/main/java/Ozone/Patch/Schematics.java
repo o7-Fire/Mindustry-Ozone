@@ -25,13 +25,13 @@ import Ozone.Internal.RepoCached;
 import Ozone.Manifest;
 import arc.util.Log;
 import io.sentry.Sentry;
+import mindustry.Vars;
+import mindustry.game.Schematic;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.Future;
 
 public class Schematics implements Module {
 	
@@ -42,20 +42,27 @@ public class Schematics implements Module {
 		URL u = rc.getResource("src/schematic-pool.txt");
 		if (u == null) throw new RuntimeException("Can't find src/schematic-pool.txt");
 		try {
-			HashMap<String, String> h = Encoder.parseProperty(u.openStream());
-			HashMap<String, URL> list = new HashMap<>();
-			for (Map.Entry<String, String> s : h.entrySet())
-				list.put(s.getKey(), new URL(s.getValue()));
-			for (Map.Entry<String, URL> s : list.entrySet())
-				Pool.daemon(() -> {
+			ArrayList<Future<Schematic>> future = new ArrayList<>();
+			for (String s : Encoder.readString(u.openStream()).split("\n"))
+				future.add(Pool.submit(() -> {
 					try {
-						URL neu = Cache.http(s.getValue());
-						neu.getContent();
+						URL neu = Cache.http(new URL(s));
+						return mindustry.game.Schematics.readBase64(Encoder.readString(neu.openStream()));
 					}catch (Throwable e) {
 						Sentry.captureException(e);
 					}
-				}).start();
-		}catch (IOException e) {
+					return null;
+				}));
+			int i = 0;
+			for (Future<Schematic> s : future) {
+				try {
+					Schematic se = s.get();
+					if (se != null) Vars.schematics.add(se);
+					i++;
+				}catch (Throwable ignored) {}
+			}
+			Log.info("Loaded: " + i + " remote schematics");
+		}catch (Throwable e) {
 			Log.err(e);
 			Sentry.captureException(e);
 		}

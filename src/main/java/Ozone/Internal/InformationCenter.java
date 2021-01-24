@@ -16,12 +16,12 @@
 
 package Ozone.Internal;
 
+import arc.struct.Seq;
 import mindustry.gen.Call;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 
 public class InformationCenter {
 	protected static ArrayList<String> moduleRegistered = new ArrayList<>(), moduleLoaded = new ArrayList<>(), modulePost = new ArrayList<>();
@@ -30,8 +30,8 @@ public class InformationCenter {
 	
 	static {
 		
-		ArrayList<Method> a = new ArrayList<>(Arrays.asList(Call.class.getDeclaredMethods()));
-		a.sort(Comparator.comparing(Method::getName));
+		Seq<Method> a = new Seq<>(Call.class.getDeclaredMethods());
+		a.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 		for (Method m : a) {
 			if (!packetName.contains(m.getName())) packetName.add(m.getName());
 		}

@@ -34,8 +34,13 @@ public class VarsPatch implements Module {
 			Vars.enableConsole = true;
 			if (BaseSettings.debugMode) Log.level = (Log.LogLevel.debug);
 			Log.debug("Ozone-Debug: @", "Debugs, peoples, debugs");
-			if (Vars.control.input instanceof MobileInput) Vars.control.input = new MobileInputPatched();
-			else if (Vars.control.input instanceof DesktopInput) Vars.control.input = new DesktopInputPatched();
+			if (Vars.control.input instanceof MobileInput) {
+				Log.debug("its mobile input");
+				Vars.control.input = new MobileInputPatched();
+			}else if (Vars.control.input instanceof DesktopInput) {
+				Log.debug("its desktop input");
+				Vars.control.input = new DesktopInputPatched();
+			}else Log.warn("Vars.control.input not patched");
 			Log.infoTag("Ozone", "Patching Complete");
 		}catch (Throwable t) {
 			Log.infoTag("Ozone", "Patch failed");

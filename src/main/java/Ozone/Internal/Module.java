@@ -76,7 +76,9 @@ public interface Module extends Loadable {
 	
 	default List<Class<? extends Module>> dependClean() throws IOException {
 		ArrayList<Class<? extends Module>> ar = new ArrayList<>(dependOnModule());
-		ar.removeIf(c -> c.getName().equals(this.getClass().getName()));
+		for (Class<? extends Module> c : ar)
+			if (c.getName().equals(this.getClass().getName())) ar.remove(c);
+		
 		return ar;
 	}
 	
