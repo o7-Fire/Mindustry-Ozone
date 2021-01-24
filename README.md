@@ -1,7 +1,7 @@
 # Project Ozone
 ![Java CI](https://github.com/o7-Fire/Mindustry-Ozone/workflows/Java%20CI/badge.svg)
 ![CodeQL](https://github.com/o7-Fire/Mindustry-Ozone/workflows/CodeQL/badge.svg)
-![](https://img.shields.io/jitpack/v/github/o7-Fire/Mindustry-Ozone?label=Mindustry-Ozone)
+![](https://img.shields.io/github/v/tag/o7-Fire/Mindustry-Ozone?label=Mindustry-Ozone)
 ![](https://img.shields.io/github/v/release/Anuken/Mindustry?label=Mindustry-Latest)
 ![](https://img.shields.io/badge/java-14.0.2-orange)
 ![](https://img.shields.io/badge/Android-5.0-blue)
