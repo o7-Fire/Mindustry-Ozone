@@ -1,4 +1,4 @@
 #MindustryVersion=LatestReleaseTagGithub
 v122.1=v122.13
-v123=v123.1
-v123.1=v123.1
+v123=v123.11
+v123.1=v123.11

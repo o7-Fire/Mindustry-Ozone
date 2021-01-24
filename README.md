@@ -11,7 +11,7 @@
 
 # Download
 ### Ozone
-[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v123.1)
+[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v123.11)
 [0.15.0:0.13.0][Mindustry v123+] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v122.13)
 [0.14.0:0.12.24][Mindustry v122.1] \
