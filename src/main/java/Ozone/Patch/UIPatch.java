@@ -18,6 +18,7 @@ package Ozone.Patch;
 
 import Ozone.Internal.Module;
 import Ozone.Manifest;
+import Ozone.Patch.Mindustry.SettingsDialog;
 import Ozone.UI.CommandsListFrag;
 import Ozone.UI.OzoneMenu;
 import Ozone.UI.TaskList;
@@ -49,7 +50,7 @@ public class UIPatch implements Module {
 		Manifest.taskList = new TaskList();
 		Manifest.commFrag = new CommandsListFrag();
 		Manifest.worldInformation = new WorldInformation();
-		Manifest.menu = new OzoneMenu(arc.Core.bundle.get("ozone.hud"), ozoneStyle);
+		Manifest.menu = new OzoneMenu(Translation.get("ozone.hud"), ozoneStyle);
 		Manifest.commFrag.build(Vars.ui.hudGroup);
 	}
 	

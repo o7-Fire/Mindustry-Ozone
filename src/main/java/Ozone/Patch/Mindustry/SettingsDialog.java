@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package Ozone.Patch;
+package Ozone.Patch.Mindustry;
 
 import Atom.Reflect.Reflect;
 import Ozone.Manifest;

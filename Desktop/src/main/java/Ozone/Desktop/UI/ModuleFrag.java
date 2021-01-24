@@ -19,8 +19,8 @@ package Ozone.Desktop.UI;
 import Atom.Reflect.FieldTool;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
+import Ozone.Patch.Translation;
 import Ozone.UI.ScrollableDialog;
-import arc.Core;
 
 import java.io.IOException;
 import java.util.Map;
@@ -47,11 +47,11 @@ public class ModuleFrag extends ScrollableDialog {
 	}
 	
 	void ad(Module s) {
-		table.button(Core.bundle.get(s.getName()), () -> {}).growX().tooltip(FieldTool.getFieldDetails(s));
+		table.button(Translation.get(s.getName()), () -> {}).growX().tooltip(FieldTool.getFieldDetails(s));
 		try {
 			for (Class<? extends Module> m : s.dependClean()) {
 				Module mod = Manifest.module.get(m);
-				table.button(Core.bundle.get(mod.getName()), () -> {}).growX().tooltip(FieldTool.getFieldDetails(mod)).disabled(true);
+				table.button(Translation.get(mod.getName()), () -> {}).growX().tooltip(FieldTool.getFieldDetails(mod)).disabled(true);
 			}
 		}catch (IOException e) {
 			throw new RuntimeException(e);

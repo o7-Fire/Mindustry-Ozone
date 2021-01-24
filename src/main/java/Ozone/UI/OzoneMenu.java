@@ -20,6 +20,7 @@ package Ozone.UI;
 import Atom.Reflect.Reflect;
 import Ozone.Commands.Commands;
 import Ozone.Manifest;
+import Ozone.Patch.Translation;
 import Ozone.Settings.BaseSettings;
 import arc.input.KeyCode;
 import arc.scene.ui.TextField;
@@ -55,8 +56,8 @@ public class OzoneMenu extends BaseDialog {
 		try {
 			if (!Vars.ui.hudfrag.shown) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
 		}catch (Throwable ignored) { }
-		if (!Vars.ui.chatfrag.shown()) {
-			Vars.ui.chatfrag.toggle();
+		if (!Vars.ui.scriptfrag.shown()) {
+			Vars.ui.scriptfrag.toggle();
 		}
 		arc.Core.scene.setKeyboardFocus(commandsField);
 	}
@@ -65,8 +66,8 @@ public class OzoneMenu extends BaseDialog {
 	public void hide() {
 		super.hide();
 		try {
-			if (Vars.ui.chatfrag.shown()) {
-				Vars.ui.chatfrag.toggle();
+			if (Vars.ui.scriptfrag.shown()) {
+				Vars.ui.scriptfrag.toggle();
 			}
 			if (!Vars.ui.hudfrag.shown) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
 		}catch (Throwable ignored) {}
@@ -82,7 +83,7 @@ public class OzoneMenu extends BaseDialog {
 		//     Manifest.commFrag.toggle();
 		// }).size(Ozone.Core.graphics.getWidth() / 6, Ozone.Core.graphics.getHeight() / 12);
 		cont.row();
-		cont.button(arc.Core.bundle.get("ozone.commandsUI"), Icon.commandRally, () -> {
+		cont.button(Translation.get("ozone.commandsUI"), Icon.commandRally, () -> {
 			arc.Core.app.post(this::hide);
 			Manifest.commFrag.toggle();
 		}).growX();
@@ -91,7 +92,7 @@ public class OzoneMenu extends BaseDialog {
 		cont.row();
 		cont.table((s) -> {
 			s.left();
-			s.label(() -> arc.Core.bundle.get("Commands") + ": ");
+			s.label(() -> Translation.get("Commands") + ": ");
 			commandsField = s.field(commands, (res) -> commands = res).fillX().growX().get();
 			s.button(Icon.zoom, () -> {
 				Commands.call(BaseSettings.commandsPrefix + commands);

@@ -19,7 +19,7 @@ package Ozone.Event;
 
 public class Internal {
 	public enum Init {
-		CommandsRegister, PatchRegister, SettingsRegister,
+		CommandsRegister, SettingsRegister,
 	}
 	
 	

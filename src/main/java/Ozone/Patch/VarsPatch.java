@@ -16,10 +16,9 @@
 
 package Ozone.Patch;
 
-import Ozone.Event.Internal;
 import Ozone.Internal.Module;
+import Ozone.Patch.Mindustry.DesktopInputPatched;
 import Ozone.Settings.BaseSettings;
-import arc.Events;
 import arc.util.Log;
 import mindustry.Vars;
 
@@ -27,13 +26,13 @@ public class VarsPatch implements Module {
 	@Override
 	public void init() throws Throwable {
 		try {
-			mindustry.Vars.ui.chatfrag.addMessage("gay", "no");
 			Log.infoTag("Ozone", "Patching");
-			Events.fire(Internal.Init.PatchRegister);
+			mindustry.Vars.ui.chatfrag.addMessage("gay", "no");
 			Vars.enableConsole = true;
-			Log.infoTag("Ozone", "Patching Complete");
 			if (BaseSettings.debugMode) Log.level = (Log.LogLevel.debug);
 			Log.debug("Ozone-Debug: @", "Debugs, peoples, debugs");
+			Vars.control.input = new DesktopInputPatched();
+			Log.infoTag("Ozone", "Patching Complete");
 		}catch (Throwable t) {
 			Log.infoTag("Ozone", "Patch failed");
 			Log.err(t);

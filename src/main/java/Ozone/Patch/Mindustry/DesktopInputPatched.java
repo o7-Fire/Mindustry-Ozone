@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop.Patch;
+package Ozone.Patch.Mindustry;
 
 import Ozone.Manifest;
 import arc.Core;
@@ -26,9 +26,10 @@ import arc.util.Tmp;
 import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.input.Binding;
+import mindustry.input.DesktopInput;
 import mindustry.ui.Styles;
 
-public class DesktopInput extends mindustry.input.DesktopInput {
+public class DesktopInputPatched extends DesktopInput {
 	public float xav = 0f, yav = 0f;
 	
 	public synchronized void setMove(Vec2 mov) {

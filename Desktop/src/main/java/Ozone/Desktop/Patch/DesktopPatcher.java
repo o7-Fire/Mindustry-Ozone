@@ -17,8 +17,6 @@
 package Ozone.Desktop.Patch;
 
 import Atom.Reflect.Reflect;
-import Ozone.Event.Internal;
-import Ozone.Settings.SettingsDesktop;
 import arc.Core;
 import arc.Events;
 import arc.net.Client;
@@ -54,10 +52,8 @@ public class DesktopPatcher {
 	
 	
 	public static void register() {
-		if (SettingsDesktop.disableDefaultGif) ;
-		Events.run(Internal.Init.PatchRegister, () -> {
-			Vars.control.input = new DesktopInput();
-		});
+		
+		
 		Events.on(EventType.ClientLoadEvent.class, s -> {
 			Core.settings.getBoolOnce("CrashReportv1", () -> {
 				Vars.ui.showConfirm("Anonymous Data Reporter", "We collect your anonymous insensitive data (crash-log) so we can fix thing, no turning back", () -> {

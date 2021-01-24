@@ -19,6 +19,7 @@ package Ozone.UI;
 import Atom.Utility.Random;
 import Ozone.Commands.Commands;
 import Ozone.Commands.Task.CommandsSpam;
+import Ozone.Patch.Translation;
 import Ozone.Settings.BaseSettings;
 import arc.scene.Group;
 import arc.scene.event.Touchable;
@@ -66,7 +67,7 @@ public class CommandsListFrag extends Fragment {
 				pane.row();
 				pane.table(menu -> {
 					menu.defaults().growX().height(50f).fillY();
-					menu.button(arc.Core.bundle.get("close"), this::toggle);
+					menu.button(Translation.get("close"), this::toggle);
 				}).margin(0f).pad(15f).growX();
 				
 			}).touchable(Touchable.enabled).margin(14f);

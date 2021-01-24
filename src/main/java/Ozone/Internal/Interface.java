@@ -20,6 +20,8 @@ package Ozone.Internal;
 import Atom.Struct.Filter;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
+import Ozone.Settings.BaseSettings;
+import arc.Core;
 import arc.Events;
 import arc.math.Mathf;
 import arc.struct.ObjectMap;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.Future;
 
+import static Ozone.Patch.Translation.getRandomHexColor;
 import static mindustry.Vars.player;
 
 public class Interface {
@@ -47,6 +50,11 @@ public class Interface {
 		if (Vars.ui == null)
 			Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showErrorMessage(title + "\n" + description));
 		else Vars.ui.showErrorMessage(title + "\n" + description);
+	}
+	
+	public static String getBundle(String key) {
+		if (bundle.containsKey(key)) return bundle.get(key);
+		return Core.bundle.get(key);
 	}
 	
 	public static void dropItem() {
@@ -87,11 +95,13 @@ public class Interface {
 	}
 	
 	public synchronized static void registerWords(String key, String value) {
+		if (BaseSettings.colorPatch) value = getRandomHexColor() + value + "[white]";
+		
 		bundle.put(key, value);
 	}
 	
 	public synchronized static void registerWords(String key) {
-		bundle.put(key, key);
+		registerWords(key, key);
 	}
 	
 	public static Future<ArrayList<Tile>> getGroupTiles(Tile main, Filter<Tile> filter) {

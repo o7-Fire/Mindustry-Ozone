@@ -16,6 +16,7 @@
 
 package Ozone.Patch;
 
+import Atom.Utility.Cache;
 import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
 import Ozone.Internal.Module;
@@ -47,7 +48,12 @@ public class Schematics implements Module {
 				list.put(s.getKey(), new URL(s.getValue()));
 			for (Map.Entry<String, URL> s : list.entrySet())
 				Pool.daemon(() -> {
-				
+					try {
+						URL neu = Cache.http(s.getValue());
+						neu.getContent();
+					}catch (Throwable e) {
+						Sentry.captureException(e);
+					}
 				}).start();
 		}catch (IOException e) {
 			Log.err(e);

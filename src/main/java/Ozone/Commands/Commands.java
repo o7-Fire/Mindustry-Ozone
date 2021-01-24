@@ -16,26 +16,11 @@
 
 package Ozone.Commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-
 import Atom.Time.Countdown;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
-import Ozone.Commands.Task.Completable;
-import Ozone.Commands.Task.CompletableUpdateBasedTimeTask;
-import Ozone.Commands.Task.DestructBlock;
-import Ozone.Commands.Task.Move;
-import Ozone.Commands.Task.SingleTimeTask;
-import Ozone.Commands.Task.Task;
+import Ozone.Commands.Task.*;
 import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
@@ -52,17 +37,19 @@ import arc.util.Log;
 import mindustry.Vars;
 import mindustry.ai.Astar;
 import mindustry.game.EventType;
-import mindustry.gen.Building;
-import mindustry.gen.Call;
-import mindustry.gen.Groups;
-import mindustry.gen.Icon;
-import mindustry.gen.Player;
+import mindustry.gen.*;
 import mindustry.net.Administration;
 import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Sorter;
 import mindustry.world.blocks.sandbox.ItemSource;
+
+import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class Commands implements Module {
 	
@@ -225,7 +212,7 @@ public class Commands implements Module {
 	}
 	
 	public static String getTranslation(String name) {
-		return arc.Core.bundle.get("ozone.commands." + name);
+		return Translation.get("ozone.commands." + name);
 	}
 	
 	public static boolean call(String message) {
@@ -528,7 +515,7 @@ public class Commands implements Module {
 	
 	public static void tellUser(String s) {
 		if (Vars.ui.scriptfrag.shown()) Log.infoTag("Ozone", s);
-		else Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
+		Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
 	}
 	
 	public static class Command {

@@ -17,7 +17,15 @@
 package Ozone.Patch;
 
 import Ozone.Internal.Module;
+import Shared.SharedBoot;
+import arc.util.Log;
 
-public class DesktopInputPatch implements Module {
-
+public class StandalonePatch implements Module {
+	
+	@Override
+	public void init() throws Throwable {
+		if (!SharedBoot.standalone) return;
+		Log.info("Standalone Patch");
+	}
+	
 }

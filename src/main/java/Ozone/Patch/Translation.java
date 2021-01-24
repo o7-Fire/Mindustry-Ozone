@@ -45,6 +45,10 @@ public class Translation implements Module {
 		return "[" + Random.getRandomHexColor() + "]";
 	}
 	
+	public static String get(String key) {
+		return Interface.getBundle(key);
+	}
+	
 	public static String add(String id, String text) {
 		String s = Thread.currentThread().getStackTrace()[2].getClassName() + text.toLowerCase().replaceAll(" ", ".");
 		registerWords(s, text);
@@ -56,12 +60,13 @@ public class Translation implements Module {
 	@Override
 	public void postInit() throws Throwable {
 		ObjectMap<String, String> modified = arc.Core.bundle.getProperties();
+		for (ObjectMap.Entry<String, String> s : modified.entries())
+			if (BaseSettings.colorPatch) modified.put(s.key, getRandomHexColor() + s.value + "[white]");
+		
 		for (ObjectMap.Entry<String, String> s : Interface.bundle) {
 			modified.put(s.key, s.value);
 		}
-		if (BaseSettings.colorPatch) for (String s : arc.Core.bundle.getKeys()) {
-			modified.put(s, getRandomHexColor() + modified.get(s) + "[white]");
-		}
+		
 		arc.Core.bundle.setProperties(modified);
 		for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet())
 			c.getValue().description = Commands.getTranslation(c.getKey());

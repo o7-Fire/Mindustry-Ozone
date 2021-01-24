@@ -16,13 +16,19 @@
 
 package Premain;
 
+import Atom.Reflect.FieldTool;
 import Ozone.Bootstrap.OzoneBootstrap;
 import Ozone.Main;
 import Shared.LoggerMode;
 import arc.Core;
+import arc.graphics.Color;
 import arc.util.Log;
 import io.sentry.Sentry;
+import mindustry.graphics.LoadRenderer;
+import mindustry.graphics.Pal;
 import mindustry.mod.Mod;
+
+import java.lang.reflect.Field;
 
 public class EntryPoint extends Mod {
 	static {
@@ -30,11 +36,18 @@ public class EntryPoint extends Mod {
 			Log.info("Ozone Standalone");
 			OzoneBootstrap.init();
 			LoggerMode.loadLogger();
-		} catch (Throwable t) {
+		}catch (Throwable t) {
 			t.printStackTrace();
 			Log.err(t);
 			Sentry.captureException(t);
 		}
+		//java 8
+		try {
+			Field orange = LoadRenderer.class.getDeclaredField("orange"), color = LoadRenderer.class.getDeclaredField("color");
+			Color c = new Color(Pal.darkMetal).lerp(Color.black, 0.5f);
+			FieldTool.setFinalStatic(color, c);
+			FieldTool.setFinalStatic(orange, "[#" + c + "]");
+		}catch (Throwable ignored) {}
 	}
 	
 	public EntryPoint() {

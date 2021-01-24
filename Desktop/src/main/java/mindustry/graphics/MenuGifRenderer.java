@@ -16,7 +16,7 @@
 
 package mindustry.graphics;
 
-import Atom.Net.Request;
+import Atom.Utility.Cache;
 import Ozone.Settings.SettingsDesktop;
 import arc.Core;
 import arc.files.Fi;
@@ -67,11 +67,7 @@ public class MenuGifRenderer implements Disposable {
 	}
 	
 	private URL cache(URL u) throws IOException {
-		if (u.getProtocol().startsWith("file")) return u;
-		File target = new File(menu.file(), u.getFile().replaceAll("/", "."));
-		if (target.exists()) return target.toURI().toURL();
-		Request.downloadSync(u.toExternalForm(), target);
-		return target.toURI().toURL();
+		return Cache.http(u);
 	}
 	
 	private void random() throws IOException {
