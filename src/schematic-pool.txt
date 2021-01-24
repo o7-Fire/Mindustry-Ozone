@@ -1,5 +1,2 @@
-#use newline "\n" as separator
-#support base64 text file or .msch binary file
-#Welcome to "binary or text" guess game
-propaganda01=http://o7.ddns.net/ozone/schematics/propaganda01.msch
-unitsScrambler=http://o7.ddns.net/ozone/schematics/unit_fucker.msch
+http://o7.ddns.net/ozone/schematics/propaganda01.txt
+http://o7.ddns.net/ozone/schematics/unit_fucker.txt
