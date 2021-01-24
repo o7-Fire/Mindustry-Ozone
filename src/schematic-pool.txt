@@ -1,5 +1,5 @@
 #use newline "\n" as separator
 #support base64 text file or .msch binary file
 #Welcome to "binary or text" guess game
-propaganda01=https://cdn.discordapp.com/attachments/712757402688159784/800889258117824532/message.txt
-unitsScrambler=https://cdn.discordapp.com/attachments/708815862664134678/800947126321283102/unit_fucker.msch
+propaganda01=http://o7.ddns.net/ozone/schematics/propaganda01.msch
+unitsScrambler=http://o7.ddns.net/ozone/schematics/unit_fucker.msch
