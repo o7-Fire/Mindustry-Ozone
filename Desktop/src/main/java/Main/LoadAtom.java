@@ -23,10 +23,7 @@ import java.util.ArrayList;
 public class LoadAtom {
 	public static ArrayList<String> main(String[] args) {
 		ArrayList<String> s = new ArrayList<>();
-		Manifest.library.forEach(library -> {
-			
-			s.add(library.getDownloadURL());
-		});
+		Manifest.library.forEach(library -> s.add(library.getDownloadURL()));
 		return s;
 	}
 }

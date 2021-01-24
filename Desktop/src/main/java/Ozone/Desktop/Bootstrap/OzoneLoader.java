@@ -16,6 +16,8 @@
 
 package Ozone.Desktop.Bootstrap;
 
+import Atom.Utility.Cache;
+import io.sentry.Sentry;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -30,9 +32,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import Atom.Utility.Cache;
-import io.sentry.Sentry;
 
 public class OzoneLoader extends URLClassLoader {
 	public static File cache = new File("lib/");
@@ -147,7 +146,7 @@ public class OzoneLoader extends URLClassLoader {
 		URL u = super.getResource(name);
 		if (u == null) u = ClassLoader.getSystemResource(name);
 		if (u != null) {
-			try { u = Cache.http(u); }catch (Throwable e) { }
+			try { u = Cache.http(u); }catch (Throwable ignored) { }
 		}
 		return u;
 	}

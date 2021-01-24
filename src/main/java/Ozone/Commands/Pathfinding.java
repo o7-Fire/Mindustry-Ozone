@@ -73,12 +73,12 @@ public class Pathfinding implements Module {
 		if (t == null) return false;
 		if (unit instanceof WaterMovec) {
 			if (!t.block().isFloor()) return false;
-			if (!t.block().asFloor().isLiquid) return false;
+			return t.block().asFloor().isLiquid;
 		}else if (unit instanceof Legsc) {
-			if (!t.passable()) return false;
+			return t.passable();
 		}else if (!unit.isFlying()) {
 			if (!t.passable()) return false;
-			if (t.build != null) return false;
+			return t.build == null;
 		}
 		return true;
 	}

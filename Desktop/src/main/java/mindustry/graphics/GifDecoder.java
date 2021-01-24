@@ -236,8 +236,9 @@ public class GifDecoder {
 			status = STATUS_OPEN_ERROR;
 		}
 		try {
+			assert is != null;
 			is.close();
-		}catch (Exception e) {
+		}catch (Exception ignored) {
 		}
 		return status;
 	}
@@ -362,7 +363,7 @@ public class GifDecoder {
 	protected void init() {
 		status = STATUS_OK;
 		frameCount = 0;
-		frames = new Vector<GifFrame>();
+		frames = new Vector<>();
 		gct = null;
 		lct = null;
 	}
@@ -449,16 +450,16 @@ public class GifDecoder {
 		while (!(done || err())) {
 			int code = read();
 			switch (code) {
-				case 0x2C: // image separator
-					readBitmap();
-					break;
-				case 0x21: // extension
+				// image separator
+				case 0x2C -> readBitmap();
+				// extension
+				case 0x21 -> {
 					code = read();
 					switch (code) {
-						case 0xf9: // graphics control extension
-							readGraphicControlExt();
-							break;
-						case 0xff: // application extension
+						// graphics control extension
+						case 0xf9 -> readGraphicControlExt();
+						// application extension
+						case 0xff -> {
 							readBlock();
 							String app = "";
 							for (int i = 0; i < 11; i++) {
@@ -469,23 +470,18 @@ public class GifDecoder {
 							}else {
 								skip(); // don't care
 							}
-							break;
-						case 0xfe:// comment extension
-							skip();
-							break;
-						case 0x01:// plain text extension
-							skip();
-							break;
-						default: // uninteresting extension
-							skip();
+						}
+						// comment extension
+						case 0xfe -> skip();
+						// plain text extension
+						case 0x01 -> skip();
+						// uninteresting extension
+						default -> skip();
 					}
-					break;
-				case 0x3b: // terminator
-					done = true;
-					break;
-				case 0x00: // bad byte, but keep going and see what happens break;
-				default:
-					status = STATUS_FORMAT_ERROR;
+				}
+				// terminator
+				case 0x3b -> done = true;
+				default -> status = STATUS_FORMAT_ERROR;
 			}
 		}
 	}
@@ -510,11 +506,11 @@ public class GifDecoder {
 	 * Reads GIF file header information.
 	 */
 	protected void readHeader() {
-		String id = "";
+		StringBuilder id = new StringBuilder();
 		for (int i = 0; i < 6; i++) {
-			id += (char) read();
+			id.append((char) read());
 		}
-		if (!id.startsWith("GIF")) {
+		if (!id.toString().startsWith("GIF")) {
 			status = STATUS_FORMAT_ERROR;
 			return;
 		}
@@ -681,9 +677,8 @@ public class GifDecoder {
 		}
 		float frameDuration = (float) getDelay(0) / getFrameCount();
 		Log.infoTag("GifDecoder", "Duration: " + frameDuration + " second");
-		Animation<TextureRegion> result = new Animation<>(frameDuration, texReg, playMode);
 		
-		return result;
+		return new Animation<>(frameDuration, texReg, playMode);
 	}
 	
 	private static class DixieMap extends Pixmap {

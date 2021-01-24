@@ -31,9 +31,7 @@ public class Manifest {
 	public static BotControllerUI botUI;
 	
 	static {
-		Events.on(DesktopEvent.InitUI.class, s -> {
-			botUI = new BotControllerUI();
-		});
+		Events.on(DesktopEvent.InitUI.class, s -> botUI = new BotControllerUI());
 	}
 	
 	public static Status getStatus() {

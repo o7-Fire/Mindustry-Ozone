@@ -16,7 +16,6 @@
 
 package Ozone.Commands;
 
-import Atom.Time.Countdown;
 import Atom.Time.Time;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
@@ -58,7 +57,7 @@ import static Ozone.Settings.BaseSettings.debugMode;
 public class Commands implements Module {
 	
 	public static final Queue<Task> commandsQueue = new Queue<>();
-	public static Map<String, Command> commandsList = new TreeMap<>();
+	public static final Map<String, Command> commandsList = new TreeMap<>();
 	
 	/**
 	 * @author Nexity
@@ -349,8 +348,8 @@ public class Commands implements Module {
 				tellUser("Non existent tiles");
 				return;
 			}
-			long start = System.currentTimeMillis();
-			TaskInterface.addTask(new Move(x, y), a -> tellUser("Reached in " + Countdown.result(start, TimeUnit.SECONDS)));
+			Time start = new Time();
+			TaskInterface.addTask(new Move(x, y), a -> tellUser("Reached in " + start.elapsedS()));
 			toggleUI();
 		}catch (NumberFormatException f) {
 			tellUser("Failed to parse integer, are you sure that argument was integer ?");
@@ -384,7 +383,7 @@ public class Commands implements Module {
 	public static void shuffleSorter() {
 		
 		commandsQueue.add(new Completable() {
-			Future<Building> f;
+			final Future<Building> f;
 			
 			{
 				name = "shuffleSorter";

@@ -110,9 +110,7 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 	
 	public static void preInit() {
 		Vars.appName = "Oxygen-Mindustry-Bot";
-		Events.on(EventType.ClientCreateEvent.class, s -> {
-			logger();
-		});
+		Events.on(EventType.ClientCreateEvent.class, s -> logger());
 	}
 	
 	public static void logger() {

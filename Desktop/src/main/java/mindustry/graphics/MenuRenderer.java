@@ -1,6 +1,5 @@
 package mindustry.graphics;
 
-import Atom.Time.Countdown;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Ozone.Settings.BaseSettings;
@@ -33,6 +32,8 @@ import mindustry.world.Tile;
 import mindustry.world.Tiles;
 import mindustry.world.blocks.environment.OreBlock;
 
+import java.util.concurrent.TimeUnit;
+
 import static mindustry.Vars.*;
 
 public class MenuRenderer implements Disposable, Loadable {
@@ -59,17 +60,16 @@ public class MenuRenderer implements Disposable, Loadable {
 	public void loadSync() {
 		if (init) return;
 		init = true;
-		Countdown.start();
-		if (false) try {
+		Atom.Time.Time t = new Atom.Time.Time(TimeUnit.MICROSECONDS);
+		if (Random.getBool()) try {
 			mf = new MenuGifRenderer();
-			Countdown.stop();
-			Log.debug("Time to generate menu: @", Countdown.result());
+			Log.debug("Time to generate menu: @", t.elapsedS());
 			return;
 		}catch (MenuGifRenderer.NoMenuResource ignored) {
 		
-		}catch (Throwable t) {
-			t.printStackTrace();
-			Sentry.captureException(t);
+		}catch (Throwable te) {
+			te.printStackTrace();
+			Sentry.captureException(te);
 		}
 		Pool.daemon(() -> {
 			while (mf == null) {
@@ -80,15 +80,15 @@ public class MenuRenderer implements Disposable, Loadable {
 						random = Random.getBool();
 					}
 					Thread.sleep(5000);
-				}catch (InterruptedException e) {
+				}catch (InterruptedException ignored) {
 				
 				}
 			}
 		}).start();
 		generate();
 		cache();
-		Countdown.stop();
-		Log.debug("Time to generate menu: @", Countdown.result());
+		
+		Log.debug("Time to generate menu: @", t.elapsedS());
 	}
 	
 	@Override
@@ -293,13 +293,9 @@ public class MenuRenderer implements Disposable, Loadable {
 		
 		float size = Math.max(icon.width, icon.height) * Draw.scl * 1.6f;
 		
-		flyers((x, y) -> {
-			Draw.rect(icon, x - 12f, y - 13f, flyerRot - 90);
-		});
+		flyers((x, y) -> Draw.rect(icon, x - 12f, y - 13f, flyerRot - 90));
 		
-		flyers((x, y) -> {
-			Draw.rect("circle-shadow", x, y, size, size);
-		});
+		flyers((x, y) -> Draw.rect("circle-shadow", x, y, size, size));
 		Draw.color();
 		
 		flyers((x, y) -> {
@@ -341,6 +337,6 @@ public class MenuRenderer implements Disposable, Loadable {
 	}
 	
 	private void dispose(Disposable d) {
-		try {d.dispose();}catch (Throwable fuckyoujni) {}
+		try {d.dispose();}catch (Throwable ignored) {}
 	}
 }

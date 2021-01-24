@@ -16,9 +16,6 @@
 
 package Shared;
 
-import java.nio.ByteBuffer;
-import java.util.Map;
-
 import Ozone.Manifest;
 import Ozone.Propertied;
 import Ozone.Settings.SettingsManifest;
@@ -27,19 +24,23 @@ import io.sentry.Scope;
 import io.sentry.Sentry;
 import io.sentry.protocol.User;
 
+import java.nio.ByteBuffer;
+import java.util.Map;
+
 public class SharedBoot {
 	public static boolean standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null || System.getProperty("ozoneTest") != null;
-	public static long startup = System.currentTimeMillis();
+	public static long startup = System.nanoTime();
+	
 	static {
 		if (!debug) try {
 			debug = getOrDefault(SettingsManifest.getMap(), "Ozone.Settings.BaseSettings.debugMode", "false").equalsIgnoreCase("true");
-		} catch (Throwable ignored) {
-
+		}catch (Throwable ignored) {
+		
 		}
 		try {
 			Manifest.class.getClassLoader().loadClass("Ozone.Desktop.Bootstrap.DesktopBootstrap").getName();
 			standalone = false;
-		} catch (Throwable ignored) {
+		}catch (Throwable ignored) {
 			standalone = true;
 		}
 	}

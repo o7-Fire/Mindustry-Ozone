@@ -39,8 +39,6 @@ public class InstallerEntryPoint {
 			DesktopBootstrap.loadClasspath();
 			
 			DesktopBootstrap.loadMain("Main.OzoneInstaller", args);
-			//System.exit(0);
-			//DesktopBootstrap.loadMain("Premain.MindustryEntryPoint", args);
 		}catch (Throwable t) {
 			Catch.write(t);
 			t.printStackTrace();

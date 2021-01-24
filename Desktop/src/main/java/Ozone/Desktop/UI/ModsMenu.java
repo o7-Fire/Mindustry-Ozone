@@ -42,16 +42,14 @@ public class ModsMenu extends BaseDialog {
 		else cont.button(Core.bundle.get("BotsController"), Icon.android, Bot.Manifest.botUI::show).growX();
 		cont.row();
 		generic();
-		cont.button("Reset UID", Icon.refresh, () -> {
-			Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", () -> {
-				try {
-					Identification.changeID();
-				}catch (Throwable e) {
-					Sentry.captureException(e);
-					Vars.ui.showException(e);
-				}
-			});
-		}).growX();
+		cont.button("Reset UID", Icon.refresh, () -> Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", () -> {
+			try {
+				Identification.changeID();
+			}catch (Throwable e) {
+				Sentry.captureException(e);
+				Vars.ui.showException(e);
+			}
+		})).growX();
 		
 	}
 	

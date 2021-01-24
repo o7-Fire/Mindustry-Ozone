@@ -16,13 +16,7 @@
 
 package Ozone.UI;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicLong;
-
-import Atom.Time.Countdown;
+import Atom.Time.Time;
 import Atom.Utility.Pool;
 import Ozone.Manifest;
 import arc.scene.ui.Label;
@@ -36,6 +30,12 @@ import mindustry.content.Blocks;
 import mindustry.gen.Groups;
 import mindustry.world.Build;
 import mindustry.world.Tile;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class WorldInformation extends ScrollableDialog {
 	
@@ -63,7 +63,7 @@ public class WorldInformation extends ScrollableDialog {
 		table.add(label).growX();
 		table.row();
 		Pool.submit(() -> {
-			long l = System.currentTimeMillis();
+			Time te = new Time();
 			Log.debug("World calculation began");
 			SentryTransaction st = Sentry.startTransaction("world-calculation-" + Vars.world.width() + "x" + Vars.world.height());
 			try {
@@ -144,9 +144,9 @@ public class WorldInformation extends ScrollableDialog {
 				ad("Total Ores", totalOre);
 				ad("Buildable Tiles", buildableTile);
 				ad(mainCount);
-				Log.debug("World calculation finished in @", Countdown.result(l));
-				if ((System.currentTimeMillis() - l) > 3000)
-					Vars.ui.showInfo("World calculation finished: " + Countdown.result(l));
+				Log.debug("World calculation finished in @", te.elapsedS());
+				if ((System.currentTimeMillis() - te.elapsed().getSrc()) > 3000)
+					Vars.ui.showInfo("World calculation finished: " + te.elapsedS());
 			}catch (Throwable i) {
 				if (st != null) {
 					st.setStatus(SpanStatus.INTERNAL_ERROR);

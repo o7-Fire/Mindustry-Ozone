@@ -163,7 +163,6 @@ public class BotClient {
 			String[] cmdarray = new String[st.countTokens()];
 			for (int i = 0; st.hasMoreTokens(); i++) cmdarray[i] = st.nextToken();
 			Process p = new ProcessBuilder().redirectErrorStream(true).command(cmdarray).start();
-			;
 			attachProcess(p);
 			setStatus(Status.LAUNCHED);
 			return p;

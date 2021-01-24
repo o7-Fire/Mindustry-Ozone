@@ -43,9 +43,7 @@ public class MenuFragment extends Fragment {
 	private MenuRenderer renderer;
 	
 	public MenuFragment() {
-		Events.on(DisposeEvent.class, event -> {
-			renderer.dispose();
-		});
+		Events.on(DisposeEvent.class, event -> renderer.dispose());
 	}
 	
 	@Override
@@ -94,39 +92,23 @@ public class MenuFragment extends Fragment {
 				HashMap<String, String> h = Encoder.parseProperty(is);
 				h.replace("TimeStamp", Utility.getDate(Long.parseLong(h.get("TimeMilis"))));
 				for (Map.Entry<String, String> e : h.entrySet()) {
-					//String s = Propertied.Manifest.get(e.getKey());
-					//if (s == null) continue;
 					sb.append(e.getKey()).append(": ").append(e.getValue()).append("\n");
 				}
 				if (Updater.newRelease.get() && Updater.newBuild.get()) {
-					ui.showCustomConfirm("Choose", "", "Release", "Build", () -> {
-						ui.showConfirm("New Release", "A new compatible release appeared\n" + sb.toString(), () -> {
-							Updater.update(Updater.getRelease(false));
-						});
-					}, () -> {
-						ui.showConfirm("New Build", "A new compatible build appeared\n" + sb.toString(), () -> {
-							Updater.update(Updater.getBuild(false));
-						});
-					});
+					ui.showCustomConfirm("Choose", "", "Release", "Build", () -> ui.showConfirm("New Release", "A new compatible release appeared\n" + sb.toString(), () -> Updater.update(Updater.getRelease(false))), () -> ui.showConfirm("New Build", "A new compatible build appeared\n" + sb.toString(), () -> Updater.update(Updater.getBuild(false))));
 					return;
 				}
 				
 				if (Updater.newRelease.get()) {
-					ui.showConfirm("New Release", "A new compatible release appeared\n" + sb.toString(), () -> {
-						Updater.update(Updater.getRelease(false));
-					});
+					ui.showConfirm("New Release", "A new compatible release appeared\n" + sb.toString(), () -> Updater.update(Updater.getRelease(false)));
 				}else {
-					ui.showConfirm("New Build", "A new compatible build appeared\n" + sb.toString(), () -> {
-						Updater.update(Updater.getBuild(false));
-					});
+					ui.showConfirm("New Build", "A new compatible build appeared\n" + sb.toString(), () -> Updater.update(Updater.getBuild(false)));
 				}
 			}catch (Throwable t) {
 				ui.showException(t);
 				Sentry.captureException(t);
 			}
-		}).size(200, 60).name("buildcheck").visible(() -> {
-			return Updater.newBuild.get() || Updater.newRelease.get();
-		}).update(Element::updateVisibility));
+		}).size(200, 60).name("buildcheck").visible(() -> Updater.newBuild.get() || Updater.newRelease.get()).update(Element::updateVisibility));
 		
 		
 		String versionText = ((Version.build == -1) ? "[#fc8140aa]" : "[#ffffffba]") + Version.combined();

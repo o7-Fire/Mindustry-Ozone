@@ -60,9 +60,7 @@ public class PlayerListFragment extends Fragment {
 			cont.table(Tex.buttonTrans, pane -> {
 				pane.label(() -> Core.bundle.format(Groups.player.size() == 1 ? "players.single" : "players", Groups.player.size()));
 				pane.row();
-				sField = pane.field(null, text -> {
-					rebuild();
-				}).grow().pad(8).get();
+				sField = pane.field(null, text -> rebuild()).grow().pad(8).get();
 				sField.name = "search";
 				sField.setMaxLength(maxNameLength);
 				sField.setMessageText(Core.bundle.format("players.search"));
@@ -147,8 +145,7 @@ public class PlayerListFragment extends Fragment {
 						if (net.client()) return;
 						
 						String id = user.uuid();
-						
-						if (netServer.admins.isAdmin(id, connection.address)) {
+						if (connection != null) if (netServer.admins.isAdmin(id, connection.address)) {
 							ui.showConfirm("@confirm", Core.bundle.format("confirmunadmin", user.name()), () -> netServer.admins.unAdminPlayer(id));
 						}else {
 							ui.showConfirm("@confirm", Core.bundle.format("confirmadmin", user.name()), () -> netServer.admins.adminPlayer(id, user.usid()));
@@ -161,11 +158,7 @@ public class PlayerListFragment extends Fragment {
 			}else if (!user.isLocal() && !user.admin && net.client() && Groups.player.size() >= 3 && player.team() == user.team()) { //votekick
 				button.add().growY();
 				
-				button.button(Icon.hammer, Styles.clearPartiali, () -> {
-					ui.showConfirm("@confirm", Core.bundle.format("confirmvotekick", user.name()), () -> {
-						Call.sendChatMessage("/votekick " + user.name());
-					});
-				}).size(h);
+				button.button(Icon.hammer, Styles.clearPartiali, () -> ui.showConfirm("@confirm", Core.bundle.format("confirmvotekick", user.name()), () -> Call.sendChatMessage("/votekick " + user.name()))).size(h);
 			}
 			
 			content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);

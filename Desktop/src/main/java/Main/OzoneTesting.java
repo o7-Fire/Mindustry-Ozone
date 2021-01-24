@@ -16,7 +16,7 @@
 
 package Main;
 
-import Atom.Time.Countdown;
+import Atom.Time.Time;
 import Atom.Utility.Random;
 import Ozone.Commands.Commands;
 import Ozone.Desktop.Patch.TranslationDesktop;
@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 import static arc.util.ColorCodes.*;
 import static arc.util.Log.format;
@@ -49,7 +50,7 @@ public class OzoneTesting {
 			String result = bold + lightBlack + "[" + dateTime.format(LocalDateTime.now()) + "] " + reset + format(tags[level1.ordinal()] + " " + text + "&fr");
 			System.out.println(result);
 		};
-		Log.info("Startup in " + Countdown.result(SharedBoot.startup));
+		Log.info("Startup in " + new Time(TimeUnit.NANOSECONDS, SharedBoot.startup).convert(TimeUnit.MICROSECONDS).elapsed().toString());
 		Log.info("Preparing Test");
 		tests = new OzoneTest();
 		tests.add("Commands, DesktopCommands, Patch, Events", () -> {
@@ -80,13 +81,12 @@ public class OzoneTesting {
 	public static void main(String[] args) {
 		Log.info("Running Test\n");
 		Test.setLog(new Logggg());
-		Countdown.start();
+		Time t = new Time();
 		ArrayList<Test.Result> r = tests.runSync();
 		Log.info("\b");
 		Log.info("Test Result: ");
 		for (String s : Test.getResult(r).split("\n")) Log.info(s);
-		Countdown.stop();
-		Log.info("Finished in " + Countdown.result());
+		Log.info("Finished in " + t.elapsedS());
 		
 		for (Test.Result rs : r) if (!rs.success) System.exit(1);
 	}

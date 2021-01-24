@@ -56,8 +56,8 @@ public class Identification {
 			ip = ip.substring(ip.indexOf("/") + 1);
 		}
 		
-		if (Core.settings.getString("usid-" + ip, (String) null) != null) {
-			return Core.settings.getString("usid-" + ip, (String) null);
+		if (Core.settings.getString("usid-" + ip, null) != null) {
+			return Core.settings.getString("usid-" + ip, null);
 		}else {
 			String result = getRandomUID();
 			Core.settings.put("usid-" + ip, result);

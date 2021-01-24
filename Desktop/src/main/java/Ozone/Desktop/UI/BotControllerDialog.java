@@ -66,9 +66,7 @@ public class BotControllerDialog extends OzoneBaseDialog {
 				bot.labelWrap("Status:").growX().left();
 				bot.labelWrap(b.getStatus().toString()).growX().right();
 				bot.row();
-				bot.button("More", Icon.admin, () -> {
-					new BotInfoDialog(b).show();
-				}).growX().left();
+				bot.button("More", Icon.admin, () -> new BotInfoDialog(b).show()).growX().left();
 				bot.button("Remove", Icon.cancel, () -> {
 					b.exit();
 					BotController.botClients.remove(b);
@@ -155,9 +153,7 @@ public class BotControllerDialog extends OzoneBaseDialog {
 			cont.row();
 			cont.labelWrap("Status:").growX().left();
 			cont.add(status).growX().right();
-			cont.button("Commands", Icon.commandAttack, () -> {
-				bcd.show();
-			}).disabled(i -> !botClient.launched() || !botClient.connected()).growX();
+			cont.button("Commands", Icon.commandAttack, () -> bcd.show()).disabled(i -> !botClient.launched() || !botClient.connected()).growX();
 			cont.row();
 			cont.labelWrap("Ping:").growX().left();
 			cont.add(ping).growX().right();
