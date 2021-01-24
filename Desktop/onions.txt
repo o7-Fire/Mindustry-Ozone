@@ -1,4 +1,4 @@
 #as always # is comment
 #srt subtitle : mp3 audio
 #separator = new line
-https://cdn.discordapp.com/attachments/796869250533818418/800904403573669888/Al-Qaeda_Calls_Off_Attack_On_Nations_Capitol_To_Spare_Life_Of_Twilight_Author_-_English.srt=https://cdn.discordapp.com/attachments/796869250533818418/800904405259517952/Al-Qaeda_Calls_Off_Attack_On_Nations_Capitol_To_Spare_Life_Of_Twilight_Author.mp3
+http://o7.ddns.net/ozone/Al-Qaeda_Calls_Off_Attack_On_Nations_Capitol_To_Spare_Life_Of_Twilight_Author_-_English.srt=http://o7.ddns.net/ozone/Al-Qaeda_Calls_Off_Attack_On_Nations_Capitol_To_Spare_Life_Of_Twilight_Author.mp3
