@@ -19,7 +19,6 @@ package Ozone.Desktop.Patch;
 import Atom.Struct.Stream;
 import Atom.Utility.Utility;
 import Ozone.Commands.Commands;
-import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Ozone.Internal.Module;
 import arc.util.Log;
 import mindustry.Vars;
@@ -32,14 +31,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import static Ozone.Commands.Commands.*;
-import static Ozone.Settings.BaseSettings.debugMode;
 
 public class CommandsDesktop implements Module {
-	private static int i = 0;
+
 	
 	public void init() {
 		register("javac", new Command(CommandsDesktop::javac));
-		if (DesktopBootstrap.debug) register("debug", new Command(CommandsDesktop::debug, Icon.pause));
+		
 		register("info-pos", new Command(CommandsDesktop::infoPos, Icon.move));
 	}
 	
@@ -54,23 +52,6 @@ public class CommandsDesktop implements Module {
 		if (mouseTile != null)
 			if (mouseTile.build != null) tellUser("MouseTile: Class: " + mouseTile.build.getClass().getName());
 		Ozone.Commands.Commands.infoPos();
-	}
-	
-	public static void debug() {
-		if (!debugMode) {
-			tellUser("The debug mode mason, what do they mean");
-			return;
-		}
-		if (i == 5) {
-			tellUser("pls dont");
-		}else if (i == 10) tellUser("stop pls");
-		else if (i == 20) {
-			tellUser("wtf ???");
-			i = 0;
-		}else {
-			tellUser("The code mason, what do they mean");
-		}
-		i++;
 	}
 	
 	

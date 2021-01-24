@@ -68,7 +68,7 @@ public class Interface {
 			target = Groups.player.find(f -> f.id == id);
 		}catch (NumberFormatException ignored) {}
 		if (target == null)// if still not found
-			target = Groups.player.find(f -> f.name().equals(s));
+			target = Groups.player.find(f -> f.name().equals(s) || f.name.startsWith(s));
 		return player;
 	}
 	

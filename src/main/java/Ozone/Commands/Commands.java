@@ -17,6 +17,7 @@
 package Ozone.Commands;
 
 import Atom.Time.Countdown;
+import Atom.Time.Time;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
@@ -26,6 +27,7 @@ import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
 import Ozone.Settings.BaseSettings;
+import Shared.SharedBoot;
 import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.Colors;
@@ -50,6 +52,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+
+import static Ozone.Settings.BaseSettings.debugMode;
 
 public class Commands implements Module {
 	
@@ -100,6 +104,8 @@ public class Commands implements Module {
 		commandsList.put(name, command);
 	}
 	
+	private static int i = 0;
+	
 	public static void register() {
 		Events.run(EventType.Trigger.update, () -> {
 			if (commandsQueue.isEmpty()) return;
@@ -113,11 +119,11 @@ public class Commands implements Module {
 		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer -Nexity");
 		register("task-deconstruct", new Command(Commands::taskDeconstruct));
 		register("send-colorize", new Command(Commands::sendColorize));
+		register("follow-player", new Command(Commands::followPlayer), "follow a player use ID or startsWith/full name");
 		
 		//Commands with icon support no-argument-commands (user input is optional)
-		register("rotate-conveyor", new Command(Commands::rotateconveyor, Icon.rotate));
-		register("follow-player", new Command(Commands::followPlayer, Icon.hammer));
-		register("drain-core", new Command(Commands::drainCore, Icon.hammer));
+		register("rotate-conveyor", new Command(Commands::rotateconveyor, Icon.rotate), "rotate a fucking conveyor");
+		register("drain-core", new Command(Commands::drainCore, Icon.hammer), "drain a core");
 		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
 		register("info-unit", new Command(Commands::infoUnit, Icon.units));
 		register("force-exit", new Command(Commands::forceExit, Icon.exit));
@@ -129,8 +135,28 @@ public class Commands implements Module {
 		register("info-pos", new Command(Commands::infoPos, Icon.move));
 		register("help", new Command(Commands::help, Icon.infoCircle));
 		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
+		if (SharedBoot.debug)
+			register("debug", new Command(Commands::debug, Icon.pause), "so you just found debug mode");
 		Log.infoTag("Ozone", "Commands Center Initialized");
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
+	}
+	
+	public static void debug() {
+		if (!debugMode) {
+			tellUser("The debug mode mason, what do they mean");
+			return;
+		}
+		if (i == 5) {
+			tellUser("pls dont");
+		}else if (i == 10) tellUser("stop pls");
+		else if (i == 20) {
+			tellUser("wtf ???");
+			i = 0;
+		}else {
+			tellUser("The code mason, what do they mean");
+		}
+		i++;
+		Vars.ui.scriptfrag.toggle();
 	}
 	
 	@Override
@@ -195,8 +221,8 @@ public class Commands implements Module {
 			if (s.size() == 3) {
 				half = true;
 			}
-			long start = System.currentTimeMillis();
-			TaskInterface.addTask(new DestructBlock(x, y, half), a -> tellUser("Completed in " + Countdown.result(start, TimeUnit.SECONDS)));
+			Time t = new Time(TimeUnit.MICROSECONDS);
+			TaskInterface.addTask(new DestructBlock(x, y, half), a -> tellUser("Completed in " + t.elapsed(new Time()).toString()));
 		}catch (NumberFormatException f) {
 			tellUser("Failed to parse integer, are you sure that argument was integer ?");
 			Vars.ui.showException(f);
@@ -337,19 +363,22 @@ public class Commands implements Module {
 		ArrayList<String> as = new ArrayList<>();
 		as.add("Prefix: \"" + BaseSettings.commandsPrefix + "\"");
 		as.add("Available Commands:");
-		int target = 5;
+		
 		for (Map.Entry<String, Command> s : commandsList.entrySet()) {
-			if (target < s.getKey().length()) target = s.getKey().length() + 2;
+			String local = s.getKey() + ": " + s.getValue().description;
+			as.add(local);
 		}
-		for (Map.Entry<String, Command> s : commandsList.entrySet()) {
-			StringBuilder local = new StringBuilder();
-			local.append(s.getKey());
-			while (local.length() < target) local.append(" ");
-			local.append(":").append(s.getValue().description);
-			as.add(local.toString());
+		
+		while (!as.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			for (int j = 0; j < 5; j++) {
+				if (as.isEmpty()) break;
+				String s = as.get(0);
+				sb.append(s).append("\n");
+				as.remove(s);
+			}
+			tellUser(sb.toString());
 		}
-		for (String s : as)
-			tellUser(s);
 	}
 	
 	public static void shuffleSorter() {
@@ -470,26 +499,8 @@ public class Commands implements Module {
 	}
 	
 	public static void rotateconveyor() {
-		rotatingconveyor = !rotatingconveyor;
-		if (rotatingconveyor) {
-			Thread s1 = new Thread(() -> {
-				while (rotatingconveyor) {
-					for (Tile t : Vars.world.tiles) {
-						if (t.toString().contains("conveyor")) {
-							Call.rotateBlock(Vars.player, t.build, true);
-							try {
-								Thread.sleep(250);
-							} catch (Throwable ignored) {
-							}
-						}
-					}
-				}
-			});
-			s1.start();
-			tellUser("rotating all conveyors");
-		}else {
-			tellUser("stoppted rotating conveyors");
-		}
+		//Call.rotateBlock(Vars.player, t.build, true);
+		tellUser("under maintenance, fuck you nexity");
 	}
 	
 	public static void drainCore() {
@@ -513,9 +524,20 @@ public class Commands implements Module {
 	}
 	
 	
+	public static void setHud(String s) {
+		if (Vars.ui != null && Vars.ui.hudfrag != null) Vars.ui.hudfrag.setHudText(s);
+	}
+	
 	public static void tellUser(String s) {
+		if (Vars.ui == null) {
+			Log.info(s);
+			return;
+		}
 		if (Vars.ui.scriptfrag.shown()) Log.infoTag("Ozone", s);
 		Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
+		if (s.contains("\n")) for (String u : s.split("\n"))
+			Vars.ui.hudfrag.showToast(u);
+		else Vars.ui.hudfrag.showToast(s);
 	}
 	
 	public static class Command {

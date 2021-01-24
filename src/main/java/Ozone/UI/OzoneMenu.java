@@ -29,6 +29,8 @@ import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class OzoneMenu extends BaseDialog {
 	Interval interval = new Interval();
 	private TextField commandsField;
@@ -50,29 +52,29 @@ public class OzoneMenu extends BaseDialog {
 		update(this::update);
 	}
 	
+	public static void showHud() {
+		if (!Vars.ui.hudfrag.shown) toggleHUD();
+	}
+	
+	public static void toggleHUD() {
+		try {
+			Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
+		}catch (IllegalAccessException | InvocationTargetException ignored) {
+		}
+	}
+	
 	void update() {
 		if (!isShown()) return;
 		if (!interval.get(40)) return;
-		try {
-			if (!Vars.ui.hudfrag.shown) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
-		}catch (Throwable ignored) { }
-		if (!Vars.ui.scriptfrag.shown()) {
-			Vars.ui.scriptfrag.toggle();
-		}
-		arc.Core.scene.setKeyboardFocus(commandsField);
+		if (!Vars.mobile) arc.Core.scene.setKeyboardFocus(commandsField);
+		showHud();
 	}
 	
 	@Override
 	public void hide() {
 		super.hide();
-		try {
-			if (Vars.ui.scriptfrag.shown()) {
-				Vars.ui.scriptfrag.toggle();
-			}
-			if (!Vars.ui.hudfrag.shown) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
-		}catch (Throwable ignored) {}
+		showHud();
 	}
-	
 	public void setup() {
 		
 		

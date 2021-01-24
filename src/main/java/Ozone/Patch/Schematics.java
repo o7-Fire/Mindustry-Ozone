@@ -57,7 +57,10 @@ public class Schematics implements Module {
 			for (Future<Schematic> s : future) {
 				try {
 					Schematic se = s.get();
-					if (se != null) Vars.schematics.add(se);
+					if (se != null) {
+						se.removeSteamID();
+						Vars.schematics.add(se);
+					}
 					i++;
 				}catch (Throwable ignored) {}
 			}
