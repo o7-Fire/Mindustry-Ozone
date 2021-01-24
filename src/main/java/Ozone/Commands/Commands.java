@@ -535,9 +535,11 @@ public class Commands implements Module {
 		}
 		if (Vars.ui.scriptfrag.shown()) Log.infoTag("Ozone", s);
 		Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
-		if (s.contains("\n")) for (String u : s.split("\n"))
-			Vars.ui.hudfrag.showToast(u);
-		else Vars.ui.hudfrag.showToast(s);
+		if (BaseSettings.commandsToast) {
+			if (s.contains("\n")) for (String u : s.split("\n"))
+				Vars.ui.hudfrag.showToast(u);
+			else Vars.ui.hudfrag.showToast(s);
+		}
 	}
 	
 	public static class Command {

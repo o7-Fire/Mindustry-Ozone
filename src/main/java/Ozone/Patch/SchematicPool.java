@@ -28,12 +28,13 @@ import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.Schematic;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.Future;
 
-public class Schematics implements Module {
+public class SchematicPool implements Module {
 	
 	@Override
 	public void loadAsync() {
@@ -49,6 +50,9 @@ public class Schematics implements Module {
 						URL neu = Cache.http(new URL(s));
 						return mindustry.game.Schematics.readBase64(Encoder.readString(neu.openStream()));
 					}catch (Throwable e) {
+						try {
+							new File(Cache.http(new URL(s)).getFile()).delete();
+						}catch (Throwable ignored) {}
 						Sentry.captureException(e);
 					}
 					return null;
@@ -59,7 +63,9 @@ public class Schematics implements Module {
 					Schematic se = s.get();
 					if (se != null) {
 						se.removeSteamID();
-						Vars.schematics.add(se);
+						synchronized (Vars.schematics.all()) {
+							Vars.schematics.all().add(se);
+						}
 					}
 					i++;
 				}catch (Throwable ignored) {}
