@@ -26,6 +26,6 @@ public class OzoneBootstrap {
 		if (SharedBoot.debug) {
 			Log.level = Log.LogLevel.debug;
 		}
-		Log.info("Ozone-Version", Version.core);
+		Log.info("Ozone-Version: " + Version.core);
 	}
 }
