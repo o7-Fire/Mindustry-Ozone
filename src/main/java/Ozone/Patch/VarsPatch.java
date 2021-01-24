@@ -18,9 +18,12 @@ package Ozone.Patch;
 
 import Ozone.Internal.Module;
 import Ozone.Patch.Mindustry.DesktopInputPatched;
+import Ozone.Patch.Mindustry.MobileInputPatched;
 import Ozone.Settings.BaseSettings;
 import arc.util.Log;
 import mindustry.Vars;
+import mindustry.input.DesktopInput;
+import mindustry.input.MobileInput;
 
 public class VarsPatch implements Module {
 	@Override
@@ -31,7 +34,8 @@ public class VarsPatch implements Module {
 			Vars.enableConsole = true;
 			if (BaseSettings.debugMode) Log.level = (Log.LogLevel.debug);
 			Log.debug("Ozone-Debug: @", "Debugs, peoples, debugs");
-			Vars.control.input = new DesktopInputPatched();
+			if (Vars.control.input instanceof MobileInput) Vars.control.input = new MobileInputPatched();
+			else if (Vars.control.input instanceof DesktopInput) Vars.control.input = new DesktopInputPatched();
 			Log.infoTag("Ozone", "Patching Complete");
 		}catch (Throwable t) {
 			Log.infoTag("Ozone", "Patch failed");

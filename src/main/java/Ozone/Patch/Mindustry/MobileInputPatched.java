@@ -19,17 +19,14 @@ package Ozone.Patch.Mindustry;
 import Ozone.Manifest;
 import arc.scene.ui.layout.Table;
 import mindustry.gen.Icon;
-import mindustry.input.DesktopInput;
+import mindustry.input.MobileInput;
 import mindustry.ui.Styles;
 
-public class DesktopInputPatched extends DesktopInput {
-	
+public class MobileInputPatched extends MobileInput {
 	
 	@Override
 	public void buildPlacementUI(Table table) {
 		super.buildPlacementUI(table);
 		table.button(Icon.settings, Styles.colori, () -> Manifest.menu.show()).tooltip("@ozone.menu");
 	}
-	
-	
 }
