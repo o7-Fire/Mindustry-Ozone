@@ -19,9 +19,11 @@ package Ozone.Bootstrap;
 import Ozone.Version;
 import Shared.SharedBoot;
 import arc.util.Log;
+import mindustry.Vars;
 
 public class OzoneBootstrap {
 	public static void init() {
+		if (Vars.android) SharedBoot.type = "Ozone-Android";
 		SharedBoot.initSentry();
 		if (SharedBoot.debug) {
 			Log.level = Log.LogLevel.debug;

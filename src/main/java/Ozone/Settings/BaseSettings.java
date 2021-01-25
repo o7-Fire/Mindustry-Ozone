@@ -41,6 +41,12 @@ public class BaseSettings implements Module {
 	public static String commandsPrefix = ",";
 	
 	static {
+		try {
+			SettingsManifest.readSettings(BaseSettings.class);
+		}catch (Throwable et) {
+			Sentry.captureException(et);
+			Log.err(et);
+		}
 		HashMap<String, String> t = new HashMap<>();
 		t.put("colorPatch", "Enable Colorized Text");
 		t.put("antiSpam", "Enable Anti-Spam");
@@ -50,13 +56,7 @@ public class BaseSettings implements Module {
 		t.put("commandsToast", "Commands output use Hud Toast");
 		t.put("worldLog", "Spam your console with world interaction log");
 		Translation.addSettings(t);
-		try {
-			SettingsManifest.readSettings(BaseSettings.class);
-		}catch (Throwable et) {
-			Sentry.captureException(et);
-			Log.err(et);
-			
-		}
+
 	}
 	
 	@Override

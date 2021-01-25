@@ -170,6 +170,14 @@ public class Updater {
 		return getDownload(last, manifest);
 	}
 	
+	public static URL getRelease(String type) {
+		try {
+			return new URL(getRelease(false).toExternalForm() + type);
+		}catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public static URL getRelease(boolean manifest) {
 		try {
 			HashMap<String, String> releaseManifest = Encoder.parseProperty(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master/Desktop/release.txt").openStream());
@@ -180,7 +188,6 @@ public class Updater {
 			if (version == null) version = Propertied.Manifest.get("MindustryVersion");
 			base += version + "/";
 			if (manifest) base += "Manifest.properties";
-			else base += "Ozone-Desktop.jar";
 			return new URL(base);
 		}catch (Throwable t) {
 			throw new RuntimeException(t);

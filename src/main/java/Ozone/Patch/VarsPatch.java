@@ -16,6 +16,7 @@
 
 package Ozone.Patch;
 
+import Atom.Reflect.Reflect;
 import Ozone.Internal.Module;
 import Ozone.Patch.Mindustry.DesktopInputPatched;
 import Ozone.Patch.Mindustry.MobileInputPatched;
@@ -27,7 +28,7 @@ import mindustry.input.DesktopInput;
 import mindustry.input.MobileInput;
 
 public class VarsPatch implements Module {
-	public static Table submenuTable;
+	public static Table menu;
 	
 	@Override
 	public void init() throws Throwable {
@@ -45,7 +46,7 @@ public class VarsPatch implements Module {
 				Vars.control.input = new DesktopInputPatched();
 			}else Log.warn("Vars.control.input not patched");
 			try {
-				submenuTable = ((Table) Vars.ui.menufrag.getClass().getDeclaredField("submenu").get(Vars.ui.menufrag)).row();
+				menu = Reflect.getField(Vars.ui.menufrag.getClass(), "container", Vars.ui.menufrag);
 			}catch (Throwable ignored) {}
 			Log.infoTag("Ozone", "Patching Complete");
 		}catch (Throwable t) {

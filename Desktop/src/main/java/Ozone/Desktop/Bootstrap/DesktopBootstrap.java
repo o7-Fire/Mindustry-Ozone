@@ -51,6 +51,7 @@ public class DesktopBootstrap {
 		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
 		if (trace.length > 0) mainClass = trace[trace.length - 1].getClassName();
 		else mainClass = null;
+		SharedBoot.type = "Ozone-Desktop";
 		setSplash("Configuring Sentry");
 		initSentry();
 	}

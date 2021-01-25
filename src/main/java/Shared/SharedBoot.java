@@ -30,6 +30,7 @@ import java.util.Map;
 public class SharedBoot {
 	public static boolean standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null || System.getProperty("ozoneTest") != null;
 	public static long startup = System.nanoTime();
+	public static String type = "Ozone-Core";
 	
 	static {
 		if (!debug) try {

@@ -19,6 +19,7 @@ package Ozone.Desktop;
 import Main.OxygenMindustry;
 import Ozone.Desktop.UI.*;
 
+
 public class Manifest {
 	public static BotControllerDialog botControllerDialog;
 	public static ModsMenu modsMenu;

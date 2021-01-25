@@ -1,17 +1,13 @@
 package mindustry.ui.fragments;
 
-import Atom.Utility.Encoder;
 import Atom.Utility.Random;
-import Atom.Utility.Utility;
 import Ozone.Desktop.Manifest;
-import Ozone.Patch.Updater;
 import arc.Core;
 import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Interp;
-import arc.scene.Element;
 import arc.scene.Group;
 import arc.scene.actions.Actions;
 import arc.scene.event.Touchable;
@@ -21,7 +17,6 @@ import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.scene.ui.layout.WidgetGroup;
 import arc.util.Align;
-import io.sentry.Sentry;
 import mindustry.core.Version;
 import mindustry.game.EventType.DisposeEvent;
 import mindustry.game.EventType.ResizeEvent;
@@ -30,10 +25,6 @@ import mindustry.graphics.MenuRenderer;
 import mindustry.ui.Fonts;
 import mindustry.ui.MobileButton;
 import mindustry.ui.Styles;
-
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import static mindustry.Vars.*;
 
@@ -83,32 +74,6 @@ public class MenuFragment extends Fragment {
 			parent.fill(c -> c.bottom().left().button("", Styles.infot, ui.about::show).size(84, 45).name("info"));
 			parent.fill(c -> c.bottom().right().button("", Styles.discordt, ui.discord::show).size(84, 45).name("discord"));
 		}
-		parent.fill(c -> c.bottom().right().button("Update", Icon.refresh, () -> {
-			try {
-				StringBuilder sb = new StringBuilder();
-				InputStream is;
-				if (Updater.newRelease.get()) is = Updater.getRelease(true).openStream();
-				else is = Updater.getBuild(true).openStream();
-				HashMap<String, String> h = Encoder.parseProperty(is);
-				h.replace("TimeStamp", Utility.getDate(Long.parseLong(h.get("TimeMilis"))));
-				for (Map.Entry<String, String> e : h.entrySet()) {
-					sb.append(e.getKey()).append(": ").append(e.getValue()).append("\n");
-				}
-				if (Updater.newRelease.get() && Updater.newBuild.get()) {
-					ui.showCustomConfirm("Choose", "", "Release", "Build", () -> ui.showConfirm("New Release", "A new compatible release appeared\n" + sb.toString(), () -> Updater.update(Updater.getRelease(false))), () -> ui.showConfirm("New Build", "A new compatible build appeared\n" + sb.toString(), () -> Updater.update(Updater.getBuild(false))));
-					return;
-				}
-				
-				if (Updater.newRelease.get()) {
-					ui.showConfirm("New Release", "A new compatible release appeared\n" + sb.toString(), () -> Updater.update(Updater.getRelease(false)));
-				}else {
-					ui.showConfirm("New Build", "A new compatible build appeared\n" + sb.toString(), () -> Updater.update(Updater.getBuild(false)));
-				}
-			}catch (Throwable t) {
-				ui.showException(t);
-				Sentry.captureException(t);
-			}
-		}).size(200, 60).name("buildcheck").visible(() -> Updater.newBuild.get() || Updater.newRelease.get()).update(Element::updateVisibility));
 		
 		
 		String versionText = ((Version.build == -1) ? "[#fc8140aa]" : "[#ffffffba]") + Version.combined();

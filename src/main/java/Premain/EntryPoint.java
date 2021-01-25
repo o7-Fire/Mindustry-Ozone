@@ -19,6 +19,7 @@ package Premain;
 import Atom.Reflect.FieldTool;
 import Ozone.Bootstrap.OzoneBootstrap;
 import Ozone.Main;
+import Ozone.Patch.Updater;
 import Shared.LoggerMode;
 import arc.Core;
 import arc.graphics.Color;
@@ -41,6 +42,9 @@ public class EntryPoint extends Mod {
 			Log.err(t);
 			Sentry.captureException(t);
 		}
+		try {
+			Updater.async();
+		}catch (Throwable ignored) {}
 		//java 8
 		try {
 			Field orange = LoadRenderer.class.getDeclaredField("orange"), color = LoadRenderer.class.getDeclaredField("color");

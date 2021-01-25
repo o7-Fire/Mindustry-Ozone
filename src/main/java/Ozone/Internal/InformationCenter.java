@@ -42,7 +42,9 @@ public class InformationCenter {
 	
 	public static File getCurrentJar() {
 		try {
-			return Reflect.getCurrentJar();
+			File f = Reflect.getCurrentJar();
+			if (f == null) throw new NullPointerException();
+			return f;
 		}catch (Throwable ignored) {
 			return new File("Ozone.jar");//lol
 		}
