@@ -46,7 +46,8 @@ public class InformationCenter {
 			if (f == null) throw new NullPointerException();
 			return f;
 		}catch (Throwable ignored) {
-			return new File("Ozone.jar");//lol
+			return new File(InformationCenter.class.getClassLoader().getResource("mod.hjson").getFile());
+			
 		}
 	}
 	
