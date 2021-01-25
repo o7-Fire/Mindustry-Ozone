@@ -20,9 +20,9 @@ static def getLatestFolder(File fe){
     }catch(ignored){}
     return fe;
 }
-sdkRoot = System.getenv("ANDROID_HOME")
-sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
-sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
+def sdkRoot = System.getenv("ANDROID_HOME")
+def sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
+def sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
 
 
 if(new File(sdkD8).exists() && new File(sdkJar).exists()) {
