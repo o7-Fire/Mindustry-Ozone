@@ -4,10 +4,10 @@
 ![](https://img.shields.io/github/v/tag/o7-Fire/Mindustry-Ozone?label=Mindustry-Ozone)
 ![](https://img.shields.io/github/v/release/Anuken/Mindustry?label=Mindustry-Latest)
 ![](https://img.shields.io/badge/java-14.0.2-orange)
-![](https://img.shields.io/badge/Android-5.0-blue)
+![](https://img.shields.io/badge/Android%20API-14-blue)
 ![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fo7-Fire%2FMindustry-Ozone.svg?type=shield)
 
-
+# minimal android version
 
 # Download
 ### Ozone
@@ -53,7 +53,7 @@ if you hasn't mindustry, install mindustry
 * Java 8+ and added to JAVA_HOME (mindustry core can run on java 8+) (For Ozone-Core)
 * Internet connection (required to download library at runtime and can impact loading speed) (For Ozone-Desktop)
 * Year 2006+ Computer
-* Android 5.0+ / sdk version 21+
+* Android 4.0+ / sdk version 14+
 
 # Build
 
