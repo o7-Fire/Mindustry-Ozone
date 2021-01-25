@@ -52,10 +52,13 @@ public class UIPatch implements Module {
 		Manifest.worldInformation = new WorldInformation();
 		Manifest.menu = new OzoneMenu(Translation.get("ozone.hud"), ozoneStyle);
 		Manifest.commFrag.build(Vars.ui.hudGroup);
+		if (VarsPatch.submenuTable != null) {
+			VarsPatch.submenuTable.button("Ozone-Menu", () -> Manifest.menu.show());
+		}
 	}
 	
 	@Override
 	public ArrayList<Class<? extends Module>> dependOnModule() {
-		return new ArrayList<>(Arrays.asList(Translation.class));
+		return new ArrayList<>(Arrays.asList(Translation.class, VarsPatch.class));
 	}
 }

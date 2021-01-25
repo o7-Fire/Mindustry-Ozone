@@ -16,9 +16,11 @@
 
 package Ozone.Internal;
 
+import Atom.Reflect.Reflect;
 import arc.struct.Seq;
 import mindustry.gen.Call;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +38,14 @@ public class InformationCenter {
 			if (!packetName.contains(m.getName())) packetName.add(m.getName());
 		}
 		
+	}
+	
+	public static File getCurrentJar() {
+		try {
+			return Reflect.getCurrentJar();
+		}catch (Throwable ignored) {
+			return new File("Ozone.jar");//lol
+		}
 	}
 	
 	public static ArrayList<String> getLoadedModule() {return new ArrayList<>(moduleLoaded);}

@@ -16,14 +16,21 @@
 
 package Ozone.Internal;
 
+import Atom.Utility.Encoder;
+
+import java.io.IOException;
 import java.net.URL;
 
 public class Repo extends Atom.File.Repo implements Module {
-
+	
 	@Override
 	public void init() throws Throwable {
 		addRepo(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master"));
 		addRepo(new URL("http://o7.ddns.net/ozone"));
-
+		
+	}
+	
+	public String getString(String path) throws IOException {
+		return Encoder.readString(getResource(path).openStream());
 	}
 }

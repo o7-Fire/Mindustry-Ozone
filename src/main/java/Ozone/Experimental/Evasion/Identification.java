@@ -18,30 +18,25 @@ package Ozone.Experimental.Evasion;
 
 import arc.Core;
 import arc.math.Rand;
-import arc.struct.ObjectMap;
 import arc.util.serialization.Base64Coder;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
 
 public class Identification {
-	public static ObjectMap<String, Object> getValue() throws NoSuchFieldException, IllegalAccessException {
+	public static HashMap<String, Object> getValue() throws NoSuchFieldException, IllegalAccessException {
 		Field f = Core.settings.getClass().getDeclaredField("values");
 		f.setAccessible(true);
-		return (ObjectMap<String, Object>) f.get(Core.settings);
+		return (HashMap<String, Object>) f.get(Core.settings);
 	}
 	
 	public static void changeID() throws NoSuchFieldException, IllegalAccessException {
-		ObjectMap<String, Object> values = getValue();
+		HashMap<String, Object> values = getValue();
 		ArrayList<String> yikes = new ArrayList<>();
-		for (String s : values.keys()) yikes.add(s);
-		String[] keys = yikes.toArray(new String[0]);
-		List<String> key = Arrays.stream(keys).filter(s -> s.startsWith("usid-") || s.startsWith("uuid")).collect(Collectors.toList());
-		
-		for (String s : key) Core.settings.put(s, getRandomUID());
+		for (String s : values.keySet())
+			if (s.startsWith("usid-") || s.startsWith("uuid")) yikes.add(s);
+		for (String s : yikes) Core.settings.put(s, getRandomUID());
 		
 	}
 	

@@ -20,12 +20,15 @@ import Ozone.Internal.Module;
 import Ozone.Patch.Mindustry.DesktopInputPatched;
 import Ozone.Patch.Mindustry.MobileInputPatched;
 import Ozone.Settings.BaseSettings;
+import arc.scene.ui.layout.Table;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.input.DesktopInput;
 import mindustry.input.MobileInput;
 
 public class VarsPatch implements Module {
+	public static Table submenuTable;
+	
 	@Override
 	public void init() throws Throwable {
 		try {
@@ -41,6 +44,9 @@ public class VarsPatch implements Module {
 				Log.debug("its desktop input");
 				Vars.control.input = new DesktopInputPatched();
 			}else Log.warn("Vars.control.input not patched");
+			try {
+				submenuTable = ((Table) Vars.ui.menufrag.getClass().getDeclaredField("submenu").get(Vars.ui.menufrag)).row();
+			}catch (Throwable ignored) {}
 			Log.infoTag("Ozone", "Patching Complete");
 		}catch (Throwable t) {
 			Log.infoTag("Ozone", "Patch failed");

@@ -4,7 +4,7 @@ import Atom.Utility.Encoder;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Desktop.Manifest;
-import Ozone.Desktop.Patch.Updater;
+import Ozone.Patch.Updater;
 import arc.Core;
 import arc.Events;
 import arc.graphics.Color;

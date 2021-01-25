@@ -37,10 +37,7 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EnvironmentInformation extends ScrollableDialog {
@@ -92,9 +89,9 @@ public class EnvironmentInformation extends ScrollableDialog {
 	void uid() {
 		ad(System.getenv());
 		try {
-			ObjectMap<String, Object> values = Identification.getValue();
+			HashMap<String, Object> values = Identification.getValue();
 			ArrayList<String> yikes = new ArrayList<>();
-			for (String s : values.keys()) yikes.add(s);
+			for (String s : values.keySet()) yikes.add(s);
 			String[] keys = yikes.toArray(new String[0]);
 			List<String> key = Arrays.stream(keys).filter(s -> s.startsWith("usid-")).collect(Collectors.toList());
 			for (String k : key) {

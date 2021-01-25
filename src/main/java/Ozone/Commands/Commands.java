@@ -409,7 +409,7 @@ public class Commands implements Module {
 						tellUser("block can't be find");
 						return;
 					}
-					Item target = Random.getRandom(Vars.content.items().toArray(Item.class));
+					Item target = Random.getRandom(Vars.content.items());
 					t.tile().build.configure(target);
 				}catch (InterruptedException | ExecutionException e) {
 					Log.errTag("Ozone-Executor", "Failed to get tile:\n" + e.toString());

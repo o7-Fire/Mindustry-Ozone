@@ -17,6 +17,7 @@
 package mindustry.graphics;
 
 import Atom.Utility.Cache;
+import Ozone.Internal.Repo;
 import Ozone.Settings.SettingsDesktop;
 import arc.Core;
 import arc.files.Fi;
@@ -49,7 +50,9 @@ public class MenuGifRenderer implements Disposable {
 	
 	public MenuGifRenderer() throws IOException, NoMenuResource {
 		try {
-			url.addAll(new String(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master/Desktop/gif.txt").openStream().readAllBytes()).split("\n"));
+			Repo r = new Repo();
+			r.init();
+			url.addAll(r.getString("Desktop/gif.txt").split("\n"));
 		}catch (Throwable i) {
 			Sentry.captureException(i);
 		}

@@ -48,12 +48,12 @@ public class SchematicPool implements Module {
 				future.add(Pool.submit(() -> {
 					try {
 						URL neu = Cache.http(new URL(s));
-						return mindustry.game.Schematics.readBase64(Encoder.readString(neu.openStream()));
+						return mindustry.game.Schematics.read(neu.openStream());
 					}catch (Throwable e) {
 						try {
 							new File(Cache.http(new URL(s)).getFile()).delete();
 						}catch (Throwable ignored) {}
-						Sentry.captureException(e);
+						Log.err(s, e);
 					}
 					return null;
 				}));
@@ -65,9 +65,10 @@ public class SchematicPool implements Module {
 						se.removeSteamID();
 						synchronized (Vars.schematics.all()) {
 							Vars.schematics.all().add(se);
+							i++;
 						}
 					}
-					i++;
+					
 				}catch (Throwable ignored) {}
 			}
 			Log.info("Loaded: " + i + " remote schematics");

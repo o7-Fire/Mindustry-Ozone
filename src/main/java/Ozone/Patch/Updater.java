@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop.Patch;
+package Ozone.Patch;
 
+import Atom.Net.Request;
 import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
-import Main.Download;
+import Ozone.Internal.InformationCenter;
 import Ozone.Propertied;
 import arc.util.Log;
 import com.google.gson.JsonArray;
@@ -31,7 +32,6 @@ import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.Version;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class Updater {
 						Pool.daemon(() -> {
 							try {
 								URL u = new URL("https://api.github.com/repos/o7-Fire/Mindustry-Ozone/commits?per_page=" + Random.getInt(2, 15));
-								JsonArray js = JsonParser.parseString(new String(u.openStream().readAllBytes())).getAsJsonArray();
+								JsonArray js = JsonParser.parseString(Encoder.readString(u.openStream())).getAsJsonArray();
 								ArrayList<Future<String>> list = new ArrayList<>();
 								for (JsonElement je : js) {
 									list.add(Pool.submit(() -> checkJsonGithub(je)));
@@ -128,7 +128,7 @@ public class Updater {
 	public static void update(URL url) {
 		Vars.ui.loadfrag.show("Downloading");
 		try {
-			Download.main(url, new File(Updater.class.getProtectionDomain().getCodeSource().getLocation().toURI()));
+			Request.download(url.toExternalForm(), InformationCenter.getCurrentJar());
 			Vars.ui.loadfrag.hide();
 		}catch (Throwable t) {
 			Vars.ui.loadfrag.hide();
@@ -141,7 +141,10 @@ public class Updater {
 		Map<String, String> source = Propertied.Manifest;
 		//Latest
 		try {
-			long a = Long.parseLong(source.getOrDefault("TimeMilis", "0")), b = Long.parseLong(target.getOrDefault("TimeMilis", "-1"));
+			String sa = source.get("TimeMilis");
+			String sb = target.get("TimeMilis");
+			if (sa == null || sb == null) return false;
+			long a = Long.parseLong(sa), b = Long.parseLong(sb);
 			if (a > b) return false;
 		}catch (NumberFormatException asshole) {
 			Sentry.captureException(asshole);
@@ -150,7 +153,9 @@ public class Updater {
 		//Compatibility
 		try {
 			int a = Version.build;
-			String s = target.getOrDefault("MindustryVersion", "-2").substring(1);
+			String s = target.get("MindustryVersion");
+			if (s == null) return false;
+			s = s.substring(1);
 			if (s.contains(".")) s = s.substring(0, s.indexOf('.'));
 			int b = Integer.parseInt(s);
 			if (b != a) return false;
@@ -171,7 +176,8 @@ public class Updater {
 			String base = "https://github.com/o7-Fire/Mindustry-Ozone/releases/download/";
 			String version = Propertied.Manifest.get("MindustryVersion");
 			if (version == null) throw new NullPointerException("MindustryVersion Null");
-			version = releaseManifest.getOrDefault(version, version);
+			version = releaseManifest.get(version);
+			if (version == null) version = Propertied.Manifest.get("MindustryVersion");
 			base += version + "/";
 			if (manifest) base += "Manifest.properties";
 			else base += "Ozone-Desktop.jar";

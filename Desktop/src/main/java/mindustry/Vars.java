@@ -1,6 +1,6 @@
 package mindustry;
 
-import Ozone.Desktop.Patch.Updater;
+import Ozone.Patch.Updater;
 import Shared.LoggerMode;
 import arc.Core;
 import arc.Settings;

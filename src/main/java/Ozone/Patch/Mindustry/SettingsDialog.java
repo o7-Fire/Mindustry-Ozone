@@ -17,7 +17,9 @@
 package Ozone.Patch.Mindustry;
 
 import Atom.Reflect.Reflect;
+import Ozone.Experimental.Evasion.Identification;
 import Ozone.Manifest;
+import Ozone.Patch.Translation;
 import arc.Core;
 import arc.util.Log;
 import io.sentry.Sentry;
@@ -34,10 +36,19 @@ public class SettingsDialog extends SettingsMenuDialog {
 			Log.errTag("Ozone", "Can't get SettingsTable");
 			return;
 		}
-		gameTable.row();
+		gameTable.row().left();
 		h(gameTable);
 		hidden(Manifest::saveSettings);
 		gameTable.button("Save Ozone Settings", Manifest::saveSettings).growX();
+		gameTable.button("Reset UID", () -> {
+			try {
+				Identification.changeID();
+				Vars.ui.showInfo("Successful");
+			}catch (Throwable t) {
+				Vars.ui.showException(t);
+				Sentry.captureException(t);
+			}
+		}).growX();
 	}
 	
 	static void h(SettingsTable gameTable) {
@@ -47,7 +58,7 @@ public class SettingsDialog extends SettingsMenuDialog {
 				f.setAccessible(true);
 				Class<?> type = f.getType();
 				if (type.equals(boolean.class)) {
-					gameTable.check(Core.bundle.get(name), (Boolean) f.get(null), b -> {
+					gameTable.check(Translation.get(name), (Boolean) f.get(null), b -> {
 						try {
 							f.set(null, b);
 						}catch (IllegalAccessException e) {
@@ -68,7 +79,7 @@ public class SettingsDialog extends SettingsMenuDialog {
 						Vars.ui.showException(t);
 						Sentry.captureException(t);
 					}
-				}).growX();
+				}).growX().left();
 				gameTable.row();
 			}catch (Throwable t) {
 				Sentry.captureException(t);
