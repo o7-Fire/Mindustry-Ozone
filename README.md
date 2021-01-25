@@ -21,21 +21,9 @@
 [0.9.0:0.11.0][Mindustry v121] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v120/Ozone-Desktop.jar)
 [0.9.0:0.10.2][Mindustry v120] \
-[Other Version](https://jitpack.io/#o7-Fire/Mindustry-Ozone) [Jitpack] \
-[Other Version](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github]\
-[Other Release](https://github.com/o7-Fire/Mindustry-Ozone/tags) [Github] \
-[Snapshot Build](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/-SNAPSHOT/Desktop--SNAPSHOT.jar) [Jitpack][May take a while to build] \
-[Snapshot Build](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github]
-
-if you hasn't mindustry, install mindustry
-
-* 0.Click actions(https://github.com/o7-Fire/Mindustry-Ozone/actions)
-* 1.Find first succes run, and download Mindustry-Ozone-android.zip
-* 2.Unzip archive
-* 3.Start mindustry and go to mod menu
-* 4.Add unziped jar archive as mod
-* 5.Reopen mindustry
-* 6.Profit
+[Other Version](https://jitpack.io/#o7-Fire/Mindustry-Ozone) [Jitpack][If you know how to download from jitpack] \
+[Other Version](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github][Zipped and need github login]\
+[Other Release](https://github.com/o7-Fire/Mindustry-Ozone/tags) [Github]
 
 ### Java
 
@@ -127,11 +115,12 @@ Linux: /home/USERNAME/.local/share/Mindustry/mods/
 - Fix javac commands
 - Logic Code blacklisting
 - Integrated png to draw logic tool
-- Mobile support
+- ~~Mobile support~~
 - Schematic Pools
 - Fix the goddamn buggy Pathfinding
 - Ozone Extension Support
 - Video player
+- Logic scanner/obfuscator/jammer
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools
