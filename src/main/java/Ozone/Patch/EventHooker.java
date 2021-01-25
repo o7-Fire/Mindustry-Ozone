@@ -35,8 +35,8 @@ public class EventHooker implements Module {
 			Events.fire(EventExtended.Shutdown.class, new EventExtended.Shutdown());
 		}));
 		Events.on(EventType.ClientLoadEvent.class, s -> {
-			arc.Core.settings.getBoolOnce("ozoneEpilepsyWarning", () -> {
-				Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning", "A very small percentage of people may experience a seizure when exposed to certain visual images, " + "including flashing lights or patterns that may appear on certain UI element in the game.", "Accept", "Decline", () -> {
+			arc.Core.settings.getBoolOnce("OzoneDisclaimer", () -> {
+				Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning", "Use this mods at your own risk", "Accept", "Accept", () -> {
 				}, () -> {
 					BaseSettings.colorPatch = false;
 					arc.Core.settings.put("ozone.colorPatch", false);
