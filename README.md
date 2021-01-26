@@ -113,7 +113,6 @@ Linux: /home/USERNAME/.local/share/Mindustry/mods/
 - Event based key listener
 - ~~Fix shutdown stall~~
 - Fix javac commands
-- Logic Code blacklisting
 - Integrated png to draw logic tool
 - ~~Mobile support~~
 - Schematic Pools

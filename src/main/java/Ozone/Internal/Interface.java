@@ -54,6 +54,11 @@ public class Interface {
 	
 	public static String getBundle(String key) {
 		if (bundle.containsKey(key)) return bundle.get(key);
+		try {
+			Class s = Interface.class.getClassLoader().loadClass(key);
+			registerWords(s.getName(), s.getSimpleName());
+			return bundle.get(key);
+		}catch (Throwable ignored) {}
 		return Core.bundle.get(key);
 	}
 	

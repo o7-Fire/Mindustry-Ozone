@@ -23,6 +23,7 @@ import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Internal.InformationCenter;
 import Ozone.Propertied;
+import Shared.SharedBoot;
 import arc.util.Log;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -32,6 +33,7 @@ import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.Version;
 
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,6 +41,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static mindustry.Vars.ui;
+
 //TODO add github provider for release
 public class Updater {
 	
@@ -164,6 +169,46 @@ public class Updater {
 			return false;
 		}
 		return true;
+	}
+	
+	public static void showUpdateDIalog() {
+		if (!newRelease.get() && newBuild.get()) {
+			ui.showInfo("Not yet comrade");
+			return;
+		}
+		try {
+			StringBuilder sb = new StringBuilder();
+			InputStream is;
+			if (Updater.newRelease.get()) is = Updater.getRelease(true).openStream();
+			else is = Updater.getBuild(true).openStream();
+			HashMap<String, String> h = Encoder.parseProperty(is);
+			h.put("TimeStamp", Utility.getDate(Long.parseLong(h.get("TimeMilis"))));
+			for (Map.Entry<String, String> e : h.entrySet()) {
+				sb.append(e.getKey()).append(": ").append(e.getValue()).append("\n");
+			}
+			if (Updater.newRelease.get() && Updater.newBuild.get()) {
+				ui.showCustomConfirm("Choose", "", "Release", "Build", () -> showNewRelease(sb), () -> showNewBuild(sb));
+				return;
+			}
+			
+			if (Updater.newRelease.get()) {
+				showNewRelease(sb);
+			}else {
+				showNewBuild(sb);
+			}
+		}catch (Throwable t) {
+			ui.showException(t);
+			Sentry.captureException(t);
+		}
+	}
+	
+	private static void showNewRelease(StringBuilder sb) {
+		ui.showConfirm("New Release", "A new compatible release appeared\n" + sb.toString(), () -> Updater.update(Updater.getRelease(SharedBoot.type + ".jar")));
+		
+	}
+	
+	private static void showNewBuild(StringBuilder sb) {
+		ui.showConfirm("New Build", "A new compatible build appeared\n" + sb.toString(), () -> Updater.update(Updater.getBuild(false)));
 	}
 	
 	public static URL getBuild(boolean manifest) {

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop.UI;
+package Ozone.UI;
 
-import Ozone.Desktop.Manifest;
 import Ozone.Experimental.Evasion.Identification;
-import Ozone.UI.OzoneDialog;
-import arc.Core;
+import Ozone.Manifest;
+import Ozone.Patch.Translation;
 import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.gen.Icon;
@@ -37,9 +36,6 @@ public class ModsMenu extends BaseDialog {
 		cont.clear();
 		cont.button("@mods", Icon.book, Vars.ui.mods::show).growX();// a sacrifice indeed
 		cont.row();
-		if (!Manifest.isBot())
-			cont.button(Core.bundle.get("BotsController"), Icon.android, Manifest.botControllerDialog::show).growX();
-		else cont.button(Core.bundle.get("BotsController"), Icon.android, Bot.Manifest.botUI::show).growX();
 		cont.row();
 		generic();
 		cont.button("Reset UID", Icon.refresh, () -> Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", () -> {
@@ -55,12 +51,13 @@ public class ModsMenu extends BaseDialog {
 	
 	void generic() {
 		ad(Manifest.envInf);
-		ad(Manifest.dbgMenu);
 		ad(Manifest.moduleFrag);
+		ad(Manifest.uiDebug);
+		ad(Manifest.experiment);
 	}
 	
 	void ad(OzoneDialog dialog) {
-		cont.button(Core.bundle.get(dialog.getClass().getName()), dialog.icon(), dialog::show).growX();
+		cont.button(Translation.get(dialog.getClass().getName()), dialog.icon(), dialog::show).growX();
 		cont.row();
 	}
 }

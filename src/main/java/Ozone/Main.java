@@ -16,11 +16,6 @@
 
 package Ozone;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Map;
-
 import Atom.Reflect.Reflect;
 import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
@@ -30,6 +25,12 @@ import arc.Events;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.game.EventType;
+import mindustry.graphics.LoadRenderer;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Map;
 
 public class Main {
 	
@@ -43,22 +44,27 @@ public class Main {
 	
 	}
 	
-	public static Collection<Class<? extends Module>> getModule() {
+	private static LoadRenderer renderer = null;
+	
+	public static <T> Collection<Class<? extends T>> getExtended(String packag, Class<T> type) {
 		try {
-			return Reflect.getExtendedClass("Ozone", Module.class);
+			return Reflect.getExtendedClass(packag, type);
 		}catch (Throwable e) {
 			if (!Atom.Manifest.internalRepo.resourceExists("reflections/core-reflections.json"))
 				throw new RuntimeException(e);
 			else {
 				try {
 					InputStream is = Atom.Manifest.internalRepo.getResourceAsStream("reflections/core-reflections.json");
-					return Reflect.getExtendedClassFromJson(Encoder.readString(is), Module.class);
+					return Reflect.getExtendedClassFromJson(Encoder.readString(is), type);
 				}catch (Throwable t) {
 					throw new RuntimeException(t);
 				}
 			}
 		}
-		
+	}
+	
+	public static Collection<Class<? extends Module>> getModule() {
+		return getExtended("Ozone", Module.class);
 	}
 	
 	public static void init() throws IOException {
@@ -73,6 +79,7 @@ public class Main {
 				Module mod = m.getDeclaredConstructor().newInstance();
 				mod.setRegister();
 				Log.debug("@ Registered", mod.getName());
+				
 				Manifest.module.put(m, mod);
 			}catch (Throwable e) {
 				Sentry.captureException(e);

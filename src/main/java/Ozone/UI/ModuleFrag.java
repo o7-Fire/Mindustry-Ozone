@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop.UI;
+package Ozone.UI;
 
 import Atom.Reflect.FieldTool;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
-import Ozone.UI.ScrollableDialog;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class ModuleFrag extends ScrollableDialog {
-	@Override
-	protected void ctor() {
-		super.ctor();
-		shown(this::init);
-	}
-	
 	
 	protected void setup() {
 		TreeMap<String, Module> t = new TreeMap<>();

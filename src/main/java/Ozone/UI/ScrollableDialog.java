@@ -51,6 +51,8 @@ public abstract class ScrollableDialog extends OzoneDialog {
 	@Override
 	protected void ctor() {
 		super.ctor();
+		shown(this::init);
+		onResize(this::init);
 		buttons.button("Refresh", Icon.refresh, this::init).size(210f, 64f);
 	}
 	

@@ -29,8 +29,6 @@ import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class OzoneMenu extends BaseDialog {
 	Interval interval = new Interval();
 	private TextField commandsField;
@@ -59,7 +57,7 @@ public class OzoneMenu extends BaseDialog {
 	public static void toggleHUD() {
 		try {
 			Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
-		}catch (IllegalAccessException | InvocationTargetException ignored) {
+		}catch (Throwable ignored) {
 		}
 	}
 	

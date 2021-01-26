@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop;
+package Ozone.Experimental;
 
-import Main.OxygenMindustry;
-import Ozone.Desktop.UI.BotControllerDialog;
-import Ozone.Desktop.UI.DebugMenuDialog;
+import arc.struct.Seq;
+import mindustry.Vars;
+import mindustry.ctype.Content;
+import mindustry.ctype.UnlockableContent;
 
-
-public class Manifest extends Ozone.Manifest {
-	public static BotControllerDialog botControllerDialog;
-	public static DebugMenuDialog dbgMenu;
-	
-	public static boolean isBot() {
-		return OxygenMindustry.bot;
+public class UnlockAllContent implements Experimental {
+	@Override
+	public void run() {
+		int i = 0;
+		for (Seq<Content> ce : Vars.content.getContentMap())
+			for (Content cc : ce)
+				if (cc instanceof UnlockableContent) ((UnlockableContent) cc).alwaysUnlocked = true;
 	}
-	
 }

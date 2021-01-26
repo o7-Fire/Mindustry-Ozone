@@ -39,7 +39,7 @@ import static mindustry.Vars.*;
 public class MenuRenderer implements Disposable, Loadable {
 	private static final float darkness = 0.3f;
 	private final int width = !mobile ? 100 : 60, height = !mobile ? 50 : 40;
-	public MenuGifRenderer mf;
+	public MenuGifRenderer mf = null;
 	private int cacheFloor, cacheWall;
 	private Camera camera = new Camera();
 	private Mat mat = new Mat();

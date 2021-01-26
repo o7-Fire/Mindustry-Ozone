@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop;
+package Ozone.UI;
 
-import Main.OxygenMindustry;
-import Ozone.Desktop.UI.BotControllerDialog;
-import Ozone.Desktop.UI.DebugMenuDialog;
+import arc.Core;
 
-
-public class Manifest extends Ozone.Manifest {
-	public static BotControllerDialog botControllerDialog;
-	public static DebugMenuDialog dbgMenu;
+public class UILayout extends ScrollableDialog {
 	
-	public static boolean isBot() {
-		return OxygenMindustry.bot;
+	@Override
+	protected void setup() {
+		table.labelWrap(Core.scene.root.toString().replaceAll("\n", "\n[white]")).growX().growY();
 	}
-	
 }

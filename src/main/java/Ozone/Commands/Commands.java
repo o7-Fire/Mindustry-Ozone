@@ -59,9 +59,6 @@ public class Commands implements Module {
 	public static final Queue<Task> commandsQueue = new Queue<>();
 	public static final Map<String, Command> commandsList = new TreeMap<>();
 	
-	/**
-	 * @author Nexity
-	 */
 	static String targetPlayer;//no need to be volatile because its still accessed from same thread
 	private static boolean falseVote = false;
 	private static boolean drainCore = false;
@@ -155,7 +152,6 @@ public class Commands implements Module {
 			tellUser("The code mason, what do they mean");
 		}
 		i++;
-		Vars.ui.scriptfrag.toggle();
 	}
 	
 	@Override

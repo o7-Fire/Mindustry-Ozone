@@ -73,7 +73,8 @@ public class Translation implements Module {
 	}
 	
 	public static void register() {
-		
+		registerWords("Ozone");
+		registerWords("Update");
 		registerWords("ozone.menu", "Ozone Menu");
 		registerWords("ozone.hud", "Ozone HUD");
 		registerWords("ozone.javaEditor", "Java Executor");

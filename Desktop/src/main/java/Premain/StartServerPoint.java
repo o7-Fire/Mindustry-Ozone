@@ -17,40 +17,23 @@
 package Premain;
 
 import Ozone.Desktop.Bootstrap.DesktopBootstrap;
-import io.sentry.Sentry;
+import Ozone.Propertied;
 
+import java.net.URL;
 
-public class InstallerEntryPoint {
-	static long start = System.currentTimeMillis();
-	
-	//Standalone only
+public class StartServerPoint {
 	public static void main(String[] args) {
-		if (System.getProperty("ozoneTest") != null) {
-			TestEntryPoint.main(args);
-			return;
-		}
-		if (args.length != 0) {
-			if (args[0].equals("server")) {
-				StartServerPoint.main(args);
-				return;
-			}
-		}
 		try {
-			long a, b, c;
-			DesktopBootstrap.requireDisplay();
+			args = new String[]{"host", "Ancient_Caldera", "sandbox"};
 			DesktopBootstrap.classloaderNoParent();
-			a = System.currentTimeMillis();
-			DesktopBootstrap.loadRuntime();
-			b = System.currentTimeMillis();
-			DesktopBootstrap.loadClasspath();
-			
-			DesktopBootstrap.loadMain("Main.OzoneInstaller", args);
+			String version = Propertied.Manifest.get("MindustryVersion");
+			if (version == null) throw new NullPointerException("MindustryVersion not found in property");
+			DesktopBootstrap.ozoneLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/server-release.jar"));
+			DesktopBootstrap.loadMain("mindustry.server.ServerLauncher", args);
 		}catch (Throwable t) {
-			Catch.write(t);
 			t.printStackTrace();
-			if (t.getCause() != null) t = t.getCause();
-			Sentry.captureException(t);
-			Catch.errorBox(t.toString(), "Ozone Installer");
+			Catch.write(t);
+			
 			System.exit(1);
 		}
 	}

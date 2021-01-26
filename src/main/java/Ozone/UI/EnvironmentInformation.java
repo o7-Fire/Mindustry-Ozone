@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package Ozone.Desktop.UI;
+package Ozone.UI;
 
-import Ozone.Desktop.Bootstrap.Dependency;
-import Ozone.Desktop.Bootstrap.OzoneLoader;
+
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Propertied;
 import Ozone.Settings.SettingsManifest;
-import Ozone.UI.ScrollableDialog;
 import arc.Core;
 import arc.audio.Sound;
 import arc.scene.style.TextureRegionDrawable;
@@ -29,16 +27,14 @@ import arc.struct.ObjectMap;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
-import mindustry.core.Version;
 import mindustry.gen.Icon;
 import mindustry.gen.Sounds;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
-import java.net.URL;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class EnvironmentInformation extends ScrollableDialog {
 	
@@ -55,46 +51,22 @@ public class EnvironmentInformation extends ScrollableDialog {
 		ad("UUID", Core.settings.getString("uuid"));
 		ad("Current Millis", System.currentTimeMillis());
 		ad("Current Nanos", System.nanoTime());
-		ad("Compilation Time Total (ms)", () -> ManagementFactory.getCompilationMXBean().getTotalCompilationTime());
-		ad("isCompilationTimeMonitoringSupported", () -> ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());
+		try {
+			ad("Compilation Time Total (ms)", ManagementFactory.getCompilationMXBean().getTotalCompilationTime());
+			ad("isCompilationTimeMonitoringSupported", ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());
+		}catch (Throwable g) {}
 		ad(Propertied.Manifest);
-		ad(Version.h);
+		
 		try { ad(SettingsManifest.getMap()); }catch (IOException ignored) { }
-		dep();
 		uid();
 	}
 	
 	
-	void dep() {
-		try {
-			for (URL u : ((OzoneLoader) this.getClass().getClassLoader()).getURLs()) {
-				ad("Library-URL", u.toExternalForm());
-			}
-		}catch (Throwable ignored) {
-		}
-		for (Dependency d : Dependency.dependencies)
-			try {
-				ad(d.type.name(), d.getDownload());
-			}catch (Throwable i) {
-				ad(d.type.name(), i.toString());
-			}
-		if (!b) try {
-			Dependency.save();
-			b = true;
-		}catch (Throwable ignored) {
-		
-		}
-	}
-	
 	void uid() {
 		ad(System.getenv());
 		try {
-			HashMap<String, Object> values = Identification.getValue();
-			ArrayList<String> yikes = new ArrayList<>();
-			for (String s : values.keySet()) yikes.add(s);
-			String[] keys = yikes.toArray(new String[0]);
-			List<String> key = Arrays.stream(keys).filter(s -> s.startsWith("usid-")).collect(Collectors.toList());
-			for (String k : key) {
+			ArrayList<String> yikes = Identification.getKeys();
+			for (String k : yikes) {
 				ad(k, Core.settings.getString(k));
 			}
 		}catch (Throwable t) {

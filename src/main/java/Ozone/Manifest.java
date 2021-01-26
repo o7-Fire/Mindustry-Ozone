@@ -19,10 +19,7 @@ package Ozone;
 import Atom.Reflect.Reflect;
 import Ozone.Internal.Module;
 import Ozone.Settings.SettingsManifest;
-import Ozone.UI.CommandsListFrag;
-import Ozone.UI.OzoneMenu;
-import Ozone.UI.TaskList;
-import Ozone.UI.WorldInformation;
+import Ozone.UI.*;
 import arc.Core;
 import arc.math.Interp;
 import arc.net.Client;
@@ -48,6 +45,13 @@ public class Manifest {
 	public static CommandsListFrag commFrag;
 	public static WorldInformation worldInformation;
 	public static TaskList taskList;
+	
+	public static ExperimentDialog experiment;
+	public static UILayout uiDebug;
+	public static ModsMenu modsMenu;
+	public static EnvironmentInformation envInf;
+	
+	public static ModuleFrag moduleFrag;
 	public static ArrayList<Class<?>> settings = new ArrayList<>();//for GUI purpose
 	public static String lastServer = "";
 	

@@ -31,11 +31,18 @@ public class Identification {
 		return (HashMap<String, Object>) f.get(Core.settings);
 	}
 	
-	public static void changeID() throws NoSuchFieldException, IllegalAccessException {
+	public static ArrayList<String> getKeys() throws NoSuchFieldException, IllegalAccessException {
 		HashMap<String, Object> values = getValue();
 		ArrayList<String> yikes = new ArrayList<>();
-		for (String s : values.keySet())
+		for (String s : values.keySet()) {
 			if (s.startsWith("usid-") || s.startsWith("uuid")) yikes.add(s);
+		}
+		return yikes;
+	}
+	
+	public static void changeID() throws NoSuchFieldException, IllegalAccessException {
+		ArrayList<String> yikes = getKeys();
+		
 		for (String s : yikes) Core.settings.put(s, getRandomUID());
 		
 	}

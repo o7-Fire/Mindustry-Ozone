@@ -29,7 +29,6 @@ import mindustry.input.MobileInput;
 
 public class VarsPatch implements Module {
 	public static Table menu;
-	
 	@Override
 	public void init() throws Throwable {
 		try {
