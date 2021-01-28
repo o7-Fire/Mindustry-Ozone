@@ -19,7 +19,6 @@ package Ozone.UI;
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
-import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
@@ -39,13 +38,15 @@ public class ModsMenu extends BaseDialog {
 		cont.row();
 		generic();
 		cont.button("Reset UID", Icon.refresh, () -> Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", () -> {
-			try {
-				Identification.changeID();
-			}catch (Throwable e) {
-				Sentry.captureException(e);
-				Vars.ui.showException(e);
-			}
-		})).growX();
+			Vars.ui.loadfrag.show("Changing ID");
+			Identification.changeID(() -> {
+				Vars.ui.loadfrag.hide();
+				try {
+					Vars.ui.showInfo("Changed " + Identification.getKeys().size() + " ID");
+				}catch (Throwable ignored) {}
+			});
+			
+		})).growX().row();
 		
 	}
 	

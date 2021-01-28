@@ -16,9 +16,12 @@
 
 package Ozone.Experimental.Evasion;
 
+import Atom.Utility.Pool;
 import arc.Core;
 import arc.math.Rand;
 import arc.util.serialization.Base64Coder;
+import io.sentry.Sentry;
+import mindustry.Vars;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -38,6 +41,19 @@ public class Identification {
 			if (s.startsWith("usid-") || s.startsWith("uuid")) yikes.add(s);
 		}
 		return yikes;
+	}
+	
+	public static void changeID(Runnable onfinished) {
+		Pool.daemon(() -> {
+			try {
+				changeID();
+			}catch (Throwable t) {
+				t.printStackTrace();
+				Sentry.captureException(t);
+				Vars.ui.showException(t);
+			}
+			onfinished.run();
+		}).start();
 	}
 	
 	public static void changeID() throws NoSuchFieldException, IllegalAccessException {

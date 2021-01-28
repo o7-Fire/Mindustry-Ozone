@@ -37,16 +37,28 @@ public class DesktopUI implements Module {
 	public void init() throws Throwable {
 		botControllerDialog = new BotControllerDialog();
 		dbgMenu = new DebugMenuDialog();
-		Events.on(EventType.ResizeEvent.class, this::onResize);
-		
+		Events.on(EventType.ResizeEvent.class, s -> {
+			onResize();
+		});
+		onResize();
+		modsMenu.shown(this::modsMenuShown);
+		envInf.shown(this::envInfShown);
 	}
 	
-	void onResize(EventType.ResizeEvent e) {
-		envInf.ad(Version.h);
+	void modsMenuShown() {
+		modsMenu.cont.row();
 		modsMenu.ad(botControllerDialog);
 		modsMenu.ad(dbgMenu);
+	}
+	
+	void envInfShown() {
+		envInf.ad(Version.h);
 		dep();
-		
+	}
+	
+	void onResize() {
+		modsMenuShown();
+		envInfShown();
 	}
 	
 	@Override

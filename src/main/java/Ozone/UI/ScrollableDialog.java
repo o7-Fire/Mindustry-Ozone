@@ -63,6 +63,7 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		cont.clear();
 		table.clear();
 		setup();
+		table.row();
 		cont.add(scrollPane).growX().growY();
 	}
 	

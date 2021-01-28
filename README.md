@@ -115,7 +115,7 @@ Linux: /home/USERNAME/.local/share/Mindustry/mods/
 - Fix javac commands
 - Integrated png to draw logic tool
 - ~~Mobile support~~
-- Schematic Pools
+- ~~Schematic Pools~~
 - Fix the goddamn buggy Pathfinding
 - Ozone Extension Support
 - Video player

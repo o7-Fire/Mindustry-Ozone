@@ -59,6 +59,7 @@ public class EnvironmentInformation extends ScrollableDialog {
 		
 		try { ad(SettingsManifest.getMap()); }catch (IOException ignored) { }
 		uid();
+		
 	}
 	
 	
