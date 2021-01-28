@@ -101,9 +101,5 @@ public class OzoneMenu extends BaseDialog {
 			});
 		}).growX();
 		
-		try {
-			if (Vars.ui.hudfrag.shown) Reflect.getMethod(null, "toggleMenus", Vars.ui.hudfrag).invoke(Vars.ui.hudfrag);
-		}catch (Throwable ignored) {
-		}
 	}
 }
