@@ -20,8 +20,8 @@ public abstract class Completable extends Task {
 	protected boolean completed;
 	
 	@Override
-	public void taskCompleted() {
-		if (completed) super.taskCompleted();
+	public void onCompleted() {
+		if (completed) super.onCompleted();
 	}
 	
 	@Override

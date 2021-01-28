@@ -45,6 +45,10 @@ import static mindustry.Vars.player;
 public class Interface {
 	public static final ObjectMap<String, String> bundle = new ObjectMap<>();
 	
+	public static Tile getMouseTile() {
+		return Vars.world.tileWorld(Vars.player.mouseX, Vars.player.mouseY);
+	}
+	
 	//on load event show this stupid warning
 	public static void warningUI(String title, String description) {
 		if (Vars.ui == null)

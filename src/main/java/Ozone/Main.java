@@ -85,7 +85,6 @@ public class Main {
 			}catch (Throwable e) {
 				Sentry.captureException(e);
 				Log.err(e);
-				throw new RuntimeException(e);
 			}
 		}
 		Log.debug("Finished Registering \n");

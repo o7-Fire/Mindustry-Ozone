@@ -182,7 +182,7 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 	
 	@Override
 	public void clearTask() {
-		TaskInterface.reset();
+	
 	}
 	
 	@Override

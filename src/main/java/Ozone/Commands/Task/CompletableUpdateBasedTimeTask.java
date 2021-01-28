@@ -27,8 +27,8 @@ public class CompletableUpdateBasedTimeTask extends UpdateBasedTimeTask {
 	}
 	
 	@Override
-	public void taskCompleted() {
-		if (completed.get()) super.taskCompleted();
+	public void onCompleted() {
+		if (completed.get()) super.onCompleted();
 	}
 	
 	

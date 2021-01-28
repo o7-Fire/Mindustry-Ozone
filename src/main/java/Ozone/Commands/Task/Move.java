@@ -51,11 +51,11 @@ public class Move extends Task {
 	}
 
 	@Override
-	public void taskCompleted() {
+	public void onCompleted() {
 		if (Vars.net.active()) Vars.player.reset();
 		for (Tile t : pathfindingCache)
 			t.clearOverlay();
-		super.taskCompleted();
+		super.onCompleted();
 	}
 
 	@Override

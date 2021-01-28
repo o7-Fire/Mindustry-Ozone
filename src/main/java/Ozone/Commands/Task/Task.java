@@ -39,7 +39,7 @@ public abstract class Task {
 		Commands.tellUser(s);
 	}
 	
-	public void taskCompleted() {
+	public void onCompleted() {
 		for (Consumer<Object> s : onTaskCompleted)
 			s.accept(new Object());//wtf ?
 	}

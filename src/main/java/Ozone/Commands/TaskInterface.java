@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 
 public class TaskInterface implements Module {
 	public static final Queue<Task> taskQueue = new Queue<>();
-	private static volatile boolean init = false;
+	
 	
 	public void init() {
 		Events.run(EventType.Trigger.update, TaskInterface::update);
@@ -42,7 +42,11 @@ public class TaskInterface implements Module {
 	private static void update() {
 		if (taskQueue.isEmpty()) return;
 		if (!taskQueue.first().isCompleted()) taskQueue.first().update();
-		else taskQueue.removeFirst().taskCompleted();
+		else taskQueue.removeFirst().onCompleted();
+	}
+	
+	public static void addTask(Task task) {
+		addTask(task, null);
 	}
 	
 	public static void addTask(Task task, Consumer<Object> onDone) {
@@ -109,7 +113,7 @@ public class TaskInterface implements Module {
 		else return pos1.getX() == pos2.getX() && pos1.getY() == pos2.getY();
 	}
 	
-	public static void reset() {
+	public void reset() {
 		taskQueue.clear();
 	}
 	

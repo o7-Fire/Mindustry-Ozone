@@ -38,6 +38,10 @@ public class Overlay implements Module {
 		
 	}
 	
+	public void reset() {
+		overlay.clear();
+	}
+	
 	public void init() {
 		Events.run(EventType.Trigger.draw, Overlay::draw);
 	}

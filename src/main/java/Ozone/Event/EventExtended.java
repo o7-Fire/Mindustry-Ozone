@@ -21,6 +21,10 @@ public class EventExtended {
 		Disconnected, Connected
 	}
 	
+	public enum Game {
+		Start, Stop
+	}
+	
 	public static class Connecting {
 		public String ip;
 		public int port;

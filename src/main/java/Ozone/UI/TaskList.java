@@ -16,15 +16,19 @@
 
 package Ozone.UI;
 
+import Atom.Reflect.FieldTool;
 import Atom.Time.Timer;
-import Ozone.Commands.Commands;
+import Atom.Utility.Random;
 import Ozone.Commands.Task.Task;
 import Ozone.Commands.TaskInterface;
+import Ozone.Settings.BaseSettings;
+import mindustry.Vars;
 
 import java.util.concurrent.TimeUnit;
 
 public class TaskList extends ScrollableDialog {
 	Timer timer = new Timer(TimeUnit.MICROSECONDS, 200);
+	int last = 0;
 	
 	public TaskList() {
 		super("Task List");
@@ -34,16 +38,31 @@ public class TaskList extends ScrollableDialog {
 	
 	@Override
 	public void setup() {
-		ad("Commands Task");
-		for (Task t : Commands.commandsQueue)
-			ad(t.toString());
-		ad("Task Interface");
-		for (Task t : TaskInterface.taskQueue)
-			ad(t.toString());
+		
+		int i = 0;
+		for (Task t : TaskInterface.taskQueue) {
+			ad(i++, t);
+		}
+	}
+	
+	void ad(int i, Task t) {
+		String title = i + "";
+		if (BaseSettings.colorPatch) title = "[" + Random.getRandomHexColor() + "]" + title;
+		table.button(title + "[white]. " + t.toString(), () -> {
+			Vars.ui.showInfo(FieldTool.getFieldDetails(t, t.getClass(), true, 400));
+		}).growX().tooltip(FieldTool.getFieldDetails(t));
+		table.row();
 	}
 	
 	@Override
 	protected void update() {
-		if (timer.get()) init();
+		if (timer.get()) {
+			if (last != TaskInterface.taskQueue.size) {
+				init();
+				
+			}
+			last = TaskInterface.taskQueue.size;
+		}
+		
 	}
 }

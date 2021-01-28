@@ -22,7 +22,10 @@ import Ozone.Commands.Commands;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
 import Ozone.Settings.BaseSettings;
+import Ozone.Watcher.PlayTime;
+import arc.Core;
 import arc.input.KeyCode;
+import arc.scene.style.Drawable;
 import arc.scene.ui.TextField;
 import arc.util.Interval;
 import mindustry.Vars;
@@ -65,7 +68,7 @@ public class OzoneMenu extends BaseDialog {
 		if (!isShown()) return;
 		if (!interval.get(40)) return;
 		if (!Vars.mobile) arc.Core.scene.setKeyboardFocus(commandsField);
-		showHud();
+		
 	}
 	
 	@Override
@@ -78,18 +81,14 @@ public class OzoneMenu extends BaseDialog {
 		
 		cont.top();
 		cont.clear();
-		//   cont.button(Ozone.Core.bundle.get("ozone.javaEditor"), Icon.pencil, () -> {
-		//      Ozone.Core.app.post(this::hide);
-		//     Manifest.commFrag.toggle();
-		// }).size(Ozone.Core.graphics.getWidth() / 6, Ozone.Core.graphics.getHeight() / 12);
 		cont.row();
 		cont.button(Translation.get("ozone.commandsUI"), Icon.commandRally, () -> {
 			arc.Core.app.post(this::hide);
 			Manifest.commFrag.toggle();
 		}).growX();
 		cont.row();
-		cont.button("World Information", Icon.fileTextFill, () -> Manifest.worldInformation.show()).growX();
-		cont.row();
+		ad(Manifest.worldInformation, Icon.fileTextFill);
+		ad(Manifest.taskList, Icon.list);
 		cont.table((s) -> {
 			s.left();
 			s.label(() -> Translation.get("Commands") + ": ");
@@ -100,6 +99,24 @@ public class OzoneMenu extends BaseDialog {
 				commandsField.clearText();
 			});
 		}).growX();
+		cont.row();
+		cont.table((s) -> {
+			s.right();
+			s.button("Mark Tiles", Icon.pencil, () -> {
+				hide();
+				Core.app.post(PlayTime::markTiles);
+			}).growX();
+			
+			s.button("Close", Icon.cancel, this::hide).growX();
+		}).growX();
 		
+	}
+	
+	void ad(BaseDialog baseDialog, Drawable d) {
+		cont.button(Translation.get(baseDialog.getClass().getName()), d, baseDialog::show).growX().row();
+	}
+	
+	void ad(BaseDialog baseDialog) {
+		cont.button(Translation.get(baseDialog.getClass().getName()), baseDialog::show).growX().row();
 	}
 }

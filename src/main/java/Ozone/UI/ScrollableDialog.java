@@ -67,9 +67,9 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		cont.add(scrollPane).growX().growY();
 	}
 	
-	protected void ad(Map<String, ?> map) {
-		for (Map.Entry<String, ?> s : map.entrySet())
-			ad(s.getKey(), s.getValue());
+	protected void ad(Map<?, ?> map) {
+		for (Map.Entry<?, ?> s : map.entrySet())
+			ad(s.getKey().toString(), s.getValue());
 	}
 	
 	protected void ad(String name, Drawable i, BaseDialog bd) {
@@ -94,7 +94,7 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		table.row();
 	}
 	
-	protected void ad(String title, Callable<Object> callable) {
+	protected void ad(String Object, Callable<Object> callable) {
 		Pool.submit(() -> {
 			try {
 				ad(title, callable.call());
@@ -105,12 +105,12 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		});
 	}
 	
-	protected void ad(String text) {
-		table.add(text).growX();
+	protected void ad(Object text) {
+		table.add(text.toString()).growX();
 		table.row();
 	}
 	
-	protected void ad(String title, Object value) {
+	protected void ad(Object title, Object value) {
 		if (value == null) value = "null";
 		if (BaseSettings.colorPatch) title = "[" + Random.getRandomHexColor() + "]" + title;
 		Label l = new Label(title + ":");

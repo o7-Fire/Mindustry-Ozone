@@ -18,7 +18,6 @@ package Shared;
 
 import Ozone.Manifest;
 import Ozone.Propertied;
-import Ozone.Settings.BaseSettings;
 import Ozone.Settings.SettingsManifest;
 import Ozone.Version;
 import io.sentry.Scope;
@@ -45,7 +44,7 @@ public class SharedBoot {
 		}catch (Throwable ignored) {
 			standalone = true;
 		}
-		if (debug) BaseSettings.debugMode = true;
+		
 	}
 
 	public static <T> T getOrDefault(Map<?, T> map, Object key, T def) {

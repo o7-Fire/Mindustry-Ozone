@@ -16,18 +16,32 @@
 
 package Ozone.Patch;
 
-import Ozone.Commands.Commands;
-import Ozone.Commands.TaskInterface;
 import Ozone.Event.EventExtended;
 import Ozone.Internal.Module;
+import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
 import arc.Events;
 import arc.util.Log;
+import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.game.EventType;
 
+import java.util.Map;
+
 public class EventHooker implements Module {
+	public static void resets() {
+		for (Map.Entry<Class<? extends Module>, Module> m : Manifest.module.entrySet()) {
+			try {
+				m.getValue().reset();
+			}catch (Throwable throwable) {
+				Log.err(throwable);
+				Sentry.captureException(throwable);
+				Vars.ui.showException(throwable);
+			}
+		}
+	}
+	
 	@Override
 	public void init() throws Throwable {
 		Vars.loadLogger();
@@ -45,14 +59,23 @@ public class EventHooker implements Module {
 			});
 			// setOzoneLogger();
 		});
+		Events.run(EventExtended.Game.Start, () -> {
+			resets();
+		});
+		Events.run(EventExtended.Game.Stop, () -> {
+			resets();
+		});
 		Events.run(EventExtended.Connect.Disconnected, () -> {
-			TaskInterface.reset();
-			Commands.commandsQueue.clear();
+		
+			
 		});
 		Events.on(EventType.StateChangeEvent.class, s -> {
 			Log.debug("Ozone-Event-@: State changed from @ to @", s.getClass().getSimpleName(), s.from, s.to);
 			if (s.from.equals(GameState.State.playing) && s.to.equals(GameState.State.menu))
-				Events.fire(EventExtended.Connect.Disconnected);
+				Events.fire(EventExtended.Game.Stop);
+			else if (s.from.equals(GameState.State.menu) && s.to.equals(GameState.State.playing))
+				Events.fire(EventExtended.Game.Start);
+			
 		});
 		if (!BaseSettings.worldLog) return;
 		Events.on(EventType.ClientPreConnectEvent.class, s -> {

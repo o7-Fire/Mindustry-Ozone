@@ -24,10 +24,10 @@ import Ozone.Commands.Task.*;
 import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
+import Ozone.Patch.EventHooker;
 import Ozone.Patch.Translation;
 import Ozone.Settings.BaseSettings;
 import Shared.SharedBoot;
-import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.Colors;
 import arc.scene.style.TextureRegionDrawable;
@@ -37,7 +37,6 @@ import arc.struct.Seq;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.ai.Astar;
-import mindustry.game.EventType;
 import mindustry.gen.*;
 import mindustry.net.Administration;
 import mindustry.type.Item;
@@ -101,11 +100,7 @@ public class Commands implements Module {
 	private static int i = 0;
 	
 	public static void register() {
-		Events.run(EventType.Trigger.update, () -> {
-			if (commandsQueue.isEmpty()) return;
-			commandsQueue.first().update();
-			if (commandsQueue.first().isCompleted()) commandsQueue.removeFirst();
-		});
+
 		//register("message-log", new Command(Commands::messageLog, Icon.rotate));
 		//register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
 		register("task-move", new Command(Commands::taskMove));
@@ -128,11 +123,16 @@ public class Commands implements Module {
 		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
 		register("info-pos", new Command(Commands::infoPos, Icon.move));
 		register("help", new Command(Commands::help, Icon.infoCircle));
-		register("chaos-kick", new Command(Commands::chaosKick, Icon.hammer));
+		register("kick-jammer", new Command(Commands::kickJammer, Icon.hammer), "Jamm votekick system so player cant kick you");
 		if (SharedBoot.debug)
 			register("debug", new Command(Commands::debug, Icon.pause), "so you just found debug mode");
+		register("module-reset", new Command(Commands::moduleReset, Icon.eraser), "Reset all module as if you loading the world");
 		Log.infoTag("Ozone", "Commands Center Initialized");
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
+	}
+	
+	public static void moduleReset() {
+		EventHooker.resets();
 	}
 	
 	public static void debug() {
@@ -163,7 +163,7 @@ public class Commands implements Module {
 	}
 	
 	public static void taskClear() {
-		TaskInterface.reset();
+		TaskInterface.taskQueue.clear();
 		tellUser("Task cleared");
 	}
 	
@@ -376,7 +376,7 @@ public class Commands implements Module {
 	
 	public static void shuffleSorter() {
 		
-		commandsQueue.add(new Completable() {
+		TaskInterface.addTask(new Completable() {
 			final Future<Building> f;
 			
 			{
@@ -433,9 +433,9 @@ public class Commands implements Module {
 		}
 		targetPlayer = arg.get(0);
 		tellUser("Player found distance: " + Pathfinding.distanceTo(Vars.player.tileOn(), target.tileOn()));
-		commandsQueue.add(new Move(target.x, target.y) {{name = "followPlayer:" + target.name();}});
+		TaskInterface.addTask(new Move(target.x, target.y) {{name = "followPlayer:" + target.name();}});
 		
-		commandsQueue.add(new SingleTimeTask(() -> {//basically repeating shit
+		TaskInterface.addTask(new SingleTimeTask(() -> {//basically repeating shit
 			if (targetPlayer == null) return;//gone
 			Player t = Interface.searchPlayer(targetPlayer);
 			if (t == null) tellUser("Player gone, stop following");
@@ -447,10 +447,10 @@ public class Commands implements Module {
 		});
 	}
 	
-	public static void chaosKick() {
+	public static void kickJammer() {
 		falseVote = !falseVote;
 		if (falseVote) {
-			commandsQueue.add(new CompletableUpdateBasedTimeTask(() -> {
+			TaskInterface.addTask(new CompletableUpdateBasedTimeTask(() -> {
 				if (Groups.player.size() < 2) {
 					falseVote = false;
 					tellUser("Not enough player, stopping falseVote");
@@ -478,7 +478,7 @@ public class Commands implements Module {
 	public static void chatRepeater(ArrayList<String> arg) {
 		chatting = !chatting;
 		if (chatting) {
-			commandsQueue.add(new CompletableUpdateBasedTimeTask(() -> {
+			TaskInterface.addTask(new CompletableUpdateBasedTimeTask(() -> {
 				Call.sendChatMessage(Utility.joiner(arg, " ") + Math.random());
 			}, Administration.Config.messageRateLimit.num() * 1000L, () -> chatting) {
 				{
@@ -499,7 +499,7 @@ public class Commands implements Module {
 	public static void drainCore() {
 		drainCore = !drainCore;
 		if (drainCore) {
-			commandsQueue.add(new SingleTimeTask(() -> {
+			TaskInterface.addTask(new SingleTimeTask(() -> {
 				if (!drainCore) return;
 				Interface.withdrawItem(Vars.player.closestCore(), Vars.player.closestCore().items().first());
 				Interface.dropItem();
@@ -546,8 +546,8 @@ public class Commands implements Module {
 			icon = null;
 		}
 		
-		public Command(Runnable r, TextureRegionDrawable icon){
-			this.method = strings -> {r.run();};
+		public Command(Runnable r, TextureRegionDrawable icon) {
+			this.method = strings -> r.run();//cursed
 			this.icon = icon;
 		}
 		public Command(Consumer<ArrayList<String>> r, TextureRegionDrawable icon){

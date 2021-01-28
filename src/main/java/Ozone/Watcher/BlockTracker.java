@@ -17,6 +17,7 @@
 package Ozone.Watcher;
 
 import Atom.Reflect.FieldTool;
+import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import Ozone.Settings.BaseSettings;
 import arc.Core;
@@ -35,8 +36,8 @@ public class BlockTracker implements Module {
 	
 	private static void update() {
 		if (BaseSettings.blockDebug) if (Vars.state.isPlaying()) {
-			if (Core.input.keyDown(KeyCode.controlLeft)) if (Core.input.keyDown(KeyCode.mouseLeft))
-				target = Vars.world.tileWorld(Vars.player.mouseX, Vars.player.mouseY);
+			if (Core.input.keyDown(KeyCode.controlLeft))
+				if (Core.input.keyDown(KeyCode.mouseLeft)) target = Interface.getMouseTile();
 			
 			if (target != null) if (target.build != null)
 				Vars.ui.hudfrag.setHudText(FieldTool.getFieldDetails(target.build).replace("\n", "[white]\n"));

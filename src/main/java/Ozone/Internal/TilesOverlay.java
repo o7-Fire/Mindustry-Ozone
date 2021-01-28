@@ -25,6 +25,7 @@ import mindustry.world.Tile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class TilesOverlay implements Module {
@@ -32,12 +33,28 @@ public class TilesOverlay implements Module {
 	public static float size = 2f;
 	public static float f = 2;
 	public Color color = Color.valueOf(Random.getRandomHexColor());
-	protected ArrayList<Tile> tiles = new ArrayList<>();
+	protected List<Tile> tiles = new ArrayList<>();
 	
-	public TilesOverlay() {}
+	public TilesOverlay() {
+	
+	}
+	
+	public TilesOverlay(Tile... tiles) {this(Arrays.asList(tiles));}
 	
 	public TilesOverlay(List<Tile> tiles) {
-		this.tiles.addAll(tiles);
+		this.tiles = tiles;
+	}
+	
+	private static void draw() {
+		if (overlays.isEmpty()) return;
+		for (TilesOverlay ov : overlays) {
+			for (Iterator<Tile> t = ov.tiles.iterator(); ov.tiles.iterator().hasNext(); ) {
+				if (!t.hasNext()) break;
+				Tile v = t.next();
+				Lines.stroke(f, ov.color);
+				Lines.line(v.drawx(), v.drawy(), v.drawx() + f, v.drawy() + f);
+			}
+		}
 	}
 	
 	@Override
@@ -45,14 +62,9 @@ public class TilesOverlay implements Module {
 		Events.run(EventType.Trigger.draw, TilesOverlay::draw);
 	}
 	
-	private static void draw() {
-		if (overlays.isEmpty()) return;
-		for (TilesOverlay ov : overlays) {
-			for (Tile v : ov.tiles) {
-				Lines.stroke(f, ov.color);
-				Lines.line(v.drawx(), v.drawy(), v.drawx() + f, v.drawy() + f);
-			}
-		}
+	@Override
+	public void reset() throws Throwable {
+		overlays.clear();
 	}
 	
 	public static void add(List<Tile> tiles) {
