@@ -451,37 +451,44 @@ public class GifDecoder {
 			int code = read();
 			switch (code) {
 				// image separator
-				case 0x2C -> readBitmap();
-				// extension
-				case 0x21 -> {
+				case 0x2C:
+					readBitmap();
+					// extension
+				case 0x21: {
 					code = read();
 					switch (code) {
 						// graphics control extension
-						case 0xf9 -> readGraphicControlExt();
-						// application extension
-						case 0xff -> {
+						case 0xf9:
+							readGraphicControlExt();
+							// application extension
+						case 0xff: {
 							readBlock();
-							String app = "";
+							StringBuilder app = new StringBuilder();
 							for (int i = 0; i < 11; i++) {
-								app += (char) block[i];
+								app.append((char) block[i]);
 							}
-							if (app.equals("NETSCAPE2.0")) {
+							if (app.toString().equals("NETSCAPE2.0")) {
 								readNetscapeExt();
 							}else {
 								skip(); // don't care
 							}
 						}
 						// comment extension
-						case 0xfe -> skip();
-						// plain text extension
-						case 0x01 -> skip();
-						// uninteresting extension
-						default -> skip();
+						case 0xfe:
+							skip();
+							// plain text extension
+						case 0x01:
+							skip();
+							// uninteresting extension
+						default:
+							skip();
 					}
 				}
 				// terminator
-				case 0x3b -> done = true;
-				default -> status = STATUS_FORMAT_ERROR;
+				case 0x3b:
+					done = true;
+				default:
+					status = STATUS_FORMAT_ERROR;
 			}
 		}
 	}

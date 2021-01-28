@@ -52,8 +52,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import static Ozone.Settings.BaseSettings.debugMode;
-
 public class Commands implements Module {
 	
 	public static final Queue<Task> commandsQueue = new Queue<>();
@@ -138,7 +136,7 @@ public class Commands implements Module {
 	}
 	
 	public static void debug() {
-		if (!debugMode) {
+		if (!SharedBoot.debug) {
 			tellUser("The debug mode mason, what do they mean");
 			return;
 		}

@@ -27,6 +27,7 @@ public class OzoneBootstrap {
 		SharedBoot.initSentry();
 		if (SharedBoot.debug) {
 			Log.level = Log.LogLevel.debug;
+			
 		}
 		Log.info("Ozone-Version: " + Version.core);
 	}

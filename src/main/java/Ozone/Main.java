@@ -70,6 +70,7 @@ public class Main {
 	public static void init() throws IOException {
 		if (init) return;
 		init = true;
+		
 		Log.infoTag("Ozone", "Hail o7");
 		Log.debug("Registering module\n");
 		
