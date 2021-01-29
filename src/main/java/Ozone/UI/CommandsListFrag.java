@@ -83,7 +83,7 @@ public class CommandsListFrag extends Fragment {
 			boolean allowed = cl.getValue().icon != null;
 			String name = (BaseSettings.colorPatch ? "[" + Random.getRandomHexColor() + "]" : "") + cl.getKey() + "[white]";
 			if (allowed)
-				table.button(name, cl.getValue().icon, () -> cl.getValue().method.accept(new ArrayList<>())).growX();
+				table.button(name, cl.getValue().icon, () -> cl.getValue().method.accept(new ArrayList<>())).tooltip(cl.getValue().description).growX();
 			else table.button(name, Icon.boxSmall, () -> {
 			}).tooltip("Disabled, commands require user input").disabled(true).growX();
 			table.button(Icon.info, () -> Vars.ui.showInfo(cl.getValue().description));

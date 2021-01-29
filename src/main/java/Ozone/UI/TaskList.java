@@ -57,10 +57,8 @@ public class TaskList extends ScrollableDialog {
 	@Override
 	protected void update() {
 		if (timer.get()) {
-			if (last != TaskInterface.taskQueue.size) {
-				init();
-				
-			}
+			
+			if (last != TaskInterface.taskQueue.size) init();
 			last = TaskInterface.taskQueue.size;
 		}
 		

@@ -56,7 +56,7 @@ public class Commands implements Module {
 	public static final Queue<Task> commandsQueue = new Queue<>();
 	public static final Map<String, Command> commandsList = new TreeMap<>();
 	
-	static String targetPlayer;//no need to be volatile because its still accessed from same thread
+	private static String targetPlayer;//no need to be volatile because its still accessed from same thread
 	private static boolean falseVote = false;
 	private static boolean drainCore = false;
 	private static boolean chatting = false;

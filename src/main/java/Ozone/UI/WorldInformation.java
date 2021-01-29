@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class WorldInformation extends ScrollableDialog {
@@ -145,7 +146,7 @@ public class WorldInformation extends ScrollableDialog {
 				ad("Buildable Tiles", buildableTile);
 				ad(mainCount);
 				Log.debug("World calculation finished in @", te.elapsedS());
-				if ((System.currentTimeMillis() - te.elapsed().getSrc()) > 3000)
+				if ((System.currentTimeMillis() - te.convert(TimeUnit.MICROSECONDS).getSrc()) > 3000)
 					Vars.ui.showInfo("World calculation finished: " + te.elapsedS());
 			}catch (Throwable i) {
 				if (st != null) {

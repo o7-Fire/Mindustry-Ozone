@@ -27,6 +27,7 @@ import arc.Core;
 import arc.input.KeyCode;
 import arc.scene.style.Drawable;
 import arc.scene.ui.TextField;
+import arc.scene.ui.layout.Table;
 import arc.util.Interval;
 import mindustry.Vars;
 import mindustry.gen.Icon;
@@ -36,6 +37,7 @@ public class OzoneMenu extends BaseDialog {
 	Interval interval = new Interval();
 	private TextField commandsField;
 	private String commands = "";
+	private Table tB;
 	
 	public OzoneMenu(String title, DialogStyle style) {
 		super(title, style);
@@ -51,6 +53,7 @@ public class OzoneMenu extends BaseDialog {
 		this.shown(this::setup);
 		this.onResize(this::setup);
 		update(this::update);
+		addCloseButton();
 	}
 	
 	public static void showHud() {
@@ -82,13 +85,16 @@ public class OzoneMenu extends BaseDialog {
 		cont.top();
 		cont.clear();
 		cont.row();
-		cont.button(Translation.get("ozone.commandsUI"), Icon.commandRally, () -> {
+		cont.table(t -> tB = t).growX();
+		cont.row();
+		tB.button(Translation.get("ozone.commandsUI"), Icon.commandRally, () -> {
 			arc.Core.app.post(this::hide);
 			Manifest.commFrag.toggle();
 		}).growX();
-		cont.row();
 		ad(Manifest.worldInformation, Icon.fileTextFill);
+		tB.row();
 		ad(Manifest.taskList, Icon.list);
+		ad(Manifest.modsMenu, Icon.file);
 		cont.table((s) -> {
 			s.left();
 			s.label(() -> Translation.get("Commands") + ": ");
@@ -113,10 +119,10 @@ public class OzoneMenu extends BaseDialog {
 	}
 	
 	void ad(BaseDialog baseDialog, Drawable d) {
-		cont.button(Translation.get(baseDialog.getClass().getName()), d, baseDialog::show).growX().row();
+		tB.button(Translation.get(baseDialog.getClass().getName()), d, baseDialog::show).growX();
 	}
 	
 	void ad(BaseDialog baseDialog) {
-		cont.button(Translation.get(baseDialog.getClass().getName()), baseDialog::show).growX().row();
+		tB.button(Translation.get(baseDialog.getClass().getName()), baseDialog::show).growX();
 	}
 }
