@@ -113,7 +113,7 @@ public class OzoneMenu extends BaseDialog {
 				Core.app.post(PlayTime::markTiles);
 			}).growX();
 			
-			s.button("Close", Icon.cancel, this::hide).growX();
+			
 		}).growX();
 		
 	}

@@ -34,15 +34,18 @@ import java.util.ArrayList;
 public class PlayTime implements Module {
 	public static ArrayList<Tile> markedTiles = new ArrayList<>();
 	public static boolean markTile;
+	private static TilesOverlay tilesOverlay = new TilesOverlay(markedTiles);
 	
 	public static void markTiles() {
 		markTile = !markTile;
+		
 		if (markTile) TaskInterface.addTask(new Task() {
 			boolean valid = false;
 			
 			{
 				name = "Marking Tiles";
 				c();
+				if (!TilesOverlay.overlays.contains(tilesOverlay)) TilesOverlay.overlays.add(tilesOverlay);
 			}
 			
 			@Override
@@ -91,6 +94,6 @@ public class PlayTime implements Module {
 	
 	public void reset() {
 		markedTiles.clear();
-		TilesOverlay.add(markedTiles);
+		if (!TilesOverlay.overlays.contains(tilesOverlay)) TilesOverlay.overlays.add(tilesOverlay);
 	}
 }

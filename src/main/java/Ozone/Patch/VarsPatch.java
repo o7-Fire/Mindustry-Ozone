@@ -16,6 +16,7 @@
 
 package Ozone.Patch;
 
+import Atom.Reflect.FieldTool;
 import Atom.Reflect.Reflect;
 import Ozone.Internal.Module;
 import Ozone.Patch.Mindustry.DesktopInputPatched;
@@ -27,13 +28,23 @@ import mindustry.Vars;
 import mindustry.input.DesktopInput;
 import mindustry.input.MobileInput;
 
+import java.lang.reflect.Field;
+
 public class VarsPatch implements Module {
 	public static Table menu;
+	
 	@Override
 	public void init() throws Throwable {
 		try {
 			Log.infoTag("Ozone", "Patching");
 			mindustry.Vars.ui.chatfrag.addMessage("gay", "no");
+			try {
+				Field f = Vars.class.getDeclaredField("maxSchematicSize");
+				FieldTool.setFinalStatic(f, 1200);
+			}catch (Throwable t) {
+				Log.warn("Require java 8 to patch final field @", t.toString());
+			}
+			
 			Vars.enableConsole = true;
 			if (BaseSettings.debugMode) Log.level = (Log.LogLevel.debug);
 			Log.debug("Ozone-Debug: @", "Debugs, peoples, debugs");

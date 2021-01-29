@@ -39,7 +39,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@SuppressWarnings("Unchecked")
 public class Manifest {
 	public static OzoneMenu menu;
 	public static CommandsListFrag commFrag;

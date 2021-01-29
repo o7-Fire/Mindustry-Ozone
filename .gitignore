@@ -3,6 +3,7 @@
 .attach_*
 /dependencies
 /gen/
+SimpleLearning.mdl
 ## Java
 Tools/build
 *.class

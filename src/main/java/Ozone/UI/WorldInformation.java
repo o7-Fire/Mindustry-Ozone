@@ -18,7 +18,6 @@ package Ozone.UI;
 
 import Atom.Time.Time;
 import Atom.Utility.Pool;
-import Ozone.Manifest;
 import arc.scene.ui.Label;
 import arc.struct.ObjectMap;
 import arc.util.Log;
@@ -50,7 +49,6 @@ public class WorldInformation extends ScrollableDialog {
 	public void setup() {
 		label = new Label("World calculation began...");
 		label.visible = false;
-		ad(Manifest.taskList);
 		ad("Word Name", Vars.state.map.name());
 		ad("Players Count", Groups.player.size());
 		ad("Drawc Count", Groups.draw.size());
@@ -146,8 +144,8 @@ public class WorldInformation extends ScrollableDialog {
 				ad("Buildable Tiles", buildableTile);
 				ad(mainCount);
 				Log.debug("World calculation finished in @", te.elapsedS());
-				if ((System.currentTimeMillis() - te.convert(TimeUnit.MICROSECONDS).getSrc()) > 3000)
-					Vars.ui.showInfo("World calculation finished: " + te.elapsedS());
+				if (te.elapsed().convert(TimeUnit.MILLISECONDS).getSrc() > 3000)
+					Vars.ui.showInfo("World calculation finished: " + te.elapsed().convert(TimeUnit.MILLISECONDS).toString());
 			}catch (Throwable i) {
 				if (st != null) {
 					st.setStatus(SpanStatus.INTERNAL_ERROR);

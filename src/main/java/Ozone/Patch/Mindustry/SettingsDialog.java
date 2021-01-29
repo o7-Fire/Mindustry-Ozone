@@ -20,7 +20,7 @@ import Atom.Reflect.Reflect;
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
-import arc.Core;
+import arc.scene.ui.layout.Table;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
@@ -36,10 +36,10 @@ public class SettingsDialog extends SettingsMenuDialog {
 			Log.errTag("Ozone", "Can't get SettingsTable");
 			return;
 		}
-		gameTable.row().left();
-		h(gameTable);
+		gameTable.row();
+		gameTable.table(SettingsDialog::h).growX().row();
 		hidden(Manifest::saveSettings);
-		gameTable.button("Save Ozone Settings", Manifest::saveSettings).growX();
+		gameTable.button("Save Ozone Settings", Manifest::saveSettings).growX().row();
 		gameTable.button("Reset UID", () -> {
 			try {
 				Identification.changeID();
@@ -51,9 +51,10 @@ public class SettingsDialog extends SettingsMenuDialog {
 		}).growX();
 	}
 	
-	static void h(SettingsTable gameTable) {
+	static void h(Table gameTable) {
 		for (Field f : Manifest.getSettings()) {
 			String name = f.getDeclaringClass().getName() + "." + f.getName();
+			gameTable.left();
 			try {
 				f.setAccessible(true);
 				Class<?> type = f.getType();
@@ -68,7 +69,7 @@ public class SettingsDialog extends SettingsMenuDialog {
 					gameTable.row();
 					continue;
 				}
-				gameTable.label(() -> Core.bundle.get(name)).growX();
+				gameTable.label(() -> Translation.get(name) + ": ").growX().row();
 				gameTable.field(f.get(null).toString(), s -> {
 					try {
 						Object o = Reflect.parseStringToPrimitive(s, f.getType());
@@ -79,8 +80,7 @@ public class SettingsDialog extends SettingsMenuDialog {
 						Vars.ui.showException(t);
 						Sentry.captureException(t);
 					}
-				}).growX().left();
-				gameTable.row();
+				}).growX().left().row();
 			}catch (Throwable t) {
 				Sentry.captureException(t);
 				Log.err(t);
