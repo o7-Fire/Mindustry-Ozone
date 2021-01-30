@@ -36,7 +36,7 @@ import static Ozone.Internal.Interface.registerWords;
 //TODO decentralize translation
 public class Translation implements Module {
 	public static final ArrayList<String> normalSinglet = new ArrayList<>(Arrays.asList("Run"));
-	public static final ArrayList<String> singlet1 = new ArrayList<>(Arrays.asList("String", "Integer", "Float", "Long", "Boolean", "Commands"));
+	public static final ArrayList<String> singlet1 = new ArrayList<>(Arrays.asList("String", "Integer", "Float", "Long", "Boolean", "Commands", "Settings"));
 	public static final HashMap<String, String> generalSettings = new HashMap<>();
 	public static final HashMap<String, String> commands = new HashMap<>();
 	public static final HashMap<String, String> keyBinds = new HashMap<>();

@@ -19,7 +19,6 @@ import Atom.Utility.Random;
 import Atom.Utility.Utility;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,30 +26,64 @@ import java.util.List;
 public class SimpleLearning {
 	
 	static int useJacketAtCentigrade = 10;
-	
+	static File f = new File("SimpleLearning.mdl");
+	static Model n = new Model(1, 1);
 	
 	public static void main(String[] args) throws Throwable {
-		File f = new File("SimpleLearning.mdl");
-		Model n = new Model(1, 1);
+		
 		try {
 			n = SerializeData.dataIn(f);
 		}catch (Throwable gay) {
-			trainModel(n, f);
+			trainModel(n);
 		}
-		Model finalN = n;
+		Runtime.getRuntime().addShutdownHook(new Thread(SimpleLearning::saveModel));
+		
 		Utility.convertThreadToInputListener(">", s -> {
+			if (s == null) {
+				try {
+					Thread.currentThread().interrupt();
+				}catch (Throwable ignored) {}
+				return;
+			}
+			if (s.equalsIgnoreCase("train")) {
+				trainModel(n);
+				return;
+			}
 			try {
 				int i = Integer.parseInt(s);
-				boolean b = finalN.get(i);
+				boolean b = n.get(i);
+				while (b != useJacketAtCentigrade > i) {
+					try {
+						trainModel(n);
+						b = n.get(i);
+					}catch (Throwable e) {
+						e.printStackTrace();
+					}
+				}
 				System.out.println("[Model] use jacket:" + (b ? "yes" : "no"));
 			}catch (Throwable t) {
-				System.out.println(t);
+				System.out.println(t.toString());
 				t.printStackTrace();
 			}
 		});
+		
+		
 	}
 	
-	public static void trainModel(Model n, File f) throws IOException {
+	public static void saveModel(Model m, File f) {
+		try {
+			SerializeData.dataOut(n, f);
+			System.out.println("Saved to: " + f.getAbsolutePath());
+		}catch (Throwable e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void saveModel() {
+		saveModel(n, f);
+	}
+	
+	public static void trainModel(Model n) {
 		System.out.println("Model not exists, training one");
 		long i = 0;
 		while (!test(n)) {
@@ -65,12 +98,12 @@ public class SimpleLearning {
 		}
 		System.out.println("Training successful");
 		System.out.println("Model: \n" + n.toString());
-		SerializeData.dataOut(n, f);
+		saveModel(n, f);
 	}
 	
 	public static boolean test(Model n) {
 		
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 20; i++) {
 			int r = Random.getInt(-2000, 2000);
 			
 			boolean b = n.get(r);
@@ -147,6 +180,7 @@ public class SimpleLearning {
 		}
 		
 		public void updateScrew(long screw) {
+			if (random == null) random = new Random();
 			s = screw;
 			random.setSeed(screw);
 		}

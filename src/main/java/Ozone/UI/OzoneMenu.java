@@ -79,6 +79,7 @@ public class OzoneMenu extends BaseDialog {
 		super.hide();
 		showHud();
 	}
+	
 	public void setup() {
 		
 		
@@ -112,10 +113,15 @@ public class OzoneMenu extends BaseDialog {
 				hide();
 				Core.app.post(PlayTime::markTiles);
 			}).growX();
-			
-			
+			s.button(Translation.get("Settings"), Icon.settings, () -> {
+				Manifest.playSettings.show();
+			}).growX();
 		}).growX();
 		
+	}
+	
+	void ad(Table t, BaseDialog baseDialog, Drawable d) {
+		t.button(Translation.get(baseDialog.getClass().getName()), d, baseDialog::show).growX();
 	}
 	
 	void ad(BaseDialog baseDialog, Drawable d) {
@@ -125,4 +131,6 @@ public class OzoneMenu extends BaseDialog {
 	void ad(BaseDialog baseDialog) {
 		tB.button(Translation.get(baseDialog.getClass().getName()), baseDialog::show).growX();
 	}
+	
+	
 }

@@ -36,7 +36,6 @@ import arc.struct.Queue;
 import arc.struct.Seq;
 import arc.util.Log;
 import mindustry.Vars;
-import mindustry.ai.Astar;
 import mindustry.gen.*;
 import mindustry.net.Administration;
 import mindustry.type.Item;
@@ -302,7 +301,7 @@ public class Commands implements Module {
 			Pool.submit(() -> {
 				Seq<Tile> tiles = new Seq<>();
 				try {
-					tiles.addAll(Astar.pathfind(source, target, h -> 0, Tile::passable));
+					tiles.addAll(Pathfinding.pathfind(target));
 					Pathfinding.render.add(new Pathfinding.PathfindingOverlay(tiles));
 				}catch (Throwable e) {
 					tellUser("Pathfinding failed");

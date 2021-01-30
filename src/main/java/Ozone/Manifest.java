@@ -41,6 +41,7 @@ import java.util.Map;
 
 @SuppressWarnings("Unchecked")
 public class Manifest {
+	public static OzonePlaySettings playSettings;
 	public static OzoneMenu menu;
 	public static CommandsListFrag commFrag;
 	public static WorldInformation worldInformation;

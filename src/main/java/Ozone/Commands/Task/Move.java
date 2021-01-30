@@ -21,7 +21,6 @@ import Ozone.Commands.TaskInterface;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import mindustry.Vars;
-import mindustry.ai.Astar;
 import mindustry.content.Blocks;
 import mindustry.world.Tile;
 
@@ -46,7 +45,7 @@ public class Move extends Task {
 		destTile = Vars.world.tile(Math.round(dest.x), Math.round(dest.y));
 		setTick(10);
 		if (!Vars.player.unit().isFlying()) {
-			pathfindingCache = Astar.pathfind(Vars.player.tileOn(), destTile, Pathfinding::isSafe, Pathfinding::passable);
+			pathfindingCache = Pathfinding.pathfind(destTile);
 		}
 	}
 

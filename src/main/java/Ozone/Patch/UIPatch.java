@@ -21,6 +21,7 @@ import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.Patch.Mindustry.SettingsDialog;
 import Ozone.UI.*;
+import arc.Core;
 import arc.Events;
 import arc.scene.ui.Dialog;
 import mindustry.Vars;
@@ -56,6 +57,7 @@ public class UIPatch implements Module {
 		Manifest.taskList = new TaskList();
 		Manifest.commFrag = new CommandsListFrag();
 		Manifest.worldInformation = new WorldInformation();
+		Manifest.playSettings = new OzonePlaySettings();
 		Manifest.menu = new OzoneMenu(Translation.get("ozone.hud"), ozoneStyle);
 		Manifest.commFrag.build(Vars.ui.hudGroup);
 		Manifest.moduleFrag = new ModuleFrag();
@@ -74,11 +76,9 @@ public class UIPatch implements Module {
 			if (Vars.testMobile) try {
 				Reflect.getMethod(MenuFragment.class, "buildMobile", ui.menufrag).invoke(ui.menufrag);
 			}catch (Throwable ignored) {}
-			if (Vars.mobile) {
-				VarsPatch.menu.add(new MobileButton(Icon.info, Translation.get("Ozone"), () -> {
-					Manifest.modsMenu.show();
-				}));
-				VarsPatch.menu.row();
+			if (Vars.mobile || Vars.testMobile) {
+				if (Core.graphics.isPortrait()) VarsPatch.menu.row();
+				VarsPatch.menu.add(new MobileButton(Icon.info, Translation.get("Ozone"), () -> Manifest.modsMenu.show()));
 				VarsPatch.menu.add(new MobileButton(Icon.refresh, Translation.get("Update"), Updater::showUpdateDIalog));
 			}else {
 				VarsPatch.menu.button(Translation.get("Update"), Icon.refresh, Updater::showUpdateDIalog).growX().bottom();

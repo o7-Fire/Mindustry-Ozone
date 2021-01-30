@@ -18,7 +18,7 @@ package Ozone.Commands;
 
 import Ozone.Commands.Task.Task;
 import Ozone.Internal.Module;
-import Ozone.Settings.BaseSettings;
+import Shared.SharedBoot;
 import arc.Events;
 import arc.math.geom.Position;
 import arc.math.geom.Vec2;
@@ -59,7 +59,7 @@ public class TaskInterface implements Module {
 		Vec2 vec = new Vec2();
 		if (Vars.player.unit() == null) return;
 		vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed);
-		if (BaseSettings.debugMode && !Vars.disableUI) {
+		if (SharedBoot.debug && !Vars.disableUI) {
 			if (Vars.ui.scriptfrag.shown()) {
 				Vars.ui.scriptfrag.addMessage("Ozone-AI DriveX: " + vec.x);
 				Vars.ui.scriptfrag.addMessage("Ozone-AI DriveY: " + vec.y);

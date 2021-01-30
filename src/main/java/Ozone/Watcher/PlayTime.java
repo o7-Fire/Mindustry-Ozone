@@ -16,11 +16,13 @@
 
 package Ozone.Watcher;
 
+import Ozone.Commands.Pathfinding;
 import Ozone.Commands.Task.Task;
 import Ozone.Commands.TaskInterface;
 import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import Ozone.Internal.TilesOverlay;
+import Ozone.UI.OzonePlaySettings;
 import arc.Core;
 import arc.Graphics;
 import mindustry.Vars;
@@ -29,6 +31,7 @@ import mindustry.input.DesktopInput;
 import mindustry.world.Tile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //TODO figure out what todo
 public class PlayTime implements Module {
@@ -76,6 +79,7 @@ public class PlayTime implements Module {
 			
 			@Override
 			public void update() {
+				
 				Tile t = Interface.getMouseTile();
 				if (valid = validTile(t)) {
 					if (Core.input.keyDown(Binding.select)) {
@@ -83,6 +87,20 @@ public class PlayTime implements Module {
 					}
 					if (Core.input.keyDown(Binding.deselect)) {
 						markedTiles.remove(t);
+					}
+				}
+				if (OzonePlaySettings.tileMode.equals(OzonePlaySettings.MarkerTileMode.Pathfinding)) {
+					if (markedTiles.size() >= 2) {
+						Tile t1 = markedTiles.remove(0), t2 = markedTiles.remove(0);
+						
+						ArrayList<Tile> tiles = new ArrayList<>();
+						try {
+							tiles.addAll(Arrays.asList(Pathfinding.pathfind(t1, t2).toArray(Tile.class)));
+							TilesOverlay.add(tiles);
+						}catch (Throwable e) {
+							tellUser("Pathfinding failed");
+							tellUser(e.toString());
+						}
 					}
 				}
 				c();
