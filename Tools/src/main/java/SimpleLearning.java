@@ -22,26 +22,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SimpleLearning {
-	static HashMap<Integer, Boolean> yesNo = new HashMap<>();
-	static boolean testPassed;
 	
-	static {
-		
-		yesNo.put(-12, true);
-		yesNo.put(-26, true);
-		yesNo.put(-56, true);
-		yesNo.put(10, true);
-		yesNo.put(20, false);
-		yesNo.put(40, false);
-	}
+	static int useJacketAtCentigrade = 10;
+	
 	
 	public static void main(String[] args) throws Throwable {
 		File f = new File("SimpleLearning.mdl");
-		Model n = new Model(1, 2);
+		Model n = new Model(1, 1);
 		try {
 			n = SerializeData.dataIn(f);
 		}catch (Throwable gay) {
@@ -79,12 +69,12 @@ public class SimpleLearning {
 	}
 	
 	public static boolean test(Model n) {
-		int usejacketat = 10;
+		
 		for (int i = 0; i < 5; i++) {
-			int r = Random.getInt(-200, 200);
+			int r = Random.getInt(-2000, 2000);
 			
 			boolean b = n.get(r);
-			if (b != usejacketat > r) return false;
+			if (b != useJacketAtCentigrade > r) return false;
 		}
 		return true;
 	}
