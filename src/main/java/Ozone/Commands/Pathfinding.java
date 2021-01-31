@@ -91,28 +91,18 @@ public class Pathfinding implements Module {
 		return cost;
 	}
 	
-	public static float isSafe(Tile tile) {
+	public static float isSafe(Tile t) {
+		return isSafe(t, Vars.player.tileOn());
+	}
+	
+	public static float isSafe(Tile tile, Tile current) {
+		if (tile == null) return 10f;//no fuck given
+		double def = distanceTo(current, tile);
 		try {
-			if (tile == null) return 10f;//no fuck given
-			return pathTile(tile.pos(), Vars.player.unit());
+			return (float) (pathTile(tile.pos(), Vars.player.unit()) * def);
 		}catch (Throwable g) {
 			Log.debug("Failed to get pathTile for: " + tile.toString() + "\n" + g.toString());
-			float danger = 0f;
-			for (int i = 0; i < 4; i++) {
-				for (Tile t : TaskInterface.getNearby(tile, i, 2)) {
-					float fDanger = 0f;
-					if (t == null) continue;
-					if (!t.passable()) fDanger += 0.4f;//avoid unpassable, sometime its stuck
-					if (t.floor().isLiquid) fDanger += 0.3f;//avoid the liquid
-					if (tile.build == null) continue;
-					if (tile.team() != Vars.player.team()) fDanger += 3f;
-					if (fDanger != 0f) fDanger = fDanger / Vars.player.tileOn().dst(t);
-					Log.debug(t.toString() + "\nIndex: " + danger);
-					danger += fDanger;
-				}
-			}
-			if (tile.floor().isLiquid) danger += 2f;//avoid the liquid
-			return danger;
+			return 0f;
 		}
 	}
 	

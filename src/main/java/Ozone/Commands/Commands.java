@@ -28,6 +28,7 @@ import Ozone.Patch.EventHooker;
 import Ozone.Patch.Translation;
 import Ozone.Settings.BaseSettings;
 import Shared.SharedBoot;
+import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.Colors;
 import arc.scene.style.TextureRegionDrawable;
@@ -87,6 +88,12 @@ public class Commands implements Module {
 	
 	}
 	
+	public static void garbageCollector() {
+		long l = Core.app.getJavaHeap();
+		System.gc();
+		tellUser("Cleared: " + l + " bytes");
+	}
+	
 	public static void register(String name, Command command) {
 		register(name, command, null);
 	}
@@ -126,12 +133,14 @@ public class Commands implements Module {
 		if (SharedBoot.debug)
 			register("debug", new Command(Commands::debug, Icon.pause), "so you just found debug mode");
 		register("module-reset", new Command(Commands::moduleReset, Icon.eraser), "Reset all module as if you loading the world");
+		register("gc", new Command(Commands::garbageCollector, Icon.cancel), "Trigger Garbage Collector");
 		Log.infoTag("Ozone", "Commands Center Initialized");
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
 	}
 	
 	public static void moduleReset() {
 		EventHooker.resets();
+		
 	}
 	
 	public static void debug() {
@@ -521,16 +530,16 @@ public class Commands implements Module {
 	}
 	
 	public static void tellUser(String s) {
-		if (Vars.ui == null) {
-			Log.info(s);
-			return;
-		}
+		Log.info(s);
+		if (Vars.ui == null) return;
 		if (Vars.ui.scriptfrag.shown()) Log.infoTag("Ozone", s);
-		Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
-		if (BaseSettings.commandsToast) {
-			if (s.contains("\n")) for (String u : s.split("\n"))
-				Vars.ui.hudfrag.showToast(u);
-			else Vars.ui.hudfrag.showToast(s);
+		if (Vars.state.isGame()) {
+			Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
+			if (BaseSettings.commandsToast) {
+				if (s.contains("\n")) for (String u : s.split("\n"))
+					Vars.ui.hudfrag.showToast(u);
+				else Vars.ui.hudfrag.showToast(s);
+			}
 		}
 	}
 	

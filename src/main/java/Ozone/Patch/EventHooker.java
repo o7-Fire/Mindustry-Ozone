@@ -29,6 +29,8 @@ import mindustry.game.EventType;
 
 import java.util.Map;
 
+import static Ozone.Commands.Commands.garbageCollector;
+
 public class EventHooker implements Module {
 	public static void resets() {
 		for (Map.Entry<Class<? extends Module>, Module> m : Manifest.module.entrySet()) {
@@ -40,6 +42,7 @@ public class EventHooker implements Module {
 				Vars.ui.showException(throwable);
 			}
 		}
+		garbageCollector();
 	}
 	
 	@Override
