@@ -130,7 +130,7 @@ public class Commands implements Module {
 		register("info-pos", new Command(Commands::infoPos, Icon.move));
 		register("help", new Command(Commands::help, Icon.infoCircle));
 		register("kick-jammer", new Command(Commands::kickJammer, Icon.hammer), "Jamm votekick system so player cant kick you");
-		if (SharedBoot.debug)
+		if (BaseSettings.debugMode)
 			register("debug", new Command(Commands::debug, Icon.pause), "so you just found debug mode");
 		register("module-reset", new Command(Commands::moduleReset, Icon.eraser), "Reset all module as if you loading the world");
 		register("gc", new Command(Commands::garbageCollector, Icon.cancel), "Trigger Garbage Collector");

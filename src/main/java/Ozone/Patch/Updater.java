@@ -33,7 +33,6 @@ import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.Version;
 
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -50,81 +49,85 @@ public class Updater {
 	public final static AtomicBoolean newRelease = new AtomicBoolean(false), newBuild = new AtomicBoolean(false);
 	private static volatile boolean init;
 	private static volatile String last = "-SNAPSHOT";
+	private static volatile HashMap<String, String> releaseMap = null, buildMap = null;
 	
 	public static void init() {
 		if (init) return;
 		init = true;
 		Log.debug("Update Daemon Started");
 		
-			Future a = Pool.submit(() -> {
-				try {
-					HashMap<String, String> he = Encoder.parseProperty(getBuild(true).openStream());
-					newBuild.set(latest(he));
-					if (newBuild.get()) Log.infoTag("Updater", "New Latest Build Found: " + he.get("VHash"));
-					else {
-						Log.debug("Latest Build Incompatible or Unavailable");
-						Pool.daemon(() -> {
-							try {
-								URL u = new URL("https://api.github.com/repos/o7-Fire/Mindustry-Ozone/commits?per_page=" + Random.getInt(2, 15));
-								JsonArray js = JsonParser.parseString(Encoder.readString(u.openStream())).getAsJsonArray();
-								ArrayList<Future<String>> list = new ArrayList<>();
-								for (JsonElement je : js) {
-									list.add(Pool.submit(() -> checkJsonGithub(je)));
-								}
-								for (Future<String> f : list) {
-									try {
-										if (newBuild.get()) return;
-										String h = f.get();
-										if (h == null) continue;
-										last = h;
-										newBuild.set(true);
-										if (newBuild.get()) Log.infoTag("Updater", "New Build Found: " + h);
-										return;
-									}catch (Throwable ignored) {}
-								}
-								Log.debug("No Compatible Build Found on Pool");
-							}catch (Throwable e) {
-								Sentry.captureException(e);
+		Future a = Pool.submit(() -> {
+			try {
+				HashMap<String, String> he = Encoder.parseProperty(getBuild(true).openStream());
+				newBuild.set(latest(he));
+				buildMap = he;
+				if (newBuild.get()) Log.infoTag("Updater", "New Latest Build Found: " + he.get("VHash"));
+				else {
+					Log.debug("Latest Build Incompatible or Unavailable");
+					Pool.daemon(() -> {
+						try {
+							URL u = new URL("https://api.github.com/repos/o7-Fire/Mindustry-Ozone/commits?per_page=" + Random.getInt(2, 15));
+							JsonArray js = JsonParser.parseString(Encoder.readString(u.openStream())).getAsJsonArray();
+							ArrayList<Future<HashMap<String, String>>> list = new ArrayList<>();
+							for (JsonElement je : js) {
+								list.add(Pool.submit(() -> checkJsonGithub(je)));
 							}
-						}).start();
-					}
-				}catch (Throwable e) {
-					Sentry.captureException(e);
+							for (Future<HashMap<String, String>> fe : list) {
+								try {
+									if (newBuild.get()) return;
+									if (!latest(fe.get())) return;
+									String h = fe.get().get("VHash");
+									if (h == null) continue;
+									if (h.equals("unspecified")) continue;
+									last = h;
+									newBuild.set(true);
+									if (newBuild.get()) Log.infoTag("Updater", "New Build Found: " + h);
+									buildMap = fe.get();
+									return;
+								}catch (Throwable ignored) {}
+							}
+							Log.debug("No Compatible Build Found on Pool");
+						}catch (Throwable e) {
+							Sentry.captureException(e);
+						}
+					}).start();
 				}
-			});
-			
-			Future b = Pool.submit(() -> {
-				try {
-					HashMap<String, String> h = Encoder.parseProperty(getRelease(true).openStream());
-					newRelease.set(latest(h));
-					if (newRelease.get()) Log.infoTag("Updater", " Release Found: " + h.get("VHash"));
-					else Log.debug("Latest Release Is Already Installed or Unavailable");
-				}catch (Throwable e) {
-					Sentry.captureException(e);
-					Log.err(e);
-					Log.err("Failed to update");
-				}
-			});
+			}catch (Throwable e) {
+				Sentry.captureException(e);
+			}
+		});
+		
+		Future b = Pool.submit(() -> {
 			try {
-				a.get();
-			}catch (Throwable ignored) {}
-			try {
-				b.get();
-			}catch (Throwable ignored) {}
-			if (newBuild.get()) return;
+				HashMap<String, String> h = Encoder.parseProperty(getRelease(true).openStream());
+				newRelease.set(latest(h));
+				if (newRelease.get()) Log.infoTag("Updater", " Release Found: " + h.get("VHash"));
+				else Log.debug("Latest Release Is Already Installed or Unavailable");
+			}catch (Throwable e) {
+				Sentry.captureException(e);
+				Log.err(e);
+				Log.err("Failed to update");
+			}
+		});
+		try {
+			a.get();
+		}catch (Throwable ignored) {}
+		try {
+			b.get();
+		}catch (Throwable ignored) {}
+		if (newBuild.get()) return;
 		
 		
 	}
 	
-	private static String checkJsonGithub(JsonElement je) {
+	private static HashMap<String, String> checkJsonGithub(JsonElement je) {
 		try {
 			JsonObject jb = (JsonObject) je;
 			String sha = jb.get("sha").getAsString();
 			if (sha == null) throw new NullPointerException("SHA null" + je.toString());
 			HashMap<String, String> h;
 			h = Encoder.parseProperty(getDownload(sha, true).openStream());
-			if (latest(h)) return sha;
-			else return null;
+			return h;
 		}catch (Throwable ignored) {
 			return null;
 		}
@@ -171,35 +174,36 @@ public class Updater {
 		return true;
 	}
 	
-	public static void showUpdateDIalog() {
-		if (!newRelease.get() && newBuild.get()) {
-			ui.showInfo("Not yet comrade");
+	public static void readMap(StringBuilder sb, Map<?, ?> m) {
+		for (Map.Entry<?, ?> s : m.entrySet())
+			sb.append(s.getKey().toString()).append(": ").append(s.getValue().toString()).append("\n");
+	}
+	
+	public static void showUpdateDialog() {
+		if (releaseMap == null && buildMap == null) {
+			if (Random.getBool()) {ui.showInfo("Not yet comrade");}else {ui.showInfo("Coming soon");}
 			return;
 		}
-		try {
-			StringBuilder sb = new StringBuilder();
-			InputStream is;
-			if (Updater.newRelease.get()) is = Updater.getRelease(true).openStream();
-			else is = Updater.getBuild(true).openStream();
-			HashMap<String, String> h = Encoder.parseProperty(is);
-			h.put("TimeStamp", Utility.getDate(Long.parseLong(h.get("TimeMilis"))));
-			for (Map.Entry<String, String> e : h.entrySet()) {
-				sb.append(e.getKey()).append(": ").append(e.getValue()).append("\n");
-			}
-			if (Updater.newRelease.get() && Updater.newBuild.get()) {
-				ui.showCustomConfirm("Choose", "", "Release", "Build", () -> showNewRelease(sb), () -> showNewBuild(sb));
-				return;
-			}
-			
-			if (Updater.newRelease.get()) {
-				showNewRelease(sb);
-			}else {
-				showNewBuild(sb);
-			}
-		}catch (Throwable t) {
-			ui.showException(t);
-			Sentry.captureException(t);
+		
+		
+		StringBuilder rm = new StringBuilder(), bm = new StringBuilder();
+		if (releaseMap != null) {
+			readMap(rm, releaseMap);
 		}
+		if (buildMap != null) {
+			readMap(bm, buildMap);
+		}
+		if (releaseMap != null && buildMap != null) {
+			ui.showCustomConfirm("Choose", "", "Release", "Build", () -> showNewRelease(rm), () -> showNewBuild(bm));
+			return;
+		}
+		if (releaseMap != null) {
+			showNewRelease(rm);
+		}else {
+			showNewBuild(bm);
+		}
+		
+		
 	}
 	
 	private static void showNewRelease(StringBuilder sb) {
