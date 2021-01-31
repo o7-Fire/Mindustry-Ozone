@@ -27,11 +27,15 @@ import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.game.EventType;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 import static Ozone.Commands.Commands.garbageCollector;
 
 public class EventHooker implements Module {
+	public static ArrayList<Runnable> drawc = new ArrayList<>();
+	
 	public static void resets() {
 		for (Map.Entry<Class<? extends Module>, Module> m : Manifest.module.entrySet()) {
 			try {
@@ -43,6 +47,11 @@ public class EventHooker implements Module {
 			}
 		}
 		garbageCollector();
+	}
+	
+	@Override
+	public void reset() throws Throwable {
+		drawc.clear();
 	}
 	
 	@Override
@@ -61,6 +70,13 @@ public class EventHooker implements Module {
 				});
 			});
 			// setOzoneLogger();
+		});
+		Events.run(EventType.Trigger.draw, () -> {
+			for (Iterator<Runnable> it = drawc.iterator(); it.hasNext(); ) {
+				if (!it.hasNext()) continue;
+				Runnable r = it.next();
+				r.run();
+			}
 		});
 		Events.run(EventExtended.Game.Start, () -> {
 			resets();

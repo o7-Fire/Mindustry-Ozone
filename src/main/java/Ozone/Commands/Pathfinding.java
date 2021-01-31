@@ -16,6 +16,7 @@
 
 package Ozone.Commands;
 
+import Atom.Utility.Meth;
 import Atom.Utility.Random;
 import Ozone.Internal.Module;
 import Ozone.Patch.Hack;
@@ -79,8 +80,9 @@ public class Pathfinding implements Module {
 		return unit.canPass(t.x, t.y);
 	}
 	
-	public static int pathTile(int tile, Unit unit) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	public static int pathTile(Tile t, Unit unit) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		Team team = unit.team;
+		int tile = Hack.pathTile(t);
 		int cost;
 		int type = 0;
 		if (unit instanceof WaterMovec) type = Pathfinder.costNaval;
@@ -97,13 +99,14 @@ public class Pathfinding implements Module {
 	
 	public static float isSafe(Tile tile, Tile current) {
 		if (tile == null) return 10f;//no fuck given
-		double def = distanceTo(current, tile);
+		
+		double def = Meth.positive(distanceTo(current, tile)) / 10;
 		try {
-			return (float) (pathTile(tile.pos(), Vars.player.unit()) * def);
+			def = def + pathTile(tile, Vars.player.unit());
 		}catch (Throwable g) {
 			Log.debug("Failed to get pathTile for: " + tile.toString() + "\n" + g.toString());
-			return 0f;
 		}
+		return (float) def;
 	}
 	
 	public static double distanceTo(Position source, Position target) {

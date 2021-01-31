@@ -17,6 +17,7 @@
 package Ozone.Watcher;
 
 import Atom.Reflect.FieldTool;
+import Ozone.Commands.Pathfinding;
 import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import Ozone.Settings.BaseSettings;
@@ -39,9 +40,13 @@ public class BlockTracker implements Module {
 			if (Core.input.keyDown(KeyCode.controlLeft))
 				if (Core.input.keyDown(KeyCode.mouseLeft)) target = Interface.getMouseTile();
 			
-			if (target != null) if (target.build != null)
-				Vars.ui.hudfrag.setHudText(FieldTool.getFieldDetails(target.build).replace("\n", "[white]\n"));
-			else Vars.ui.hudfrag.setHudText(FieldTool.getFieldDetails(target).replace("\n", "[white]\n"));
+			if (target != null) {
+				StringBuilder sb = new StringBuilder();
+				if (target.build != null) sb.append(FieldTool.getFieldDetails(target.build).replace("\n", "[white]\n"));
+				else sb.append(FieldTool.getFieldDetails(target).replace("\n", "[white]\n"));
+				sb.append("SafetyIndex:").append(Pathfinding.isSafe(target)).append("[white]\n");
+				Vars.ui.hudfrag.setHudText(sb.toString());
+			}
 			
 		}
 	}

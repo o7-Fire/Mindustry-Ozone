@@ -16,8 +16,11 @@
 
 package Ozone.Patch;
 
+import Atom.Reflect.Reflect;
+import mindustry.Vars;
 import mindustry.ai.Pathfinder;
 import mindustry.game.Team;
+import mindustry.world.Tile;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,5 +33,10 @@ public class Hack {
 		Method m = o.getClass().getMethod("getCost", Team.class, int.class);
 		m.setAccessible(true);
 		return (int) m.invoke(o, team, tile);
+	}
+	
+	public static int pathTile(Tile tile) {
+		int[][] i = Reflect.getField(Pathfinder.class, "tiles", Vars.pathfinder);
+		return i[tile.x][tile.y];
 	}
 }
