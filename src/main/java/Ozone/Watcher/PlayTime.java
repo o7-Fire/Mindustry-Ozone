@@ -16,6 +16,7 @@
 
 package Ozone.Watcher;
 
+import Atom.Utility.Pool;
 import Ozone.Commands.Pathfinding;
 import Ozone.Commands.Task.Task;
 import Ozone.Commands.TaskInterface;
@@ -92,15 +93,17 @@ public class PlayTime implements Module {
 				if (OzonePlaySettings.tileMode.equals(OzonePlaySettings.MarkerTileMode.Pathfinding)) {
 					if (markedTiles.size() >= 2) {
 						Tile t1 = markedTiles.remove(0), t2 = markedTiles.remove(0);
+						Pool.submit(() -> {
+							try {
+								if (Pathfinding.distanceTo(t1, t2) > 1000)
+									tellUser("Calculating... " + t1.x + "," + t.y + " to " + t2.x + "," + t2.y);
+								TilesOverlay.add(new ArrayList<>(Arrays.asList(Pathfinding.pathfind(t1, t2).toArray(Tile.class))));
+							}catch (Throwable e) {
+								tellUser("Pathfinding failed");
+								tellUser(e.toString());
+							}
+						});
 						
-						ArrayList<Tile> tiles = new ArrayList<>();
-						try {
-							tiles.addAll(Arrays.asList(Pathfinding.pathfind(t1, t2).toArray(Tile.class)));
-							TilesOverlay.add(tiles);
-						}catch (Throwable e) {
-							tellUser("Pathfinding failed");
-							tellUser(e.toString());
-						}
 					}
 				}
 				c();

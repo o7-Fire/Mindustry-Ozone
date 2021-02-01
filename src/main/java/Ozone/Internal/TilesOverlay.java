@@ -23,13 +23,10 @@ import arc.graphics.g2d.Lines;
 import mindustry.game.EventType;
 import mindustry.world.Tile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class TilesOverlay implements Module {
-	public static ArrayList<TilesOverlay> overlays = new ArrayList<>();
+	public final static ArrayList<TilesOverlay> overlays = new ArrayList<>();
 	public static float size = 2f;
 	public static float f = 2;
 	public Color color = Color.valueOf(Random.getRandomHexColor());
@@ -47,7 +44,7 @@ public class TilesOverlay implements Module {
 	
 	private static void draw() {
 		if (overlays.isEmpty()) return;
-		for (TilesOverlay ov : overlays) {
+		for (TilesOverlay ov : Collections.unmodifiableList(overlays)) {
 			for (Iterator<Tile> t = ov.tiles.iterator(); ov.tiles.iterator().hasNext(); ) {
 				if (!t.hasNext()) break;
 				Tile v = t.next();
