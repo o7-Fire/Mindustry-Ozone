@@ -22,9 +22,12 @@ import Ozone.Internal.Module;
 import Ozone.Patch.Mindustry.DesktopInputPatched;
 import Ozone.Patch.Mindustry.MobileInputPatched;
 import Ozone.Settings.BaseSettings;
+import arc.graphics.Color;
 import arc.scene.ui.layout.Table;
 import arc.util.Log;
 import mindustry.Vars;
+import mindustry.graphics.LoadRenderer;
+import mindustry.graphics.Pal;
 import mindustry.input.DesktopInput;
 import mindustry.input.MobileInput;
 
@@ -34,16 +37,30 @@ public class VarsPatch implements Module {
 	public static Table menu;
 	
 	@Override
+	public void earlyInit() throws Throwable {
+		try {
+			Field f = Vars.class.getDeclaredField("maxSchematicSize");
+			FieldTool.setFinalStatic(f, 1200);
+		}catch (Throwable t) {
+			Log.warn("Require java 8 to patch final field @", t.toString());
+		}
+		//java 8
+		try {
+			Field orange = LoadRenderer.class.getDeclaredField("orange"), color = LoadRenderer.class.getDeclaredField("color");
+			Color c = new Color(Pal.darkMetal).lerp(Color.black, 0.5f);
+			FieldTool.setFinalStatic(color, c);
+			FieldTool.setFinalStatic(orange, "[#" + c + "]");
+		}catch (Throwable ignored) {
+			Log.warn("Require java 8 to patch final field @", ignored.toString());
+		}
+	}
+	
+	@Override
 	public void init() throws Throwable {
 		try {
 			Log.infoTag("Ozone", "Patching");
 			mindustry.Vars.ui.chatfrag.addMessage("gay", "no");
-			try {
-				Field f = Vars.class.getDeclaredField("maxSchematicSize");
-				FieldTool.setFinalStatic(f, 1200);
-			}catch (Throwable t) {
-				Log.warn("Require java 8 to patch final field @", t.toString());
-			}
+			
 			
 			Vars.enableConsole = true;
 			if (BaseSettings.debugMode) Log.level = (Log.LogLevel.debug);

@@ -67,19 +67,39 @@ public class Main {
 		return getExtended("Ozone", Module.class);
 	}
 	
-	public static void init() throws IOException {
-		if (init) return;
-		init = true;
-		
+	public static void earlyInit() {
 		Log.infoTag("Ozone", "Hail o7");
 		Log.debug("Registering module\n");
-		
+		register();
+		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
+			try {
+				Log.debug("Early Init: @", s.getValue().getName());
+				s.getValue().earlyInit();
+			}catch (Throwable e) {
+				Sentry.captureException(e);
+				Log.err(e);
+			}
+		}
+	}
+	
+	public static void preInit() {
+		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
+			try {
+				Log.debug("Pre Init: @", s.getValue().getName());
+				s.getValue().preInit();
+			}catch (Throwable e) {
+				Sentry.captureException(e);
+				Log.err(e);
+			}
+		}
+	}
+	
+	public static void register() {
 		for (Class<? extends Module> m : getModule()) {
 			try {
 				Log.debug("Registering @", m.getName());
 				Module mod = m.getDeclaredConstructor().newInstance();
 				mod.setRegister();
-				Log.debug("@ Registered", mod.getName());
 				
 				Manifest.module.put(m, mod);
 			}catch (Throwable e) {
@@ -87,6 +107,13 @@ public class Main {
 				Log.err(e);
 			}
 		}
+	}
+	
+	public static void init() throws IOException {
+		if (init) return;
+		init = true;
+		
+		
 		Log.debug("Finished Registering \n");
 		Log.debug("Initializing \n");
 		loadModule();

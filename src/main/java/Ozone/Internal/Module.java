@@ -27,6 +27,13 @@ import java.util.Map;
 import static Ozone.Internal.InformationCenter.*;
 
 public interface Module extends Loadable {
+	default void earlyInit() throws Throwable {
+	
+	}
+	
+	default void preInit() throws Throwable {
+	
+	}
 	
 	default void reset() throws Throwable {
 	

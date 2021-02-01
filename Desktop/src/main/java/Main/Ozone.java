@@ -30,6 +30,15 @@ import mindustry.mod.Mod;
  * @author Itzbenz
  */
 public class Ozone extends Mod {
+	static {
+		try {
+			Main.earlyInit();
+		}catch (Throwable t) {
+			Sentry.captureException(t);
+			Log.err(t);
+			throw new RuntimeException(t);
+		}
+	}
 	
 	public Ozone() {
 		Events.on(DesktopEvent.InitUI.class, s -> {
@@ -42,6 +51,13 @@ public class Ozone extends Mod {
 		if (Core.settings != null) {
 			Core.settings.put("crashreport", false);
 			Core.settings.put("uiscalechanged", false);//shut
+		}
+		try {
+			Main.preInit();
+		}catch (Throwable t) {
+			Sentry.captureException(t);
+			Log.err(t);
+			throw new RuntimeException(t);
 		}
 	}
 	
