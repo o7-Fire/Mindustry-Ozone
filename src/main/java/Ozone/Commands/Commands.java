@@ -265,11 +265,13 @@ public class Commands implements Module {
 	}
 	
 	public static void randomKick() {
-		ArrayList<Player> players = new ArrayList<>();
-		for (Player p : Groups.player)
-			players.add(p);
-		Player p = Random.getRandom(players.toArray(new Player[0]));
+		if (Groups.player.size() < 2) {
+			tellUser("Not enough player");
+			return;
+		}
+		Player p = Random.getRandom(Groups.player);
 		if (p == null) return;//we get em next time
+		tellUser("Votekicking: " + p.name);
 		Call.sendChatMessage("/votekick " + p.name);
 	}
 	
