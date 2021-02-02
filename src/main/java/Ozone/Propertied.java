@@ -18,6 +18,7 @@ package Ozone;
 
 import Atom.Utility.Encoder;
 import io.sentry.Sentry;
+import mindustry.core.Version;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -28,6 +29,9 @@ public class Propertied {
 	
 	static {
 		Manifest = read("Manifest.properties");
+		if (Manifest.get("MindustryVersion") == null) try {
+			Manifest.put("MindustryVersion", "v" + Version.build + (Version.revision == 0 ? "" : "." + Version.revision));
+		}catch (Throwable ignored) {}
 	}
 	
 	public static InputStream getResource(String name) {
