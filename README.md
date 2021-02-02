@@ -36,7 +36,8 @@
 # Requirement
 
 * Java 14+ and added to JAVA_HOME (mindustry desktop can run on java 14+) (For Ozone-Desktop)
-* Java 8+ and added to JAVA_HOME (mindustry core can run on java 8+) (For Ozone-Core)
+* Java 8+ and added to JAVA_HOME (mindustry core can run on java 8+) (For Ozone-Core)  (don't need to install if you
+  have the mindustry.exe version)
 * Internet connection (required to download library at runtime and can impact loading speed) (For Ozone-Desktop)
 * Year 2006+ Computer
 * Android 4.0+ / sdk version 14+
@@ -60,7 +61,7 @@
 
 `Ozone core`
 
-- install java 8+
+- install java 8+ (don't need to install if you have the mindustry.exe version)
 - `java -jar Mindustry-Ozone.jar` or double click if on Windows
 - it's copied to mindustry mods folder
 
