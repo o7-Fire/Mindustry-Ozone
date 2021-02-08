@@ -16,21 +16,35 @@
 
 package Ozone.Bootstrap;
 
+import Atom.Utility.Cache;
+import Atom.Utility.Encoder;
 import Ozone.Settings.BaseSettings;
 import Ozone.Version;
 import Shared.SharedBoot;
 import arc.util.Log;
-import mindustry.Vars;
+
+import java.net.URL;
+import java.util.HashMap;
+
+import static Ozone.Patch.Updater.getRelease;
+import static Ozone.Patch.Updater.latest;
 
 public class OzoneBootstrap {
-	public static void init() {
-		if (Vars.android) SharedBoot.type = "Ozone-Android";
+	public static URL neu = null;
+	
+	public static boolean init() {
 		SharedBoot.initSentry();
 		if (SharedBoot.debug) {
 			Log.level = Log.LogLevel.debug;
 			BaseSettings.debugMode = true;
-			
 		}
 		Log.info("Ozone-Version: " + Version.core);
+		try {
+			HashMap<String, String> h = Encoder.parseProperty(getRelease(true).openStream());
+			if (latest(h)) neu = Cache.http(getRelease(SharedBoot.type + ".jar"));
+		}catch (Throwable e) {
+			Log.err(e);
+		}
+		return false;
 	}
 }

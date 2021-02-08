@@ -46,3 +46,4 @@ if(new File(settingsDir, '../Atom').exists()) {
 }
 include 'Manifest'
 
+

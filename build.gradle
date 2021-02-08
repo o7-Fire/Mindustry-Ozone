@@ -34,7 +34,18 @@ apply plugin: 'java-library'
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
-
+static def getLatestFolder(File fe){
+    ArrayList<File> f = new ArrayList<>();
+    File[] files = fe.listFiles();
+    f.addAll(Arrays.asList(files));
+    f.sort(new Comparator<File>() {
+        @Override
+        public int compare(File o1, File o2) {
+            return o1.getAbsolutePath() <=> o2.getAbsolutePath();
+        }
+    });
+    return f.get(f.size() - 1);
+}
 allprojects {
     apply plugin: 'java'
     apply plugin: 'java-library'
@@ -48,6 +59,15 @@ allprojects {
     }
 
     ext {
+        minApi = '14'
+        //automatically detect latest shit
+        sdkRoot = System.getenv("ANDROID_HOME")
+        sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
+        sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
+        if(new File(sdkJar).exists())
+            println(sdkJar)
+        if(new File(sdkD8).exists())
+            println(sdkD8)
         modsBuilder = "javac"
         if (project.hasProperty("builder"))
             modsBuilder = builder
@@ -95,6 +115,8 @@ allprojects {
         c.setTime(d);
         StringBuilder sb = new StringBuilder();
         sb.append("#Comment here").append("\n")
+        sb.append("#Dexed mean android support can be used on pc too").append("\n")
+        sb.append("#Recommend use built in mods browser in mindustry").append("\n")
         sb.append("AtomHash").append("=").append(atomHash).append("\n")
         sb.append("ArcHash").append("=").append(arcHash).append("\n")
         sb.append("MindustryVersion").append("=").append(mindustryVersion).append("\n")
@@ -154,15 +176,30 @@ task deploy(type: Jar) {
 jar {
     archiveFileName = "Ozone.jar"
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
     manifest {
         attributes 'Main-Class': 'Premain.InstallerEntryPoint'
         attributes 'SplashScreen-Image': 'gif/loading.gif'
     }
     from(rootDir){
-       include "mod.hjson"
+        include "mod.hjson"
     }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+
+    //collect dependencies needed for desugaring
+    if(new File(sdkD8).exists()) {
+        def files = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(sdkJar)])
+        def dependencies = files.collect { "--classpath $it.path" }.join(" ")
+        def cmd = "${sdkD8} $dependencies --min-api ${minApi} --output Dex.jar Ozone.jar"
+        def dir = new File(rootDir, "build/libs/");
+        dir.mkdirs()
+        doLast {
+            if (new File(sdkD8).exists() && new File(sdkJar).exists()) {
+                println(cmd)
+                Runtime.getRuntime().exec(cmd, new String[0], dir).waitForProcessOutput(System.out, System.err)
+            }
+        }
     }
 }
 tasks.withType(JavaCompile) {
@@ -196,6 +233,17 @@ tasks.withType(JavaCompile) {
     }
 }
 
-task makeJar{
+task makeJar(type: Jar){
     dependsOn jar
+    archiveFileName = "Ozone-Dexed.jar"
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+    if(new File(sdkD8).exists()) {
+        from() {
+            zipTree(new File(rootDir, "build/libs/Dex.jar"))
+        }
+    }
+    from() {
+        zipTree(new File(rootDir, "build/libs/Ozone.jar"))
+    }
 }
