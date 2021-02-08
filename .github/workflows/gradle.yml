@@ -28,8 +28,6 @@ jobs:
       with:
         path: ~/.gradle/caches
         key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
-    - name: Set up PATH 
-      run:  echo "${ANDROID_HOME}/build-tools/30.0.1" >> $GITHUB_PATH
     # Cache Gradle Wrapper
     - name: Setup Gradle Wrapper Cache
       uses: actions/cache@v2
@@ -53,8 +51,8 @@ jobs:
     - name: Upload built android jar file
       uses: actions/upload-artifact@v2
       with:
-        name: Mindustry-Android
-        path: Android/build/libs/Ozone-Android.jar
+        name: Mindustry-Core-Dexed
+        path: build/libs/Ozone-Dexed.jar
 
     - name: Upload Manifest
       uses: actions/upload-artifact@v2
@@ -111,18 +109,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: ./build/libs/Ozone.jar
-        asset_name: Ozone-Core.jar
-        asset_content_type: application/zip
-    - name: Upload Android
-      id: upload-release-android
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: ./Android/build/libs/Ozone-Android.jar
-        asset_name: Ozone-Android.jar
+        asset_path: ./build/libs/Ozone-Dexed.jar
+        asset_name: dexed-Ozone-Core.jar
         asset_content_type: application/zip
     - name: Upload Manifest
       id: upload-release-manifest
