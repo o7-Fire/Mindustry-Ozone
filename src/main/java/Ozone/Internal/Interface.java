@@ -23,15 +23,18 @@ import Atom.Utility.Random;
 import Ozone.Settings.BaseSettings;
 import arc.Core;
 import arc.Events;
+import arc.math.Interp;
 import arc.math.Mathf;
+import arc.scene.actions.Actions;
+import arc.scene.style.Drawable;
+import arc.scene.ui.Label;
+import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
+import arc.util.Time;
 import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.game.EventType;
-import mindustry.gen.Building;
-import mindustry.gen.Call;
-import mindustry.gen.Groups;
-import mindustry.gen.Player;
+import mindustry.gen.*;
 import mindustry.type.Item;
 import mindustry.world.Tile;
 
@@ -44,9 +47,55 @@ import static mindustry.Vars.player;
 
 public class Interface {
 	public static final ObjectMap<String, String> bundle = new ObjectMap<>();
+	private static long lastToast = 0;
 	
 	public static Tile getMouseTile() {
 		return Vars.world.tileWorld(Vars.player.mouseX, Vars.player.mouseY);
+	}
+	
+	public static void showToast(String text) {
+		showToast(Icon.ok, text, 1000);
+	}
+	
+	public static void showToast(String text, long duration) {
+		showToast(Icon.ok, text, duration);
+	}
+	
+	public static void showToast(Drawable icon, String text, long duration) {
+		if (!Vars.state.isMenu()) {
+			scheduleToast(() -> {
+				Sounds.message.play();
+				Table table = new Table(Tex.button);
+				table.update(() -> {
+					if (Vars.state.isMenu() || !Vars.ui.hudfrag.shown) {
+						table.remove();
+					}
+					
+				});
+				table.margin(12.0F);
+				table.image(icon).pad(3.0F);
+				((Label) table.add(text).wrap().width(280.0F).get()).setAlignment(1, 1);
+				table.pack();
+				Table container = Core.scene.table();
+				container.top().add(table);
+				container.setTranslation(0.0F, table.getPrefHeight());
+				container.actions(Actions.translateBy(0.0F, -table.getPrefHeight(), 1.0F, Interp.fade), Actions.delay(2.5F), Actions.run(() -> {
+					container.actions(Actions.translateBy(0.0F, table.getPrefHeight(), 1.0F, Interp.fade), Actions.remove());
+				}));
+			}, duration);
+		}
+	}
+	
+	private static void scheduleToast(Runnable run, long duration) {
+		long since = Time.timeSinceMillis(lastToast);
+		if (since > duration) {
+			lastToast = Time.millis();
+			run.run();
+		}else {
+			Time.runTask((float) (duration - since) / 1000.0F * 60.0F, run);
+			lastToast += duration;
+		}
+		
 	}
 	
 	//on load event show this stupid warning

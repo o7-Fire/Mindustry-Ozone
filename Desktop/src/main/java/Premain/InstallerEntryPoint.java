@@ -29,21 +29,17 @@ public class InstallerEntryPoint {
 			TestEntryPoint.main(args);
 			return;
 		}
-		if (args.length != 0) {
-			if (args[0].equals("server")) {
-				StartServerPoint.main(args);
-				return;
-			}
+		
+		if (System.getProperty("server") != null) {
+			StartServerPoint.main(args);
+			return;
 		}
+		
 		try {
-			long a, b, c;
 			DesktopBootstrap.requireDisplay();
 			DesktopBootstrap.classloaderNoParent();
-			a = System.currentTimeMillis();
 			DesktopBootstrap.loadRuntime();
-			b = System.currentTimeMillis();
 			DesktopBootstrap.loadClasspath();
-			
 			DesktopBootstrap.loadMain("Main.OzoneInstaller", args);
 		}catch (Throwable t) {
 			Catch.write(t);

@@ -25,7 +25,6 @@ import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.world.Tile;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,14 +57,10 @@ public class CommandsDesktop implements Module {
 	public static void javac(ArrayList<String> arg) {
 		
 		
-		String code = Utility.joiner(arg.toArray(new String[0]), " ");
+		String code = Utility.joiner(arg, " ");
 		Thread th = new Thread(() -> {
 			try {
 				Atom.Runtime.Compiler.runLine(code, Stream.getReader(s -> Log.infoTag("javac", s)));
-			}catch (FileNotFoundException fail) {
-				tellUser("Failed to compile or IOException Problem");
-				fail.printStackTrace();
-				Log.errTag("Compiler", fail.toString());
 			}catch (Throwable t) {
 				t.printStackTrace();
 				Log.errTag("Compiler", t.toString());

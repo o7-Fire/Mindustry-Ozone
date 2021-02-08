@@ -1,4 +1,4 @@
-if(!(JavaVersion.current().ordinal() <= JavaVersion.VERSION_14.ordinal())){
+if(!(JavaVersion.current().ordinal() < JavaVersion.VERSION_14.ordinal())){
     include 'Desktop'
     include 'Tools'
 }

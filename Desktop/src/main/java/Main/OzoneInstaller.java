@@ -16,6 +16,7 @@
 
 package Main;
 
+import Atom.File.FileUtility;
 import Ozone.Desktop.Pre.PreInstall;
 import Ozone.Desktop.Swing.Main;
 import Ozone.Propertied;
@@ -31,13 +32,7 @@ public class OzoneInstaller {
 	
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		Main m;
-		try {
-			if (System.getProperty("os.name").toUpperCase().contains("WIN"))
-				mindustry = new File(System.getenv("AppData") + "/Mindustry");//windows
-			else mindustry = new File(System.getenv("HOME") + "/.local/share/Mindustry");//linux
-		}catch (Throwable t) {
-			mindustry = new File("mindustry/");//i gave up "yeet"//
-		}
+		mindustry = new File(FileUtility.getAppdata(), "Mindustry/");
 		m = new Main();
 		m.label1.setText("Mindustry " + Propertied.Manifest.getOrDefault("MindustryVersion", "null") + " [Ozone:" + Version.core + ":" + Version.desktop + "]");
 		PreInstall.install(m);

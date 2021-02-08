@@ -36,6 +36,7 @@ import arc.struct.OrderedMap;
 import arc.struct.Queue;
 import arc.struct.Seq;
 import arc.util.Log;
+import arc.util.Strings;
 import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.net.Administration;
@@ -532,14 +533,14 @@ public class Commands implements Module {
 	}
 	
 	public static void tellUser(String s) {
-		Log.info(s);
+		Log.info(Strings.stripColors(s));
 		if (Vars.ui == null) return;
 		if (Vars.ui.scriptfrag.shown()) Log.infoTag("Ozone", s);
 		if (Vars.state.isGame()) {
 			Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
 			if (BaseSettings.commandsToast) {
 				if (s.contains("\n")) for (String u : s.split("\n"))
-					Vars.ui.hudfrag.showToast(u);
+					Interface.showToast(u, 800);
 				else Vars.ui.hudfrag.showToast(s);
 			}
 		}
