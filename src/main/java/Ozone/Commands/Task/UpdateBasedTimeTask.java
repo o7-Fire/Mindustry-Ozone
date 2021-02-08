@@ -16,10 +16,13 @@
 
 package Ozone.Commands.Task;
 
+import Atom.Time.Timer;
+
+import java.util.concurrent.TimeUnit;
+
 public abstract class UpdateBasedTimeTask extends Task {//need to be implemented before used
 	Runnable run;
-	long lastRun;
-	long interval;
+	Timer timer = new Timer(TimeUnit.MILLISECONDS, 100);
 	
 	public UpdateBasedTimeTask() {
 	
@@ -27,16 +30,15 @@ public abstract class UpdateBasedTimeTask extends Task {//need to be implemented
 	
 	public UpdateBasedTimeTask(Runnable r, long ms) {
 		run = r;
-		interval = ms;
-		lastRun = System.currentTimeMillis() - ms - 1;
+		timer = new Timer(TimeUnit.MILLISECONDS, ms);
 	}
 	
 	public void run() {
 		if (run != null) run.run();
 	}
 	
-	public void update() {
-		if ((System.currentTimeMillis() - lastRun) > interval) run();
+	public void update() {//don't override this
+		if (timer.get()) run();
 	}
 	
 }

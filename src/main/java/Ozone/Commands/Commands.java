@@ -251,7 +251,7 @@ public class Commands implements Module {
 		if (!commandsList.containsKey(mesArg.get(0).toLowerCase())) {
 			tellUser("Commands not found");
 			help();
-			return true;
+			return false;
 		}
 		Command comm = commandsList.get(mesArg.get(0).toLowerCase());
 		ArrayList<String> args;

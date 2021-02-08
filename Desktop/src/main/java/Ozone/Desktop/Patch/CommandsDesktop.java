@@ -17,6 +17,7 @@
 package Ozone.Desktop.Patch;
 
 import Atom.Struct.Stream;
+import Atom.Utility.Pool;
 import Atom.Utility.Utility;
 import Ozone.Commands.Commands;
 import Ozone.Internal.Module;
@@ -58,17 +59,24 @@ public class CommandsDesktop implements Module {
 		
 		
 		String code = Utility.joiner(arg, " ");
-		Thread th = new Thread(() -> {
+		if (code.isEmpty()) {
+			tellUser("no input");
+			return;
+		}
+		if (!code.endsWith(";")) {
+			tellUser("should end with semicolon ;");
+			return;
+		}
+		
+		Pool.daemon(() -> {
 			try {
-				Atom.Runtime.Compiler.runLine(code, Stream.getReader(s -> Log.infoTag("javac", s)));
+				Atom.Runtime.Compiler.runLine(code, Stream.getReader(Commands::tellUser));
 			}catch (Throwable t) {
 				t.printStackTrace();
 				Log.errTag("Compiler", t.toString());
-				tellUser(t.toString());
+				tellUser(t.getMessage());
 			}
-		});
-		th.setDaemon(true);
-		th.start();
+		}).start();
 		
 	}
 	

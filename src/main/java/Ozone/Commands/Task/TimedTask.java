@@ -15,7 +15,7 @@
  */
 
 package Ozone.Commands.Task;
-
+//TODO use Atom.Time
 public abstract class TimedTask extends Task {
 	protected long start;
 	protected long time = 100;//millisecond

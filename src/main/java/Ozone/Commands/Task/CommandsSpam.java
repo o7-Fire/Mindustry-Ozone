@@ -20,12 +20,12 @@ import Ozone.Commands.Commands;
 import Ozone.Settings.BaseSettings;
 import mindustry.Vars;
 
-//not finished
+//TODO Restructure this
 public class CommandsSpam extends Task {
 	private int howManyTimes = 1;
-	private int currentCycle = 0;
+	private int currentCycle = 1;
 	private String commands = "";
-
+	
 	public CommandsSpam(String howMany, String delay, String commands) {
 		try {
 			if (!howMany.isEmpty()) howManyTimes = Integer.parseInt(howMany);
@@ -33,7 +33,7 @@ public class CommandsSpam extends Task {
 			if (delay.isEmpty()) delays = 0;
 			else delays = Integer.parseInt(delay);
 			if (!Commands.call(BaseSettings.commandsPrefix + commands)) {
-				currentCycle = 1;
+				currentCycle++;
 				howManyTimes = 1;
 				Vars.ui.showErrorMessage(commands + " is not a valid commands");
 			}else this.commands = commands;
@@ -52,8 +52,8 @@ public class CommandsSpam extends Task {
 	@Override
 	public void update() {
 		if (tick()) return;
-		if (currentCycle > howManyTimes) return;
 		currentCycle++;
+		if (currentCycle > howManyTimes) return;
 		Commands.call(BaseSettings.commandsPrefix + commands);
 	}
 }

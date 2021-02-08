@@ -62,7 +62,7 @@ public class CommandsListFrag extends Fragment {
 				pane.labelWrap(Commands.commandsList.size() + " Commands in total").marginLeft(20);
 				pane.row();
 				sField = pane.field(commands, (res) -> commands = res).fillX().growX().get();
-				pane.button(Icon.exportSmall, () -> Vars.ui.showTextInput("Commands", "How many times you want to run this", 2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay ? in tick, 10 frame is the lowest standard, 1 frame if you persist", 6, "100", true, d -> TaskInterface.addTask((new CommandsSpam(c, d, commands))))));
+				pane.button(Icon.exportSmall, () -> Vars.ui.showTextInput("Commands", "How many times you want to run this", 2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay in millisecond", 3, "100", true, d -> TaskInterface.addTask((new CommandsSpam(c, d, commands))))));
 				pane.row();
 				pane.pane(content).growX().grow().get().setScrollingDisabled(true, false);
 				pane.row();
@@ -82,9 +82,13 @@ public class CommandsListFrag extends Fragment {
 			Table table = new Table();
 			boolean allowed = cl.getValue().icon != null;
 			String name = (BaseSettings.colorPatch ? "[" + Random.getRandomHexColor() + "]" : "") + cl.getKey() + "[white]";
-			if (allowed)
+			if (allowed) {
 				table.button(name, cl.getValue().icon, () -> cl.getValue().method.accept(new ArrayList<>())).tooltip(cl.getValue().description).growX();
-			else table.button(name, Icon.boxSmall, () -> {
+				table.button(Icon.exportSmall, () -> {
+					Vars.ui.showTextInput("Commands", "How many times you want to run this", 2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay in millisecond", 3, "100", true, d -> TaskInterface.addTask((new CommandsSpam(c, d, commands)))));
+					
+				});
+			}else table.button(name, Icon.boxSmall, () -> {
 			}).tooltip("Disabled, commands require user input").disabled(true).growX();
 			table.button(Icon.info, () -> Vars.ui.showInfo(cl.getValue().description));
 			content.add(table).width(350f).maxHeight(h + 14);
