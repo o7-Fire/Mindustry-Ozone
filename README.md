@@ -76,7 +76,7 @@ Note: Ozone Desktop need to be installed manually\
 - search ozone
 - install it
 
-`Ozone core, desktop, dex`
+`Ozone any version`
 
 - install java 14 if using ozone-desktop, java 8+ if using ozone-core, don't install java if use android
 - locate Mindustry mods folder
