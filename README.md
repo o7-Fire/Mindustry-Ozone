@@ -8,7 +8,13 @@
 ![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fo7-Fire%2FMindustry-Ozone.svg?type=shield)
 
 # Download
+
 ### Ozone
+
+Note: for the next release use mindustry built in mod browser\
+Note: Dexed mean support for android compatible with pc\
+Note: Ozone Desktop need to be installed manually\
+
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v123.13)
 [0.16.0:0.14.1][Mindustry v123+] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v122.13)
@@ -37,7 +43,7 @@
 
 * Java 14+ and added to JAVA_HOME (mindustry desktop can run on java 14+) (For Ozone-Desktop)
 * Java 8+ and added to JAVA_HOME (mindustry core can run on java 8+) (For Ozone-Core)  (don't need to install if you
-  have the mindustry.exe version)
+  have the mindustry.exe version/ bundled JRE)
 * Internet connection (required to download library at runtime and can impact loading speed) (For Ozone-Desktop)
 * Year 2006+ Computer
 * Android 4.0+ / sdk version 14+
@@ -61,11 +67,16 @@
 
 `Ozone core`
 
-- install java 8+ (don't need to install if you have the mindustry.exe version)
+- install java 8+ (don't need to install if you have the mindustry.exe version or bundled JRE)
 - `java -jar Mindustry-Ozone.jar` or double click if on Windows
-- it's copied to mindustry mods folder
+- it's copied to mindustry mods folder\
+  or
+- open mindustry
+- open mod browser
+- search ozone
+- install it
 
-`Ozone core, desktop, android`
+`Ozone core, desktop, dex`
 
 - install java 14 if using ozone-desktop, java 8+ if using ozone-core, don't install java if use android
 - locate Mindustry mods folder
