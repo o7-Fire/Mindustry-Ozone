@@ -35,7 +35,6 @@ public class CommandsSpam extends Task {
 			if (!Commands.call(BaseSettings.commandsPrefix + commands)) {
 				currentCycle++;
 				howManyTimes = 1;
-				
 				Vars.ui.showErrorMessage(commands + " is not a valid commands");
 			}else this.commands = commands;
 			setTick(delays);
