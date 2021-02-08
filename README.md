@@ -71,7 +71,7 @@ Note: Ozone Desktop need to be installed manually\
 - `java -jar Mindustry-Ozone.jar` or double click if on Windows
 - it's copied to mindustry mods folder\
   or
-- open mindustry
+- open mindustry [123<]
 - open mod browser
 - search ozone
 - install it

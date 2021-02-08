@@ -1,1 +1,0 @@
-adb push Android/build/libs/Android-Ozone.jar /sdcard/Android/data/io.anuke.mindustry/files/mods/Ozone-Android.jar

@@ -1,34 +1,9 @@
-if(!(JavaVersion.current().ordinal() < JavaVersion.VERSION_14.ordinal())){
+if(!(JavaVersion.current().ordinal() <= JavaVersion.VERSION_14.ordinal())){
     include 'Desktop'
     include 'Tools'
 }
 
 rootProject.name = 'Ozone'
-static def getLatestFolder(File fe){
-    try {
-        ArrayList<File> f = new ArrayList<>();
-        File[] files = fe.listFiles();
-        f.addAll(Arrays.asList(files));
-        f.sort(new Comparator<File>() {
-            @Override
-            public int compare(File o1, File o2) {
-                return o1.getAbsolutePath() <=> o2.getAbsolutePath();
-            }
-        });
-        return f.get(f.size() - 1);
-    }catch(ignored){}
-    return fe;
-}
-def sdkRoot = System.getenv("ANDROID_HOME")
-def sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
-def sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
-
-
-if(new File(sdkD8).exists() && new File(sdkJar).exists()) {
-    include 'Android'
-}else{
-    println("No Android SDK found. Skipping Android module.")
-}
 
 def use = { ... names ->
     for(String name : names){
