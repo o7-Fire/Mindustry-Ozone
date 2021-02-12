@@ -35,7 +35,6 @@ import mindustry.ui.Styles;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -115,12 +114,14 @@ public class Manifest {
 		table.bottom().add(text).style(Styles.outlineLabel).padBottom(80);
 		Core.scene.add(table);
 	}
-	
+
 	public static ArrayList<Field> getSettings() {
 		ArrayList<Field> f = new ArrayList<>();
 		//must static class
-		for (Class<?> c : settings)
-			f.addAll(Arrays.asList(c.getDeclaredFields()));
+		for (Class<?> c : settings) {
+			for (Field ff : (c.getDeclaredFields()))
+				if (!f.contains(ff)) f.add(ff);
+		}
 		return f;
 	}
 }

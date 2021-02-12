@@ -154,8 +154,17 @@ Linux: /home/USERNAME/.local/share/Mindustry/mods/
 - Video player
 - Logic scanner/obfuscator/jammer
 - Move library/utility class to Atomic-Library
+
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools
+
+# Bonus
+
+problem:\
+![](https://cdn.discordapp.com/attachments/809580979777568828/809684909198278656/unknown.png) \
+solution:\
+![](https://cdn.discordapp.com/attachments/809580979777568828/809685014849519616/unknown.png) \
+![](https://cdn.discordapp.com/attachments/809580979777568828/809685566869471262/unknown.png)
 <h4 align="center">Visitor's count :eyes:</h4>
 <p align="center"><img src="https://profile-counter.glitch.me/%7Bsketchyirishman%7D/count.svg" alt="sketchyirishman :: Visitor's Count" /></p>

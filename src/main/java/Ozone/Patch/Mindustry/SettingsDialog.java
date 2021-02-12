@@ -37,7 +37,7 @@ public class SettingsDialog extends SettingsMenuDialog {
 			return;
 		}
 		gameTable.row();
-		gameTable.table(SettingsDialog::h).growX().row();
+		gameTable.table(this::h).growX().row();
 		hidden(Manifest::saveSettings);
 		gameTable.button("Save Ozone Settings", Manifest::saveSettings).growX().row();
 		gameTable.button("Reset UID", () -> {
@@ -51,7 +51,7 @@ public class SettingsDialog extends SettingsMenuDialog {
 		}).growX();
 	}
 	
-	static void h(Table gameTable) {
+	void h(Table gameTable) {
 		for (Field f : Manifest.getSettings()) {
 			String name = f.getDeclaringClass().getName() + "." + f.getName();
 			gameTable.left();
