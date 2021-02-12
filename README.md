@@ -16,6 +16,7 @@ Note: for Mindustry 124+ use Mindustry built in mods browser instead\
 Note: Dexed mean support for android, compatible with pc\
 Note: Ozone Desktop need to be installed manually\
 [Latest](https://github.com/o7-Fire/Mindustry-Ozone/releases) [Github]\
+[Nightly](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github] [Zipped and need github login]\
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/latest)
 [0.16.0:0.14.1][Mindustry v123.1] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v122.13)
@@ -29,7 +30,6 @@ Note: Ozone Desktop need to be installed manually\
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v120/Ozone-Desktop.jar)
 [0.9.0:0.10.2][Mindustry v120] \
 [Other Version](https://jitpack.io/#o7-Fire/Mindustry-Ozone) [Jitpack][If you know how to download from jitpack] \
-[Other Version](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github][Zipped and need github login]\
 [Other Release](https://github.com/o7-Fire/Mindustry-Ozone/tags) [Github]
 
 ### Java
