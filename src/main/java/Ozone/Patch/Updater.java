@@ -25,17 +25,14 @@ import Ozone.Internal.InformationCenter;
 import Ozone.Propertied;
 import Shared.SharedBoot;
 import arc.util.Log;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.Version;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -56,46 +53,6 @@ public class Updater {
 		init = true;
 		Log.debug("Update Daemon Started");
 		
-		Future a = Pool.submit(() -> {
-			try {
-				HashMap<String, String> he = Encoder.parseProperty(getBuild(true).openStream());
-				newBuild.set(latest(he));
-				buildMap = he;
-				if (newBuild.get()) Log.infoTag("Updater", "New Latest Build Found: " + he.get("VHash"));
-				else {
-					Log.debug("Latest Build Incompatible or Unavailable");
-					Pool.daemon(() -> {
-						try {
-							URL u = new URL("https://api.github.com/repos/o7-Fire/Mindustry-Ozone/commits?per_page=" + Random.getInt(2, 15));
-							JsonArray js = JsonParser.parseString(Encoder.readString(u.openStream())).getAsJsonArray();
-							ArrayList<Future<HashMap<String, String>>> list = new ArrayList<>();
-							for (JsonElement je : js) {
-								list.add(Pool.submit(() -> checkJsonGithub(je)));
-							}
-							for (Future<HashMap<String, String>> fe : list) {
-								try {
-									if (newBuild.get()) return;
-									if (!latest(fe.get())) return;
-									String h = fe.get().get("VHash");
-									if (h == null) continue;
-									if (h.equals("unspecified")) continue;
-									last = h;
-									newBuild.set(true);
-									if (newBuild.get()) Log.infoTag("Updater", "New Build Found: " + h);
-									buildMap = fe.get();
-									return;
-								}catch (Throwable ignored) {}
-							}
-							Log.debug("No Compatible Build Found on Pool");
-						}catch (Throwable e) {
-							Sentry.captureException(e);
-						}
-					}).start();
-				}
-			}catch (Throwable e) {
-				Sentry.captureException(e);
-			}
-		});
 		
 		Future b = Pool.submit(() -> {
 			try {
@@ -110,13 +67,9 @@ public class Updater {
 			}
 		});
 		try {
-			a.get();
-		}catch (Throwable ignored) {}
-		try {
 			b.get();
 		}catch (Throwable ignored) {}
 		if (newBuild.get()) return;
-		
 		
 	}
 	
