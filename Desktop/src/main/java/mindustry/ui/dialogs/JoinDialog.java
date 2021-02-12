@@ -238,7 +238,7 @@ public class JoinDialog extends BaseDialog {
 			t.add("[lightgray]" + host.name + "   " + versionString).width(targetWidth() - 10f).left().get().setEllipsis(true);
 			t.row();
 			if (!host.description.isEmpty()) {
-				t.add("[gray]" + Strings.stripColors(host.description)).width(targetWidth() - 10f).left().wrap();
+				t.add("[gray]" + host.description).width(targetWidth() - 10f).left().wrap();
 				t.row();
 			}
 			t.add("[lightgray]" + (Core.bundle.format("players" + (host.players == 1 && host.playerLimit <= 0 ? ".single" : ""), (host.players == 0 ? "[lightgray]" : "[accent]") + host.players + (host.playerLimit > 0 ? "[lightgray]/[accent]" + host.playerLimit : "") + "[lightgray]"))).left();
@@ -271,16 +271,19 @@ public class JoinDialog extends BaseDialog {
 		
 		cont.clear();
 		cont.table(t -> {
-			t.button(Icon.imageSmall, () -> ui.showInfoText("Preview", "[coral][[[" + Random.getHex(player.color().rgba8888()) + "]" + player.name() + "[coral]]:[white] Preview"));
+			t.button(Icon.imageSmall, () -> ui.showInfoText("Preview", "[coral][[[" + Random.getHex(player.color().rgba8888()) + "]" + player.name() + "[coral]]:[white] Preview")).padRight(10);
+			;
 			t.field(Core.settings.getString("name"), text -> {
 				player.name(text);
 				Core.settings.put("name", text);
 			}).grow().pad(8).addInputDialog(maxNameLength);
 			
-			ImageButton button = t.button(Tex.whiteui, Styles.clearFulli, 40, () -> new PaletteDialog().show(color -> {
-				player.color().set(color);
-				Core.settings.put("color-0", color.rgba8888());
-			})).size(54f).get();
+			ImageButton button = t.button(Tex.whiteui, Styles.clearFulli, 40, () -> {
+				new PaletteDialog().show(color -> {
+					player.color().set(color);
+					Core.settings.put("color-0", color.rgba8888());
+				});
+			}).size(54f).get();
 			button.update(() -> button.getStyle().imageUpColor = player.color());
 		}).width(w).height(70f).pad(4);
 		cont.row();
@@ -468,12 +471,14 @@ public class JoinDialog extends BaseDialog {
 		if (lastIp == null || lastIp.isEmpty()) return;
 		ui.loadfrag.show("@reconnecting");
 		
-		ping = Timer.schedule(() -> net.pingHost(lastIp, lastPort, host -> {
-			if (ping == null) return;
-			ping.cancel();
-			ping = null;
-			connect(lastIp, lastPort);
-		}, exception -> {}), 1, 1);
+		ping = Timer.schedule(() -> {
+			net.pingHost(lastIp, lastPort, host -> {
+				if (ping == null) return;
+				ping.cancel();
+				ping = null;
+				connect(lastIp, lastPort);
+			}, exception -> {});
+		}, 1, 1);
 		
 		ui.loadfrag.setButton(() -> {
 			ui.loadfrag.hide();
@@ -505,7 +510,7 @@ public class JoinDialog extends BaseDialog {
 			Core.settings.remove("server-list");
 		}
 		
-		var url = becontrol.active() ? serverJsonBeURL : serverJsonV6URL;
+		var url = becontrol.active() ? serverJsonBeURL : serverJsonURL;
 		Log.info("Fetching community servers at @", url);
 		
 		//get servers

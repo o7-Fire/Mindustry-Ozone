@@ -11,12 +11,12 @@
 
 ### Ozone
 
-Note: for the next release use mindustry built in mod browser\
-Note: Dexed mean support for android compatible with pc\
+Note: for Mindustry 124+ use Mindustry built in mods browser instead\
+Note: Dexed mean support for android, compatible with pc\
 Note: Ozone Desktop need to be installed manually\
 
-[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v123.13)
-[0.16.0:0.14.1][Mindustry v123+] \
+[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/latest)
+[0.16.0:0.14.1][Mindustry v123.1] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v122.13)
 [0.14.0:0.12.24][Mindustry v122.1] \
 [Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v122/Desktop-v122.jar)
@@ -71,7 +71,7 @@ Note: Ozone Desktop need to be installed manually\
 - `java -jar Mindustry-Ozone.jar` or double click if on Windows
 - it's copied to mindustry mods folder\
   or
-- open mindustry [123<]
+- open mindustry [124+]
 - open mod browser
 - search ozone
 - install it
@@ -132,6 +132,7 @@ Linux: /home/USERNAME/.local/share/Mindustry/mods/
 - Ozone Extension Support
 - Video player
 - Logic scanner/obfuscator/jammer
+- Move library/utility class to Atomic-Library
 # Disclaimer
 
 It's totally for entertainment purpose, user is fully responsible for using this tools

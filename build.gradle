@@ -117,6 +117,7 @@ allprojects {
         sb.append("#Comment here").append("\n")
         sb.append("#Dexed mean android support can be used on pc too").append("\n")
         sb.append("#Recommend use built in mods browser in mindustry").append("\n")
+        sb.append("#Note desktop version must use the same mindustry version or else crash")
         sb.append("AtomHash").append("=").append(atomHash).append("\n")
         sb.append("ArcHash").append("=").append(arcHash).append("\n")
         sb.append("MindustryVersion").append("=").append(mindustryVersion).append("\n")
@@ -185,6 +186,7 @@ jar {
     }
     from(rootDir){
         include "mod.hjson"
+        include "icon.png"
     }
 
     //collect dependencies needed for desugaring

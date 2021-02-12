@@ -3,6 +3,7 @@ package mindustry;
 import Ozone.Patch.Updater;
 import Shared.LoggerMode;
 import arc.Core;
+import arc.Events;
 import arc.Settings;
 import arc.assets.Loadable;
 import arc.files.Fi;
@@ -10,10 +11,7 @@ import arc.graphics.Color;
 import arc.scene.ui.layout.Scl;
 import arc.struct.Seq;
 import arc.struct.StringMap;
-import arc.util.I18NBundle;
-import arc.util.Log;
-import arc.util.Structs;
-import arc.util.Time;
+import arc.util.*;
 import mindustry.ai.BaseRegistry;
 import mindustry.ai.BlockIndexer;
 import mindustry.ai.Pathfinder;
@@ -21,6 +19,7 @@ import mindustry.ai.WaveSpawner;
 import mindustry.async.AsyncCore;
 import mindustry.core.*;
 import mindustry.entities.EntityCollisions;
+import mindustry.game.EventType;
 import mindustry.game.Schematics;
 import mindustry.game.Universe;
 import mindustry.game.Waves;
@@ -37,9 +36,10 @@ import mindustry.net.Net;
 import mindustry.net.ServerGroup;
 import mindustry.world.Tile;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -67,33 +67,33 @@ public class Vars implements Loadable {
 	 */
 	public static final Charset charset = StandardCharsets.UTF_8;
 	/**
-	 * URL for itch.io donations.
+	 * Github API URL.
 	 */
-	public static final String donationURL = "https://anuke.itch.io/mindustry/purchase";
+	public static final String ghApi = "https://api.github.com";
+	/**
+	 * URL for sending crash reports to. Currently offline.
+	 */
+	public static final String crashReportURL = "http://192.99.169.18/report";
 	/**
 	 * URL for discord invite.
 	 */
 	public static final String discordURL = "https://discord.gg/mindustry";
 	/**
-	 * URL for sending crash reports to
+	 * URL to the JSON file containing all the BE servers. Only queried in the V6 alpha (will be removed once it's out).
 	 */
-	public static final String crashReportURL = "http://192.99.169.18/report";
+	public static final String serverJsonURL = "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_v6.json";
 	/**
 	 * URL the links to the wiki's modding guide.
 	 */
 	public static final String modGuideURL = "https://mindustrygame.github.io/wiki/modding/1-modding/";
 	/**
-	 * URL to the JSON file containing all the global, public servers. Not queried in BE.
-	 */
-	public static final String serverJsonURL = "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers.json";
-	/**
 	 * URL to the JSON file containing all the BE servers. Only queried in BE.
 	 */
 	public static final String serverJsonBeURL = "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_be.json";
 	/**
-	 * URL to the JSON file containing all the BE servers. Only queried in the V6 alpha (will be removed once it's out).
+	 * main application name, capitalized
 	 */
-	public static final String serverJsonV6URL = "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_v6.json";
+	public static String appName = "Mindustry";
 	/**
 	 * URL of the github issue report template.
 	 */
@@ -199,10 +199,6 @@ public class Vars implements Loadable {
 	 */
 	public static final String schematicExtension = "msch";
 	/**
-	 * main application name, capitalized
-	 */
-	public static String appName = "Mindustry";
-	/**
 	 * Whether to load locales.
 	 */
 	public static boolean loadLocales = true;
@@ -214,6 +210,10 @@ public class Vars implements Loadable {
 	 * Whether to enable various experimental features (e.g. cliffs)
 	 */
 	public static boolean experimental = false;
+	/**
+	 * Name of current Steam player.
+	 */
+	public static String steamPlayerName = "";
 	/**
 	 * tile used in certain situations, instead of null
 	 */
@@ -341,11 +341,6 @@ public class Vars implements Loadable {
 	public static NetClient netClient;
 	
 	public static Player player;
-	public static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
-	
-	public Vars() {
-
-	}
 	
 	public static void init() {
 		Groups.init();
@@ -411,12 +406,74 @@ public class Vars implements Loadable {
 		maps.load();
 	}
 	
+	public static void loadLogger() {
+		if (loadedLogger) return;
+		try {
+			LoggerMode.loadLogger();
+			return;
+		}catch (Throwable ignored) {}
+		String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
+		String[] stags = {"&lc&fb[D]", "&lb&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
+		
+		Seq<String> logBuffer = new Seq<>();
+		Log.logger = (level, text) -> {
+			String result = text;
+			String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
+			System.out.println(rawText);
+			
+			result = tags[level.ordinal()] + " " + result;
+			
+			if (!headless && (ui == null || ui.scriptfrag == null)) {
+				logBuffer.add(result);
+			}else if (!headless) {
+				if (!OS.isWindows) {
+					for (String code : ColorCodes.values) {
+						result = result.replace(code, "");
+					}
+				}
+				
+				ui.scriptfrag.addMessage(Log.removeColors(result));
+			}
+		};
+		
+		Events.on(EventType.ClientLoadEvent.class, e -> logBuffer.each(ui.scriptfrag::addMessage));
+		
+		loadedLogger = true;
+	}
+	
 	public static void loadFileLogger() {
-		LoggerMode.loadLogger();
+		if (loadedFileLogger) return;
+		try {
+			LoggerMode.loadLogger();
+			return;
+		}catch (Throwable ignored) {}
+		settings.setAppName(appName);
+		
+		try {
+			Writer writer = settings.getDataDirectory().child("last_log.txt").writer(false);
+			Log.LogHandler log = Log.logger;
+			//ignore it
+			Log.logger = (level, text) -> {
+				log.log(level, text);
+				
+				try {
+					writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " + Log.removeColors(text) + "\n");
+					writer.flush();
+				}catch (IOException e) {
+					e.printStackTrace();
+					//ignore it
+				}
+			};
+		}catch (Exception e) {
+			//handle log file not being found
+			Log.err(e);
+		}
+		
+		loadedFileLogger = true;
 	}
 	
 	public static void loadSettings() {
-		settings.setJson(JsonIO.json());
+		settings.setJson(JsonIO.json);
 		settings.setAppName(appName);
 		
 		if (steam || (Version.modifier != null && Version.modifier.contains("steam"))) {
@@ -472,15 +529,6 @@ public class Vars implements Loadable {
 				bundle.debug("router");
 			}
 		}
-	}
-	
-	public static void loadLogger() {
-		LoggerMode.loadLogger();
-	}
-	
-	@Override
-	public void loadSync() {
-	
 	}
 	
 	@Override

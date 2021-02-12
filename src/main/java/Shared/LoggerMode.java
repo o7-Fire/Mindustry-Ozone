@@ -23,7 +23,6 @@ import arc.util.ColorCodes;
 import arc.util.Log;
 import arc.util.OS;
 import io.sentry.Sentry;
-import mindustry.Vars;
 import mindustry.game.EventType;
 
 import java.io.Writer;
@@ -32,11 +31,13 @@ import static arc.Core.settings;
 import static mindustry.Vars.*;
 
 public class LoggerMode {
-
+	
 	static Writer writer;
+	static volatile boolean loaded;
 	
 	public static void loadLogger() {
-		
+		if (loaded) return;
+		loaded = true;
 		
 		String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
 		String[] stags = {"&lc&fb[D]", "&lb&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
@@ -61,10 +62,7 @@ public class LoggerMode {
 			result = tags[level.ordinal()] + " " + result;
 			if (!text.startsWith("Ozone-Event-")) {
 				String t = text;
-				try {
-					if (t.contains(Vars.player.name()))
-						t = t.replaceAll(Vars.player.name, "Vars.player.name");//curb your name
-				}catch (Throwable ignored) {}
+				
 				Sentry.addBreadcrumb(t, level.name());
 			}
 			if (!headless && (ui == null || ui.scriptfrag == null)) {

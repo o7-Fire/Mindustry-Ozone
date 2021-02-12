@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-import Atom.Time.Countdown;
 import Atom.Utility.Meth;
 import Atom.Utility.Random;
 import com.github.javaparser.StaticJavaParser;
@@ -226,15 +225,11 @@ public class StringObfuscator {
         yet.add("String s = \"literal\";//ofc");
         yet.add("String gay = \"absolute\";");
         for (int i = 0; i < 1000; i++) {
-            Countdown.start();
+    
             String s = new String(new byte[]{984928 / 8794, 852339 / 8787, 447579 / 4521, 768902 / 7186, 555228 / 5724, 795469 / 7723, 294920 / 2920, 318112 / 9941, 416488 / 5272, 87352 / 716, 677100 / 6100, 944350 / 8585, 399354 / 3954, 11730 / 255, 43148 / 644, 291153 / 2623, 986777 / 9053, 929225 / 8525, 556586 / 5738, 347490 / 3159, 820900 / 8209, 669185 / 5819, 240779 / 4081,});
-            obfuscated.add(Countdown.stop());
-            System.out.println(Countdown.result());
+    
             System.out.println("vs");
-            Countdown.start();
-            String lol = new String("package Ozone.Commands;");
-            normal.add(Countdown.stop());
-            System.out.println(Countdown.result());
+    
         }
         System.out.println("obfuscated avg, max, min: " + avg(obfuscated) + ", " + Meth.max(obfuscated.toArray(new Long[0])) + ", " + Meth.min(obfuscated.toArray(new Long[0])));
         System.out.println("normal avg, max, min: " + avg(normal) + ", " + Meth.max(normal.toArray(new Long[0])) + ", " + Meth.min(normal.toArray(new Long[0])));

@@ -78,7 +78,7 @@ public class PlayerListFragment extends Fragment {
 					menu.button("@close", this::toggle);
 				}).margin(0f).pad(10f).growX();
 				
-			}).touchable(Touchable.enabled).margin(14f);
+			}).touchable(Touchable.enabled).margin(14f).minWidth(360f);
 		});
 		
 		rebuild();
@@ -145,7 +145,8 @@ public class PlayerListFragment extends Fragment {
 						if (net.client()) return;
 						
 						String id = user.uuid();
-						if (connection != null) if (netServer.admins.isAdmin(id, connection.address)) {
+						
+						if (netServer.admins.isAdmin(id, connection.address)) {
 							ui.showConfirm("@confirm", Core.bundle.format("confirmunadmin", user.name()), () -> netServer.admins.unAdminPlayer(id));
 						}else {
 							ui.showConfirm("@confirm", Core.bundle.format("confirmadmin", user.name()), () -> netServer.admins.adminPlayer(id, user.usid()));
