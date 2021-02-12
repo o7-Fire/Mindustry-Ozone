@@ -18,7 +18,6 @@ package Premain;
 
 import Ozone.Bootstrap.OzoneBootstrap;
 import Ozone.Main;
-import Ozone.Patch.Updater;
 import Shared.LoggerMode;
 import arc.Core;
 import arc.util.Log;
@@ -36,9 +35,6 @@ public class EntryPoint extends Mod {
 			Log.err(t);
 			Sentry.captureException(t);
 		}
-		try {
-			Updater.async();
-		}catch (Throwable ignored) {}
 		
 		try {
 			Main.earlyInit();

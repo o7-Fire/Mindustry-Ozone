@@ -191,15 +191,20 @@ public class Interface {
 	}
 	
 	public static Future<Building> getBuild(Filter<Building> buildFilter) {
+		return Pool.submit(() -> Random.getRandom(Objects.requireNonNull(getBuilds(buildFilter)).get()));
+	}
+	
+	public static Future<ArrayList<Building>> getBuilds(Filter<Building> buildingFilter) {
 		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
 		return Pool.submit(() -> {
 			ArrayList<Building> list = new ArrayList<>();
-			for (Building b : Groups.build)
-				if (buildFilter.accept(b)) list.add(b);
-			return Random.getRandom(list);
+			for (Building t : Groups.build) {
+				if (!buildingFilter.accept(t)) continue;
+				list.add(t);
+			}
+			return list;
 		});
 	}
-	
 	public static Future<ArrayList<Tile>> getTiles(Filter<Tile> filter) {
 		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
 		return Pool.submit(() -> {

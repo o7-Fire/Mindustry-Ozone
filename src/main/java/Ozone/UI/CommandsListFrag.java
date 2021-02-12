@@ -85,7 +85,7 @@ public class CommandsListFrag extends Fragment {
 			if (allowed) {
 				table.button(name, cl.getValue().icon, () -> cl.getValue().method.accept(new ArrayList<>())).tooltip(cl.getValue().description).growX();
 				table.button(Icon.exportSmall, () -> {
-					Vars.ui.showTextInput("Commands", "How many times you want to run this", 2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay in millisecond", 3, "100", true, d -> TaskInterface.addTask((new CommandsSpam(c, d, commands)))));
+					Vars.ui.showTextInput("Commands", "How many times you want to run this", 2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay in millisecond", 3, "100", true, d -> TaskInterface.addTask((new CommandsSpam(c, d, cl.getKey())))));
 					
 				});
 			}else table.button(name, Icon.boxSmall, () -> {

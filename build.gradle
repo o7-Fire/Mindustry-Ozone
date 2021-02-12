@@ -59,7 +59,8 @@ allprojects {
     }
 
     ext {
-        minApi = '14'
+
+        minApi = '11'
         //automatically detect latest shit
         sdkRoot = System.getenv("ANDROID_HOME")
         sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
@@ -108,7 +109,6 @@ allprojects {
             manifestMeta.delete()
             manifestMeta.createNewFile()
         }catch(ignored){}
-
         Date d = new Date();
         Formatter formatter = new Formatter();
         Calendar c = Calendar.getInstance();

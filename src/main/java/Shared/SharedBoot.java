@@ -32,6 +32,10 @@ public class SharedBoot {
 	public static long startup = System.nanoTime();
 	public static String type = "Ozone-Core";
 	
+	public static boolean isCore() {
+		return type.equals("Ozone-Core");
+	}
+	
 	static {
 		if (!debug) try {
 			debug = getOrDefault(SettingsManifest.getMap(), "Ozone.Settings.BaseSettings.debugMode", "false").equalsIgnoreCase("true");

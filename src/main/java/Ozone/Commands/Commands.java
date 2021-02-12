@@ -181,6 +181,7 @@ public class Commands implements Module {
 			tellUser("Empty ? gabe itch");
 			return;
 		}
+		
 		String text = Utility.joiner(Utility.getArray(s), " ");
 		StringBuilder sb = new StringBuilder();
 		if (text.length() * 10 > Vars.maxTextLength) {

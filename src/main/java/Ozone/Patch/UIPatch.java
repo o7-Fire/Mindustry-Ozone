@@ -21,6 +21,7 @@ import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.Patch.Mindustry.SettingsDialog;
 import Ozone.UI.*;
+import Shared.SharedBoot;
 import arc.Core;
 import arc.Events;
 import arc.scene.ui.Dialog;
@@ -78,10 +79,10 @@ public class UIPatch implements Module {
 			}catch (Throwable ignored) {}
 			if (Vars.mobile || Vars.testMobile) {
 				if (Core.graphics.isPortrait()) VarsPatch.menu.row();
-				VarsPatch.menu.add(new MobileButton(Icon.info, Translation.get("Ozone"), () -> Manifest.modsMenu.show()));
 				VarsPatch.menu.add(new MobileButton(Icon.refresh, Translation.get("Update"), Updater::showUpdateDialog));
 			}else {
-				VarsPatch.menu.button(Translation.get("Update"), Icon.refresh, Updater::showUpdateDialog).growX().bottom();
+				if (!SharedBoot.isCore())
+					VarsPatch.menu.button(Translation.get("Update"), Icon.refresh, Updater::showUpdateDialog).growX().bottom();
 				VarsPatch.menu.button(Translation.get("Ozone"), Icon.file, Manifest.modsMenu::show).growX().bottom();
 			}
 		}
