@@ -110,7 +110,10 @@ Linux: /home/USERNAME/.local/share/Mindustry/mods/
 ![](https://cdn.discordapp.com/attachments/809580979777568828/809663462023102484/drainCore.gif)
 ![](https://cdn.discordapp.com/attachments/809580979777568828/809668927571230760/FollowP1.gif)
 ![](https://cdn.discordapp.com/attachments/809580979777568828/809669870849490954/unknown.png)
-
+![](https://cdn.discordapp.com/attachments/809580979777568828/809734631775666206/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809734704894967828/unknown.png)
+![]()
+![]()
 # Impossible things to do
 
 - In-game Painter because a mere mortal can't draw with by typing code
