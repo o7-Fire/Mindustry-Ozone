@@ -171,7 +171,6 @@ dependencies {
 }
 task deploy(type: Jar) {
     dependsOn ":Desktop:jar"//make desktop jar
-    dependsOn ":Android:jar"//make android jar
 }
 
 jar {

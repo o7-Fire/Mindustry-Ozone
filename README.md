@@ -8,6 +8,7 @@
 ![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fo7-Fire%2FMindustry-Ozone.svg?type=shield)
 
 # Download
+### Mindustry
 
 ### Ozone
 Note: Ozone Desktop is an independent loader with some extension (Ozone Core + Desktop Extension + Loader)\
