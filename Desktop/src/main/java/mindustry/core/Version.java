@@ -3,6 +3,7 @@ package mindustry.core;
 import Atom.Utility.Random;
 import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Ozone.Propertied;
+import Ozone.Settings.BaseSettings;
 import arc.Core;
 import arc.Files.FileType;
 import arc.files.Fi;
@@ -107,10 +108,11 @@ public class Version {
 		if (build == -1) {
 			return "custom build";
 		}
-		return (type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision) + " [royal]Ozone[white] " + versionColorized(Ozone.Version.core) + " [white]:  " + versionColorized(Ozone.Version.desktop) + "[white]";
+		return (type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision) + (BaseSettings.colorPatch ? "[royal]" : "") + " Ozone[white] " + versionColorized(Ozone.Version.core) + " [white]:  " + versionColorized(Ozone.Version.desktop) + "[white]";
 	}
 	
 	private static String versionColorized(String s) {
+		if (!BaseSettings.colorPatch) return s;
 		StringBuilder sb = new StringBuilder();
 		for (String eh : s.split("\\.")) {
 			Random r = new Random();

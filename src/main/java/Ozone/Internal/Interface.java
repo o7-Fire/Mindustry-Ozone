@@ -121,13 +121,14 @@ public class Interface {
 	
 	public static Player searchPlayer(String s) {
 		Player target = null;
+		if (s == null) return null;
 		try {//try ID search
 			int id = Integer.parseInt(s);
 			target = Groups.player.find(f -> f.id == id);
 		}catch (NumberFormatException ignored) {}
 		if (target == null)// if still not found
 			target = Groups.player.find(f -> f.name().equals(s) || f.name.startsWith(s));
-		return player;
+		return target;
 	}
 	
 	public static boolean depositItem(Building tile) {

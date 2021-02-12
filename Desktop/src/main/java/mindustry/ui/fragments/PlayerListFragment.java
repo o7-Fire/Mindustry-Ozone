@@ -1,5 +1,6 @@
 package mindustry.ui.fragments;
 
+import Ozone.Commands.Commands;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
@@ -25,6 +26,8 @@ import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static mindustry.Vars.*;
 
@@ -163,11 +166,23 @@ public class PlayerListFragment extends Fragment {
 			}
 			
 			content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
-			if (Settings.showPlayerID) content.add(new Label(user.isLocal() ? "ID" : String.valueOf(user.id())));
+			if (Settings.showPlayerID) {
+				if (user.isLocal()) content.add(new Label("ID"));
+				else content.button(user.id + "", () -> {
+					Core.app.setClipboardText(user.id + "");
+					Commands.tellUser("Copied");
+				});
+			}
 			if (Settings.showPlayerTyping)
 				content.add(new Label(user.isLocal() ? "Typing" : user.typing() ? "[green]True[white]" : "False"));
 			if (Settings.showPlayerShooting)
 				content.add(new Label(user.isLocal() ? "Shooting" : user.shooting() ? "[green]True[white]" : "False"));
+			if (user.isLocal()) content.add(new Label("Follow Player"));
+			else content.button(Icon.move, () -> {
+				if (Commands.targetPlayer == null)
+					Commands.followPlayer(new ArrayList<>(Collections.singletonList(user.id + "")));
+				else Commands.followPlayer(new ArrayList<>());
+			}).tooltip("Follow player");
 			content.row();
 			content.image().height(4f).color(state.rules.pvp ? user.team().color : Pal.gray).growX();
 			content.row();

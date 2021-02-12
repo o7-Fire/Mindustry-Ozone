@@ -18,6 +18,7 @@ package Ozone.Commands;
 
 import Atom.Utility.Meth;
 import Atom.Utility.Random;
+import Ozone.Commands.Task.Move;
 import Ozone.Internal.Module;
 import Ozone.Patch.Hack;
 import arc.Events;
@@ -91,6 +92,11 @@ public class Pathfinding implements Module {
 		else if (unit.isFlying()) return 0;
 		cost = Hack.pathCost(team, tile, type);
 		return cost;
+	}
+	
+	public static boolean withinPlayerTolerance(Position target) {
+		float tolerance = Vars.player.unit().isFlying() ? Move.airTolerance : Move.landTolerance;
+		return Pathfinding.distanceTo(Vars.player, target) < tolerance;
 	}
 	
 	public static float isSafe(Tile t) {

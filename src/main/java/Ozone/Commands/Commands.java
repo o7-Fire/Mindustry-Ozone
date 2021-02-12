@@ -57,7 +57,7 @@ public class Commands implements Module {
 	public static final Queue<Task> commandsQueue = new Queue<>();
 	public static final Map<String, Command> commandsList = new TreeMap<>();
 	
-	private static String targetPlayer;//no need to be volatile because its still accessed from same thread
+	public static String targetPlayer;//no need to be volatile because its still accessed from same thread
 	private static boolean falseVote = false;
 	private static boolean drainCore = false;
 	private static boolean chatting = false;
@@ -250,7 +250,6 @@ public class Commands implements Module {
 		ArrayList<String> mesArg = new ArrayList<>(Arrays.asList(message.split(" ")));
 		if (!commandsList.containsKey(mesArg.get(0).toLowerCase())) {
 			tellUser("Commands not found");
-			help();
 			return false;
 		}
 		Command comm = commandsList.get(mesArg.get(0).toLowerCase());
@@ -425,10 +424,8 @@ public class Commands implements Module {
 	}
 	
 	public static void followPlayer(ArrayList<String> arg) {
-		
-		if (!arg.isEmpty()) {
-			tellUser("Searching for: " + arg.get(0));
-		}else {
+		String p = Utility.joiner(arg, " ");
+		if (arg.isEmpty()) {
 			if (targetPlayer != null) {
 				tellUser("Stop following player");
 				targetPlayer = null;
@@ -437,19 +434,24 @@ public class Commands implements Module {
 			}
 			return;
 		}
-		Player target = Interface.searchPlayer(arg.get(0));
+		Player target = Interface.searchPlayer(p);
 		if (target == null) {
 			tellUser("Player not found");
+			targetPlayer = null;
 			return;
 		}
-		targetPlayer = arg.get(0);
-		tellUser("Player found distance: " + Pathfinding.distanceTo(Vars.player.tileOn(), target.tileOn()));
-		TaskInterface.addTask(new Move(target.x, target.y) {{name = "followPlayer:" + target.name();}});
+		if (targetPlayer == null) {
+			tellUser("Found player: distance " + Pathfinding.distanceTo(Vars.player, target));
+		}
+		targetPlayer = target.id + "";
+		if (!Pathfinding.withinPlayerTolerance(target))
+			TaskInterface.addTask(new Move(target.tileOn()) {{name = "followPlayer:" + target.name();}});
 		
-		TaskInterface.addTask(new SingleTimeTask(() -> {//basically repeating shit
+		TaskInterface.addTask(new SingleTimeTask(() -> {//basically invoke this method again if target isnt null
 			if (targetPlayer == null) return;//gone
 			Player t = Interface.searchPlayer(targetPlayer);
 			if (t == null) tellUser("Player gone, stop following");
+			
 			else followPlayer(new ArrayList<>(Collections.singletonList(t.id + "")));
 		}) {
 			{
@@ -521,9 +523,8 @@ public class Commands implements Module {
 					name = "drainCore";
 				}
 			});
-			tellUser("draining core");
 		}else {
-			tellUser("stopped draining core");
+			tellUser("Drain Core stopped");
 		}
 	}
 	

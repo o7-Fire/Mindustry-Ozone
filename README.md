@@ -10,11 +10,11 @@
 # Download
 
 ### Ozone
-
+Note: Ozone Desktop is an independent loader with some extension (Ozone Core + Desktop Extension + Loader)\
 Note: for Mindustry 124+ use Mindustry built in mods browser instead\
 Note: Dexed mean support for android, compatible with pc\
 Note: Ozone Desktop need to be installed manually\
-
+[Latest](https://github.com/o7-Fire/Mindustry-Ozone/releases) [Github]\
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/latest)
 [0.16.0:0.14.1][Mindustry v123.1] \
 [Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v122.13)
@@ -61,24 +61,22 @@ Note: Ozone Desktop need to be installed manually\
 `Ozone destkop`
 
 - install Java 14
-- `java -jar Mindustry-Ozone.jar` or double click if on Windows
+- `java -jar Mindustry-Ozone.jar` or double click if can
 - click install
-- optional: run to download mindustry and run it
+- optional: **Run** to download mindustry and run it
+- use java 14 to launch Mindustry
 
 `Ozone core`
 
 - install java 8+ (don't need to install if you have the mindustry.exe version or bundled JRE)
-- `java -jar Mindustry-Ozone.jar` or double click if on Windows
+- `java -jar Mindustry-Ozone.jar` or double click if can
 - it's copied to mindustry mods folder\
   or
 - open mindustry [124+]
 - open mod browser
 - search ozone
-- install it
-
-`Ozone any version`
-
-- install java 14 if using ozone-desktop, java 8+ if using ozone-core, don't install java if use android
+- install it\
+  or
 - locate Mindustry mods folder
 
 ```css
@@ -88,7 +86,29 @@ Linux: /home/USERNAME/.local/share/Mindustry/mods/
 ```
 
 - copy the jar to the mods folder
-- launch mindustry (for desktop ozone recommend to use *run* instead)
+- launch mindustry (for desktop ozone recommend to use **Run** instead)
+
+# Preview
+
+(mostly ozone core)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809627146846470144/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809627233010319380/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809634916300095498/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635106779299861/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635148282462218/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635252502265886/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635310522204210/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635755419893820/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809636037360877598/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635992977932298/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809636104637644800/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809636322272084058/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809636450755674133/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809637463382425620/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809638887873445898/sortshuffle.gif)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809663462023102484/drainCore.gif)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809668927571230760/FollowP1.gif)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809669870849490954/unknown.png)
 
 # Impossible things to do
 

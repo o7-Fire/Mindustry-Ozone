@@ -99,8 +99,8 @@ public class TaskInterface implements Module {
 		return new Vec2(t.x * 8, t.y * 8);
 	}
 	
-	public static Vec2 getCurrentTilePos() {
-		return new Vec2(Vars.player.tileX(), Vars.player.tileY());
+	public static Tile getCurrentTilePos() {
+		return Vars.player.tileOn();
 	}
 	
 	public static Vec2 getCurrentTilePos(Vec2 ref) {

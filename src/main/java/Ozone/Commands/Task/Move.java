@@ -18,6 +18,7 @@ package Ozone.Commands.Task;
 
 import Ozone.Commands.Pathfinding;
 import Ozone.Commands.TaskInterface;
+import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import mindustry.Vars;
@@ -25,43 +26,43 @@ import mindustry.content.Blocks;
 import mindustry.world.Tile;
 
 import static Ozone.Commands.Pathfinding.distanceTo;
-import static Ozone.Commands.TaskInterface.samePos;
 import static Ozone.Commands.TaskInterface.setMov;
 
 public class Move extends Task {
-	private final Vec2 destPos, destTilePos;
-	private final float airTolerance = 1.2f, landTolerance = 0.04f;
+	public static final float airTolerance = 12f, landTolerance = 1f;
+	private Position destTilePos;
 	private Tile destTile;
 	private Seq<Tile> pathfindingCache = new Seq<>();
-	private boolean alreadyOverlay = false;
-
+	
+	//tile coordinate
 	public Move(float x, float y) {
 		this(new Vec2(x, y));
 	}
-
-	public Move(Vec2 dest) {
-		destPos = new Vec2(dest.x * 8, dest.y * 8);
+	
+	public Move(Position dest) {
+		if (dest == null) dest = Vars.player.tileOn();
+		
+		destTile = Vars.world.tileWorld(dest.getX(), dest.getY());
 		destTilePos = dest;
-		destTile = Vars.world.tile(Math.round(dest.x), Math.round(dest.y));
 		setTick(10);
+		
 		if (!Vars.player.unit().isFlying()) {
-			pathfindingCache = Pathfinding.pathfind(destTile);
+			if (Pathfinding.passable(destTile)) {
+				pathfindingCache = Pathfinding.pathfind(destTile);
+				destTile = null;//to use the next tile
+			}else {
+				destTile = Vars.player.tileOn();
+				destTilePos = Vars.player.tileOn();
+			}
+			
 		}
+		name = "Goto: " + dest.toString();
 	}
-
-	@Override
-	public void onCompleted() {
-		if (Vars.net.active()) Vars.player.reset();
-		for (Tile t : pathfindingCache)
-			t.clearOverlay();
-		super.onCompleted();
-	}
-
+	
+	
 	@Override
 	public boolean isCompleted() {
-		if (Vars.player.unit().isFlying())
-			return distanceTo(TaskInterface.getCurrentPos(), destPos) < airTolerance * 1.2f;
-		else return distanceTo(TaskInterface.getCurrentPos(), destPos) < landTolerance || pathfindingCache.isEmpty();
+		return Pathfinding.withinPlayerTolerance(destTilePos) || (!Vars.player.unit().isFlying() && pathfindingCache.isEmpty());
 	}
 
 	@Override
@@ -69,14 +70,8 @@ public class Move extends Task {
 		if (!tick()) if (Vars.player.dead()) return;
 		if (!Vars.player.unit().isFlying()) {
 			if (pathfindingCache.isEmpty()) return;
-			if (!alreadyOverlay) for (Tile t : pathfindingCache) {
-				if (t.x + t.y == destTile.x + destTile.y) alreadyOverlay = true;
-				if (t.block() == null) tellUser("Null block: " + t.toString());
-				else if (t.block().isFloor()) t.setOverlay(Blocks.magmarock);
-				else if (t.block().isStatic()) t.setOverlay(Blocks.dirtWall);
-			}
 			if (destTile != null) {
-				if (distanceTo(TaskInterface.getCurrentTilePos(), new Vec2(destTile.x, destTile.y)) <= landTolerance) {
+				if (distanceTo(TaskInterface.getCurrentTilePos(), destTile) <= landTolerance) {
 					pathfindingCache.remove(0).clearOverlay();
 				}
 			}
@@ -84,10 +79,8 @@ public class Move extends Task {
 			destTile = pathfindingCache.get(0);
 			destTile.setOverlay(Blocks.dirt);
 		}else {
-			if (samePos(destTile, destTilePos, true)) {
-				setMov(destTilePos);
-				return;
-			}
+			setMov(destTilePos);
+			return;
 		}
 		setMov(destTile);
 	}
