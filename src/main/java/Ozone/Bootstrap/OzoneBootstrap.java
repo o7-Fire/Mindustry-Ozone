@@ -16,21 +16,12 @@
 
 package Ozone.Bootstrap;
 
-import Atom.Utility.Cache;
-import Atom.Utility.Encoder;
 import Ozone.Settings.BaseSettings;
 import Ozone.Version;
 import Shared.SharedBoot;
 import arc.util.Log;
 
-import java.net.URL;
-import java.util.HashMap;
-
-import static Ozone.Patch.Updater.getRelease;
-import static Ozone.Patch.Updater.latest;
-
 public class OzoneBootstrap {
-	public static URL neu = null;
 	
 	public static boolean init() {
 		SharedBoot.initSentry();
@@ -39,12 +30,6 @@ public class OzoneBootstrap {
 			BaseSettings.debugMode = true;
 		}
 		Log.info("Ozone-Version: " + Version.core);
-		try {
-			HashMap<String, String> h = Encoder.parseProperty(getRelease(true).openStream());
-			if (latest(h)) neu = Cache.http(getRelease(SharedBoot.type + ".jar"));
-		}catch (Throwable e) {
-			Log.err(e);
-		}
 		return false;
 	}
 }

@@ -22,11 +22,11 @@ import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Internal.InformationCenter;
+import Ozone.Internal.Interface;
 import Ozone.Propertied;
 import Shared.SharedBoot;
+import arc.Core;
 import arc.util.Log;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.Version;
@@ -40,51 +40,38 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static mindustry.Vars.ui;
 
-//TODO add github provider for release
 public class Updater {
 	
-	public final static AtomicBoolean newRelease = new AtomicBoolean(false), newBuild = new AtomicBoolean(false);
+	public final static AtomicBoolean newRelease = new AtomicBoolean(false);
 	private static volatile boolean init;
-	private static volatile String last = "-SNAPSHOT";
-	private static volatile HashMap<String, String> releaseMap = null, buildMap = null;
+	private static volatile HashMap<String, String> releaseMap = null;
 	
 	public static void init() {
 		if (init) return;
 		init = true;
-		Log.debug("Update Daemon Started");
+		Log.debug("[Ozone] Checking Update");
 		
 		
-		Future b = Pool.submit(() -> {
-			try {
-				HashMap<String, String> h = Encoder.parseProperty(getRelease(true).openStream());
-				newRelease.set(latest(h));
-				if (newRelease.get()) Log.infoTag("Updater", " Release Found: " + h.get("VHash"));
-				else Log.debug("Latest Release Is Already Installed or Unavailable");
-			}catch (Throwable e) {
-				Sentry.captureException(e);
-				Log.err(e);
-				Log.err("Failed to update");
-			}
-		});
 		try {
-			b.get();
-		}catch (Throwable ignored) {}
-		if (newBuild.get()) return;
+			HashMap<String, String> h = Encoder.parseProperty(getRelease(true).openStream());
+			newRelease.set(latest(h));
+			if (newRelease.get()) {
+				Log.infoTag("Ozone-Updater", "Latest Release Found: " + h.get("VHash"));
+				releaseMap = h;
+				
+				if (SharedBoot.isCore() && !Core.settings.getBoolOnce("Ozone-Update-" + h.get("Vhash")))
+					Interface.showInfo("New release found, go to mods and reinstall ozone to update\n" + readMap(h));
+			}else Log.debug("Latest Release Is Already Installed or Unavailable");
+			
+		}catch (Throwable e) {
+			Sentry.captureException(e);
+			Log.warn(e.toString());
+			Log.warn("[Ozone] Failed to update");
+		}
+		
 		
 	}
 	
-	private static HashMap<String, String> checkJsonGithub(JsonElement je) {
-		try {
-			JsonObject jb = (JsonObject) je;
-			String sha = jb.get("sha").getAsString();
-			if (sha == null) throw new NullPointerException("SHA null" + je.toString());
-			HashMap<String, String> h;
-			h = Encoder.parseProperty(getDownload(sha, true).openStream());
-			return h;
-		}catch (Throwable ignored) {
-			return null;
-		}
-	}
 	
 	public static void update(URL url) {
 		Vars.ui.loadfrag.show("Downloading");
@@ -127,33 +114,29 @@ public class Updater {
 		return true;
 	}
 	
+	public static String readMap(Map<?, ?> m) {
+		StringBuilder sb = new StringBuilder();
+		readMap(sb, m);
+		return sb.toString();
+	}
+	
 	public static void readMap(StringBuilder sb, Map<?, ?> m) {
 		for (Map.Entry<?, ?> s : m.entrySet())
 			sb.append(s.getKey().toString()).append(": ").append(s.getValue().toString()).append("\n");
 	}
 	
 	public static void showUpdateDialog() {
-		if (releaseMap == null && buildMap == null) {
+		if (releaseMap == null) {
 			if (Random.getBool()) {ui.showInfo("Not yet comrade");}else {ui.showInfo("Coming soon");}
 			return;
 		}
 		
-		
-		StringBuilder rm = new StringBuilder(), bm = new StringBuilder();
+		StringBuilder rm = new StringBuilder();
 		if (releaseMap != null) {
 			readMap(rm, releaseMap);
 		}
-		if (buildMap != null) {
-			readMap(bm, buildMap);
-		}
-		if (releaseMap != null && buildMap != null) {
-			ui.showCustomConfirm("Choose", "", "Release", "Build", () -> showNewRelease(rm), () -> showNewBuild(bm));
-			return;
-		}
 		if (releaseMap != null) {
 			showNewRelease(rm);
-		}else {
-			showNewBuild(bm);
 		}
 		
 		
@@ -161,16 +144,8 @@ public class Updater {
 	
 	private static void showNewRelease(StringBuilder sb) {
 		ui.showConfirm("New Release", "A new compatible release appeared\n" + sb.toString(), () -> Updater.update(Updater.getRelease(SharedBoot.type + ".jar")));
-		
 	}
 	
-	private static void showNewBuild(StringBuilder sb) {
-		ui.showConfirm("New Build", "A new compatible build appeared\n" + sb.toString(), () -> Updater.update(Updater.getBuild(false)));
-	}
-	
-	public static URL getBuild(boolean manifest) {
-		return getDownload(last, manifest);
-	}
 	
 	public static URL getRelease(String type) {
 		try {

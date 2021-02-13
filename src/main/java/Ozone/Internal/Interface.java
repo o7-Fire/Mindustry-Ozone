@@ -98,6 +98,11 @@ public class Interface {
 		
 	}
 	
+	public static void showInfo(String s) {
+		if (Vars.ui == null) Events.on(EventType.ClientLoadEvent.class, se -> Vars.ui.showInfo(s));
+		else Vars.ui.showInfo(s);
+	}
+	
 	//on load event show this stupid warning
 	public static void warningUI(String title, String description) {
 		if (Vars.ui == null)

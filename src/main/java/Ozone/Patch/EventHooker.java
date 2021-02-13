@@ -73,7 +73,6 @@ public class EventHooker implements Module {
 		});
 		Events.run(EventType.Trigger.draw, () -> {
 			for (Iterator<Runnable> it = drawc.iterator(); it.hasNext(); ) {
-				if (!it.hasNext()) continue;
 				Runnable r = it.next();
 				r.run();
 			}
