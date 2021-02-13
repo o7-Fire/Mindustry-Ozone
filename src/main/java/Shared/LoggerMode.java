@@ -34,6 +34,7 @@ public class LoggerMode {
 	
 	static Writer writer;
 	static volatile boolean loaded;
+	public static Seq<String> logBuffer = new Seq<>();
 	
 	public static void loadLogger() {
 		if (loaded) return;
@@ -42,7 +43,7 @@ public class LoggerMode {
 		String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
 		String[] stags = {"&lc&fb[D]", "&lb&fb[I]", "&ly&fb[W]", "&lr&fb[E]", ""};
 		
-		Seq<String> logBuffer = new Seq<>();
+		
 		if (SharedBoot.debug) Log.level = Log.LogLevel.debug;
 		try {
 			settings.setAppName(appName);
@@ -58,23 +59,24 @@ public class LoggerMode {
 			String result = text;
 			String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
 			System.out.println(rawText);
-
+			
 			result = tags[level.ordinal()] + " " + result;
 			if (!text.startsWith("Ozone-Event-")) {
 				String t = text;
 				
 				Sentry.addBreadcrumb(t, level.name());
 			}
-			if (!headless && (ui == null || ui.scriptfrag == null)) {
-				logBuffer.add(result);
-			}else if (!headless) {
-				if (!OS.isWindows) {
-					for (String code : ColorCodes.values) {
-						result = result.replace(code, "");
+			logBuffer.add(result);
+			if (ui != null && ui.scriptfrag != null) {
+				if (!headless) {
+					if (!OS.isWindows) {
+						for (String code : ColorCodes.values) {
+							result = result.replace(code, "");
+						}
 					}
+					
+					ui.scriptfrag.addMessage(Log.removeColors(result));
 				}
-				
-				ui.scriptfrag.addMessage(Log.removeColors(result));
 			}
 		};
 		

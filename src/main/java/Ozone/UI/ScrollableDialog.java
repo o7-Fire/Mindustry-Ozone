@@ -59,7 +59,11 @@ public abstract class ScrollableDialog extends OzoneDialog {
 	protected abstract void setup();
 	
 	protected void init() {
-		scrollPane = new ScrollPane(table);
+		if (scrollPane != null) {
+			float x = scrollPane.getScrollPercentX();
+			scrollPane = new ScrollPane(table);
+			scrollPane.setScrollPercentX(x);
+		}else scrollPane = new ScrollPane(table);
 		cont.clear();
 		table.clear();
 		setup();

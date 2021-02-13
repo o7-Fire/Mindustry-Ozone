@@ -63,6 +63,7 @@ public class UIPatch implements Module {
 		Manifest.commFrag.build(Vars.ui.hudGroup);
 		Manifest.moduleFrag = new ModuleFrag();
 		Manifest.envInf = new EnvironmentInformation();
+		Manifest.logView = new LogView();
 		Manifest.uiDebug = new UILayout();
 		Manifest.experiment = new ExperimentDialog();
 		Manifest.modsMenu = new ModsMenu();

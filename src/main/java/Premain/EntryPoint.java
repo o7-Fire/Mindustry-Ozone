@@ -27,9 +27,9 @@ import mindustry.mod.Mod;
 public class EntryPoint extends Mod {
 	static {
 		try {
+			LoggerMode.loadLogger();
 			Log.info("Ozone Standalone");
 			OzoneBootstrap.init();
-			LoggerMode.loadLogger();
 		}catch (Throwable t) {
 			t.printStackTrace();
 			Log.err(t);

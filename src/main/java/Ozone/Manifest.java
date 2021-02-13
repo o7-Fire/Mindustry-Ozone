@@ -50,6 +50,7 @@ public class Manifest {
 	public static UILayout uiDebug;
 	public static ModsMenu modsMenu;
 	public static EnvironmentInformation envInf;
+	public static LogView logView;
 	
 	public static ModuleFrag moduleFrag;
 	public static ArrayList<Class<?>> settings = new ArrayList<>();//for GUI purpose
