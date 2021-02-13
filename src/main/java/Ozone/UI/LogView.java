@@ -17,6 +17,7 @@
 package Ozone.UI;
 
 import Shared.LoggerMode;
+import arc.input.KeyCode;
 import arc.struct.Seq;
 import arc.util.Log;
 import mindustry.Vars;
@@ -29,7 +30,11 @@ public class LogView extends ScrollableDialog {
 	@Override
 	protected void ctor() {
 		super.ctor();
-		
+		this.keyDown((key) -> {
+			if (key == KeyCode.enter) {
+				execute();
+			}
+		});
 	}
 	
 	@Override
@@ -38,11 +43,7 @@ public class LogView extends ScrollableDialog {
 			t.field("", s -> {
 				see = s;
 			}).growX().tooltip("Javascript console");
-			t.button(Icon.add, () -> {
-				Log.info(">" + see);
-				Log.info(Vars.mods.getScripts().runConsole(see));
-				init();
-			});
+			t.button(Icon.add, this::execute);
 		}).growX();
 		
 		cont.row();
@@ -51,5 +52,10 @@ public class LogView extends ScrollableDialog {
 		
 	}
 	
+	private void execute() {
+		Log.info(">" + see);
+		Log.info(Vars.mods.getScripts().runConsole(see));
+		init();
+	}
 	
 }
