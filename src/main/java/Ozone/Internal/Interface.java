@@ -112,7 +112,9 @@ public class Interface {
 	
 	public static String getBundle(String key) {
 		if (bundle.containsKey(key)) return bundle.get(key);
+		if (Core.bundle.getOrNull(key) != null) return Core.bundle.get(key);
 		try {
+			
 			Class s = Interface.class.getClassLoader().loadClass(key);
 			registerWords(s.getName(), s.getSimpleName());
 			return bundle.get(key);
