@@ -53,7 +53,7 @@ public class Vars implements Loadable {
 	/**
 	 * Maximum schematic size.
 	 */
-	public static final int maxSchematicSize = 32;
+	public static final int maxSchematicSize = 512;
 	/**
 	 * All schematic base64 starts with this string.
 	 */

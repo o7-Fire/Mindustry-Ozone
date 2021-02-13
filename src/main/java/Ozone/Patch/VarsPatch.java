@@ -38,11 +38,12 @@ public class VarsPatch implements Module {
 	
 	@Override
 	public void earlyInit() throws Throwable {
+		Field f = Vars.class.getDeclaredField("maxSchematicSize");
 		try {
-			Field f = Vars.class.getDeclaredField("maxSchematicSize");
+			
 			FieldTool.setFinalStatic(f, 1200);
 		}catch (Throwable t) {
-			Log.warn("Require java 8 to patch final field @", t.toString());
+			Log.warn("Require java 8 to patch final field @", f.getName());
 		}
 		//java 8
 		try {
@@ -50,8 +51,8 @@ public class VarsPatch implements Module {
 			Color c = new Color(Pal.darkMetal).lerp(Color.black, 0.5f);
 			FieldTool.setFinalStatic(color, c);
 			FieldTool.setFinalStatic(orange, "[#" + c + "]");
-		}catch (Throwable ignored) {
-			Log.warn("Require java 8 to patch final field @", ignored.toString());
+		}catch (Throwable a) {
+			Log.warn("Require java 8 to patch final field LoadRenderer", a.toString());
 		}
 	}
 	

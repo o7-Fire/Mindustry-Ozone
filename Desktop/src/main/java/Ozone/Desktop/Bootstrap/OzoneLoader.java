@@ -17,6 +17,7 @@
 package Ozone.Desktop.Bootstrap;
 
 import Atom.Utility.Cache;
+import Shared.SharedBoot;
 import io.sentry.Sentry;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,6 +43,7 @@ public class OzoneLoader extends URLClassLoader {
 		registerAsParallelCapable();
 		parentFirst.add(Sentry.class.getPackageName());
 		parentFirst.add(OzoneLoader.class.getPackageName());
+		parentFirst.add(SharedBoot.class.getName());
 	}
 	
 	
