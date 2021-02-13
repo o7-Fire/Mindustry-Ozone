@@ -79,7 +79,7 @@ public class UIPatch implements Module {
 			}catch (Throwable ignored) {}
 			if (Vars.mobile || Vars.testMobile) {
 				if (Core.graphics.isPortrait()) VarsPatch.menu.row();
-				VarsPatch.menu.add(new MobileButton(Icon.refresh, Translation.get("Update"), Updater::showUpdateDialog));
+				VarsPatch.menu.add(new MobileButton(Icon.info, Translation.get("Ozone"), () -> Manifest.modsMenu.show()));
 			}else {
 				if (!SharedBoot.isCore())
 					VarsPatch.menu.button(Translation.get("Update"), Icon.refresh, Updater::showUpdateDialog).growX().bottom();
