@@ -33,7 +33,7 @@ import static mindustry.Vars.*;
 
 public class PlayerListFragment extends Fragment {
 	public Table content = new Table().marginRight(13f).marginLeft(13f);
-	public Settings settings = new Settings("Player List Ozone.Settings");
+	public Settings settings = new Settings("Player List Ozone Settings");
 	private boolean visible = false;
 	private Interval timer = new Interval();
 	private TextField sField;

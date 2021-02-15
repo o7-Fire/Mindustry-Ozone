@@ -60,13 +60,14 @@ public class UIPatch implements Module {
 		Manifest.worldInformation = new WorldInformation();
 		Manifest.playSettings = new OzonePlaySettings();
 		Manifest.menu = new OzoneMenu(Translation.get("ozone.hud"), ozoneStyle);
-		Manifest.commFrag.build(Vars.ui.hudGroup);
 		Manifest.moduleFrag = new ModuleFrag();
 		Manifest.envInf = new EnvironmentInformation();
 		Manifest.logView = new LogView();
 		Manifest.uiDebug = new UILayout();
 		Manifest.experiment = new ExperimentDialog();
 		Manifest.modsMenu = new ModsMenu();
+		Manifest.commFrag.build(Vars.ui.hudGroup);
+		
 		Events.on(EventType.ResizeEvent.class, c -> {
 			onResize();
 		});
