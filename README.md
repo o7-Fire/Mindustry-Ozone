@@ -157,6 +157,7 @@ Linux: /home/USERNAME/.local/share/Mindustry/mods/
 - Video player
 - Logic scanner/obfuscator/jammer
 - Move library/utility class to Atomic-Library
+- Encrypted Broadcast
 
 # Disclaimer
 
