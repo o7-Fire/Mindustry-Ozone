@@ -18,6 +18,7 @@ package Premain;
 
 import Ozone.Bootstrap.OzoneBootstrap;
 import Ozone.Main;
+import Ozone.Manifest;
 import Shared.LoggerMode;
 import arc.Core;
 import arc.util.Log;
@@ -61,6 +62,7 @@ public class EntryPoint extends Mod {
 			Core.settings.put("uiscalechanged", false);//shut
 		}
 		try {
+			Manifest.ozone = this;
 			Main.preInit();
 			if (s != null) s.finish();
 		}catch (Throwable t) {

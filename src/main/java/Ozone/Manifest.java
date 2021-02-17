@@ -28,6 +28,7 @@ import arc.scene.event.Touchable;
 import arc.scene.ui.layout.Table;
 import io.sentry.Sentry;
 import mindustry.Vars;
+import mindustry.mod.Mod;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
 import mindustry.ui.Styles;
@@ -53,7 +54,7 @@ public class Manifest {
 	public static ModuleFrag moduleFrag;
 	public static ArrayList<Class<?>> settings = new ArrayList<>();//for GUI purpose
 	public static String lastServer = "";
-	
+	public static Mod ozone;
 	public static final HashMap<Class<? extends Module>, Module> module = new HashMap<>();
 	
 	

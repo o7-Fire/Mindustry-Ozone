@@ -16,6 +16,7 @@
 
 package Main;
 
+import Ozone.Desktop.Manifest;
 import Ozone.Desktop.Patch.DesktopPatcher;
 import Ozone.Event.DesktopEvent;
 import Ozone.Main;
@@ -64,6 +65,7 @@ public class Ozone extends Mod {
 			Core.settings.put("uiscalechanged", false);//shut
 		}
 		try {
+			Manifest.ozone = this;
 			Main.preInit();
 			if (s != null) s.finish();
 		}catch (Throwable t) {

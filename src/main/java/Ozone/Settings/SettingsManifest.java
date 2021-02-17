@@ -25,29 +25,19 @@ import Atom.Utility.Encoder;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SettingsManifest {
 	static final File settingsFile = new File("OzoneSettings.properties");
-	static URL urlSettings;
 	static ConcurrentHashMap<String, String> cache;
 	static volatile long lastFileHash = 0;
 	
-	static {
-		try {
-			urlSettings = settingsFile.toURI().toURL();
-		}catch (MalformedURLException e) {
-			throw new RuntimeException("Invalid Path for SettingsFile", e);
-		}
-		
-	}
 	
 	public static ConcurrentHashMap<String, String> getMap() throws IOException {
 		if (cache == null) {
-			if (settingsFile.exists()) cache = new ConcurrentHashMap<>(Encoder.parseProperty(urlSettings.openStream()));
+			if (settingsFile.exists())
+				cache = new ConcurrentHashMap<>(Encoder.parseProperty(new String(FileUtility.readAllBytes(settingsFile))));
 			else cache = new ConcurrentHashMap<>();
 		}
 		return cache;
