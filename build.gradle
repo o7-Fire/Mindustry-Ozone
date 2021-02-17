@@ -60,7 +60,7 @@ allprojects {
 
     ext {
 
-        minApi = '11'
+        minApi = '14'
         //automatically detect latest shit
         sdkRoot = System.getenv("ANDROID_HOME")
         sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
