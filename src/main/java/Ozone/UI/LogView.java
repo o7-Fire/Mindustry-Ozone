@@ -47,8 +47,8 @@ public class LogView extends ScrollableDialog {
 		}).growX();
 		
 		cont.row();
-		Seq<String> log = new Seq<>(LoggerMode.logBuffer);
-		log.forEach(this::ad);
+		for (String s : new Seq<>(LoggerMode.logBuffer))
+			ad(s);
 		
 	}
 	
