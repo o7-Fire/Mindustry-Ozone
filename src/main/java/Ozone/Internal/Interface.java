@@ -20,16 +20,22 @@ package Ozone.Internal;
 import Atom.Struct.Filter;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
+import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
 import arc.Core;
 import arc.Events;
+import arc.graphics.Pixmap;
+import arc.graphics.Texture;
+import arc.graphics.g2d.TextureRegion;
 import arc.math.Interp;
 import arc.math.Mathf;
 import arc.scene.actions.Actions;
 import arc.scene.style.Drawable;
+import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.Label;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
+import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
 import mindustry.core.GameState;
@@ -48,6 +54,29 @@ import static mindustry.Vars.player;
 public class Interface {
 	public static final ObjectMap<String, String> bundle = new ObjectMap<>();
 	private static long lastToast = 0;
+	
+	public static Drawable getDrawableSized(String path, Drawable def) {
+		Drawable d = getDrawable(path, def);
+		d.setBottomHeight(def.getBottomHeight());
+		d.setLeftWidth(def.getLeftWidth());
+		d.setRightWidth(def.getRightWidth());
+		d.setTopHeight(def.getTopHeight());
+		d.setMinHeight(def.getMinHeight());
+		d.setMinWidth(def.getMinWidth());
+		return d;
+	}
+	
+	public static Drawable getDrawable(String path, Drawable def) {
+		try {
+			RepoCached repoCached = Manifest.getModule(RepoCached.class);
+			Pixmap p = repoCached.getPixmap(path);
+			if (p == null) return def;
+			return new TextureRegionDrawable(new TextureRegion(new Texture(p)));
+		}catch (Throwable t) {
+			Log.err(t.toString());
+		}
+		return def;
+	}
 	
 	public static Tile getMouseTile() {
 		return Vars.world.tileWorld(Vars.player.mouseX, Vars.player.mouseY);

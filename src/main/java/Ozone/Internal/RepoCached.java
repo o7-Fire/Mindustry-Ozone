@@ -16,24 +16,48 @@
 
 package Ozone.Internal;
 
+import Atom.Utility.Cache;
+import Ozone.Manifest;
+import arc.graphics.Pixmap;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
-import Atom.File.RepoCache;
-import Ozone.Manifest;
-
-public class RepoCached extends RepoCache implements Module {
+public class RepoCached extends Repo implements Module {
+    public static HashMap<String, Pixmap> pixmapCache = new HashMap<>();
+    
+    public URL getResource(String s) {
+        return Cache.tryCache(super.getResource(s));
+    }
+    
+    public InputStream getResourceAsStream(String s) throws IOException {
+        URL u = this.getResource(s);
+        return u.openStream();
+    }
+    
     @Override
     public void init() throws Throwable {
         Repo rc = Manifest.getModule(Repo.class);
         assert rc != null;
         repos.addAll(rc.getRepos());
     }
-
+    
     @Override
     public List<Class<? extends Module>> dependOnModule() throws IOException {
         return new ArrayList<>(Arrays.asList(Repo.class));
+    }
+    
+    @Override
+    public Pixmap getPixmap(String path) {
+        if (pixmapCache.containsKey(path)) return pixmapCache.get(path);
+        Pixmap p = super.getPixmap(path);
+        if (p == null) return null;
+        pixmapCache.put(path, p);
+        return p;
     }
 }

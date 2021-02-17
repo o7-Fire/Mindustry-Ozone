@@ -36,7 +36,6 @@ import mindustry.ui.Styles;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 @SuppressWarnings("Unchecked")
 public class Manifest {
@@ -59,15 +58,7 @@ public class Manifest {
 	public static final HashMap<Class<? extends Module>, Module> module = new HashMap<>();
 	
 	
-	public static <T> T getModule() {
-		for (Map.Entry<Class<? extends Module>, Module> s : module.entrySet())
-			try {
-				return (T) s.getValue();
-			}catch (Throwable ignored) {}
-		return null;
-	}
-	
-	public static <T> T getModule(Class<? extends Module> clazz) {
+	public static <T extends Module> T getModule(Class<? extends Module> clazz) {
 		try {
 			return (T) module.get(clazz);
 		}catch (Throwable ignored) {}

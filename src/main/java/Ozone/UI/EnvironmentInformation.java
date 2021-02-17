@@ -54,7 +54,7 @@ public class EnvironmentInformation extends ScrollableDialog {
 		try {
 			ad("Compilation Time Total (ms)", ManagementFactory.getCompilationMXBean().getTotalCompilationTime());
 			ad("isCompilationTimeMonitoringSupported", ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());
-		}catch (Throwable g) {}
+		}catch (Throwable ignored) {}
 		ad(Propertied.Manifest);
 		
 		try { ad(SettingsManifest.getMap()); }catch (IOException ignored) { }

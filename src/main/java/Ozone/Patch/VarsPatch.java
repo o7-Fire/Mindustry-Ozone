@@ -19,6 +19,7 @@ package Ozone.Patch;
 import Atom.Reflect.FieldTool;
 import Atom.Reflect.Reflect;
 import Ozone.Internal.Module;
+import Ozone.Internal.RepoCached;
 import Ozone.Patch.Mindustry.DesktopInputPatched;
 import Ozone.Patch.Mindustry.MobileInputPatched;
 import Ozone.Settings.BaseSettings;
@@ -32,6 +33,8 @@ import mindustry.input.DesktopInput;
 import mindustry.input.MobileInput;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class VarsPatch implements Module {
 	public static Table menu;
@@ -81,5 +84,10 @@ public class VarsPatch implements Module {
 			Log.infoTag("Ozone", "Patch failed");
 			Log.err(t);
 		}
+	}
+	
+	@Override
+	public ArrayList<Class<? extends Module>> dependOnModule() {
+		return new ArrayList<>(Arrays.asList(RepoCached.class));
 	}
 }
