@@ -45,6 +45,8 @@ public class ConnectDiagram extends AttackDiagram {
 		super.onCompleted();
 		ui.loadfrag.hide();
 		netClient.disconnectQuietly();
+		Identification.setUUID(uuid);
+		player.name = playerName;
 	}
 	
 	@Override

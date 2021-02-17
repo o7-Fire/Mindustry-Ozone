@@ -29,6 +29,7 @@ import mindustry.graphics.LoadRenderer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -47,19 +48,28 @@ public class Main {
 	private static LoadRenderer renderer = null;
 	
 	public static <T> Collection<Class<? extends T>> getExtended(String packag, Class<T> type) {
+		Collection<Class<? extends T>> raw = null;
 		try {
-			return Reflect.getExtendedClass(packag, type);
+			raw = Reflect.getExtendedClass(packag, type, Main.class.getClassLoader());
 		}catch (Throwable e) {
 			if (!Atom.Manifest.internalRepo.resourceExists("reflections/core-reflections.json"))
 				throw new RuntimeException(e);
 			else {
 				try {
 					InputStream is = Atom.Manifest.internalRepo.getResourceAsStream("reflections/core-reflections.json");
-					return Reflect.getExtendedClassFromJson(Encoder.readString(is), type);
+					raw = Reflect.getExtendedClassFromJson(Encoder.readString(is), type);
 				}catch (Throwable t) {
 					throw new RuntimeException(t);
 				}
 			}
+		}
+		try {
+			ArrayList<Class<? extends T>> real = new ArrayList<>();
+			for (Class<? extends T> c : raw)
+				real.add((Class<? extends T>) Main.class.getClassLoader().loadClass(c.getName()));
+			return real;
+		}catch (Throwable t) {
+			throw new RuntimeException(t);
 		}
 	}
 	
