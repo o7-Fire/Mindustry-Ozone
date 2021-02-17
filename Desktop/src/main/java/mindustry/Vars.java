@@ -79,7 +79,7 @@ public class Vars implements Loadable {
 	 */
 	public static final String discordURL = "https://discord.gg/mindustry";
 	/**
-	 * URL to the JSON file containing all the BE servers. Only queried in the V6 alpha (will be removed once it's out).
+	 * URL to the JSON file containing all the BE servers.
 	 */
 	public static final String serverJsonURL = "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_v6.json";
 	/**
