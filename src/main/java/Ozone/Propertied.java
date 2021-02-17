@@ -17,9 +17,11 @@
 package Ozone;
 
 import Atom.Utility.Encoder;
+import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.core.Version;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,10 +36,8 @@ public class Propertied {
 		}catch (Throwable ignored) {}
 	}
 	
-	public static InputStream getResource(String name) {
-		InputStream is = ClassLoader.getSystemResourceAsStream(name);
-		if (is == null) is = Propertied.class.getProtectionDomain().getClassLoader().getResourceAsStream(name);
-		return is;
+	public static InputStream getResource(String name) throws IOException {
+		return Atom.Manifest.internalRepo.getResource(name).openStream();
 	}
 	
 	public static HashMap<String, String> read(String name) {
@@ -46,6 +46,7 @@ public class Propertied {
 			temp = parse(new String(Encoder.readAllBytes(getResource(name))));
 		}catch (Throwable g) {
 			temp = new HashMap<>();
+			try { Log.err(g); }catch (Throwable ignored) {}
 			Sentry.captureException(g);
 		}
 		return temp;
