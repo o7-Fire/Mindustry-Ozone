@@ -16,7 +16,12 @@
 
 package Ozone.UI;
 
+import arc.scene.Action;
+import arc.scene.Scene;
 import arc.scene.style.Drawable;
+import arc.scene.ui.Dialog;
+import io.sentry.Sentry;
+import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
 
@@ -47,6 +52,18 @@ public abstract class OzoneDialog extends BaseDialog {
 	public Drawable icon() {
 		return icon;
 	}
+	
+	@Override
+	public Dialog show(Scene stage, Action action) {
+		try {
+			return super.show(stage, action);
+		}catch (Throwable t) {
+			Vars.ui.showException(t);
+			Sentry.captureException(t);
+			return this;
+		}
+	}
+	
 	
 	protected void update() {
 	
