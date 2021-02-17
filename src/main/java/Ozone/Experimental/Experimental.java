@@ -15,10 +15,8 @@
  */
 
 package Ozone.Experimental;
-
+@FunctionalInterface
 public interface Experimental {
 	
-	default void run() {
-	
-	}
+	void run();
 }

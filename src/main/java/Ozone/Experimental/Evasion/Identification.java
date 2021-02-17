@@ -34,6 +34,14 @@ public class Identification {
 		return (HashMap<String, Object>) f.get(Core.settings);
 	}
 	
+	public static String getUUID() {
+		return Core.settings.getString("uuid", getRandomUID());
+	}
+	
+	public static void setUUID(String s) {
+		Core.settings.put("uuid", s);
+	}
+	
 	public static ArrayList<String> getKeys() throws NoSuchFieldException, IllegalAccessException {
 		HashMap<String, Object> values = getValue();
 		ArrayList<String> yikes = new ArrayList<>();

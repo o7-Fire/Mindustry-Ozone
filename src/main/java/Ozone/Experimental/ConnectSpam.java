@@ -16,15 +16,21 @@
 
 package Ozone.Experimental;
 
-import Ozone.Commands.Task.Completable;
+import Ozone.Commands.TaskInterface;
+import mindustry.Vars;
 
-public abstract class AttackDiagram extends Completable {
-	public void run() {
-	
-	}
+public class ConnectSpam implements Experimental {
 	
 	@Override
-	public void update() {
-		if (!completed) run();
+	public void run() {
+		Vars.ui.showTextInput("Enter server ip", "", "", s1 -> {
+			Vars.ui.showTextInput("Enter server port", "", 6, "", true, s2 -> {
+				try {
+					TaskInterface.addTask(new ConnectDiagram(s1, Integer.parseInt(s2)));
+				}catch (Throwable t) {
+					Vars.ui.showException(t);
+				}
+			});
+		});
 	}
 }
