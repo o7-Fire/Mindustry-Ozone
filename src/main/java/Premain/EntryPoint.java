@@ -22,6 +22,8 @@ import Shared.LoggerMode;
 import arc.Core;
 import arc.util.Log;
 import io.sentry.Sentry;
+import io.sentry.SentryTransaction;
+import io.sentry.SpanStatus;
 import mindustry.mod.Mod;
 
 public class EntryPoint extends Mod {
@@ -35,10 +37,16 @@ public class EntryPoint extends Mod {
 			Log.err(t);
 			Sentry.captureException(t);
 		}
-		
+		SentryTransaction s = null;
+		try { s = Sentry.startTransaction("Early Init"); }catch (Throwable ignored) {}
 		try {
 			Main.earlyInit();
+			if (s != null) s.finish();
 		}catch (Throwable t) {
+			if (s != null) {
+				s.setThrowable(t);
+				s.setStatus(SpanStatus.INTERNAL_ERROR);
+			}
 			Sentry.captureException(t);
 			Log.err(t);
 			throw new RuntimeException(t);
@@ -46,13 +54,20 @@ public class EntryPoint extends Mod {
 	}
 	
 	public EntryPoint() {
+		SentryTransaction s = null;
+		try { s = Sentry.startTransaction("Pre Init"); }catch (Throwable ignored) {}
 		if (Core.settings != null) {
 			Core.settings.put("crashreport", true);
 			Core.settings.put("uiscalechanged", false);//shut
 		}
 		try {
 			Main.preInit();
+			if (s != null) s.finish();
 		}catch (Throwable t) {
+			if (s != null) {
+				s.setThrowable(t);
+				s.setStatus(SpanStatus.INTERNAL_ERROR);
+			}
 			Sentry.captureException(t);
 			Log.err(t);
 			throw new RuntimeException(t);
@@ -61,9 +76,16 @@ public class EntryPoint extends Mod {
 	
 	@Override
 	public void init() {
+		SentryTransaction s = null;
+		try { s = Sentry.startTransaction("Init"); }catch (Throwable ignored) {}
 		try {
 			Main.init();
+			if (s != null) s.finish();
 		}catch (Throwable t) {
+			if (s != null) {
+				s.setThrowable(t);
+				s.setStatus(SpanStatus.INTERNAL_ERROR);
+			}
 			t.printStackTrace();
 			Sentry.captureException(t);
 			Log.err(t);
@@ -72,9 +94,16 @@ public class EntryPoint extends Mod {
 	
 	@Override
 	public void loadContent() {
+		SentryTransaction s = null;
+		try { s = Sentry.startTransaction("Init"); }catch (Throwable ignored) {}
 		try {
 			Main.loadContent();
+			if (s != null) s.finish();
 		}catch (Throwable t) {
+			if (s != null) {
+				s.setThrowable(t);
+				s.setStatus(SpanStatus.INTERNAL_ERROR);
+			}
 			t.printStackTrace();
 			Sentry.captureException(t);
 			Log.err(t);
