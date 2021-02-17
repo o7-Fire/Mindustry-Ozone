@@ -17,19 +17,6 @@ Note: Dexed mean support for android, compatible with pc\
 Note: Ozone Desktop need to be installed manually\
 [Latest](https://github.com/o7-Fire/Mindustry-Ozone/releases) [Github]\
 [Nightly](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github] [Zipped and need github login]\
-[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/latest)
-[0.16.0:0.14.1][Mindustry v123.1] \
-[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/tag/v122.13)
-[0.14.0:0.12.24][Mindustry v122.1] \
-[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v122/Desktop-v122.jar)
-[0.10.0:0.11.8][Mindustry v122] \
-[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/v121.4/Desktop-v121.4.jar)
-[0.9.0:0.11.3][Mindustry v121.4] \
-[Download](https://jitpack.io/com/github/o7-Fire/Mindustry-Ozone/Desktop/a8805a30a5/Desktop-a8805a30a5.jar)
-[0.9.0:0.11.0][Mindustry v121] \
-[Download](https://github.com/o7-Fire/Mindustry-Ozone/releases/download/v120/Ozone-Desktop.jar)
-[0.9.0:0.10.2][Mindustry v120] \
-[Other Version](https://jitpack.io/#o7-Fire/Mindustry-Ozone) [Jitpack][If you know how to download from jitpack] \
 [Other Release](https://github.com/o7-Fire/Mindustry-Ozone/tags) [Github]
 
 ### Java
