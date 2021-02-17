@@ -28,7 +28,6 @@ import arc.scene.event.Touchable;
 import arc.scene.ui.layout.Table;
 import io.sentry.Sentry;
 import mindustry.Vars;
-import mindustry.core.Version;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
 import mindustry.ui.Styles;
@@ -63,10 +62,6 @@ public class Manifest {
 			return (T) module.get(clazz);
 		}catch (Throwable ignored) {}
 		return null;
-	}
-	
-	public static String getMindustryVersion() {
-		return Version.build + (Version.revision == 0 ? "" : "." + Version.revision);
 	}
 	
 	public static String getCurrentServerIP() {
