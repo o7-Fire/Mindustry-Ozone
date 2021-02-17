@@ -23,6 +23,8 @@ import arc.Core;
 import arc.Events;
 import arc.util.Log;
 import io.sentry.Sentry;
+import io.sentry.SentryTransaction;
+import io.sentry.SpanStatus;
 import mindustry.Vars;
 import mindustry.mod.Mod;
 
@@ -31,9 +33,16 @@ import mindustry.mod.Mod;
  */
 public class Ozone extends Mod {
 	static {
+		SentryTransaction s = null;
+		try { s = Sentry.startTransaction("Early Init"); }catch (Throwable ignored) {}
 		try {
 			Main.earlyInit();
+			if (s != null) s.finish();
 		}catch (Throwable t) {
+			if (s != null) {
+				s.setThrowable(t);
+				s.setStatus(SpanStatus.INTERNAL_ERROR);
+			}
 			Sentry.captureException(t);
 			Log.err(t);
 			throw new RuntimeException(t);
@@ -41,7 +50,9 @@ public class Ozone extends Mod {
 	}
 	
 	public Ozone() {
-		Events.on(DesktopEvent.InitUI.class, s -> {
+		SentryTransaction s = null;
+		try { s = Sentry.startTransaction("Pre Init"); }catch (Throwable ignored) {}
+		Events.on(DesktopEvent.InitUI.class, se -> {
 			if (!Vars.headless) {
 			
 				
@@ -54,7 +65,12 @@ public class Ozone extends Mod {
 		}
 		try {
 			Main.preInit();
+			if (s != null) s.finish();
 		}catch (Throwable t) {
+			if (s != null) {
+				s.setThrowable(t);
+				s.setStatus(SpanStatus.INTERNAL_ERROR);
+			}
 			Sentry.captureException(t);
 			Log.err(t);
 			throw new RuntimeException(t);
@@ -64,11 +80,17 @@ public class Ozone extends Mod {
 	
 	@Override
 	public void init() {
-		
+		SentryTransaction s = null;
+		try { s = Sentry.startTransaction("Init"); }catch (Throwable ignored) {}
 		try {
 			DesktopPatcher.register();
 			Main.init();
+			if (s != null) s.finish();
 		}catch (Throwable t) {
+			if (s != null) {
+				s.setThrowable(t);
+				s.setStatus(SpanStatus.INTERNAL_ERROR);
+			}
 			Sentry.captureException(t);
 			Log.err(t);
 			throw new RuntimeException(t);
@@ -77,10 +99,17 @@ public class Ozone extends Mod {
 	
 	@Override
 	public void loadContent() {
+		SentryTransaction s = null;
+		try { s = Sentry.startTransaction("Init"); }catch (Throwable ignored) {}
 		try {
 			DesktopPatcher.async();
 			Main.loadContent();
+			if (s != null) s.finish();
 		}catch (Throwable t) {
+			if (s != null) {
+				s.setThrowable(t);
+				s.setStatus(SpanStatus.INTERNAL_ERROR);
+			}
 			Sentry.captureException(t);
 			Log.err(t);
 			throw new RuntimeException(t);
