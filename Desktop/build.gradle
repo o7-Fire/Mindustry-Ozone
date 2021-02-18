@@ -16,7 +16,6 @@ dependencies {
     compileOnly (group: 'com.miglayout', name: 'miglayout-swing', version: '5.2'){
         because("runtime")
     }
-    compile group: 'com.aparapi', name: 'aparapi', version: '2.0.0'
 
     implementation rootProject
 
