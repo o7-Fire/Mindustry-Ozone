@@ -63,8 +63,12 @@ allprojects {
         minApi = '14'
         //automatically detect latest shit
         sdkRoot = System.getenv("ANDROID_HOME")
-        sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
-        sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
+        sdkD8 = sdkRoot
+        sdkJar = sdkRoot
+        if(new File(sdkRoot).exists()) {
+            sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
+            sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
+        }
         if(new File(sdkJar).exists())
             println(sdkJar)
         if(new File(sdkD8).exists())
