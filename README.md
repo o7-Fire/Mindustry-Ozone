@@ -1,78 +1,43 @@
-Mindustry o7 Hack Client
+Logo
+Build Status Discord
 
-Recommended Specification
-Quad core or more (for the bot especially)
+A sandbox tower defense game written in Java.
 
-Feature
+Trello Board
+Wiki
 
+Building u self
+Bleeding-edge live builds are generated automatically for every commit. You can see them here. Old builds might still be on jenkins.
 
-The prefix is "/"
+If you'd rather compile on your own, follow these instructions. First, make sure you have Java 8 and JDK 8 installed. Open a terminal in the root directory, cd to the Mindustry folder and run the following commands: and then download the repo and unzip it after unzip u must run gradlew.bat
 
--Auto change uuid
--Separated directory from mindustry (it won't conflict with mindustry)
--Auto change name
--Change discord rich presence to nonsense word
--In-game code editor (Require JDK 1.8, i doubt it can run in android)
--Auto spam -Sorter, MassDriver, PowerNode, ItemSource Shuffler
+Important you will need
+JDK 8
+JRE 8
+Windows
+Building: click me to building desktop.bat
 
-Bot Command List
+Linux/Mac OS
+Running: ./gradlew desktop:run
+Building: ./gradlew desktop:dist
 
-Debug Console Only
+Server
+Server builds are bundled with each released build (in Releases). If you'd rather compile on your own, replace 'desktop' with 'server', e.g. gradlew server:dist.
 
--F8 to open console
--Automatically join server
--Use your brain so this bot is actually useful
--Use this button to make bot assists someone Hint
--help (Full commands list)
--makeSlave (Integer input, make another mindustry bot)
+Android
+Building: click me to building android.bat
 
-In-Game Commands List
--code (Open code editor. For Desktop only)
--msg-write (Write all message block with user input)
--crash (Overloading server block-history and spamming anti griefer user)
--drain (Drain all resource in core)
--mine (Mine something that the mech can)
--teleport (Teleport to specific coordinate, sometime work)
--help (Print all commands list)
--tileset (Configure a block with number)
--light (Turn on/off enviromental light)
--spam (Spam message of user input)
-and many more...
+Troubleshooting
+If the terminal returns Permission denied or Command not found on Mac/Linux, run chmod +x ./gradlew before running ./gradlew. This is a one-time procedure.
 
-Launch Argument
--testMobile (Make Desktop UI look like mobile)
--name (String, set name)
-and many more
+Android:Mindustry-o7\android\build\outputs\apk\debug Gradle may take up to several minutes to download files. Be patient.
+After building, the output .JAR file should be in /desktop/build/libs/Mindustry.jar for desktop builds, and in /server/build/libs/server-release.jar for server builds.
 
-Picture
-Code Editor Hint
-Stupid Color Hint
-In-Game GUI
-Hint
+Downloads
+Get it on Itch.io
 
-Code Based On
-https://github.com/hellomouse/Mindustry/tree/antigrief
-Nexity Griefer Tools (Private)
-Provet Atomic Library (Semi-Private)
-and some lazy man drunk code
+Get it on Google Play
 
-How To Compile
-.bat for windows
-.sh for linux or smth
+Get it on F-Droid
 
-Desktop = make a .jar
-Android = make a .apk (if it compile properly)
-Server = make a headless server .jar (I doubt it work)
-
-Desktop Output = desktop/build/libs/mindustry.jar
-Android Output = android/build/outputs/apk
-Server Output server/build/libs/server-release.jar
-NOTE: Android need android sdk in order to compile
-
-List of .bat and .sh
-BuildAndroidWindows
-BuildAndroidLinux
-BuildDesktopWindows
-BuildDesktopLinux
-BuildServerWindows
-BuildServerLinux
+Mindustry-o7
