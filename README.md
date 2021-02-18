@@ -1,43 +1,161 @@
-Logo
-Build Status Discord
+# Project Ozone
+![Java CI](https://github.com/o7-Fire/Mindustry-Ozone/workflows/Java%20CI/badge.svg)
+![CodeQL](https://github.com/o7-Fire/Mindustry-Ozone/workflows/CodeQL/badge.svg)
+![](https://img.shields.io/github/v/tag/o7-Fire/Mindustry-Ozone?label=Mindustry-Ozone)
+![](https://img.shields.io/github/v/release/Anuken/Mindustry?label=Mindustry-Latest)
+![](https://img.shields.io/badge/java-14.0.2-orange)
+![](https://img.shields.io/badge/Android%20API-14-blue)
+![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fo7-Fire%2FMindustry-Ozone.svg?type=shield)
 
-A sandbox tower defense game written in Java.
+# Download
+### Mindustry
 
-Trello Board
-Wiki
+### Ozone
+Note: Ozone Desktop is an independent loader with some extension (Ozone Core + Desktop Extension + Loader)\
+Note: for Mindustry 124+ use Mindustry built in mods browser instead\
+Note: Dexed mean support for android, compatible with pc\
+Note: Ozone Desktop need to be installed manually\
+[Latest](https://github.com/o7-Fire/Mindustry-Ozone/releases) [Github]\
+[Nightly](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github] [Zipped and need github login]\
+[Other Release](https://github.com/o7-Fire/Mindustry-Ozone/tags) [Github]
 
-Building u self
-Bleeding-edge live builds are generated automatically for every commit. You can see them here. Old builds might still be on jenkins.
+### Java
 
-If you'd rather compile on your own, follow these instructions. First, make sure you have Java 8 and JDK 8 installed. Open a terminal in the root directory, cd to the Mindustry folder and run the following commands: and then download the repo and unzip it after unzip u must run gradlew.bat
+`because life never been any harder if you don't install java`\
+[AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot) [OpenJDK-OpenJRE 14]\
+[AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk8&jvmVariant=hotspot) [OpenJDK-OpenJRE 8]\
+[Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14 only require login]\
+[Zulu JDK](https://www.azul.com/downloads/zulu-community/?version=java-8-lts&package=jdk) [OpenJDK-OpenJRE 8]
 
-Important you will need
-JDK 8
-JRE 8
-Windows
-Building: click me to building desktop.bat
+# Requirement
 
-Linux/Mac OS
-Running: ./gradlew desktop:run
-Building: ./gradlew desktop:dist
+* Java 14+ and added to JAVA_HOME (mindustry desktop can run on java 14+) (For Ozone-Desktop)
+* Java 8+ and added to JAVA_HOME (mindustry core can run on java 8+) (For Ozone-Core)  (don't need to install if you
+  have the mindustry.exe version/ bundled JRE)
+* Internet connection (required to download library at runtime and can impact loading speed) (For Ozone-Desktop)
+* Year 2006+ Computer
+* Android 4.0+ / sdk version 14+
 
-Server
-Server builds are bundled with each released build (in Releases). If you'd rather compile on your own, replace 'desktop' with 'server', e.g. gradlew server:dist.
+# Build
 
-Android
-Building: click me to building android.bat
+* 0.Install JDK 14
+* 1.run `./gradlew deploy`
+* 2.you get the Desktop mods in `Desktop/build/libs/`
+* 3.you get the Core mods in `build/libs/`
+* 4.you get the Android mods in `Android/build/libs` if you have android sdk set to ANDROID_HOME
 
-Troubleshooting
-If the terminal returns Permission denied or Command not found on Mac/Linux, run chmod +x ./gradlew before running ./gradlew. This is a one-time procedure.
+# Install
 
-Android:Mindustry-o7\android\build\outputs\apk\debug Gradle may take up to several minutes to download files. Be patient.
-After building, the output .JAR file should be in /desktop/build/libs/Mindustry.jar for desktop builds, and in /server/build/libs/server-release.jar for server builds.
+`Ozone destkop`
 
-Downloads
-Get it on Itch.io
+- install Java 14
+- `java -jar Mindustry-Ozone.jar` or double click if can
+- click install
+- optional: **Run** to download mindustry and run it
+- use java 14 to launch Mindustry
 
-Get it on Google Play
+`Ozone core`
 
-Get it on F-Droid
+- install java 8+ (don't need to install if you have the mindustry.exe version or bundled JRE)
+- `java -jar Mindustry-Ozone.jar` or double click if can
+- it's copied to mindustry mods folder\
+  or
+- open mindustry [124+]
+- open mod browser
+- search ozone
+- install it\
+  or
+- locate Mindustry mods folder
 
-Mindustry-o7
+```css
+Android: Android/data/io.anuken.mindustry/files/mods
+Windows: %APPDATA%/Roaming/Mindustry/mods or C:/Users/USERNAME/.AppData/Roaming/Mindustry/mods
+Linux: /home/USERNAME/.local/share/Mindustry/mods/
+```
+
+- copy the jar to the mods folder
+- launch mindustry (for desktop ozone recommend to use **Run** instead)
+
+# Preview
+
+(mostly ozone core)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809627146846470144/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809627233010319380/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809634916300095498/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635106779299861/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635148282462218/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635252502265886/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635310522204210/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635755419893820/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809636037360877598/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809635992977932298/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809636104637644800/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809636322272084058/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809636450755674133/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809637463382425620/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809638887873445898/sortshuffle.gif)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809663462023102484/drainCore.gif)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809668927571230760/FollowP1.gif)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809669870849490954/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809734631775666206/unknown.png)
+![](https://cdn.discordapp.com/attachments/809580979777568828/809734704894967828/unknown.png)
+![]()
+![]()
+# Impossible things to do
+
+- In-game Painter because a mere mortal can't draw with by typing code
+- ~~Create mindustry class patcher~~
+- Stop relying on third party library for bootstrap
+- ~~Bootstrap in less than 10 second for first time setup (worst: 40 second)~~
+- Improve download bar (its keep teleporting wtf)
+- Remove useless commands and duplicate
+- Add more commands
+- ~~Use own custom settings framework~~
+- Somehow create chat filter
+- Stabilize bootstrapper
+- Implement interactive mindustry-world API
+- Implement information center for mindustry-world
+- Somehow fix the horrible updater
+- Create player watcher
+- Add logic display toggle (goddamn those nsfw image)
+- Stabilize Bot Launcher
+- Auto start bot-server when launching bot(or remove that button ?)
+- Make updater much more living(add GUI)
+- Headless ?
+- AI ?
+- Make Bots actually useful
+- Brainwash nexity to make actually useful code
+- Add proxy ?
+- Auto create efficient miner block pool using bruteforce
+- Brainwash nexity to not mess with this README.md
+- Create AIO script to launch ozone (non java user)
+- Auto Java, switch java version when launched from another version
+- World logger, VCS like system ?
+- Unify library folder
+- Steam support ?
+- Event based key listener
+- ~~Fix shutdown stall~~
+- Fix javac commands
+- Integrated png to draw logic tool
+- ~~Mobile support~~
+- ~~Schematic Pools~~
+- Fix the goddamn buggy Pathfinding
+- Ozone Extension Support
+- Video player
+- Logic scanner/obfuscator/jammer
+- Move library/utility class to Atomic-Library
+- Encrypted Broadcast
+
+# Disclaimer
+
+It's totally for entertainment purpose, user is fully responsible for using this tools
+
+# Bonus
+
+problem:\
+![](https://cdn.discordapp.com/attachments/809580979777568828/809684909198278656/unknown.png) \
+solution:\
+![](https://cdn.discordapp.com/attachments/809580979777568828/809685014849519616/unknown.png) \
+![](https://cdn.discordapp.com/attachments/809580979777568828/809685566869471262/unknown.png)
+<h4 align="center">Visitor's count :eyes:</h4>
+<p align="center"><img src="https://profile-counter.glitch.me/%7Bsketchyirishman%7D/count.svg" alt="sketchyirishman :: Visitor's Count" /></p>
