@@ -18,26 +18,23 @@ package Ozone.Internal;
 
 import Atom.File.RepoInternal;
 import Atom.Utility.Encoder;
+import Atom.Utility.Pool;
 import arc.graphics.Pixmap;
 import arc.util.Log;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.concurrent.Future;
 
 public class Repo extends Atom.File.Repo implements Module {
+	
 	@Override
-	public URL getResource(String s) {
-		URL u = null;
-		try {
-			u = RepoInternal.class.getClassLoader().getResource(s);
-		}catch (Throwable ignored) {}
-		try {
-			if (u == null) ClassLoader.getSystemResource(s);
-		}catch (Throwable ignored) {}
-		try {
-			if (u == null) super.getResource(s);
-		}catch (Throwable ignored) {}
-		return u;
+	protected ArrayList<Future<URL>> parallelSearch(String s) {
+		ArrayList<Future<URL>> a = super.parallelSearch(s);
+		a.add(Pool.submit(() -> RepoInternal.class.getClassLoader().getResource(s)));
+		a.add(Pool.submit(() -> ClassLoader.getSystemResource(s)));
+		return a;
 	}
 	
 	@Override
