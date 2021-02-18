@@ -56,6 +56,7 @@ public class ModsMenu extends BaseDialog {
 		ad(Manifest.uiDebug);
 		ad(Manifest.experiment);
 		ad(Manifest.logView);
+		ad(Manifest.taskList);
 	}
 	
 	void ad(OzoneDialog dialog) {

@@ -23,6 +23,7 @@ import Ozone.Commands.Task.Task;
 import Ozone.Commands.TaskInterface;
 import Ozone.Settings.BaseSettings;
 import mindustry.Vars;
+import mindustry.gen.Icon;
 
 import java.util.concurrent.TimeUnit;
 
@@ -48,9 +49,14 @@ public class TaskList extends ScrollableDialog {
 	void ad(int i, Task t) {
 		String title = i + "";
 		if (BaseSettings.colorPatch) title = "[" + Random.getRandomHexColor() + "]" + title;
-		table.button(title + "[white]. " + t.toString(), () -> {
-			Vars.ui.showInfo(FieldTool.getFieldDetails(t, t.getClass(), true, 400));
-		}).growX().tooltip(FieldTool.getFieldDetails(t));
+		String finalTitle = title;
+		table.table(te -> {
+			te.button(finalTitle + "[white]. " + t.toString(), () -> {
+				Vars.ui.showInfo(FieldTool.getFieldDetails(t, t.getClass(), true, 400));
+			}).growX().tooltip(FieldTool.getFieldDetails(t));
+			te.button(Icon.pencil, t::interrupt).tooltip("Interrupt");
+		}).growX();
+		
 		table.row();
 	}
 	

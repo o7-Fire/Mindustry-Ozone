@@ -25,6 +25,11 @@ public abstract class Completable extends Task {
 	}
 	
 	@Override
+	public void interrupt() {
+		completed = true;
+	}
+	
+	@Override
 	public boolean isCompleted() {
 		return completed;
 	}
