@@ -15,6 +15,7 @@ Tools/build
 Android/build/
 /lib/
 *.war
+src/main/java/Ozone/Experimental
 *.ear
 src/main/resources/Manifest.properties
 src/main/resources/META-INF
