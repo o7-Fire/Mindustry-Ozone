@@ -153,7 +153,8 @@ public class Main {
 				try {
 					s.getValue().loadAsync();
 				}catch (Throwable t) {
-					Log.err(t);
+					Log.warn(t.toString());
+					t.printStackTrace();
 					Sentry.captureException(t);
 				}
 			});
