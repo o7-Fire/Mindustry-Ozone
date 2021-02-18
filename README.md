@@ -63,8 +63,10 @@ Note: Ozone Desktop need to be installed manually\
 - open mindustry [124+]
 - open mod browser
 - search ozone
-- install it\
-  or
+- install it
+
+`Ozone Everything`
+
 - locate Mindustry mods folder
 
 ```css
