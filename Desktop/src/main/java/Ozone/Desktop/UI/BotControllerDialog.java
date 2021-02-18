@@ -140,7 +140,7 @@ public class BotControllerDialog extends OzoneBaseDialog {
 			cont.row();
 			cont.labelWrap("ID:").growX().left();
 			cont.add(id).growX().right();
-			cont.button("ConnectSpam", Icon.play, () -> {
+			cont.button("Connect", Icon.play, () -> {
 				try {
 					botClient.connect().alive();
 					setup();
