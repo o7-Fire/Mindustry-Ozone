@@ -58,7 +58,11 @@ public class InformationCenter {
 	}
 	
 	public static String getPacketName(int id) {
-		return packetName.get(id);
+		try {
+			return packetName.get(id);
+		}catch (Throwable t){
+			return "Unknown Packet";
+		}
 	}
 	
 	public static boolean isCommonPacket(int id) {
