@@ -20,12 +20,16 @@ import Atom.Reflect.FieldTool;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
+import mindustry.gen.Icon;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class ModuleFrag extends ScrollableDialog {
+	{
+		icon = Icon.layers;
+	}
 	
 	protected void setup() {
 		TreeMap<String, Module> t = new TreeMap<>();

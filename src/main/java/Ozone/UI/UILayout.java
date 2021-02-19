@@ -17,8 +17,12 @@
 package Ozone.UI;
 
 import arc.Core;
+import mindustry.gen.Icon;
 
 public class UILayout extends ScrollableDialog {
+	{
+		icon = Icon.list;
+	}
 	
 	@Override
 	protected void setup() {

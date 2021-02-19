@@ -17,6 +17,8 @@
 package Ozone.Patch;
 
 import Atom.Reflect.Reflect;
+import Atom.Utility.Random;
+import Atom.Utility.Utility;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.Patch.Mindustry.SettingsDialog;
@@ -56,6 +58,7 @@ public class UIPatch implements Module {
 		
 		Vars.ui.settings = new SettingsDialog();//how to patch mindustry UI
 		Manifest.taskList = new TaskList();
+		Manifest.bundleViewer = new BundleViewer();
 		Manifest.commFrag = new CommandsListFrag();
 		Manifest.worldInformation = new WorldInformation();
 		Manifest.playSettings = new OzonePlaySettings();
@@ -83,8 +86,12 @@ public class UIPatch implements Module {
 				if (Core.graphics.isPortrait()) VarsPatch.menu.row();
 				VarsPatch.menu.add(new MobileButton(Icon.info, Translation.get("Ozone"), () -> Manifest.modsMenu.show()));
 			}else {
-				if (!SharedBoot.isCore())
-					VarsPatch.menu.button(Translation.get("Update"), Icon.refresh, Updater::showUpdateDialog).growX().bottom();
+				if (!SharedBoot.isCore()) {
+					VarsPatch.menu.button(Translation.get("Update"), Icon.refresh, Updater::showUpdateDialog).growX().update(t -> {
+						if (Updater.releaseMap != null)
+							t.setText("Update" + Utility.repeatThisString("!", Random.getInt(5)));
+					}).bottom();
+				}
 				VarsPatch.menu.button(Translation.get("Ozone"), Icon.file, Manifest.modsMenu::show).growX().bottom();
 			}
 		}

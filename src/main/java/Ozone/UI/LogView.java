@@ -27,6 +27,10 @@ public class LogView extends ScrollableDialog {
 	
 	volatile String see = "";
 	
+	{
+		icon = Icon.fileTextFill;
+	}
+	
 	@Override
 	protected void ctor() {
 		super.ctor();

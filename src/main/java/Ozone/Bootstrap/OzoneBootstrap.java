@@ -17,13 +17,19 @@
 package Ozone.Bootstrap;
 
 import Ozone.Settings.BaseSettings;
+import Ozone.Settings.SettingsManifest;
 import Ozone.Version;
 import Shared.SharedBoot;
 import arc.util.Log;
+import mindustry.Vars;
+
+import java.io.File;
 
 public class OzoneBootstrap {
 	
 	public static boolean init() {
+		SettingsManifest.settingsFile = new File(Vars.dataDirectory.file(), SettingsManifest.settingsFile.getAbsolutePath());
+		SettingsManifest.reload();
 		SharedBoot.initSentry();
 		if (SharedBoot.debug) {
 			Log.level = Log.LogLevel.debug;

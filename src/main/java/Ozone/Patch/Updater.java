@@ -19,10 +19,10 @@ package Ozone.Patch;
 import Atom.Net.Request;
 import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
-import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Interface;
+import Ozone.Internal.Module;
 import Ozone.Propertied;
 import Shared.SharedBoot;
 import arc.Core;
@@ -40,13 +40,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static mindustry.Vars.ui;
 
-public class Updater {
+public class Updater implements Module {
 	
 	public final static AtomicBoolean newRelease = new AtomicBoolean(false);
 	private static volatile boolean init;
-	private static volatile HashMap<String, String> releaseMap = null;
+	public static volatile HashMap<String, String> releaseMap = null;
+	public static Future<?> future;
 	
-	public static void init() {
+	public static void sync() {
 		if (init) return;
 		init = true;
 		Log.debug("[Ozone] Checking Update");
@@ -67,6 +68,24 @@ public class Updater {
 			Sentry.captureException(e);
 			Log.warn(e.toString());
 			Log.warn("[Ozone] Failed to update");
+		}
+		
+		
+	}
+	
+	public static void showUpdateDialog() {
+		if (releaseMap == null) {
+			if (future.isDone()) ui.showInfo("¯\\_(ツ)_/¯\nCan't find update");
+			else ui.showInfo("Wait lol, your internet suck");
+			return;
+		}
+		
+		StringBuilder rm = new StringBuilder();
+		if (releaseMap != null) {
+			readMap(rm, releaseMap);
+		}
+		if (releaseMap != null) {
+			showNewRelease(rm);
 		}
 		
 		
@@ -125,21 +144,8 @@ public class Updater {
 			sb.append(s.getKey().toString()).append(": ").append(s.getValue().toString()).append("\n");
 	}
 	
-	public static void showUpdateDialog() {
-		if (releaseMap == null) {
-			if (Random.getBool()) {ui.showInfo("Not yet comrade");}else {ui.showInfo("Coming soon");}
-			return;
-		}
-		
-		StringBuilder rm = new StringBuilder();
-		if (releaseMap != null) {
-			readMap(rm, releaseMap);
-		}
-		if (releaseMap != null) {
-			showNewRelease(rm);
-		}
-		
-		
+	public static Future<?> async() {
+		return Pool.submit(Updater::sync);
 	}
 	
 	private static void showNewRelease(StringBuilder sb) {
@@ -184,8 +190,8 @@ public class Updater {
 		}
 	}
 	
-	
-	public static Future<?> async() {
-		return Pool.submit(Updater::init);
+	@Override
+	public void earlyInit() throws Throwable {
+		future = async();
 	}
 }

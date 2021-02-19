@@ -122,7 +122,6 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		String finalValue = String.valueOf(value);
 		table.row();
 		table.field(finalValue, s -> {
-			setup();
 			Core.app.setClipboardText(finalValue);
 			Manifest.toast("Copied");
 		}).expandX().growX();

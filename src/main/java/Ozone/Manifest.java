@@ -44,6 +44,7 @@ public class Manifest {
 	public static CommandsListFrag commFrag;
 	public static WorldInformation worldInformation;
 	public static TaskList taskList;
+	public static BundleViewer bundleViewer;
 	
 	public static ExperimentDialog experiment;
 	public static UILayout uiDebug;

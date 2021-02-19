@@ -31,6 +31,10 @@ public class TaskList extends ScrollableDialog {
 	Timer timer = new Timer(TimeUnit.MICROSECONDS, 200);
 	int last = 0;
 	
+	{
+		icon = Icon.menu;
+	}
+	
 	public TaskList() {
 		super("Task List");
 		

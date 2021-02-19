@@ -29,37 +29,41 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SettingsManifest {
-	static final File settingsFile = new File("OzoneSettings.properties");
+	public static File settingsFile = new File("OzoneSettings.properties");
 	static ConcurrentHashMap<String, String> cache;
 	static volatile long lastFileHash = 0;
 	
 	
-	public static ConcurrentHashMap<String, String> getMap() throws IOException {
+	public static void reload() {
+		saveMap();
+		cache = null;
+		getMap();
+	}
+	
+	public static ConcurrentHashMap<String, String> getMap() {
 		if (cache == null) {
-			if (settingsFile.exists())
+			try {
 				cache = new ConcurrentHashMap<>(Encoder.parseProperty(new String(FileUtility.readAllBytes(settingsFile))));
-			else cache = new ConcurrentHashMap<>();
+			}catch (Throwable ignored) {
+				cache = new ConcurrentHashMap<>();
+			}
 		}
 		return cache;
 	}
 	
-	static void readSettings(Field f) throws IllegalAccessException, IOException {
-		
-		f.setAccessible(true);
-		Class<?> clz = f.getDeclaringClass();
-		String name = clz.getName() + "." + f.getName();
-		if (!getMap().containsKey(name)) return;
-		f.set(null, Reflect.parseStringToPrimitive(getMap().get(name), f.getType()));
-		
+	static void readSettings(Field f) {
+		try {
+			f.setAccessible(true);
+			Class<?> clz = f.getDeclaringClass();
+			String name = clz.getName() + "." + f.getName();
+			if (!getMap().containsKey(name)) return;
+			f.set(null, Reflect.parseStringToPrimitive(getMap().get(name), f.getType()));
+		}catch (Throwable ignored) {}
 	}
 	
 	public static void readSettings(Class<?> clazz) {
 		for (Field f : clazz.getDeclaredFields()) {
-			try {
-				if (f.getType().isPrimitive() || f.getType().equals(String.class)) SettingsManifest.readSettings(f);
-			}catch (Throwable e) {
-				throw new RuntimeException(e);
-			}
+			if (f.getType().isPrimitive() || f.getType().equals(String.class)) SettingsManifest.readSettings(f);
 		}
 	}
 	
@@ -69,12 +73,9 @@ public class SettingsManifest {
 		for (Field f : clz.getDeclaredFields()) {
 			String name = clz.getName() + "." + f.getName();
 			if (f.getType().isPrimitive() || f.getType().getName().equals(String.class.getName()))
-				if (getMap().containsKey(name)) getMap().replace(name, f.get(null).toString());
-				else getMap().put(name, f.get(null).toString());
+				getMap().put(name, f.get(null).toString());
 		}
-		if (getMap().contains(clz.getName() + ".hash"))
-			getMap().replace(clz.getName() + ".hash", getHash(clz));
-		else getMap().put(clz.getName() + ".hash", getHash(clz));
+		getMap().put(clz.getName() + ".hash", getHash(clz));
 	}
 
 	static String getHash(Class<?> clz) {

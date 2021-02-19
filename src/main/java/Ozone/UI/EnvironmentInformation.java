@@ -18,6 +18,7 @@ package Ozone.UI;
 
 
 import Ozone.Experimental.Evasion.Identification;
+import Ozone.Patch.Updater;
 import Ozone.Propertied;
 import Ozone.Settings.SettingsManifest;
 import arc.Core;
@@ -30,7 +31,6 @@ import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.gen.Sounds;
 
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -55,9 +55,9 @@ public class EnvironmentInformation extends ScrollableDialog {
 			ad("Compilation Time Total (ms)", ManagementFactory.getCompilationMXBean().getTotalCompilationTime());
 			ad("isCompilationTimeMonitoringSupported", ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());
 		}catch (Throwable ignored) {}
+		ad("Updater Task", Updater.future.toString());
 		ad(Propertied.Manifest);
-		
-		try { ad(SettingsManifest.getMap()); }catch (IOException ignored) { }
+		ad(SettingsManifest.getMap());
 		uid();
 		
 	}
