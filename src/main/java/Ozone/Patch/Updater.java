@@ -112,6 +112,7 @@ public class Updater implements Module {
 			String sb = target.get("TimeMilis");
 			if (sa == null || sb == null) return false;
 			long a = Long.parseLong(sa), b = Long.parseLong(sb);
+			if (a == b) return false;
 			if (a > b) return false;
 		}catch (NumberFormatException asshole) {
 			Sentry.captureException(asshole);

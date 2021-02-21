@@ -54,26 +54,27 @@ public class Warning extends ScrollableDialog {
 				break;
 			default:
 		}
+		
 		table.button(c.headlines(), icon, () -> {
+			
 			new ScrollableDialog(c.headlines()) {
 				@Override
 				protected void setup() {
-					table.table(t -> {
-						t.add("Level:").growX().row();
-						t.add(c.level.colorized() + Utility.capitalizeEnforce(c.level.name())).growX().row();
-						t.add("Problem:").growX().row();
-						t.field(c.problem, s -> {}).disabled(true).growX().row();
-						t.add("Why i should fix it:").growX().row();
-						t.field(c.whyItsAProblem, s -> {}).disabled(true).growX().row();
-						t.add("How to fix it:").growX().row();
-						t.field(c.howToFix, s -> {}).disabled(true).growX().row();
-						t.add("Thread:").growX().row();
-						t.field(c.thread + "", s -> {}).disabled(true).growX().row();
-						t.button("Stacktrace", () -> {
-							ThreadStackTrace.showStacktrace(c.caller);
-						}).growX().row();
-						
-					}).growX().growY().center();
+					
+					table.add("Level:").growX().row();
+					table.add(c.level.colorized() + Utility.capitalizeEnforce(c.level.name())).growX().row();
+					table.add("Problem:").growX().row();
+					table.field(c.problem, s -> {}).disabled(true).growX().row();
+					table.add("Why i should fix it:").growX().row();
+					table.field(c.whyItsAProblem, s -> {}).disabled(true).growX().row();
+					table.add("How to fix it:").growX().row();
+					table.field(c.howToFix, s -> {}).disabled(true).growX().row();
+					table.add("Thread:").growX().row();
+					table.field(c.thread + "", s -> {}).disabled(true).growX().row();
+					table.button("Stacktrace", () -> {
+						ThreadStackTrace.showStacktrace(c.caller);
+					}).growX().row();
+					
 				}
 			}.show();
 		}).color(Color.valueOf(c.level.color)).growX();
@@ -84,7 +85,8 @@ public class Warning extends ScrollableDialog {
 				WarningHandler.handle(t);
 			}
 			init();
-		}).tooltip("Dismiss").row();
+		}).tooltip("Dismiss");
+		table.row();
 	}
 }
 
