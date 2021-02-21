@@ -14,37 +14,28 @@
  * limitations under the License.
  */
 
-package Ozone.UI;
+package Ozone.Experimental;
 
-import Ozone.Experimental.Experimental;
-import Ozone.Main;
-import arc.util.Log;
-import io.sentry.Sentry;
+import Ozone.UI.ScrollableDialog;
 import mindustry.Vars;
-import mindustry.gen.Icon;
 
-public class ExperimentDialog extends ScrollableDialog {
-	{
-		icon = Icon.production;
-	}
-	
+public class ThreadStackTrace implements Experimental {
 	@Override
-	protected void setup() {
+	public void run() {
 		try {
-			for (Class<? extends Experimental> c : Main.getExtended("Ozone", Experimental.class)) {
-				table.button(c.getSimpleName(), () -> {
-					try {
-						c.getDeclaredConstructor().newInstance().run();
-					}catch (Throwable t) {
-						Vars.ui.showException(t);
-						Log.err(t);
-						Sentry.captureException(t);
-					}
-				}).growX().row();
-				
-			}
+			
+			new ScrollableDialog("Stacktrace") {
+				@Override
+				protected void setup() {
+					StringBuilder sb = new StringBuilder();
+					int i = 0;
+					for (StackTraceElement s : Thread.currentThread().getStackTrace())
+						sb.append(i++).append(". ").append(s.toString()).append("\n");
+					table.add(sb).growX().growY();
+				}
+			}.show();
 		}catch (Throwable t) {
-			ad(t.toString());
+			Vars.ui.showException(t);
 		}
 	}
 }

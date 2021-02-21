@@ -18,6 +18,7 @@ package Ozone.UI;
 
 
 import Ozone.Experimental.Evasion.Identification;
+import Ozone.Internal.InformationCenter;
 import Ozone.Patch.Updater;
 import Ozone.Propertied;
 import Ozone.Settings.SettingsManifest;
@@ -51,6 +52,7 @@ public class EnvironmentInformation extends ScrollableDialog {
 		ad("UUID", Core.settings.getString("uuid"));
 		ad("Current Millis", System.currentTimeMillis());
 		ad("Current Nanos", System.nanoTime());
+		ad("Current Jar", InformationCenter.getCurrentJar().getAbsolutePath());
 		try {
 			ad("Compilation Time Total (ms)", ManagementFactory.getCompilationMXBean().getTotalCompilationTime());
 			ad("isCompilationTimeMonitoringSupported", ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());
