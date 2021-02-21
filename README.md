@@ -101,6 +101,8 @@ Linux: /home/USERNAME/.local/share/Mindustry/mods/
 ![](https://cdn.discordapp.com/attachments/809580979777568828/809669870849490954/unknown.png)
 ![](https://cdn.discordapp.com/attachments/809580979777568828/809734631775666206/unknown.png)
 ![](https://cdn.discordapp.com/attachments/809580979777568828/809734704894967828/unknown.png)
+![](https://cdn.discordapp.com/attachments/801061985034305556/812999650532655125/unknown.png)
+![](https://cdn.discordapp.com/attachments/801061985034305556/812975333288574996/unknown.png)
 ![]()
 ![]()
 # Impossible things to do
