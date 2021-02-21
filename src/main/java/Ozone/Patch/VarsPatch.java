@@ -23,6 +23,8 @@ import Ozone.Internal.RepoCached;
 import Ozone.Patch.Mindustry.DesktopInputPatched;
 import Ozone.Patch.Mindustry.MobileInputPatched;
 import Ozone.Settings.BaseSettings;
+import Ozone.Settings.SettingsManifest;
+import Shared.SharedBoot;
 import arc.graphics.Color;
 import arc.scene.ui.layout.Table;
 import arc.util.Log;
@@ -32,6 +34,7 @@ import mindustry.graphics.Pal;
 import mindustry.input.DesktopInput;
 import mindustry.input.MobileInput;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +44,11 @@ public class VarsPatch implements Module {
 	
 	@Override
 	public void earlyInit() throws Throwable {
+		SettingsManifest.changeFile(new File(Vars.dataDirectory.file(), SettingsManifest.settingsFile.getAbsolutePath()));
+		if (SharedBoot.debug) {
+			Log.level = Log.LogLevel.debug;
+			BaseSettings.debugMode = true;
+		}
 		Field f = Vars.class.getDeclaredField("maxSchematicSize");
 		try {
 			

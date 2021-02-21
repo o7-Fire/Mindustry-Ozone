@@ -88,7 +88,9 @@ allprojects {
                 "description: \"o7-Fire Ozone Project.\"\n" +
                 "minGameVersion: 123\n" +
                 "hidden: true\n"
-        modhjson += "version: " + versionCore+"."+versionDesktop
+        modhjson += "version: " + versionCore+"."+versionDesktop+"\n"
+        if(project.hasProperty("gRepo"))
+            modhjson += "repo: \"" + gRepo +"\" \n"
         try{
             File f = new File(rootDir, "mod.hjson")
             f.delete()

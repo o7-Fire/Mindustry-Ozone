@@ -42,6 +42,7 @@ public class OzoneMindustry extends DesktopLauncher {
 		DesktopBootstrap.customBootstrap = true;
 		try {
 			Vars.loadLogger();
+			
 			new SdlApplication(new DesktopLauncher(args), new SdlConfig() {
 				{
 					this.title = "Mindustry-Ozone";

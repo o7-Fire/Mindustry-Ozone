@@ -84,12 +84,14 @@ public class Manifest {
 			try {
 				c.getDeclaredMethod("save").invoke(null);
 			}catch (Throwable t) {
+				t.printStackTrace();
 				Sentry.captureException(t);
 			}
 		}
 		try {
 			SettingsManifest.saveMap();
 		}catch (Throwable e) {
+			e.printStackTrace();
 			Sentry.captureException(e);
 			Vars.ui.showException(e);
 		}

@@ -26,18 +26,34 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
+import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SettingsManifest {
-	public static File settingsFile = new File(FileUtility.getAppdata(), "OzoneSettings.properties");
+	public static File settingsFile = new File("OzoneSettings.properties");
 	static ConcurrentHashMap<String, String> cache;
 	static volatile long lastFileHash = 0;
+	static HashSet<Class<?>> list = new HashSet<>();
 	
+	public static void changeFile(File neu) {
+		if (neu.equals(settingsFile)) return;
+		if (!neu.exists()) {
+			if (settingsFile.exists()) {
+				getMap();
+			}
+		}else {
+			cache = null;
+		}
+		settingsFile = neu;
+		reload();
+	}
 	
 	public static void reload() {
 		saveMap();
 		cache = null;
 		getMap();
+		for (Class<?> c : list)
+			readSettings(c);
 	}
 	
 	public static ConcurrentHashMap<String, String> getMap() {
@@ -62,6 +78,9 @@ public class SettingsManifest {
 	}
 	
 	public static void readSettings(Class<?> clazz) {
+		try {
+			list.add(clazz);
+		}catch (Throwable ignored) {}
 		for (Field f : clazz.getDeclaredFields()) {
 			if (f.getType().isPrimitive() || f.getType().equals(String.class)) SettingsManifest.readSettings(f);
 		}
@@ -77,16 +96,16 @@ public class SettingsManifest {
 		}
 		getMap().put(clz.getName() + ".hash", getHash(clz));
 	}
-
+	
 	static String getHash(Class<?> clz) {
 		return String.valueOf(ByteBuffer.wrap(Digest.sha256(FieldTool.getFieldDetails(null, clz, false, 500).getBytes())).getLong());
 	}
-
-	public synchronized static void saveMap() {
-		if (cache == null) return;
+	
+	public static void saveMap() {
+		if (cache == null || !settingsFile.canWrite()) return;
 		if (lastFileHash == ByteBuffer.wrap(cache.toString().getBytes()).getLong()) return;
 		FileUtility.write(settingsFile, Encoder.property(cache).getBytes());
 		lastFileHash = ByteBuffer.wrap(cache.toString().getBytes()).getLong();
 	}
-
+	
 }

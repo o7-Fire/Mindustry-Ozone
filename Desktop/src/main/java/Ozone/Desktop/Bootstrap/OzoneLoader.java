@@ -167,13 +167,28 @@ public class OzoneLoader extends URLClassLoader {
 	
 	
 	@Override
-	public synchronized Class<?> loadClass(String name) throws ClassNotFoundException {
-		for (String s : parentFirst)
-			if (name.startsWith(s))
-				try {return ClassLoader.getSystemClassLoader().loadClass(name);}catch (Throwable ignored) {}
+	public Class<?> loadClass(String name) throws ClassNotFoundException {
+		if (parentFirst(name)) try { return loadParentClass(name); }catch (Throwable ignored) {}
+		
 		
 		//Note: don't mess with java
 		try { return super.loadClass(name); }catch (Throwable ignored) {}
-		return ClassLoader.getSystemClassLoader().loadClass(name);
+		try {return loadParentClass(name);}catch (Throwable ignored) {}
+		throw new ClassNotFoundException("Java being gay again: " + name + " not found " + (parentFirst(name) ? "parent first " : "child first"));
+	}
+	
+	public boolean parentFirst(String name) {
+		for (String s : parentFirst)
+			if (name.startsWith(s)) {
+				return true;
+			}
+		return false;
+	}
+	
+	public Class<?> loadParentClass(String name) throws ClassNotFoundException {
+		try {return ClassLoader.getSystemClassLoader().loadClass(name);}catch (Throwable ignored) {}
+		try {return ClassLoader.getPlatformClassLoader().loadClass(name);}catch (Throwable ignored) {}
+		try {return this.getClass().getClassLoader().loadClass(name);}catch (Throwable ignored) {}
+		return OzoneLoader.class.getClassLoader().loadClass(name);
 	}
 }

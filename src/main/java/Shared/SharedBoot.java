@@ -29,7 +29,8 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 
 public class SharedBoot {
-	public static boolean standalone, debug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null || System.getProperty("ozoneTest") != null;
+	public static boolean standalone, hardDebug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null || System.getProperty("ozoneTest") != null;
+	public static boolean debug = hardDebug;
 	public static Time timeStart = new Time();
 	public static String type = "Ozone-Core";
 	

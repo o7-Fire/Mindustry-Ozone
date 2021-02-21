@@ -35,10 +35,15 @@ public class BundleViewer extends ScrollableDialog {
 	@Override
 	protected void setup() {
 		cont.table(t -> {
+			
 			t.field("", s -> {
 				see = s.toLowerCase();
 			}).growX().tooltip("Search");
-			t.button(Icon.zoom, this::setup).tooltip("Search");//refresh button in disguise
+			t.button(Icon.cancel, () -> {
+				see = "";
+				init();
+			}).tooltip("Clear");
+			t.button(Icon.zoom, this::init).tooltip("Search");//refresh button in disguise
 		}).growX();
 		cont.row();
 		ad(Interface.bundle);

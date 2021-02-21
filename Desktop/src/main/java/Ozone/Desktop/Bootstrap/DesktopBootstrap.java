@@ -37,7 +37,7 @@ public class DesktopBootstrap {
 	
 	public static OzoneLoader ozoneLoader;
 	public static boolean customBootstrap, debug = SharedBoot.debug;
-	public static final String bootstrap = "DesktopBootstrap 3.0", mainClass;
+	public static final String bootstrap = "DesktopBootstrap 3.2", mainClass;
 	private static ArrayList<String> loadedList = new ArrayList<>();
 	private static Splash splash = null;
 	

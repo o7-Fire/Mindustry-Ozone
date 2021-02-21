@@ -1,6 +1,7 @@
 package mindustry;
 
 import Shared.LoggerMode;
+import Shared.SharedBoot;
 import arc.Core;
 import arc.Events;
 import arc.Settings;
@@ -420,12 +421,16 @@ public class Vars implements Loadable {
 	public static void checkLaunch() {
 		settings.setAppName(appName);
 		launchIDFile = settings.getDataDirectory().child("launchid.dat");
-		
-		if (launchIDFile.exists()) {
-			failedToLaunch = true;
+		if (!SharedBoot.hardDebug) {// stop disabling mods when debug to prevent developer insanity
+			if (launchIDFile.exists()) {
+				failedToLaunch = true;
+			}else {
+				failedToLaunch = false;
+				launchIDFile.writeString("go away");
+			}
 		}else {
 			failedToLaunch = false;
-			launchIDFile.writeString("go away");
+			launchIDFile.delete();
 		}
 	}
 	

@@ -53,7 +53,7 @@ public class SchematicPool implements Module {
 						try {
 							new File(Cache.http(new URL(s)).getFile()).delete();
 						}catch (Throwable ignored) {}
-						Log.err(s, e);
+						Log.warn(s, e);
 					}
 					return null;
 				}));
