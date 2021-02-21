@@ -18,11 +18,11 @@ package Ozone.UI;
 
 import Atom.Utility.Random;
 import Ozone.Internal.Interface;
-import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
 import arc.Core;
 import arc.scene.ui.Label;
 import arc.struct.ObjectMap;
+import mindustry.Vars;
 import mindustry.gen.Icon;
 
 public class BundleViewer extends ScrollableDialog {
@@ -35,15 +35,20 @@ public class BundleViewer extends ScrollableDialog {
 	@Override
 	protected void setup() {
 		cont.table(t -> {
-			
-			t.field("", s -> {
-				see = s.toLowerCase();
-			}).growX().tooltip("Search");
 			t.button(Icon.cancel, () -> {
 				see = "";
 				init();
 			}).tooltip("Clear");
-			t.button(Icon.zoom, this::init).tooltip("Search");//refresh button in disguise
+			t.button(Icon.zoom, () -> {
+				Vars.ui.showTextInput("Search", "", see, s -> {
+					try {
+						see = s;
+						init();
+					}catch (Throwable te) {
+						Vars.ui.showException(te);
+					}
+				});
+			}).tooltip("Search");//refresh button in disguise
 		}).growX();
 		cont.row();
 		ad(Interface.bundle);
@@ -64,11 +69,16 @@ public class BundleViewer extends ScrollableDialog {
 		table.add(l).growX();
 		String finalValue = String.valueOf(value);
 		table.row();
-		table.field(finalValue, s -> {
-			bund.put(finalValue, s);
-			Core.app.setClipboardText(finalValue);
-			Manifest.toast("Copied");
-		}).expandX().growX();
+		Object finalTitle = title;
+		table.button(finalValue, () -> {
+			try {
+				Vars.ui.showTextInput("Change to", String.valueOf(finalTitle), finalValue, s -> {
+					bund.put(String.valueOf(finalTitle), s);
+				});
+			}catch (Throwable t) {
+				Vars.ui.showException(t);
+			}
+		}).growX().tooltip("Raw");
 		table.row();
 	}
 }

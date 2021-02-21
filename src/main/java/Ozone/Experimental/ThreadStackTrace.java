@@ -16,11 +16,13 @@
 
 package Ozone.Experimental;
 
+import Atom.Reflect.Reflect;
 import Ozone.UI.ScrollableDialog;
 import mindustry.Vars;
 
 public class ThreadStackTrace implements Experimental {
 	public static void showStacktrace(StackTraceElement[] stackTraceElements) {
+		StackTraceElement te = Reflect.getCallerClassStackTrace();
 		try {
 			new ScrollableDialog("Stacktrace") {
 				@Override
@@ -30,6 +32,9 @@ public class ThreadStackTrace implements Experimental {
 					for (StackTraceElement s : stackTraceElements)
 						sb.append(i++).append(". ").append(s.toString()).append("\n");
 					table.add(sb).growX().growY();
+					table.row();
+					table.add("Caller class:").growX().row();
+					table.field(te.toString(), s -> {}).disabled(true).growX();
 				}
 			}.show();
 		}catch (Throwable t) {
