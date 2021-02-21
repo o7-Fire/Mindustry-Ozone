@@ -50,7 +50,7 @@ public class OzoneTesting {
 			String result = bold + lightBlack + "[" + dateTime.format(LocalDateTime.now()) + "] " + reset + format(tags[level1.ordinal()] + " " + text + "&fr");
 			System.out.println(result);
 		};
-		Log.info("Startup in " + new Time(TimeUnit.NANOSECONDS, SharedBoot.startup).convert(TimeUnit.MICROSECONDS).elapsed().toString());
+		Log.info("Startup in " + SharedBoot.timeStart.convert(TimeUnit.MICROSECONDS).elapsed().toString());
 		Log.info("Preparing Test");
 		tests = new OzoneTest();
 		tests.add("Commands, DesktopCommands, Patch, Events", () -> {

@@ -30,7 +30,6 @@ public class BundleViewer extends ScrollableDialog {
 	
 	{
 		icon = Icon.bookOpen;
-		
 	}
 	
 	@Override
@@ -39,7 +38,6 @@ public class BundleViewer extends ScrollableDialog {
 			t.field("", s -> {
 				see = s.toLowerCase();
 			}).growX().tooltip("Search");
-			//lol
 			t.button(Icon.zoom, this::setup).tooltip("Search");//refresh button in disguise
 		}).growX();
 		cont.row();

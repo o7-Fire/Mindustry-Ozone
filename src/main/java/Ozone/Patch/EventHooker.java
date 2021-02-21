@@ -20,6 +20,7 @@ import Ozone.Event.EventExtended;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
+import Shared.SharedBoot;
 import arc.Events;
 import arc.util.Log;
 import io.sentry.Sentry;
@@ -30,6 +31,7 @@ import mindustry.game.EventType;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static Ozone.Commands.Commands.garbageCollector;
 
@@ -61,6 +63,7 @@ public class EventHooker implements Module {
 			Events.fire(EventExtended.Shutdown.class, new EventExtended.Shutdown());
 		}));
 		Events.on(EventType.ClientLoadEvent.class, s -> {
+			Log.info("Startup in " + SharedBoot.timeStart.elapsed().convert(TimeUnit.MICROSECONDS).toString());
 			arc.Core.settings.getBoolOnce("OzoneDisclaimer", () -> {
 				Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning", "Use this mods at your own risk", "Accept", "Accept", () -> {
 				}, () -> {

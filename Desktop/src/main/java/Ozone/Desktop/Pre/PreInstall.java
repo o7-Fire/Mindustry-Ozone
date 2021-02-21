@@ -16,6 +16,7 @@
 
 package Ozone.Desktop.Pre;
 
+import Atom.Time.Time;
 import Atom.Utility.Pool;
 import Ozone.Desktop.Swing.Main;
 import Premain.Catch;
@@ -65,7 +66,8 @@ public class PreInstall {
 			if (!meh) Pool.daemon(() -> {
 				meh = true;
 				try {
-					SharedBoot.startup = System.currentTimeMillis();
+					
+					SharedBoot.timeStart = new Time();
 					MindustryEntryPoint.main(new ArrayList<>());
 				}catch (Throwable t) {
 					try {

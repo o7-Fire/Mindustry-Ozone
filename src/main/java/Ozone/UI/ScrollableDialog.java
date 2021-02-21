@@ -36,6 +36,8 @@ public abstract class ScrollableDialog extends OzoneDialog {
 	protected Table table = new Table();
 	protected ScrollPane scrollPane = new ScrollPane(table);
 	
+	protected boolean async = false;
+	
 	public ScrollableDialog() {
 		super();
 	}
