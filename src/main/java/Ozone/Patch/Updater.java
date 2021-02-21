@@ -25,6 +25,7 @@ import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import Ozone.Propertied;
 import Shared.SharedBoot;
+import Shared.WarningReport;
 import arc.Core;
 import arc.util.Log;
 import io.sentry.Sentry;
@@ -57,17 +58,16 @@ public class Updater implements Module {
 			HashMap<String, String> h = Encoder.parseProperty(getRelease(true).openStream());
 			newRelease.set(latest(h));
 			if (newRelease.get()) {
-				Log.infoTag("Ozone-Updater", "Latest Release Found: " + h.get("VHash"));
 				releaseMap = h;
-				
+				new WarningReport("Latest Release Found: " + h.get("VHash")).setWhyItsAProblem("To fix bug and add new feature").setHowToFix("Go update blin").report();
 				if (SharedBoot.isCore() && !Core.settings.getBoolOnce("Ozone-Update-" + h.get("Vhash")))
 					Interface.showInfo("New release found, go to mods and reinstall ozone to update\n" + readMap(h));
-			}else Log.debug("Latest Release Is Already Installed or Unavailable");
+			}else
+				new WarningReport().setProblem("Latest Release Is Already Installed or Unavailable").setWhyItsAProblem("nope ?");
 			
 		}catch (Throwable e) {
 			Sentry.captureException(e);
-			Log.warn(e.toString());
-			Log.warn("[Ozone] Failed to update");
+			new WarningReport(e).setLevel(WarningReport.Level.warn).report();
 		}
 		
 		
@@ -75,7 +75,7 @@ public class Updater implements Module {
 	
 	public static void showUpdateDialog() {
 		if (releaseMap == null) {
-			if (future.isDone()) ui.showInfo("¯\\_(ツ)_/¯\nCan't find update");
+			if (future.isDone()) ui.showInfo("¯\\_(ツ)_/¯\nCan't find a good update");
 			else ui.showInfo("Wait lol, your internet suck");
 			return;
 		}

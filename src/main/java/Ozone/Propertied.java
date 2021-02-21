@@ -17,6 +17,8 @@
 package Ozone;
 
 import Atom.Utility.Encoder;
+import Shared.WarningHandler;
+import Shared.WarningReport;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.core.Version;
@@ -31,9 +33,12 @@ public class Propertied {
 	
 	static {
 		Manifest = read("Manifest.properties");
-		if (Manifest.get("MindustryVersion") == null) try {
-			Manifest.put("MindustryVersion", "v" + Version.build + (Version.revision == 0 ? "" : "." + Version.revision));
-		}catch (Throwable ignored) {}
+		if (Manifest.get("MindustryVersion") == null) {
+			try {
+				Manifest.put("MindustryVersion", "v" + Version.build + (Version.revision == 0 ? "" : "." + Version.revision));
+			}catch (Throwable ignored) {}
+			WarningHandler.handle(new WarningReport().setProblem("Manifest Failed").setWhyItsAProblem("Updater manifest comparator, version validation").setHowToFix("Try see if Manifest.properties exists on jar/zip").setLevel(WarningReport.Level.err));
+		}
 	}
 	
 	public static InputStream getResource(String name) throws IOException {

@@ -25,6 +25,7 @@ import Ozone.Patch.Mindustry.MobileInputPatched;
 import Ozone.Settings.BaseSettings;
 import Ozone.Settings.SettingsManifest;
 import Shared.SharedBoot;
+import Shared.WarningReport;
 import arc.graphics.Color;
 import arc.scene.ui.layout.Table;
 import arc.util.Log;
@@ -54,7 +55,7 @@ public class VarsPatch implements Module {
 			
 			FieldTool.setFinalStatic(f, 1200);
 		}catch (Throwable t) {
-			Log.warn("Require java 8 to patch final field @", f.getName());
+			new WarningReport().setProblem("Failed to patch final field maxSchematicSize : " + t.getMessage()).setWhyItsAProblem("No schematic hack size").setHowToFix("try user java 8").setLevel(WarningReport.Level.warn).report();
 		}
 		//java 8
 		try {
@@ -62,8 +63,8 @@ public class VarsPatch implements Module {
 			Color c = new Color(Pal.darkMetal).lerp(Color.black, 0.5f);
 			FieldTool.setFinalStatic(color, c);
 			FieldTool.setFinalStatic(orange, "[#" + c + "]");
-		}catch (Throwable a) {
-			Log.warn("Require java 8 to patch final field LoadRenderer", a.toString());
+		}catch (Throwable t) {
+			new WarningReport().setProblem("Failed to patch final field LoadRenderer : " + t.getMessage()).setWhyItsAProblem("No loading screen color hack").setHowToFix("try use java 8").setLevel(WarningReport.Level.warn).report();
 		}
 	}
 	

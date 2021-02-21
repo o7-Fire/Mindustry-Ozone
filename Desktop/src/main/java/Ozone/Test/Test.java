@@ -18,6 +18,7 @@ package Ozone.Test;
 
 import Atom.Utility.Log;
 import Atom.Utility.Pool;
+import Shared.WarningReport;
 import io.sentry.Sentry;
 import io.sentry.SentryTransaction;
 import io.sentry.SpanStatus;
@@ -65,12 +66,16 @@ public class Test {
 				transaction.setThrowable(e);
 				transaction.setStatus(SpanStatus.INTERNAL_ERROR);
 			}
+			
 		}
 		Result result = new Result(t == null, start);
 		result.reason = name + " " + result.reason;
 		if (t != null) {
 			result.reason += ": " + t.toString();
 			result.t = t;
+			new WarningReport(result.reason).setWhyItsAProblem("Test failed").setLevel(WarningReport.Level.warn).report();
+		}else {
+			new WarningReport(result.reason).setWhyItsAProblem("Test success").report();
 		}
 		if (transaction != null) transaction.finish();
 		return result;

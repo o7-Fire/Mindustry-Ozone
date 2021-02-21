@@ -19,6 +19,8 @@ package Ozone.Desktop.Bootstrap;
 import Atom.File.FileUtility;
 import Atom.Utility.Cache;
 import Shared.SharedBoot;
+import Shared.WarningHandler;
+import Shared.WarningReport;
 import io.sentry.Sentry;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,6 +47,8 @@ public class OzoneLoader extends URLClassLoader {
 		parentFirst.add(Sentry.class.getPackageName());
 		parentFirst.add(OzoneLoader.class.getPackageName());
 		parentFirst.add(SharedBoot.class.getName());
+		parentFirst.add(WarningHandler.class.getName());
+		parentFirst.add(WarningReport.class.getName());
 		System.out.println("Cache: " + cache.getAbsolutePath());
 	}
 	

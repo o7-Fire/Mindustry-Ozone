@@ -31,10 +31,10 @@ import mindustry.game.EventType;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static Ozone.Commands.Commands.garbageCollector;
 
+//no shit not that hooker rent
 public class EventHooker implements Module {
 	public static ArrayList<Runnable> drawc = new ArrayList<>();
 	
@@ -63,7 +63,6 @@ public class EventHooker implements Module {
 			Events.fire(EventExtended.Shutdown.class, new EventExtended.Shutdown());
 		}));
 		Events.on(EventType.ClientLoadEvent.class, s -> {
-			Log.info("Startup in " + SharedBoot.timeStart.elapsed().convert(TimeUnit.MICROSECONDS).toString());
 			arc.Core.settings.getBoolOnce("OzoneDisclaimer", () -> {
 				Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning", "Use this mods at your own risk", "Accept", "Accept", () -> {
 				}, () -> {
@@ -72,6 +71,7 @@ public class EventHooker implements Module {
 					arc.Core.settings.forceSave();
 				});
 			});
+			SharedBoot.finishStartup();
 			// setOzoneLogger();
 		});
 		Events.run(EventType.Trigger.draw, () -> {
@@ -92,10 +92,8 @@ public class EventHooker implements Module {
 		});
 		Events.on(EventType.StateChangeEvent.class, s -> {
 			Log.debug("Ozone-Event-@: State changed from @ to @", s.getClass().getSimpleName(), s.from, s.to);
-			if (s.from.equals(GameState.State.playing) && s.to.equals(GameState.State.menu))
-				Events.fire(EventExtended.Game.Stop);
-			else if (s.from.equals(GameState.State.menu) && s.to.equals(GameState.State.playing))
-				Events.fire(EventExtended.Game.Start);
+			if (s.from.equals(GameState.State.playing) && s.to.equals(GameState.State.menu)) Events.fire(EventExtended.Game.Stop);
+			else if (s.from.equals(GameState.State.menu) && s.to.equals(GameState.State.playing)) Events.fire(EventExtended.Game.Start);
 			
 		});
 		if (!BaseSettings.worldLog) return;
@@ -123,24 +121,18 @@ public class EventHooker implements Module {
 			Log.debug("Ozone-Event-@: Player \"@\" changing into @ at @,@", s.getClass().getSimpleName(), s.player.name(), s.unit.getClass().getSimpleName(), s.unit.x(), s.unit.y());
 		});
 		Events.on(EventType.UnitDestroyEvent.class, s -> {
-			if (s.unit.getPlayer() != null)
-				Log.debug("Ozone-Event-@: Player \"@\" destroyed with @ at @,@", s.getClass().getSimpleName(), s.unit.getPlayer().name(), s.unit.getClass().getSimpleName(), s.unit.x(), s.unit.y());
-			else
-				Log.debug("Ozone-Event-@: A @ destroyed at @,@", s.getClass().getSimpleName(), s.unit.getClass().getSimpleName(), s.unit.x(), s.unit.y());
+			if (s.unit.getPlayer() != null) Log.debug("Ozone-Event-@: Player \"@\" destroyed with @ at @,@", s.getClass().getSimpleName(), s.unit.getPlayer().name(), s.unit.getClass().getSimpleName(), s.unit.x(), s.unit.y());
+			else Log.debug("Ozone-Event-@: A @ destroyed at @,@", s.getClass().getSimpleName(), s.unit.getClass().getSimpleName(), s.unit.x(), s.unit.y());
 		});
 		Events.on(EventType.UnitDrownEvent.class, s -> {
-			if (s.unit.getPlayer() != null)
-				Log.debug("Ozone-Event-@: Player \"@\" drowned with @ at @,@", s.getClass().getSimpleName(), s.unit.getPlayer().name(), s.unit.getClass().getSimpleName(), s.unit.x(), s.unit.y());
-			else
-				Log.debug("Ozone-Event-@: A @ drowned at @,@", s.getClass().getSimpleName(), s.unit.getClass().getSimpleName(), s.unit.x(), s.unit.y());
+			if (s.unit.getPlayer() != null) Log.debug("Ozone-Event-@: Player \"@\" drowned with @ at @,@", s.getClass().getSimpleName(), s.unit.getPlayer().name(), s.unit.getClass().getSimpleName(), s.unit.x(), s.unit.y());
+			else Log.debug("Ozone-Event-@: A @ drowned at @,@", s.getClass().getSimpleName(), s.unit.getClass().getSimpleName(), s.unit.x(), s.unit.y());
 		});
 		
 		Events.on(EventType.BlockBuildEndEvent.class, s -> {
 			if (s.unit.getPlayer() == null) return;//boring
-			if (s.breaking)
-				Log.debug("Ozone-Event-@: \"@\" successfully deconstructed @ with configuration @ on team @", s.getClass().getSimpleName(), s.unit.getPlayer().name(), s.tile.toString(), s.config, s.team);
-			else
-				Log.debug("Ozone-Event-@: \"@\" successfully constructed @ with configuration @ on team @", s.getClass().getSimpleName(), s.unit.getPlayer().name(), s.tile.toString(), s.config, s.team);
+			if (s.breaking) Log.debug("Ozone-Event-@: \"@\" successfully deconstructed @ with configuration @ on team @", s.getClass().getSimpleName(), s.unit.getPlayer().name(), s.tile.toString(), s.config, s.team);
+			else Log.debug("Ozone-Event-@: \"@\" successfully constructed @ with configuration @ on team @", s.getClass().getSimpleName(), s.unit.getPlayer().name(), s.tile.toString(), s.config, s.team);
 		});
 		Events.on(EventType.PlayerJoin.class, s -> {
 			if (s.player == null) return;
@@ -150,20 +142,16 @@ public class EventHooker implements Module {
 			Log.debug("Ozone-Event-@: @", s.getClass().getSimpleName(), s.tile.toString());
 		});
 		Events.on(EventType.BlockBuildBeginEvent.class, s -> {
-			if (s.breaking)
-				Log.debug("Ozone-Event-@: someone begin breaking at @ on team @", s.getClass().getSimpleName(), s.tile.toString(), s.team);
-			else
-				Log.debug("Ozone-Event-@: Someone begin building at @ on team @", s.getClass().getSimpleName(), s.tile.toString(), s.team);
+			if (s.breaking) Log.debug("Ozone-Event-@: someone begin breaking at @ on team @", s.getClass().getSimpleName(), s.tile.toString(), s.team);
+			else Log.debug("Ozone-Event-@: Someone begin building at @ on team @", s.getClass().getSimpleName(), s.tile.toString(), s.team);
 		});
 		Events.on(EventType.PlayerLeave.class, s -> {
 			if (s.player == null) return;//boring
 			Log.debug("Ozone-Event-@: \"@\" leave", s.getClass().getSimpleName(), s.player.name());
 		});
 		Events.on(EventType.ConfigEvent.class, s -> {
-			if (s.player != null)
-				Log.debug("Ozone-Event-@: @ has been changed from @ to @ by player \"@\"", s.getClass().getSimpleName(), s.tile.tile.toString(), s.tile.block().lastConfig, s.value, s.player.name());
-			else
-				Log.debug("Ozone-Event-@: @ has been changed from @ to @ by unknown", s.getClass().getSimpleName(), s.tile.tile.toString(), s.tile.block(), s.value);
+			if (s.player != null) Log.debug("Ozone-Event-@: @ has been changed from @ to @ by player \"@\"", s.getClass().getSimpleName(), s.tile.tile.toString(), s.tile.block().lastConfig, s.value, s.player.name());
+			else Log.debug("Ozone-Event-@: @ has been changed from @ to @ by unknown", s.getClass().getSimpleName(), s.tile.tile.toString(), s.tile.block(), s.value);
 		});
 	}
 }

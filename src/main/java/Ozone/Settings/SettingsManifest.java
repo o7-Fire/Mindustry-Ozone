@@ -21,6 +21,8 @@ import Atom.Reflect.FieldTool;
 import Atom.Reflect.Reflect;
 import Atom.Utility.Digest;
 import Atom.Utility.Encoder;
+import Shared.WarningHandler;
+import Shared.WarningReport;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,9 +104,16 @@ public class SettingsManifest {
 	}
 	
 	public static void saveMap() {
-		if (cache == null || !settingsFile.canWrite()) return;
+		if (cache == null) return;
+		if (!settingsFile.canWrite()) {
+			WarningHandler.handle(new WarningReport().setProblem("Can't write to file: " + settingsFile.getAbsolutePath()).setWhyItsAProblem("its your settings file").setHowToFix("Check permission or file if its corrupted or busy").setLevel(WarningReport.Level.err));
+			return;
+		}
 		if (lastFileHash == ByteBuffer.wrap(cache.toString().getBytes()).getLong()) return;
-		FileUtility.write(settingsFile, Encoder.property(cache).getBytes());
+		if (!FileUtility.write(settingsFile, Encoder.property(cache).getBytes())) {
+			WarningHandler.handle(new WarningReport().setProblem("Failed to save: " + settingsFile.getAbsolutePath()).setWhyItsAProblem("no its your problem").setHowToFix("see if shit is corrupted or denied by system").setLevel(WarningReport.Level.warn));
+			return;
+		}
 		lastFileHash = ByteBuffer.wrap(cache.toString().getBytes()).getLong();
 	}
 	

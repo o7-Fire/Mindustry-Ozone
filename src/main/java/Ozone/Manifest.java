@@ -18,9 +18,11 @@ package Ozone;
 
 import Atom.Reflect.Reflect;
 import Ozone.Internal.Module;
+import Ozone.Patch.Warning;
 import Ozone.Settings.SettingsManifest;
 import Ozone.UI.*;
 import arc.Core;
+import arc.Events;
 import arc.math.Interp;
 import arc.net.Client;
 import arc.scene.actions.Actions;
@@ -28,6 +30,7 @@ import arc.scene.event.Touchable;
 import arc.scene.ui.layout.Table;
 import io.sentry.Sentry;
 import mindustry.Vars;
+import mindustry.game.EventType;
 import mindustry.mod.Mod;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
@@ -45,7 +48,7 @@ public class Manifest {
 	public static WorldInformation worldInformation;
 	public static TaskList taskList;
 	public static BundleViewer bundleViewer;
-	
+	public static Warning warning;
 	public static ExperimentDialog experiment;
 	public static UILayout uiDebug;
 	public static ModsMenu modsMenu;
@@ -98,6 +101,10 @@ public class Manifest {
 	}
 	
 	public static void toast(String text) {
+		if (Vars.ui == null) {
+			Events.on(EventType.ClientLoadEvent.class, se -> toast(text));
+			return;
+		}
 		Table table = new Table();
 		table.touchable = Touchable.disabled;
 		table.setFillParent(true);

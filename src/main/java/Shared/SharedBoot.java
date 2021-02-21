@@ -27,12 +27,19 @@ import io.sentry.protocol.User;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class SharedBoot {
 	public static boolean standalone, hardDebug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null || System.getProperty("ozoneTest") != null;
 	public static boolean debug = hardDebug;
-	public static Time timeStart = new Time();
+	public static Time timeStart = new Time(), timeFinish;
 	public static String type = "Ozone-Core";
+	
+	public static void finishStartup() {
+		timeFinish = SharedBoot.timeStart.elapsed();
+		new WarningReport().setProblem("Startup in " + timeFinish.convert(TimeUnit.MICROSECONDS).toString()).setWhyItsAProblem("Successfully startup without crash").setLevel(WarningReport.Level.info).report();
+		
+	}
 	
 	public static boolean isCore() {
 		return type.equals("Ozone-Core");
@@ -61,6 +68,7 @@ public class SharedBoot {
 
 
 	public static void initSentry() {
+		if (hardDebug) return;
 		Sentry.init(options -> {
 			options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
 			options.setRelease(Version.core + ":" + Version.desktop);

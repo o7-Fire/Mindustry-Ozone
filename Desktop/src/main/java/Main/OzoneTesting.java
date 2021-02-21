@@ -33,7 +33,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.TreeMap;
-import java.util.concurrent.TimeUnit;
 
 import static arc.util.ColorCodes.*;
 import static arc.util.Log.format;
@@ -50,7 +49,7 @@ public class OzoneTesting {
 			String result = bold + lightBlack + "[" + dateTime.format(LocalDateTime.now()) + "] " + reset + format(tags[level1.ordinal()] + " " + text + "&fr");
 			System.out.println(result);
 		};
-		Log.info("Startup in " + SharedBoot.timeStart.convert(TimeUnit.MICROSECONDS).elapsed().toString());
+		SharedBoot.finishStartup();
 		Log.info("Preparing Test");
 		tests = new OzoneTest();
 		tests.add("Commands, DesktopCommands, Patch, Events", () -> {

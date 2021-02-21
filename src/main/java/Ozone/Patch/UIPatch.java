@@ -58,6 +58,7 @@ public class UIPatch implements Module {
 		
 		Vars.ui.settings = new SettingsDialog();//how to patch mindustry UI
 		Manifest.taskList = new TaskList();
+		Manifest.warning = new Warning();
 		Manifest.bundleViewer = new BundleViewer();
 		Manifest.commFrag = new CommandsListFrag();
 		Manifest.worldInformation = new WorldInformation();

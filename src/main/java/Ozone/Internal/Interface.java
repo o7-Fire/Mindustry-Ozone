@@ -91,6 +91,10 @@ public class Interface {
 	}
 	
 	public static void showToast(Drawable icon, String text, long duration) {
+		if (Vars.ui == null) {
+			Events.on(EventType.ClientLoadEvent.class, se -> showToast(icon, text, duration));
+			return;
+		}
 		if (!Vars.state.isMenu()) {
 			scheduleToast(() -> {
 				Sounds.message.play();

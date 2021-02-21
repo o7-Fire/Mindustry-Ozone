@@ -20,6 +20,7 @@ import Atom.Reflect.Reflect;
 import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
 import Ozone.Internal.Module;
+import Shared.WarningHandler;
 import arc.Events;
 import arc.util.Log;
 import io.sentry.Sentry;
@@ -85,8 +86,7 @@ public class Main {
 				Log.debug("Early Init: @", s.getValue().getName());
 				s.getValue().earlyInit();
 			}catch (Throwable e) {
-				Sentry.captureException(e);
-				Log.err(e);
+				WarningHandler.handle(e);
 			}
 		}
 	}
@@ -97,8 +97,7 @@ public class Main {
 				Log.debug("Pre Init: @", s.getValue().getName());
 				s.getValue().preInit();
 			}catch (Throwable e) {
-				Sentry.captureException(e);
-				Log.err(e);
+				WarningHandler.handle(e);
 			}
 		}
 	}
@@ -112,8 +111,7 @@ public class Main {
 				
 				Manifest.module.put(m, mod);
 			}catch (Throwable e) {
-				Sentry.captureException(e);
-				Log.err(e);
+				WarningHandler.handle(e);
 			}
 		}
 	}
@@ -152,9 +150,7 @@ public class Main {
 				try {
 					s.getValue().loadAsync();
 				}catch (Throwable t) {
-					Log.warn(t.toString());
-					t.printStackTrace();
-					Sentry.captureException(t);
+					WarningHandler.handle(t);
 				}
 			});
 		
@@ -171,9 +167,8 @@ public class Main {
 					s.getValue().setLoaded();
 					Log.debug("@ Initialized", s.getValue().getName());
 					antiRecurse = true;
-				}catch (Throwable throwable) {
-					Sentry.captureException(throwable);
-					Log.err(throwable);
+				}catch (Throwable t) {
+					WarningHandler.handle(t);
 					Log.err("Error while loading module @", s.getKey().getName());
 				}
 			}
