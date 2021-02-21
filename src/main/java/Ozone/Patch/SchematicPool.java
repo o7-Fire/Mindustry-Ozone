@@ -23,6 +23,7 @@ import Ozone.Internal.Module;
 import Ozone.Internal.Repo;
 import Ozone.Internal.RepoCached;
 import Ozone.Manifest;
+import Shared.WarningReport;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
@@ -71,7 +72,7 @@ public class SchematicPool implements Module {
 					
 				}catch (Throwable ignored) {}
 			}
-			Log.info("Loaded: " + i + " remote schematics");
+			new WarningReport("Loaded: " + i + " remote schematics").setWhyItsAProblem("Its from volas cdn").setLevel(WarningReport.Level.info).report();
 		}catch (Throwable e) {
 			Log.err(e);
 			Sentry.captureException(e);
