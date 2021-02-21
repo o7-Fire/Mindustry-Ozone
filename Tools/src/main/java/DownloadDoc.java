@@ -17,11 +17,8 @@
 import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Ozone.Propertied;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
 public class DownloadDoc {
-	public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, IOException {
+	public static void main(String[] args) throws Throwable {
 		DesktopBootstrap.classloaderNoParent();
 		DesktopBootstrap.loadRuntime();
 		DesktopBootstrap.loadMain(Main.class.getName(), args);

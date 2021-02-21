@@ -90,10 +90,6 @@ public class Vars implements Loadable {
 	 */
 	public static final String serverJsonBeURL = "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_be.json";
 	/**
-	 * main application name, capitalized
-	 */
-	public static String appName = "Mindustry";
-	/**
 	 * URL of the github issue report template.
 	 */
 	public static final String reportIssueURL = "https://github.com/Anuken/Mindustry/issues/new?labels=bug&template=bug_report.md";
@@ -197,6 +193,14 @@ public class Vars implements Loadable {
 	 * schematic file extension
 	 */
 	public static final String schematicExtension = "msch";
+	/**
+	 * main application name, capitalized
+	 */
+	public static String appName = "Mindustry";
+	/**
+	 * Whether the game failed to launch last time.
+	 */
+	public static boolean failedToLaunch = false;
 	/**
 	 * Whether to load locales.
 	 */
@@ -303,6 +307,10 @@ public class Vars implements Loadable {
 	 */
 	public static Fi bebuildDirectory;
 	/**
+	 * file used to store launch ID
+	 */
+	public static Fi launchIDFile;
+	/**
 	 * empty map, indicates no current map
 	 */
 	public static Map emptyMap;
@@ -403,6 +411,31 @@ public class Vars implements Loadable {
 		
 		mods.load();
 		maps.load();
+	}
+	
+	/**
+	 * Checks if a launch failure occurred.
+	 * If this is the case, failedToLaunch is set to true.
+	 */
+	public static void checkLaunch() {
+		settings.setAppName(appName);
+		launchIDFile = settings.getDataDirectory().child("launchid.dat");
+		
+		if (launchIDFile.exists()) {
+			failedToLaunch = true;
+		}else {
+			failedToLaunch = false;
+			launchIDFile.writeString("go away");
+		}
+	}
+	
+	/**
+	 * Cleans up after a successful launch.
+	 */
+	public static void finishLaunch() {
+		if (launchIDFile != null) {
+			launchIDFile.delete();
+		}
 	}
 	
 	public static void loadLogger() {

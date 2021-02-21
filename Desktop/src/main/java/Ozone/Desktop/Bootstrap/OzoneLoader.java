@@ -16,6 +16,7 @@
 
 package Ozone.Desktop.Bootstrap;
 
+import Atom.File.FileUtility;
 import Atom.Utility.Cache;
 import Shared.SharedBoot;
 import io.sentry.Sentry;
@@ -35,7 +36,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class OzoneLoader extends URLClassLoader {
-	public static File cache = new File("lib/");
+	public static File cache = FileUtility.getTempDir();
 	private static ArrayList<String> parentFirst = new ArrayList<>();
 	
 	static {
@@ -44,6 +45,7 @@ public class OzoneLoader extends URLClassLoader {
 		parentFirst.add(Sentry.class.getPackageName());
 		parentFirst.add(OzoneLoader.class.getPackageName());
 		parentFirst.add(SharedBoot.class.getName());
+		System.out.println("Cache: " + cache.getAbsolutePath());
 	}
 	
 	

@@ -91,10 +91,12 @@ public class DesktopBootstrap {
 		
 		if (mindustryJar != null && mindustryJar.exists()) DesktopBootstrap.ozoneLoader.addURL(mindustryJar);
 		else {
-			System.out.println("No Mindustry jar found, using online resource");
+			System.out.println("No Mindustry jar found");
 			String version = Propertied.Manifest.get("MindustryVersion");
 			if (version == null) throw new NullPointerException("MindustryVersion not found in property");
-			DesktopBootstrap.ozoneLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/Mindustry.jar"));
+			URL u = new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/Mindustry.jar");
+			DesktopBootstrap.ozoneLoader.addURL(u);
+			System.out.println("Using: " + u.toString());
 		}
 	}
 	
@@ -143,18 +145,22 @@ public class DesktopBootstrap {
 		}
 	}
 	
-	public static void loadMain(Class<?> main, String[] arg) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	public static void loadMain(Class<?> main, String[] arg) throws Throwable {
 		loadMain(main.getName(), arg);
 	}
 	
-	public static void loadMain(String classpath, String[] arg) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+	public static void loadMain(String classpath, String[] arg) throws Throwable {
 		setSplash("Finished Loading Bootstrap");
 		if (splash != null) {
 			splash.setVisible(false);
 			splash.dispose();
 			splash = null;
 		}
-		DesktopBootstrap.ozoneLoader.loadClass(classpath).getMethod("main", String[].class).invoke(null, (Object) arg);
+		try {
+			DesktopBootstrap.ozoneLoader.loadClass(classpath).getMethod("main", String[].class).invoke(null, (Object) arg);
+		}catch (InvocationTargetException t) {
+			throw (t.getCause() != null ? t.getCause() : t);
+		}
 		if (!DesktopBootstrap.debug) return;
 		Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
 		for (Thread t : threadSet)

@@ -29,7 +29,7 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SettingsManifest {
-	public static File settingsFile = new File("OzoneSettings.properties");
+	public static File settingsFile = new File(FileUtility.getAppdata(), "OzoneSettings.properties");
 	static ConcurrentHashMap<String, String> cache;
 	static volatile long lastFileHash = 0;
 	

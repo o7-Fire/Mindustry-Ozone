@@ -53,6 +53,7 @@ public class EnvironmentInformation extends ScrollableDialog {
 		ad("Current Millis", System.currentTimeMillis());
 		ad("Current Nanos", System.nanoTime());
 		ad("Current Jar", InformationCenter.getCurrentJar().getAbsolutePath());
+		ad("Ozone Settings", SettingsManifest.settingsFile.getAbsolutePath());
 		try {
 			ad("Compilation Time Total (ms)", ManagementFactory.getCompilationMXBean().getTotalCompilationTime());
 			ad("isCompilationTimeMonitoringSupported", ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());
@@ -77,11 +78,45 @@ public class EnvironmentInformation extends ScrollableDialog {
 			Sentry.captureException(t);
 			t.printStackTrace();
 		}
-		
+		try {
+			for (Thread t : Thread.getAllStackTraces().keySet()) {
+				
+				
+				table.button(t.getName(), () -> {
+					try {
+						new ScrollableDialog("Stacktrace") {
+							@Override
+							protected void setup() {
+								StringBuilder sb = new StringBuilder();
+								sb.append("[").append(t.getId()).append("]").append("\n");
+								if (t.isDaemon()) sb.append("[Daemon]").append("\n");
+								sb.append(t.isAlive() ? "[Alive]" : "[Dead]").append("\n");
+								sb.append(t.isInterrupted() ? "[Uninterrupted]" : "[Interrupted]").append("\n");
+								sb.append("[").append(t.getThreadGroup()).append("]").append("\n");
+								sb.append("[").append(t.getState()).append("]").append("\n");
+								sb.append("[").append(t.getContextClassLoader()).append("]").append("\n");
+								sb.append("[").append(t.getName()).append("]");
+								int i = 0;
+								for (StackTraceElement s : t.getStackTrace())
+									sb.append(i++).append(". ").append(s.toString()).append("\n");
+								table.add(sb).growX().growY();
+							}
+						}.show();
+					}catch (Throwable te) {
+						Vars.ui.showException(te);
+					}
+				}).tooltip("Stacktrace").growX();
+				table.row();
+			}
+		}catch (Throwable t) {
+			Log.err(t);
+			Sentry.captureException(t);
+			t.printStackTrace();
+		}
 		for (Map.Entry<Object, Object> s : System.getProperties().entrySet())
 			ad(s.getKey().toString(), s.getValue().toString());
-		for(Field f : Sounds.class.getFields()){
-			table.button(f.getName()+".ogg", Icon.play, ()->{
+		for (Field f : Sounds.class.getFields()) {
+			table.button(f.getName() + ".ogg", Icon.play, () -> {
 				try {
 					Sound s = (Sound) Sounds.class.getField(f.getName()).get(null);
 					s.play(100);

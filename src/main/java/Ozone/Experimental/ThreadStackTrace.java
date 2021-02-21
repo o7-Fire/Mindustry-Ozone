@@ -20,16 +20,14 @@ import Ozone.UI.ScrollableDialog;
 import mindustry.Vars;
 
 public class ThreadStackTrace implements Experimental {
-	@Override
-	public void run() {
+	public static void showStacktrace(StackTraceElement[] stackTraceElements) {
 		try {
-			
 			new ScrollableDialog("Stacktrace") {
 				@Override
 				protected void setup() {
 					StringBuilder sb = new StringBuilder();
 					int i = 0;
-					for (StackTraceElement s : Thread.currentThread().getStackTrace())
+					for (StackTraceElement s : stackTraceElements)
 						sb.append(i++).append(". ").append(s.toString()).append("\n");
 					table.add(sb).growX().growY();
 				}
@@ -38,4 +36,10 @@ public class ThreadStackTrace implements Experimental {
 			Vars.ui.showException(t);
 		}
 	}
+	
+	@Override
+	public void run() {
+		showStacktrace(Thread.currentThread().getStackTrace());
+	}
+	
 }

@@ -42,7 +42,7 @@ public class InformationCenter {
 	
 	public static File getCurrentJar() {
 		try {
-			File f = Reflect.getCurrentJar();
+			File f = Reflect.getCurrentJar(InformationCenter.class);
 			if (f == null) throw new NullPointerException();
 			return f;
 		}catch (Throwable ignored) {
