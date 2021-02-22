@@ -34,11 +34,9 @@ import arc.struct.Queue;
 import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Time;
-import arc.util.async.Threads;
 import arc.util.io.ReusableByteOutStream;
 import arc.util.io.Writes;
 import arc.util.pooling.Pools;
-import mindustry.Vars;
 import mindustry.core.Version;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
@@ -54,7 +52,8 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.maxNameLength;
+import static mindustry.Vars.maxTextLength;
 
 public class ConnectDiagram extends AttackDiagram {
 	final String ip, sup;
@@ -129,6 +128,7 @@ public class ConnectDiagram extends AttackDiagram {
 		private ConnectDiagram cd;
 		private Runnable suc = null;
 		private boolean clientLoaded, connecting;
+		public static final Prov<DatagramPacket> packetSupplier = () -> new DatagramPacket(new byte[512], 512);
 		
 		public ConnectDiagramProvider(ConnectDiagram cc) {
 			cd = cc;
@@ -312,8 +312,33 @@ public class ConnectDiagram extends AttackDiagram {
 		public void discoverServers(Cons<Host> callback, Runnable done) {
 		}
 		
+		public static Host pingHost(String address, int port) throws IOException {
+			try {
+				DatagramSocket socket = new DatagramSocket();
+				long time = Time.millis();
+				socket.send(new DatagramPacket(new byte[]{-2, 1}, 2, InetAddress.getByName(address), port));
+				socket.setSoTimeout(2000);
+				
+				DatagramPacket packet = packetSupplier.get();
+				socket.receive(packet);
+				
+				ByteBuffer buffer = ByteBuffer.wrap(packet.getData());
+				
+				return NetworkIO.readServerData((int) Time.timeSinceMillis(time), packet.getAddress().getHostAddress(), buffer);
+			}catch (Throwable e) {
+				throw e;
+			}
+		}
+		
 		@Override
 		public void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> failed) {
+			Pool.daemon(() -> {
+				try {
+					valid.get(pingHost(address, port));
+				}catch (IOException e) {
+					failed.get(e);
+				}
+			}).start();
 		}
 		
 		@Override
