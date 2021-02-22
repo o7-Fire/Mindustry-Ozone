@@ -170,10 +170,7 @@ allprojects {
                 because("compile")
             }
         }
-        task sourcesJar(type: Jar, dependsOn: classes) {
-            classifier = 'sources'
-            from sourceSets.main.allSource
-        }
+
     }
 
 
@@ -188,7 +185,10 @@ dependencies {
 task deploy(type: Jar) {
     dependsOn ":Desktop:jar"//make desktop jar
 }
-
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 jar {
     archiveFileName = "Ozone.jar"
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)

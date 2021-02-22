@@ -77,7 +77,10 @@ jar {
     }
     Files.write(txt.toPath(), sb.toString().getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE)
 }
-
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 tasks.withType(JavaCompile) {
     sourceCompatibility = 11
     targetCompatibility = 11
