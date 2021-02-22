@@ -36,6 +36,7 @@ targetCompatibility = "1.8"
 
 static def getLatestFolder(File fe){
     ArrayList<File> f = new ArrayList<>();
+    if(!fe.exists())return f;
     File[] files = fe.listFiles();
     f.addAll(Arrays.asList(files));
     f.sort(new Comparator<File>() {
@@ -63,16 +64,22 @@ allprojects {
         minApi = '14'
         //automatically detect latest shit
         sdkRoot = System.getenv("ANDROID_HOME")
-        sdkD8 = sdkRoot
-        sdkJar = sdkRoot
+        sdkD8 = sdkRoot + "nope"
+        sdkJar = sdkRoot + "nope"
         if(new File(sdkRoot).exists()) {
-            sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
-            sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
+            try {
+                sdkD8 = new File(getLatestFolder(new File(sdkRoot, 'build-tools/')), "d8").getAbsolutePath()
+                sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
+            }catch(Throwable){}
         }
         if(new File(sdkJar).exists())
             println(sdkJar)
+        else
+            sdkJar = new File(sdkRoot, "nope").getAbsolutePath()
         if(new File(sdkD8).exists())
             println(sdkD8)
+        else
+            sdkD8 = new File(sdkRoot, "nope").getAbsolutePath()
         modsBuilder = "javac"
         if (project.hasProperty("builder"))
             modsBuilder = builder
