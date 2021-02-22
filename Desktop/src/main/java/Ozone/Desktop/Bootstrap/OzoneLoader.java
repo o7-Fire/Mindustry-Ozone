@@ -38,7 +38,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class OzoneLoader extends URLClassLoader {
-	public static File cache = FileUtility.getTempDir();
+	public static File cache = new File(FileUtility.getCurrentWorkingDir(), "lib/");
 	private static ArrayList<String> parentFirst = new ArrayList<>();
 	
 	static {
