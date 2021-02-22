@@ -170,7 +170,10 @@ allprojects {
                 because("compile")
             }
         }
-
+        task sourcesJar(type: Jar, dependsOn: classes) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
     }
 
 
@@ -260,4 +263,8 @@ task makeJar(type: Jar){
     from() {
         zipTree(new File(rootDir, "build/libs/Ozone.jar"))
     }
+}
+artifacts {
+    archives sourcesJar
+    archives makeJar
 }
