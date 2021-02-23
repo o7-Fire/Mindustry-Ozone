@@ -35,6 +35,8 @@ Note: Ozone Desktop need to be installed manually\
 * Internet connection (required to download library at runtime and can impact loading speed) (For Ozone-Desktop)
 * Year 2006+ Computer
 * Android 4.0+ / sdk version 14+
+* 2 GB of **free** RAN because java
+
 
 # Build
 
