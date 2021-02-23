@@ -41,6 +41,10 @@ public class Propertied {
 		}
 	}
 	
+	public static String getMindustryVersion() {
+		return Manifest.get("MindustryVersion");
+	}
+	
 	public static InputStream getResource(String name) throws IOException {
 		return Atom.Manifest.internalRepo.getResource(name).openStream();
 	}

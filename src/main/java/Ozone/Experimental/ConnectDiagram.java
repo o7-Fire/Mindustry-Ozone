@@ -22,8 +22,8 @@ import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Internal.InformationCenter;
+import Ozone.Net.OzoneFrameworkNetProvider;
 import Ozone.Patch.Translation;
-import arc.Core;
 import arc.func.Cons;
 import arc.func.Prov;
 import arc.graphics.Color;
@@ -33,7 +33,6 @@ import arc.struct.ObjectMap;
 import arc.struct.Queue;
 import arc.struct.Seq;
 import arc.util.Log;
-import arc.util.Time;
 import arc.util.io.ReusableByteOutStream;
 import arc.util.io.Writes;
 import arc.util.pooling.Pools;
@@ -45,10 +44,6 @@ import mindustry.net.*;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.nio.ByteBuffer;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -112,13 +107,13 @@ public class ConnectDiagram extends AttackDiagram {
 		}catch (Throwable ignored) {
 			taskList.removeFirst();
 		}
-		if(last != i) {
+		if (last != i) {
 			Log.info("Queue: @", i);
 			last = i;
 		}
 	}
 	
-	public static class ConnectDiagramProvider implements Net.NetProvider {
+	public static class ConnectDiagramProvider extends OzoneFrameworkNetProvider {
 		private final IntMap<Streamable.StreamBuilder> streams = new IntMap<>();
 		private final Seq<Object> packetQueue = new Seq<>();
 		private final ObjectMap<Class<?>, Cons> clientListeners = new ObjectMap<>();
@@ -128,7 +123,7 @@ public class ConnectDiagram extends AttackDiagram {
 		private ConnectDiagram cd;
 		private Runnable suc = null;
 		private boolean clientLoaded, connecting;
-		public static final Prov<DatagramPacket> packetSupplier = () -> new DatagramPacket(new byte[512], 512);
+		
 		
 		public ConnectDiagramProvider(ConnectDiagram cc) {
 			cd = cc;
@@ -142,20 +137,20 @@ public class ConnectDiagram extends AttackDiagram {
 					c.addressTCP = connection.getRemoteAddressTCP().getAddress().getHostAddress();
 					if (connection.getRemoteAddressTCP() != null)
 						c.addressTCP = connection.getRemoteAddressTCP().toString();
-					Core.app.post(() -> handleClientReceived(c));
+					handleClientReceived(c);
 				}
 				
 				@Override
 				public void disconnected(Connection connection, DcReason reason) {
 					Packets.Disconnect c = new Packets.Disconnect();
 					c.reason = reason.toString();
-					Core.app.post(() -> handleClientReceived(c));
+					handleClientReceived(c);
 				}
 				
 				@Override
 				public void received(Connection connection, Object object) {
 					if (object instanceof FrameworkMessage) return;
-					Core.app.post(() -> handleClientReceived(object));
+					handleClientReceived(object);
 				}
 			});
 			handleClient(Packets.Connect.class, packet -> {
@@ -171,19 +166,9 @@ public class ConnectDiagram extends AttackDiagram {
 				clientLoaded = true;
 				if (cd.sup.isEmpty() || cd.sup.length() > maxTextLength) sendChat("");
 				else sendChat(cd.sup);
-				if(cd.join)confirmConnect();
-				Core.app.post(suc);
+				if (cd.join) confirmConnect();
+				suc.run();
 			});
-		}
-		
-		private static boolean isLocal(InetAddress addr) {
-			if (addr.isAnyLocalAddress() || addr.isLoopbackAddress()) return true;
-			
-			try {
-				return NetworkInterface.getByInetAddress(addr) != null;
-			}catch (Exception e) {
-				return false;
-			}
 		}
 		
 		public void confirmConnect() {
@@ -282,8 +267,8 @@ public class ConnectDiagram extends AttackDiagram {
 		}
 		
 		@Override
-		public void connectClient(String ip, int port, Runnable success) throws IOException {
-			throw new IOException("no");
+		public void connectClient(String ip, int port, Runnable success) {
+			throw new IllegalAccessError("no");
 		}
 		
 		@Override
@@ -312,34 +297,6 @@ public class ConnectDiagram extends AttackDiagram {
 		public void discoverServers(Cons<Host> callback, Runnable done) {
 		}
 		
-		public static Host pingHost(String address, int port) throws IOException {
-			try {
-				DatagramSocket socket = new DatagramSocket();
-				long time = Time.millis();
-				socket.send(new DatagramPacket(new byte[]{-2, 1}, 2, InetAddress.getByName(address), port));
-				socket.setSoTimeout(2000);
-				
-				DatagramPacket packet = packetSupplier.get();
-				socket.receive(packet);
-				
-				ByteBuffer buffer = ByteBuffer.wrap(packet.getData());
-				
-				return NetworkIO.readServerData((int) Time.timeSinceMillis(time), packet.getAddress().getHostAddress(), buffer);
-			}catch (Throwable e) {
-				throw e;
-			}
-		}
-		
-		@Override
-		public void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> failed) {
-			Pool.daemon(() -> {
-				try {
-					valid.get(pingHost(address, port));
-				}catch (IOException e) {
-					failed.get(e);
-				}
-			}).start();
-		}
 		
 		@Override
 		public void hostServer(int port) throws IOException {

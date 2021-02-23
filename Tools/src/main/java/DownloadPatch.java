@@ -15,6 +15,7 @@
  */
 
 import Atom.Net.Download;
+import Ozone.Internal.Repo;
 
 import java.io.File;
 import java.net.URL;
@@ -25,13 +26,20 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class DownloadPatch {
+    public static String github = "https://raw.githubusercontent.com/Anuken/Mindustry/master/core/src/mindustry/";
+    public static Repo repo = new Repo();
+    
+    static {
+        try { repo.addRepo(new URL(github)); }catch (Throwable ignored) { }
+    }
+    
     public static void main(String[] args) throws Throwable, InterruptedException {
         ExecutorService es = Executors.newCachedThreadPool(r -> {
             Thread t = Executors.defaultThreadFactory().newThread(r);
             t.setDaemon(true);
             return t;
         });
-        String trg = "https://raw.githubusercontent.com/Anuken/Mindustry/master/core/src/mindustry/";
+        
         File target = new File("Tools/src/main/java/mindustry/");
         target.mkdirs();
         ArrayList<File> files = recurse(new File("Desktop/src/main/java/mindustry"));
@@ -43,7 +51,7 @@ public class DownloadPatch {
         for (String s : list)
             f.add(es.submit(() -> {
                 try {
-                    Download d = new Download(new URL(trg + s), new File(target, s));
+                    Download d = new Download(new URL(github + s), new File(target, s));
                     d.print(System.out::println);
                     d.run();
                 }catch (Throwable ignored) {}

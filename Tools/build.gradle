@@ -19,12 +19,14 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testImplementation 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'
+    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.16.1'
     testImplementation group: 'com.google.googlejavaformat', name: 'google-java-format', version: '1.7'
     println rootProject.getChildProjects().toString()
     implementation rootProject.getChildProjects().get("Desktop")
     testCompile "com.github.o7-Fire.Atomic-Library:Desktop:$atomHash"
     testCompile "com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"
     implementation rootProject
+    implementation ("com.github.Anuken.Mindustry:core:$mindustryVersion")
     implementation (Atom("Atomic")){
         exclude group: 'com.javassist'
         because("provided")
