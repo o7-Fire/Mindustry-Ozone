@@ -47,7 +47,7 @@ public class GenerateCallNet {
 		CompilationUnit base = StaticJavaParser.parse(target), callCU = StaticJavaParser.parse(Encoder.readString(DownloadPatch.repo.getResourceAsStream(Call.class.getName().replace('.', '/') + ".java")));
 		String packages = gen.getParentFile().getAbsolutePath().replaceFirst(b.getAbsolutePath() + "/", "").replace('/', '.');
 		ClassOrInterfaceDeclaration clazz = base.getClassByName("Callable").get(), callClazz = callCU.getClassByName("Call").get();
-		;
+		
 		MethodDeclaration method = clazz.getMethodsByName("base").get(0);
 		Statement post = StaticJavaParser.parseStatement("post();");
 		base.getPackageDeclaration().get().setName(packages);
@@ -60,6 +60,7 @@ public class GenerateCallNet {
 					break;
 				}
 			}
+			assert me != null;
 			if (!me.hasModifier(Modifier.Keyword.PUBLIC) || !me.hasModifier(Modifier.Keyword.STATIC)) continue;
 			MethodDeclaration m = me.clone();
 			callClazz.remove(m);
@@ -69,11 +70,10 @@ public class GenerateCallNet {
 			m.setBody(method.getBody().get().clone());
 			BlockStmt body = m.getBody().get();
 			ArrayList<String> param = new ArrayList<>();
-			Method mehh = met;
 			
-			for (int i = 0; i < mehh.getParameterCount(); i++) {
+			for (int i = 0; i < met.getParameterCount(); i++) {
 				Parameter p = m.getParameter(i);
-				Type t = StaticJavaParser.parseType(mehh.getParameters()[i].getType().getTypeName().replace('$', '.'));
+				Type t = StaticJavaParser.parseType(met.getParameters()[i].getType().getTypeName().replace('$', '.'));
 				m.setParameter(i, new Parameter(t, p.getName().toString()));
 			}
 			for (Parameter p : m.getParameters()) {

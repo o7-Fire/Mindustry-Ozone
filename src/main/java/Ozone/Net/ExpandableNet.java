@@ -16,6 +16,7 @@
 
 package Ozone.Net;
 
+import Ozone.Gen.Callable;
 import arc.net.ArcNetException;
 import arc.util.Log;
 import arc.util.TaskQueue;
@@ -27,11 +28,13 @@ import java.nio.channels.ClosedChannelException;
 public class ExpandableNet extends Net {
 	protected ExpandableNetProvider netProvider;
 	protected TaskQueue taskQueue = new TaskQueue();
+	public Callable call;
 	
 	public ExpandableNet(ExpandableNetProvider provider) {
 		super(provider);
 		this.netProvider = provider;//lol
 		provider.setNet(this);
+		call = new Callable(this);
 	}
 	
 	public ExpandableNet() {
