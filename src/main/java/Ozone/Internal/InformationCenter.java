@@ -28,7 +28,11 @@ import java.util.Arrays;
 public class InformationCenter {
 	protected static ArrayList<String> moduleRegistered = new ArrayList<>(), moduleLoaded = new ArrayList<>(), modulePost = new ArrayList<>();
 	private static ArrayList<String> packetName = new ArrayList<>();
-	private static ArrayList<Integer> commonPacket = new ArrayList<>(Arrays.asList(17, 58, 7));//spammy af
+	private static ArrayList<Integer> commonPacket = new ArrayList<>(Arrays.asList(17,//effect
+			58,//set Tile
+			7,//client unreliable
+			8,//Snapshot
+			30));//Ping
 	
 	static {
 		

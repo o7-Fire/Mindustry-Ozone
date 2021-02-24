@@ -105,6 +105,7 @@ public class SettingsManifest {
 	
 	public static void saveMap() {
 		if (cache == null) return;
+		FileUtility.makeFile(settingsFile);
 		if (!settingsFile.canWrite()) {
 			WarningHandler.handle(new WarningReport().setProblem("Can't write to file: " + settingsFile.getAbsolutePath()).setWhyItsAProblem("its your settings file").setHowToFix("Check permission or file if its corrupted or busy").setLevel(WarningReport.Level.err));
 			return;
