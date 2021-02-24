@@ -27,7 +27,10 @@ import mindustry.core.NetClient;
 import mindustry.core.Version;
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.Rules;
-import mindustry.gen.*;
+import mindustry.gen.Mechc;
+import mindustry.gen.Nulls;
+import mindustry.gen.Player;
+import mindustry.gen.Unit;
 import mindustry.io.JsonIO;
 import mindustry.io.SaveIO;
 import mindustry.maps.Map;
@@ -181,7 +184,7 @@ public class VirtualPlayer extends Player {
 			Unit unit = dead() ? Nulls.unit : unit();
 			int uid = dead() ? -1 : unit.id;
 			
-			Call.clientSnapshot(lastSent++, uid, dead(), unit.x, unit.y, player.unit().aimX(), player.unit().aimY(), unit.rotation, (unit instanceof Mechc) ? ((Mechc) unit).baseRotation() : 0, unit.vel.x, unit.vel.y, player.unit().mineTile, player.boosting, player.shooting, typing, building, requests, Core.camera.position.x, Core.camera.position.y, Core.camera.width * NetClient.viewScale, Core.camera.height * NetClient.viewScale);
+			net.call.clientSnapshot(lastSent++, uid, dead(), unit.x, unit.y, player.unit().aimX(), player.unit().aimY(), unit.rotation, (unit instanceof Mechc) ? ((Mechc) unit).baseRotation() : 0, unit.vel.x, unit.vel.y, player.unit().mineTile, player.boosting, player.shooting, typing, building, requests, Core.camera.position.x, Core.camera.position.y, Core.camera.width * NetClient.viewScale, Core.camera.height * NetClient.viewScale);
 		}
 		
 		if (timer.get(1, 60)) {
