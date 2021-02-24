@@ -35,11 +35,11 @@ import mindustry.ui.dialogs.BaseDialog;
 
 
 public class BotControllerDialog extends OzoneBaseDialog {
-	private final Settings settings = new Settings();
 	private Interval timer = new Interval();
 	
 	public BotControllerDialog() {
 		super("Bot Controller");
+		Settings settings = new Settings();
 		buttons.button("Settings", Icon.settings, settings::show).size(210f, 64f);
 		buttons.button("Refresh", Icon.refresh, this::setup).size(210f, 64f);
 		buttons.button("Create Bot", Icon.add, this::addBot).size(210f, 64f);

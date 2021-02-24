@@ -34,6 +34,10 @@ public class Identification {
 		return (HashMap<String, Object>) f.get(Core.settings);
 	}
 	
+	public static String getUUID(String player) {
+		return Core.settings.getString("uuid-" + player, getRandomUID());
+	}
+	
 	public static String getUUID() {
 		return Core.settings.getString("uuid", getRandomUID());
 	}

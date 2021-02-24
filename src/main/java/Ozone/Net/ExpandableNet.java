@@ -52,6 +52,24 @@ public class ExpandableNet extends Net {
 		}
 	}
 	
+	boolean clientLoaded = false;
+	
+	public boolean clientLoaded() {
+		return clientLoaded;
+	}
+	
+	@Override
+	public void setClientLoaded(boolean loaded) {
+		super.setClientLoaded(loaded);
+		clientLoaded = loaded;
+	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+		clientLoaded = false;
+	}
+	
 	protected void post(Runnable r) {
 		taskQueue.post(r);
 	}
