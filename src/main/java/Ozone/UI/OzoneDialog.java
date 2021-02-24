@@ -49,6 +49,11 @@ public abstract class OzoneDialog extends BaseDialog {
 		
 	}
 	
+	public String getTitle() {
+		if (!title.getText().toString().equals("gay")) return title.getText().toString();
+		return this.getClass().getSimpleName();
+	}
+	
 	public Drawable icon() {
 		return icon;
 	}
@@ -68,4 +73,5 @@ public abstract class OzoneDialog extends BaseDialog {
 	protected void update() {
 	
 	}
+	
 }

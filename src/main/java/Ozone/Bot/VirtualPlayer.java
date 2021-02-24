@@ -23,6 +23,7 @@ import arc.util.Interval;
 import arc.util.Time;
 import arc.util.io.Reads;
 import mindustry.Vars;
+import mindustry.core.GameState;
 import mindustry.core.NetClient;
 import mindustry.core.Version;
 import mindustry.entities.units.BuildPlan;
@@ -39,6 +40,7 @@ import mindustry.net.Packets;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 import static Ozone.Experimental.Evasion.Identification.getUsid;
 
@@ -54,13 +56,16 @@ public class VirtualPlayer extends Player {
 			super.output(raw);
 		}
 	};
+	public GameState state = new GameState();
 	public String defName = name;
 	Player player = this;
 	int lastSent = 0;
 	private float timeoutTime = 0f;
 	private Interval timer = new Interval(5);
+	protected long virtualId = System.currentTimeMillis();
 	
 	protected VirtualPlayer() {
+		state.set(GameState.State.menu);
 		net.handleClient(Packets.Connect.class, packet -> {
 			log.info("Connecting to server: @", packet.addressTCP);
 			admin(false);
@@ -80,7 +85,7 @@ public class VirtualPlayer extends Player {
 				net.disconnect();
 				return;
 			}
-			
+			state.set(GameState.State.paused);
 			net.send(c, Net.SendMode.tcp);
 		});
 		
@@ -91,6 +96,7 @@ public class VirtualPlayer extends Player {
 			}else {
 				log.warn("Disconnect");
 			}
+			reset();
 		});
 		
 		net.handleClient(Packets.WorldStream.class, data -> {
@@ -99,7 +105,6 @@ public class VirtualPlayer extends Player {
 				Time.clear();
 				JsonIO.read(Rules.class, stream.readUTF());
 				new Map(SaveIO.getSaveWriter().readStringMap(stream));
-				
 				stream.readInt();
 				stream.readFloat();
 				
@@ -117,11 +122,27 @@ public class VirtualPlayer extends Player {
 			}
 			net.call.connectConfirm();
 			net.setClientLoaded(true);
+			state.set(GameState.State.playing);
 		});
 		
 		net.handleClient(Packets.InvokePacket.class, packet -> {
 			//lol no
 		});
+	}
+	
+	@Override
+	protected VirtualPlayer clone() throws CloneNotSupportedException {
+		VirtualPlayer v = (VirtualPlayer) super.clone();
+		v.virtualId = System.currentTimeMillis();
+		return v;
+	}
+	
+	public long vid() {
+		return virtualId;
+	}
+	
+	protected void delete() {
+		net.dispose();
 	}
 	
 	@Override
@@ -148,6 +169,7 @@ public class VirtualPlayer extends Player {
 	@Override
 	public void reset() {
 		super.reset();
+		state.set(GameState.State.menu);
 		lastSent = 0;
 	}
 	
@@ -192,5 +214,16 @@ public class VirtualPlayer extends Player {
 		}
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof VirtualPlayer)) return false;
+		VirtualPlayer that = (VirtualPlayer) o;
+		return virtualId == that.virtualId;
+	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(virtualId);
+	}
 }

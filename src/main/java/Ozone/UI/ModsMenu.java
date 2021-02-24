@@ -21,23 +21,23 @@ import Ozone.Manifest;
 import Ozone.Patch.Translation;
 import mindustry.Vars;
 import mindustry.gen.Icon;
-import mindustry.ui.dialogs.BaseDialog;
 
-public class ModsMenu extends BaseDialog {
-	public ModsMenu() {
-		super("Menu");
-		addCloseButton();
-		shown(this::setup);
-		onResize(this::setup);
+import java.util.HashSet;
+
+public class ModsMenu extends ScrollableDialog {
+	static HashSet<OzoneDialog> dialogs = new HashSet<>();
+	
+	public static void add(OzoneDialog dialog) {
+		dialogs.add(dialog);
 	}
 	
-	void setup() {
-		cont.clear();
-		cont.button("@mods", Icon.book, Vars.ui.mods::show).growX();// a sacrifice indeed
-		cont.row();
-		cont.row();
+	public void setup() {
+		table.clear();
+		table.button("@mods", Icon.book, Vars.ui.mods::show).growX();// a sacrifice indeed
+		table.row();
+		table.row();
 		generic();
-		cont.button("Reset UID", Icon.refresh, () -> Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", () -> {
+		table.button("Reset UID", Icon.refresh, () -> Vars.ui.showConfirm("Reset UID", "Reset all uuid and usid", () -> {
 			Vars.ui.loadfrag.show("Changing ID");
 			Identification.changeID(() -> {
 				Vars.ui.loadfrag.hide();
@@ -59,10 +59,12 @@ public class ModsMenu extends BaseDialog {
 		ad(Manifest.taskList);
 		ad(Manifest.bundleViewer);
 		ad(Manifest.warning);
+		for (OzoneDialog o : dialogs)
+			ad(o);
 	}
 	
-	void ad(OzoneDialog dialog) {
-		cont.button(Translation.get(dialog.getClass().getName()), dialog.icon(), dialog::show).growX();
-		cont.row();
+	public void ad(OzoneDialog dialog) {
+		table.button(Translation.get(dialog.getTitle()), dialog.icon(), dialog::show).growX();
+		table.row();
 	}
 }
