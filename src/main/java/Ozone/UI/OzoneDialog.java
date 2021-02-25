@@ -77,26 +77,32 @@ public abstract class OzoneDialog extends BaseDialog {
 			}catch (Throwable ignored) {}
 			String text = t.getClass().getName();
 			Throwable exc = t;
-			return new Dialog("") {{
-				String message = Strings.getFinalMessage(exc);
-				
-				setFillParent(true);
-				cont.margin(15);
-				cont.add("@error.title").colspan(2);
-				cont.row();
-				cont.image().width(300f).pad(2).colspan(2).height(4f).color(Color.scarlet);
-				cont.row();
-				cont.add((text.startsWith("@") ? Core.bundle.get(text.substring(1)) : text) + (message == null ? "" : "\n[lightgray](" + message + ")")).colspan(2).wrap().growX().center().get().setAlignment(Align.center);
-				cont.row();
-				
-				Collapser col = new Collapser(base -> base.pane(t -> t.margin(14f).add(Strings.neatError(exc)).color(Color.lightGray).left()), true);
-				
-				cont.button("@details", Styles.togglet, col::toggle).size(180f, 50f).checked(b -> !col.isCollapsed()).fillX().right();
-				cont.button("@ok", this::hide).size(110, 50).fillX().left();
-				cont.row();
-				cont.add(col).colspan(2).pad(2);
-				closeOnBack();
-			}}.show();
+			try {
+				return new Dialog("") {{
+					String message = Strings.getFinalMessage(exc);
+					setFillParent(true);
+					cont.margin(15);
+					cont.add("@error.title").colspan(2);
+					cont.row();
+					cont.image().width(300f).pad(2).colspan(2).height(4f).color(Color.scarlet);
+					cont.row();
+					cont.add((text.startsWith("@") ? Core.bundle.get(text.substring(1)) : text) + (message == null ? "" : "\n[lightgray](" + message + ")")).colspan(2).wrap().growX().center().get().setAlignment(Align.center);
+					cont.row();
+					
+					Collapser col = new Collapser(base -> base.pane(t -> t.margin(14f).add(Strings.neatError(exc)).color(Color.lightGray).left()), true);
+					
+					cont.button("@details", Styles.togglet, col::toggle).size(180f, 50f).checked(b -> !col.isCollapsed()).fillX().right();
+					cont.button("@ok", this::hide).size(110, 50).fillX().left();
+					cont.row();
+					cont.add(col).colspan(2).pad(2);
+					closeOnBack();
+				}}.show();
+			}catch (OutOfMemoryError e) {
+				System.gc();
+			}catch (Throwable te) {
+			
+			}
+			return null;
 		}
 	}
 	
