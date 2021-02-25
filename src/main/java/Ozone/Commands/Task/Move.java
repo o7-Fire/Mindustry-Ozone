@@ -23,6 +23,7 @@ import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import mindustry.Vars;
 import mindustry.content.Blocks;
+import mindustry.gen.Player;
 import mindustry.world.Tile;
 
 import static Ozone.Commands.Pathfinding.distanceTo;
@@ -34,25 +35,31 @@ public class Move extends Task {
 	private Tile destTile;
 	private Seq<Tile> pathfindingCache = new Seq<>();
 	
-	//tile coordinate
+	Player player;
+	
+	//tile coordinate ??
 	public Move(float x, float y) {
 		this(new Vec2(x, y));
 	}
 	
 	public Move(Position dest) {
-		if (dest == null) dest = Vars.player.tileOn();
-		
+		this(dest, Vars.player);
+	}
+	
+	public Move(Position dest, Player player) {
+		if (dest == null) dest = player.tileOn();
+		this.player = player;
 		destTile = Vars.world.tileWorld(dest.getX(), dest.getY());
 		destTilePos = dest;
 		setTick(10);
 		
-		if (!Vars.player.unit().isFlying()) {
+		if (!player.unit().isFlying()) {
 			if (Pathfinding.passable(destTile)) {
 				pathfindingCache = Pathfinding.pathfind(destTile);
 				destTile = null;//to use the next tile
 			}else {
-				destTile = Vars.player.tileOn();
-				destTilePos = Vars.player.tileOn();
+				destTile = player.tileOn();
+				destTilePos = player.tileOn();
 			}
 			
 		}
@@ -62,13 +69,13 @@ public class Move extends Task {
 	
 	@Override
 	public boolean isCompleted() {
-		return Pathfinding.withinPlayerTolerance(destTilePos) || (!Vars.player.unit().isFlying() && pathfindingCache.isEmpty());
+		return Pathfinding.withinPlayerTolerance(destTilePos, player) || (!player.unit().isFlying() && pathfindingCache.isEmpty());
 	}
 
 	@Override
 	public void update() {
-		if (!tick()) if (Vars.player.dead()) return;
-		if (!Vars.player.unit().isFlying()) {
+		if (!tick()) if (player.dead()) return;
+		if (!player.unit().isFlying()) {
 			if (pathfindingCache.isEmpty()) return;
 			if (destTile != null) {
 				if (distanceTo(TaskInterface.getCurrentTilePos(), destTile) <= landTolerance) {
@@ -79,14 +86,14 @@ public class Move extends Task {
 			destTile = pathfindingCache.get(0);
 			destTile.setOverlay(Blocks.dirt);
 		}else {
-			setMov(destTilePos);
+			setMov(destTilePos, player);
 			return;
 		}
-		setMov(destTile);
+		setMov(destTile, player);
 	}
 
 	public float getCurrentDistance() {
-		return (float) distanceTo(TaskInterface.getCurrentTilePos(), destTilePos);
+		return (float) distanceTo(player.tileOn(), destTilePos);
 	}
 
 

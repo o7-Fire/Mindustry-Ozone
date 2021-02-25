@@ -26,13 +26,16 @@ import arc.struct.Queue;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.game.EventType;
+import mindustry.gen.Player;
 import mindustry.world.Tile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class TaskInterface implements Module {
-	public static final Queue<Task> taskQueue = new Queue<>();
+	public static final HashMap<Integer, Queue<Task>> taskQueue = new HashMap<>();
 	
 	
 	public void init() {
@@ -41,31 +44,40 @@ public class TaskInterface implements Module {
 	
 	private static void update() {
 		if (taskQueue.isEmpty()) return;
-		if (!taskQueue.first().isCompleted()) taskQueue.first().update();
-		else taskQueue.removeFirst().onCompleted();
+		for (Map.Entry<Integer, Queue<Task>> q : taskQueue.entrySet()) {
+			Queue<Task> queue = q.getValue();
+			if (queue.isEmpty()) continue;
+			if (!queue.first().isCompleted()) queue.first().update();
+			else queue.removeFirst().onCompleted();
+		}
 	}
 	
 	public static void addTask(Task task) {
-		addTask(task, null);
+		addTask(task, Vars.player);
 	}
 	
-	public static void addTask(Task task, Consumer<Object> onDone) {
+	public static void addTask(Task task, Player vars) {
+		addTask(task, null, vars);
+	}
+	
+	public static void addTask(Task task, Consumer<Object> onDone, Player vars) {
 		if (onDone != null) task.onTaskCompleted(onDone);
-		taskQueue.addLast(task);
-		Log.debug("Task: " + task.getName() + " has been added to queue : " + taskQueue.size);
+		if (taskQueue.get(vars.id) == null) taskQueue.put(vars.id, new Queue<>());
+		taskQueue.get(vars.id).addLast(task);
+		Log.debug("Task: " + task.getName() + " has been added to queue : " + taskQueue.get(vars.id).size);
 	}
 	
-	public static void setMov(Position targetTile) {
+	public static void setMov(Position targetTile, Player player) {
 		Vec2 vec = new Vec2();
-		if (Vars.player.unit() == null) return;
-		vec.trns(Vars.player.unit().angleTo(targetTile), Vars.player.unit().type().speed);
-		if (SharedBoot.debug && !Vars.disableUI) {
+		if (player.unit() == null) return;
+		vec.trns(player.unit().angleTo(targetTile), player.unit().type().speed);
+		if (SharedBoot.debug && !Vars.disableUI && Vars.ui.scriptfrag.shown()) {
 			if (Vars.ui.scriptfrag.shown()) {
 				Vars.ui.scriptfrag.addMessage("Ozone-AI DriveX: " + vec.x);
 				Vars.ui.scriptfrag.addMessage("Ozone-AI DriveY: " + vec.y);
 			}
 		}
-		Vars.player.unit().moveAt(vec);
+		player.unit().moveAt(vec);
 	}
 	
 	

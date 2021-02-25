@@ -22,9 +22,11 @@ import Atom.Utility.Random;
 import Ozone.Commands.Task.Task;
 import Ozone.Commands.TaskInterface;
 import Ozone.Settings.BaseSettings;
+import arc.struct.Queue;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class TaskList extends ScrollableDialog {
@@ -44,9 +46,13 @@ public class TaskList extends ScrollableDialog {
 	@Override
 	public void setup() {
 		
-		int i = 0;
-		for (Task t : TaskInterface.taskQueue) {
-			ad(i++, t);
+		
+		for (Map.Entry<Integer, Queue<Task>> tm : TaskInterface.taskQueue.entrySet()) {
+			table.labelWrap(tm.getKey() + ":").growX().row();
+			int i = 0;
+			for (Task t : tm.getValue()) {
+				ad(i++, t);
+			}
 		}
 	}
 	
@@ -67,9 +73,7 @@ public class TaskList extends ScrollableDialog {
 	@Override
 	protected void update() {
 		if (timer.get()) {
-			
-			if (last != TaskInterface.taskQueue.size) init();
-			last = TaskInterface.taskQueue.size;
+			init();
 		}
 		
 	}

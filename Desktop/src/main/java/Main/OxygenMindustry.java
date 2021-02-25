@@ -177,7 +177,7 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 	
 	@Override
 	public void addTask(Task t, Consumer<Object> onEnd) {
-		TaskInterface.addTask(t, onEnd);
+		TaskInterface.addTask(t, onEnd, Vars.player);
 	}
 	
 	@Override
@@ -188,7 +188,6 @@ public class OxygenMindustry extends ClientLauncher implements BotInterface {
 	@Override
 	public ArrayList<Task> getTask() {
 		ArrayList<Task> task = new ArrayList<>();
-		for (Task t : TaskInterface.taskQueue) task.add(t);
 		return task;
 	}
 	

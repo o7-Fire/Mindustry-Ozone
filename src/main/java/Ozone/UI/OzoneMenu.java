@@ -69,6 +69,7 @@ public class OzoneMenu extends BaseDialog {
 	
 	void update() {
 		if (!isShown()) return;
+		if (!visible) return;
 		if (!interval.get(40)) return;
 		if (!Vars.mobile) arc.Core.scene.setKeyboardFocus(commandsField);
 		
@@ -121,15 +122,24 @@ public class OzoneMenu extends BaseDialog {
 	}
 	
 	void ad(Table t, BaseDialog baseDialog, Drawable d) {
-		t.button(Translation.get(baseDialog.getClass().getName()), d, baseDialog::show).growX();
+		t.button(Translation.get(baseDialog.getClass().getName()), d, () -> {
+			hide();
+			baseDialog.show();
+		}).growX();
 	}
 	
 	void ad(BaseDialog baseDialog, Drawable d) {
-		tB.button(Translation.get(baseDialog.getClass().getName()), d, baseDialog::show).growX();
+		tB.button(Translation.get(baseDialog.getClass().getName()), d, () -> {
+			hide();
+			baseDialog.show();
+		}).growX();
 	}
 	
 	void ad(BaseDialog baseDialog) {
-		tB.button(Translation.get(baseDialog.getClass().getName()), baseDialog::show).growX();
+		tB.button(Translation.get(baseDialog.getClass().getName()), () -> {
+			hide();
+			baseDialog.show();
+		}).growX();
 	}
 	
 	

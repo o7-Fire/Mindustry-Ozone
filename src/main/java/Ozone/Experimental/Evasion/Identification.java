@@ -35,11 +35,13 @@ public class Identification {
 	}
 	
 	public static String getUUID(String player) {
-		return Core.settings.getString("uuid-" + player, getRandomUID());
+		String s = Core.settings.getString("uuid" + player, getRandomUID());
+		Core.settings.put("uuid" + player, s);
+		return s;
 	}
 	
 	public static String getUUID() {
-		return Core.settings.getString("uuid", getRandomUID());
+		return getUUID("");
 	}
 	
 	public static void setUUID(String s) {

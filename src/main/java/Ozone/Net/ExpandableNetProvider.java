@@ -98,16 +98,24 @@ public class ExpandableNetProvider extends OzoneFrameworkNetProvider {
 	}
 	
 	@Override
-	public void connectClient(String ip, int port, Runnable success) throws IOException {
+	public void connectClient(String ip, int port, Runnable success) {
 		suc = success;
-		client.stop();
 		Pool.daemon(() -> {
+			client.stop();
+			Pool.daemon(() -> {
+				try {
+					client.run();
+				}catch (Exception ignored) { }
+			}).start();
+			
 			try {
-				client.run();
-			}catch (Exception ignored) { }
+				client.connect(5000, ip, port, port);
+			}catch (IOException e) {
+				net.log.err(e);
+			}
 		}).start();
 		
-		client.connect(5000, ip, port, port);
+		
 	}
 	
 	@Override

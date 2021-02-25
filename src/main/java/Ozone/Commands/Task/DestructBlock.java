@@ -17,16 +17,23 @@
 package Ozone.Commands.Task;
 
 import mindustry.Vars;
+import mindustry.gen.Player;
 import mindustry.world.Build;
 import mindustry.world.Tile;
 import mindustry.world.blocks.ConstructBlock;
 
 public class DestructBlock extends Task {
-	private final boolean half;
-	private final int x, y;
+	protected final boolean half;
+	protected final int x, y;
+	protected Player player;
 	
 	public DestructBlock(int x, int y, boolean half) {
+		this(x, y, half, Vars.player);
+	}
+	
+	public DestructBlock(int x, int y, boolean half, Player vars) {
 		this.half = half;
+		this.player = vars;
 		this.x = x;
 		this.y = y;
 		if (Vars.world.tile(x, y) == null) throw new NullPointerException("No tile on: " + x + ", " + y);
@@ -41,7 +48,7 @@ public class DestructBlock extends Task {
 		Tile t = Vars.world.tile(x, y);
 		if (t == null) return true;
 		if (half) return (t.block() instanceof ConstructBlock);
-		return !Build.validBreak(Vars.player.team(), x, y);
+		return !Build.validBreak(player.team(), x, y);
 		
 	}
 	
@@ -51,8 +58,8 @@ public class DestructBlock extends Task {
 		Tile t = Vars.world.tile(x, y);
 		if (t == null) return;
 		if (half && t.block() instanceof ConstructBlock) return;
-		int idx = Vars.player.unit().plans().indexOf((req) -> req.breaking && req.x == x && req.y == y);
+		int idx = player.unit().plans().indexOf((req) -> req.breaking && req.x == x && req.y == y);
 		if (idx != -1) return;
-		Vars.player.unit().removeBuild(x, y, true);
+		player.unit().removeBuild(x, y, true);
 	}
 }

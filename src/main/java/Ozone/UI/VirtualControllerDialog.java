@@ -18,6 +18,7 @@ package Ozone.UI;
 
 import Ozone.Bot.VirtualController;
 import Ozone.Bot.VirtualPlayer;
+import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.gen.Tex;
 
@@ -41,23 +42,38 @@ public class VirtualControllerDialog extends ScrollableDialog {
 	}
 	
 	void create() {
-	
+		VirtualController.create();
+		init();
 	}
 	
 	void ad(VirtualPlayer virtualPlayer) {
 		table.table(t -> {
+			
 			t.setBackground(Tex.pane);
-			t.labelWrap("Name:").growX().left();
-			t.labelWrap(virtualPlayer.name).growX().right();
+			t.table(t2 -> {
+				t2.labelWrap("Name: " + virtualPlayer.name).growX().left();
+				t2.row();
+				t2.labelWrap("Status: " + virtualPlayer.state.toString()).growX().left();
+				t2.row();
+				t2.labelWrap("ID: " + virtualPlayer.vid()).growX().left();
+			}).growX();
 			t.row();
-			t.labelWrap("Status:").growX().left();
-			t.labelWrap(virtualPlayer.state.getState().toString()).growX().right();
-			t.row();
-			t.button("More", Icon.admin, () -> new VirtualPlayerInterface(virtualPlayer).show()).growX().left();
-			t.button("Remove", Icon.cancel, () -> {
-				VirtualController.delete(virtualPlayer);
-				init();
-			}).growX().right();
-		}).growX().growY();
+			t.table(t2 -> {
+				t.button("More", Icon.admin, () -> new VirtualPlayerInterface(virtualPlayer).show()).growX();
+				t.button("Remove", Icon.cancel, () -> {
+					VirtualController.delete(virtualPlayer);
+					init();
+				}).growX();
+				t.button("Clone", Icon.copy, () -> {
+					try {
+						VirtualController.clone(virtualPlayer);
+						init();
+					}catch (Throwable te) {
+						Vars.ui.showException(te);
+					}
+				}).growX();
+			}).growX();
+			
+		}).growX().row();
 	}
 }

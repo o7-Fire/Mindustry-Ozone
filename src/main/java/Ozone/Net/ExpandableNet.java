@@ -16,9 +16,9 @@
 
 package Ozone.Net;
 
+import Atom.Utility.MemoryLog;
 import Ozone.Gen.Callable;
 import arc.net.ArcNetException;
-import arc.util.Log;
 import arc.util.TaskQueue;
 import mindustry.net.Net;
 
@@ -29,6 +29,7 @@ public class ExpandableNet extends Net {
 	protected ExpandableNetProvider netProvider;
 	protected TaskQueue taskQueue = new TaskQueue();
 	public Callable call;
+	public Atom.Utility.Log log = new MemoryLog();
 	
 	public ExpandableNet(ExpandableNetProvider provider) {
 		super(provider);
@@ -70,7 +71,7 @@ public class ExpandableNet extends Net {
 		clientLoaded = false;
 	}
 	
-	protected void post(Runnable r) {
+	public void post(Runnable r) {
 		taskQueue.post(r);
 	}
 	
@@ -79,11 +80,16 @@ public class ExpandableNet extends Net {
 	}
 	
 	@Override
+	public void send(Object object, SendMode mode) {
+		super.send(object, mode);
+	}
+	
+	@Override
 	public void showError(Throwable e) {
 		Throwable t = e;
 		while (t.getCause() != null) {
 			t = t.getCause();
 		}
-		Log.err(t);
+		log.err(t);
 	}
 }

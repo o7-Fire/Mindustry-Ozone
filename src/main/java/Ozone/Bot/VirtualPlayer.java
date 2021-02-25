@@ -16,9 +16,13 @@
 
 package Ozone.Bot;
 
+import Atom.Utility.MemoryLog;
+import Ozone.Commands.Commands;
 import Ozone.Experimental.Evasion.Identification;
+import Ozone.Internal.Interface;
 import Ozone.Net.ExpandableNet;
 import arc.Core;
+import arc.math.Mathf;
 import arc.util.Interval;
 import arc.util.Time;
 import arc.util.io.Reads;
@@ -37,26 +41,28 @@ import mindustry.io.SaveIO;
 import mindustry.maps.Map;
 import mindustry.net.Net;
 import mindustry.net.Packets;
+import mindustry.world.Tile;
+import mindustry.world.blocks.storage.CoreBlock;
 
 import java.io.DataInputStream;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
-
-import static Ozone.Experimental.Evasion.Identification.getUsid;
+import java.util.zip.InflaterInputStream;
 
 public class VirtualPlayer extends Player {
 	private static final float dataTimeout = 60 * 18;
 	private static final float playerSyncTime = 2;
 	public ExpandableNet net = new ExpandableNet();
 	public boolean isMobile = Vars.mobile, typing = false, building = false;
-	public Atom.Utility.Log log = new Atom.Utility.Log() {
+	public Atom.Utility.Log log = new MemoryLog() {
 		@Override
 		protected void output(Object raw) {
-			raw = "[" + name + "]" + raw.toString();
+			raw = raw + "\n";
 			super.output(raw);
 		}
 	};
-	public GameState state = new GameState();
+	public GameState.State state = GameState.State.menu;
 	public String defName = name;
 	Player player = this;
 	int lastSent = 0;
@@ -65,11 +71,13 @@ public class VirtualPlayer extends Player {
 	protected long virtualId = System.currentTimeMillis();
 	
 	protected VirtualPlayer() {
-		state.set(GameState.State.menu);
+		log.info("Yikes");
+		net.log = log;
+		state = (GameState.State.menu);
 		net.handleClient(Packets.Connect.class, packet -> {
 			log.info("Connecting to server: @", packet.addressTCP);
 			admin(false);
-			reset();
+			
 			Packets.ConnectPacket c = new Packets.ConnectPacket();
 			c.name = name;
 			c.locale = Core.settings.getString("locale");
@@ -77,16 +85,12 @@ public class VirtualPlayer extends Player {
 			c.mobile = isMobile;
 			c.versionType = Version.type;
 			c.color = color().rgba();
-			c.usid = getUsid(packet.addressTCP + name);
-			c.uuid = Identification.getUUID();
+			c.usid = getUSID(packet.addressTCP);
+			c.uuid = getUUID();
 			defName = name;
-			if (c.uuid == null) {
-				log.warn("No uuid err");
-				net.disconnect();
-				return;
-			}
-			state.set(GameState.State.paused);
+			state = (GameState.State.paused);
 			net.send(c, Net.SendMode.tcp);
+			log.info("connect packet sent");
 		});
 		
 		net.handleClient(Packets.Disconnect.class, packet -> {
@@ -96,12 +100,14 @@ public class VirtualPlayer extends Player {
 			}else {
 				log.warn("Disconnect");
 			}
+			net.disconnect();
 			reset();
 		});
 		
 		net.handleClient(Packets.WorldStream.class, data -> {
 			log.info("Received world data: @ bytes.", data.stream.available());
-			try (DataInputStream stream = new DataInputStream(data.stream)) {
+			
+			try (DataInputStream stream = new DataInputStream(new InflaterInputStream(data.stream))) {
 				Time.clear();
 				JsonIO.read(Rules.class, stream.readUTF());
 				new Map(SaveIO.getSaveWriter().readStringMap(stream));
@@ -109,25 +115,66 @@ public class VirtualPlayer extends Player {
 				stream.readFloat();
 				
 				int id = stream.readInt();
-				reset();
 				read(Reads.get(stream));
 				this.id = id;
 				add();
 				
 				//SaveIO.getSaveWriter().readContentHeader(stream);
 				//SaveIO.getSaveWriter().readMap(stream, world.context);
-				stream.close();
-			}catch (IOException e) {
-				throw new RuntimeException(e);
+			}catch (Throwable e) {
+				log.err(e);
+				net.disconnect();
+				reset();
+				return;
 			}
+			net.call.sendMessage("gay");
 			net.call.connectConfirm();
 			net.setClientLoaded(true);
-			state.set(GameState.State.playing);
+			log.info("Connected");
+			state = GameState.State.playing;
 		});
 		
 		net.handleClient(Packets.InvokePacket.class, packet -> {
 			//lol no
 		});
+	}
+	
+	public void disconnect() {
+		net.disconnect();
+		reset();
+	}
+	
+	public void followPlayer(Player target) {
+		Player p = Interface.searchPlayer(target.id + "");
+		if (p == null) {
+			log.err("Can't find main player, on server");
+			return;
+		}
+		Commands.virtualPlayer(this);
+		if (Commands.targetPlayer.get(id) == null)
+			Commands.followPlayer(new ArrayList<>(Collections.singletonList(p.id + "")), this);
+		else Commands.followPlayer(new ArrayList<>(), this);
+		Commands.virtualPlayer();
+	}
+	
+	public String getUUID() {
+		return Identification.getUUID("-" + name);
+	}
+	
+	public String getUSID(String ip) {
+		return Identification.getUsid(ip + "." + name);
+	}
+	
+	public void connect(String ip, int port) {
+		try {
+			reset();
+			state = GameState.State.paused;
+			net.connect(ip, port, () -> {
+			
+			});
+		}catch (Throwable t) {
+			log.err(t);
+		}
 	}
 	
 	@Override
@@ -149,13 +196,35 @@ public class VirtualPlayer extends Player {
 	public void update() {
 		
 		
-		super.update();
+		net.update();
+		if (state.equals(GameState.State.menu)) return;
+		if ((net.client() && !isLocal()) || isRemote()) {
+			interpolate();
+		}
+		if (!unit.isValid()) {
+			clearUnit();
+		}
+		CoreBlock.CoreBuild core;
+		if (!dead()) {
+			set(unit);
+			unit.team(team);
+			deathTimer = 0;
+			if (unit.type.canBoost) {
+				Tile tile = unit.tileOn();
+				unit.elevation = Mathf.approachDelta(unit.elevation, (tile != null && tile.solid()) || boosting ? 1.0F : 0.0F, 0.08F);
+			}
+		}else if ((core = bestCore()) != null) {
+			deathTimer += Time.delta;
+			if (deathTimer >= deathDelay) {
+				core.requestSpawn(this);
+				deathTimer = 0;
+			}
+		}
+		textFadeTime -= Time.delta / (60 * 5);
 		if (!net.client()) return;
 		
-		if (net.clientLoaded()) {
+		if (net.clientLoaded() && net.active()) {
 			sync();
-		}else if (!net.clientLoaded() && net.active()) {
-			net.disconnect();
 		}else { //...must be connecting
 			timeoutTime += Time.delta;
 			if (timeoutTime > dataTimeout) {
@@ -169,8 +238,9 @@ public class VirtualPlayer extends Player {
 	@Override
 	public void reset() {
 		super.reset();
-		state.set(GameState.State.menu);
+		state = (GameState.State.menu);
 		lastSent = 0;
+		name = defName == null ? name : defName;
 	}
 	
 	void sync() {

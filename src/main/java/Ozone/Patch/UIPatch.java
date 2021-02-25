@@ -69,6 +69,7 @@ public class UIPatch implements Module {
 		Manifest.logView = new LogView();
 		Manifest.uiDebug = new UILayout();
 		Manifest.experiment = new ExperimentDialog();
+		ModsMenu.add(new VirtualControllerDialog());
 		Manifest.modsMenu = new ModsMenu();
 		Manifest.commFrag.build(Vars.ui.hudGroup);
 		

@@ -16,15 +16,29 @@
 
 package Ozone.Bot;
 
+import Ozone.Internal.Module;
+import arc.Events;
+import mindustry.game.EventType;
+
 import java.util.HashSet;
 
-public class VirtualController {
+public class VirtualController implements Module {
 	public static HashSet<VirtualPlayer> virtualPlayers = new HashSet<>();
 	
 	public static VirtualPlayer create() {
 		VirtualPlayer v = new VirtualPlayer();
 		virtualPlayers.add(v);
 		return v;
+	}
+	
+	@Override
+	public void init() throws Throwable {
+		Events.run(EventType.Trigger.update, this::update);
+	}
+	
+	public void update() {
+		for (VirtualPlayer v : virtualPlayers)
+			v.update();
 	}
 	
 	public static VirtualPlayer clone(VirtualPlayer or) throws CloneNotSupportedException {

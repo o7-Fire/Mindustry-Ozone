@@ -34,6 +34,7 @@ import mindustry.ai.Pathfinder;
 import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.Legsc;
+import mindustry.gen.Player;
 import mindustry.gen.Unit;
 import mindustry.gen.WaterMovec;
 import mindustry.world.Tile;
@@ -95,8 +96,12 @@ public class Pathfinding implements Module {
 	}
 	
 	public static boolean withinPlayerTolerance(Position target) {
-		float tolerance = Vars.player.unit().isFlying() ? Move.airTolerance : Move.landTolerance;
-		return Pathfinding.distanceTo(Vars.player, target) < tolerance;
+		return withinPlayerTolerance(target, Vars.player);
+	}
+	
+	public static boolean withinPlayerTolerance(Position target, Player vars) {
+		float tolerance = vars.unit().isFlying() ? Move.airTolerance : Move.landTolerance;
+		return Pathfinding.distanceTo(vars, target) < tolerance;
 	}
 	
 	public static float isSafe(Tile t) {

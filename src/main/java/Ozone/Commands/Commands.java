@@ -20,7 +20,9 @@ import Atom.Time.Time;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
+import Ozone.Bot.VirtualPlayer;
 import Ozone.Commands.Task.*;
+import Ozone.Gen.Callable;
 import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
@@ -40,6 +42,7 @@ import arc.util.Strings;
 import mindustry.Vars;
 import mindustry.gen.*;
 import mindustry.net.Administration;
+import mindustry.net.Net;
 import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.Tile;
@@ -57,12 +60,53 @@ public class Commands implements Module {
 	public static final Queue<Task> commandsQueue = new Queue<>();
 	public static final Map<String, Command> commandsList = new TreeMap<>();
 	
-	public static String targetPlayer;//no need to be volatile because its still accessed from same thread
+	public static HashMap<Integer, Integer> targetPlayer = new HashMap<>();
 	private static boolean falseVote = false;
 	private static boolean drainCore = false;
 	private static boolean chatting = false;
 	private volatile static boolean rotatingconveyor = false;
+	private static VirtualPlayer virtualPlayer = null;
 	
+	public static void virtualPlayer(VirtualPlayer virtualPlayer) {
+		Commands.virtualPlayer = virtualPlayer;
+	}
+	
+	public static void virtualPlayer() {
+		virtualPlayer = null;
+	}
+	
+	public static void register() {
+		
+		//register("message-log", new Command(Commands::messageLog, Icon.rotate));
+		//register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
+		register("task-move", new Command(Commands::taskMove));
+		register("info-pathfinding", new Command(Commands::infoPathfinding));
+		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer -Nexity");
+		register("task-deconstruct", new Command(Commands::taskDeconstruct));
+		register("send-colorize", new Command(Commands::sendColorize));
+		register("follow-player", new Command(Commands::followPlayer), "follow a player use ID or startsWith/full name");
+		
+		//Commands with icon support no-argument-commands (user input is optional)
+		register("rotate-conveyor", new Command(Commands::rotateconveyor, Icon.rotate), "rotate a fucking conveyor");
+		register("drain-core", new Command(Commands::drainCore, Icon.hammer), "drain a core");
+		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
+		register("info-unit", new Command(Commands::infoUnit, Icon.units));
+		register("force-exit", new Command(Commands::forceExit, Icon.exit));
+		register("task-clear", new Command(Commands::taskClear, Icon.cancel));
+		register("shuffle-sorter", new Command((Runnable) Commands::shuffleSorter, Icon.rotate));//java being dick again
+		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
+		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
+		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
+		register("info-pos", new Command(Commands::infoPos, Icon.move));
+		register("help", new Command(Commands::help, Icon.infoCircle));
+		register("kick-jammer", new Command(Commands::kickJammer, Icon.hammer), "Jamm votekick system so player cant kick you");
+		if (BaseSettings.debugMode)
+			register("debug", new Command(Commands::debug, Icon.pause), "so you just found debug mode");
+		register("module-reset", new Command(Commands::moduleReset, Icon.eraser), "Reset all module as if you loading the world");
+		register("gc", new Command(Commands::garbageCollector, Icon.cancel), "Trigger Garbage Collector");
+		Log.infoTag("Ozone", "Commands Center Initialized");
+		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
+	}
 	
 	public static void hudFragToast(ArrayList<String> arg) {
 		String s = "[" + Random.getRandomHexColor() + "]Test " + Random.getString(16);
@@ -106,37 +150,8 @@ public class Commands implements Module {
 	
 	private static int i = 0;
 	
-	public static void register() {
-
-		//register("message-log", new Command(Commands::messageLog, Icon.rotate));
-		//register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
-		register("task-move", new Command(Commands::taskMove));
-		register("info-pathfinding", new Command(Commands::infoPathfinding));
-		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer -Nexity");
-		register("task-deconstruct", new Command(Commands::taskDeconstruct));
-		register("send-colorize", new Command(Commands::sendColorize));
-		register("follow-player", new Command(Commands::followPlayer), "follow a player use ID or startsWith/full name");
-		
-		//Commands with icon support no-argument-commands (user input is optional)
-		register("rotate-conveyor", new Command(Commands::rotateconveyor, Icon.rotate), "rotate a fucking conveyor");
-		register("drain-core", new Command(Commands::drainCore, Icon.hammer), "drain a core");
-		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
-		register("info-unit", new Command(Commands::infoUnit, Icon.units));
-		register("force-exit", new Command(Commands::forceExit, Icon.exit));
-		register("task-clear", new Command(Commands::taskClear, Icon.cancel));
-		register("shuffle-sorter", new Command(Commands::shuffleSorter, Icon.rotate));
-		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
-		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
-		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
-		register("info-pos", new Command(Commands::infoPos, Icon.move));
-		register("help", new Command(Commands::help, Icon.infoCircle));
-		register("kick-jammer", new Command(Commands::kickJammer, Icon.hammer), "Jamm votekick system so player cant kick you");
-		if (BaseSettings.debugMode)
-			register("debug", new Command(Commands::debug, Icon.pause), "so you just found debug mode");
-		register("module-reset", new Command(Commands::moduleReset, Icon.eraser), "Reset all module as if you loading the world");
-		register("gc", new Command(Commands::garbageCollector, Icon.cancel), "Trigger Garbage Collector");
-		Log.infoTag("Ozone", "Commands Center Initialized");
-		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
+	public static void taskDeconstruct(ArrayList<String> s) {
+		taskDeconstruct(s, Vars.player);
 	}
 	
 	public static void moduleReset() {
@@ -206,7 +221,7 @@ public class Commands implements Module {
 		Call.sendChatMessage(sb.toString());
 	}
 	
-	public static void taskDeconstruct(ArrayList<String> s) {
+	public static void taskDeconstruct(ArrayList<String> s, Player vars) {
 		if (s.size() < 2) {
 			tellUser("Not enough arguments");
 			tellUser("Usage: task-deconstruct x(type: coordinate) y(type: coordinate) half(type: boolean, optional default: false)");
@@ -225,11 +240,15 @@ public class Commands implements Module {
 				half = true;
 			}
 			Time t = new Time(TimeUnit.MICROSECONDS);
-			TaskInterface.addTask(new DestructBlock(x, y, half), a -> tellUser("Completed in " + t.elapsed(new Time()).toString()));
+			TaskInterface.addTask(new DestructBlock(x, y, half, vars), a -> tellUser("Completed in " + t.elapsed(new Time()).toString()), vars);
 		}catch (NumberFormatException f) {
 			tellUser("Failed to parse integer, are you sure that argument was integer ?");
 			Vars.ui.showException(f);
 		}
+	}
+	
+	public static void taskMove(ArrayList<String> s) {
+		taskMove(s, Vars.player);
 	}
 	
 	public static void forceExit(ArrayList<String> ar) {
@@ -339,8 +358,7 @@ public class Commands implements Module {
 			tellUser("TileOn: Class: " + Vars.player.tileOn().build.getClass().getName());
 	}
 	
-	
-	public static void taskMove(ArrayList<String> s) {
+	public static void taskMove(ArrayList<String> s, Player vars) {
 		if (s.size() < 2) {
 			tellUser("Not enough arguments");
 			tellUser("usage: " + "task-move x(coordinate) y(coordinate)");
@@ -354,13 +372,17 @@ public class Commands implements Module {
 				return;
 			}
 			Time start = new Time();
-			TaskInterface.addTask(new Move(x, y), a -> tellUser("Reached in " + start.elapsedS()));
+			TaskInterface.addTask(new Move(Vars.world.tile(x, y), vars), a -> tellUser("Reached in " + start.elapsedS()), vars);
 			toggleUI();
 		}catch (NumberFormatException f) {
 			tellUser("Failed to parse integer, are you sure that argument was integer ?");
 			Vars.ui.showException(f);
 		}
 		
+	}
+	
+	public static void shuffleSorter() {
+		shuffleSorter(Vars.net);
 	}
 	
 	public static void help() {
@@ -385,7 +407,7 @@ public class Commands implements Module {
 		}
 	}
 	
-	public static void shuffleSorter() {
+	public static void shuffleSorter(Net net) {
 		
 		TaskInterface.addTask(new Completable() {
 			final Future<Building> f;
@@ -415,7 +437,11 @@ public class Commands implements Module {
 						return;
 					}
 					Item target = Random.getRandom(Vars.content.items());
-					t.tile().build.configure(target);
+					Callable call = new Callable(net);
+					t.tile.build.block.lastConfig = target;
+					call.tileConfig(null, t.tile.build, target);
+				}catch (IndexOutOfBoundsException gay) {
+					Commands.tellUser("No item");
 				}catch (InterruptedException | ExecutionException e) {
 					Log.errTag("Ozone-Executor", "Failed to get tile:\n" + e.toString());
 				}
@@ -425,11 +451,15 @@ public class Commands implements Module {
 	}
 	
 	public static void followPlayer(ArrayList<String> arg) {
+		followPlayer(arg, Vars.player);
+	}
+	
+	public static void followPlayer(ArrayList<String> arg, Player vars) {
 		String p = Utility.joiner(arg, " ");
 		if (arg.isEmpty()) {
-			if (targetPlayer != null) {
+			if (targetPlayer.get(vars.id) != null) {
 				tellUser("Stop following player");
-				targetPlayer = null;
+				targetPlayer.put(vars.id, null);
 			}else {
 				tellUser("Empty Argument, use player name or ID");
 			}
@@ -438,27 +468,45 @@ public class Commands implements Module {
 		Player target = Interface.searchPlayer(p);
 		if (target == null) {
 			tellUser("Player not found");
-			targetPlayer = null;
+			targetPlayer.put(vars.id, null);
 			return;
 		}
-		if (targetPlayer == null) {
+		if (targetPlayer.get(vars.id) == null) {
 			tellUser("Found player: distance " + Pathfinding.distanceTo(Vars.player, target));
 		}
-		targetPlayer = target.id + "";
+		targetPlayer.put(vars.id, target.id);
 		if (!Pathfinding.withinPlayerTolerance(target))
-			TaskInterface.addTask(new Move(target.tileOn()) {{name = "followPlayer:" + target.name();}});
+			TaskInterface.addTask(new Move(target.tileOn(), vars) {{name = "followPlayer:" + target.name();}});
 		
 		TaskInterface.addTask(new SingleTimeTask(() -> {//basically invoke this method again if target isnt null
-			if (targetPlayer == null) return;//gone
-			Player t = Interface.searchPlayer(targetPlayer);
+			if (targetPlayer.get(vars.id) == null) return;//gone
+			Player t = Interface.searchPlayer(targetPlayer.get(vars.id) + "");
 			if (t == null) tellUser("Player gone, stop following");
 			
-			else followPlayer(new ArrayList<>(Collections.singletonList(t.id + "")));
+			else followPlayer(new ArrayList<>(Collections.singletonList(t.id + "")), vars);
 		}) {
 			{
 				name = "playerFollower:" + targetPlayer;
 			}
 		});
+	}
+	
+	public static void tellUser(String s) {
+		if (Commands.virtualPlayer != null) {
+			virtualPlayer.log.info(s);
+			return;
+		}
+		Log.info(Strings.stripColors(s));
+		if (Vars.ui == null) return;
+		if (Vars.ui.scriptfrag.shown()) Log.infoTag("Ozone", s);
+		if (Vars.state.isGame()) {
+			Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
+			if (BaseSettings.commandsToast) {
+				if (s.contains("\n")) for (String u : s.split("\n"))
+					Interface.showToast(u, 800);
+				else Vars.ui.hudfrag.showToast(s);
+			}
+		}
 	}
 	
 	public static void kickJammer() {
@@ -534,18 +582,9 @@ public class Commands implements Module {
 		if (Vars.ui != null && Vars.ui.hudfrag != null) Vars.ui.hudfrag.setHudText(s);
 	}
 	
-	public static void tellUser(String s) {
-		Log.info(Strings.stripColors(s));
-		if (Vars.ui == null) return;
-		if (Vars.ui.scriptfrag.shown()) Log.infoTag("Ozone", s);
-		if (Vars.state.isGame()) {
-			Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
-			if (BaseSettings.commandsToast) {
-				if (s.contains("\n")) for (String u : s.split("\n"))
-					Interface.showToast(u, 800);
-				else Vars.ui.hudfrag.showToast(s);
-			}
-		}
+	@Override
+	public void reset() throws Throwable {
+		targetPlayer.clear();
 	}
 	
 	public static class Command {
