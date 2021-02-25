@@ -50,12 +50,13 @@ public class LoggerMode {
 			writer = settings.getDataDirectory().child("last_log.txt").writer(false);
 		}catch (Throwable ignored) {}
 		Log.logger = (level, text) -> {
+			text = "[" + Utility.getDate() + "] [" + Thread.currentThread().getName() + (Thread.currentThread().getThreadGroup() != null ? "-" + Thread.currentThread().getThreadGroup().getName() : "") + (SharedBoot.debug ? "-" + Thread.currentThread().getStackTrace()[1].toString() : "") + "] " + text;
 			try {
 				writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " + Log.removeColors(text) + "\n");
 				writer.flush();
 			}catch (Throwable ignored) {
 			}
-			text = "[" + Utility.getDate() + "] " + text;
+			
 			String result = text;
 			String rawText = Log.format(stags[level.ordinal()] + "&fr " + text);
 			System.out.println(rawText);

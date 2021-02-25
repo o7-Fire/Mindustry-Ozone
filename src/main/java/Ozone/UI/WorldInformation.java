@@ -21,14 +21,15 @@ import Atom.Utility.Pool;
 import arc.scene.ui.Label;
 import arc.struct.ObjectMap;
 import arc.util.Log;
+import io.sentry.ITransaction;
 import io.sentry.Sentry;
-import io.sentry.SentryTransaction;
 import io.sentry.SpanStatus;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.gen.Groups;
 import mindustry.world.Build;
 import mindustry.world.Tile;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class WorldInformation extends ScrollableDialog {
 		Pool.submit(() -> {
 			Time te = new Time();
 			Log.debug("World calculation began");
-			SentryTransaction st = Sentry.startTransaction("world-calculation-" + Vars.world.width() + "x" + Vars.world.height());
+			@NotNull ITransaction st = Sentry.startTransaction(Vars.world.width() + "x" + Vars.world.height(), "world-calculation");
 			try {
 				TreeMap<String, Integer> mainCount = new TreeMap<>();
 				long totalOre = 0;

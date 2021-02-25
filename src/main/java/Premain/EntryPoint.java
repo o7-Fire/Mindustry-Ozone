@@ -22,10 +22,11 @@ import Ozone.Manifest;
 import Shared.LoggerMode;
 import arc.Core;
 import arc.util.Log;
+import io.sentry.ITransaction;
 import io.sentry.Sentry;
-import io.sentry.SentryTransaction;
 import io.sentry.SpanStatus;
 import mindustry.mod.Mod;
+import org.jetbrains.annotations.NotNull;
 
 public class EntryPoint extends Mod {
 	static {
@@ -38,8 +39,8 @@ public class EntryPoint extends Mod {
 			Log.err(t);
 			Sentry.captureException(t);
 		}
-		SentryTransaction s = null;
-		try { s = Sentry.startTransaction("Early Init"); }catch (Throwable ignored) {}
+		@NotNull ITransaction s = null;
+		try { s = Sentry.startTransaction("Init", "Early Init"); }catch (Throwable ignored) {}
 		try {
 			Main.earlyInit();
 			if (s != null) s.finish();
@@ -55,8 +56,8 @@ public class EntryPoint extends Mod {
 	}
 	
 	public EntryPoint() {
-		SentryTransaction s = null;
-		try { s = Sentry.startTransaction("Pre Init"); }catch (Throwable ignored) {}
+		@NotNull ITransaction s = null;
+		try { s = Sentry.startTransaction("Init", "Pre Init"); }catch (Throwable ignored) {}
 		if (Core.settings != null) {
 			Core.settings.put("crashreport", true);
 			Core.settings.put("uiscalechanged", false);//shut
@@ -78,8 +79,8 @@ public class EntryPoint extends Mod {
 	
 	@Override
 	public void init() {
-		SentryTransaction s = null;
-		try { s = Sentry.startTransaction("Init"); }catch (Throwable ignored) {}
+		@NotNull ITransaction s = null;
+		try { s = Sentry.startTransaction("Init", "Init"); }catch (Throwable ignored) {}
 		try {
 			Main.init();
 			if (s != null) s.finish();
@@ -96,8 +97,8 @@ public class EntryPoint extends Mod {
 	
 	@Override
 	public void loadContent() {
-		SentryTransaction s = null;
-		try { s = Sentry.startTransaction("Init"); }catch (Throwable ignored) {}
+		@NotNull ITransaction s = null;
+		try { s = Sentry.startTransaction("Init", "Load Content"); }catch (Throwable ignored) {}
 		try {
 			Main.loadContent();
 			if (s != null) s.finish();

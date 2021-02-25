@@ -23,19 +23,20 @@ import Ozone.Main;
 import arc.Core;
 import arc.Events;
 import arc.util.Log;
+import io.sentry.ITransaction;
 import io.sentry.Sentry;
-import io.sentry.SentryTransaction;
 import io.sentry.SpanStatus;
 import mindustry.Vars;
 import mindustry.mod.Mod;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Itzbenz
  */
 public class Ozone extends Mod {
 	static {
-		SentryTransaction s = null;
-		try { s = Sentry.startTransaction("Early Init"); }catch (Throwable ignored) {}
+		@NotNull ITransaction s = null;
+		try { s = Sentry.startTransaction("Init", "Early Init"); }catch (Throwable ignored) {}
 		try {
 			Main.earlyInit();
 			if (s != null) s.finish();
@@ -51,8 +52,8 @@ public class Ozone extends Mod {
 	}
 	
 	public Ozone() {
-		SentryTransaction s = null;
-		try { s = Sentry.startTransaction("Pre Init"); }catch (Throwable ignored) {}
+		@NotNull ITransaction s = null;
+		try { s = Sentry.startTransaction("Init", "Pre Init"); }catch (Throwable ignored) {}
 		Events.on(DesktopEvent.InitUI.class, se -> {
 			if (!Vars.headless) {
 			
@@ -82,8 +83,8 @@ public class Ozone extends Mod {
 	
 	@Override
 	public void init() {
-		SentryTransaction s = null;
-		try { s = Sentry.startTransaction("Init"); }catch (Throwable ignored) {}
+		@NotNull ITransaction s = null;
+		try { s = Sentry.startTransaction("Init", "Init"); }catch (Throwable ignored) {}
 		try {
 			DesktopPatcher.register();
 			Main.init();
@@ -101,8 +102,8 @@ public class Ozone extends Mod {
 	
 	@Override
 	public void loadContent() {
-		SentryTransaction s = null;
-		try { s = Sentry.startTransaction("Init"); }catch (Throwable ignored) {}
+		@NotNull ITransaction s = null;
+		try { s = Sentry.startTransaction("Init", "Init"); }catch (Throwable ignored) {}
 		try {
 			DesktopPatcher.async();
 			Main.loadContent();

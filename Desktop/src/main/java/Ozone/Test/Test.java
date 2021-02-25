@@ -19,9 +19,10 @@ package Ozone.Test;
 import Atom.Utility.Log;
 import Atom.Utility.Pool;
 import Shared.WarningReport;
+import io.sentry.ITransaction;
 import io.sentry.Sentry;
-import io.sentry.SentryTransaction;
 import io.sentry.SpanStatus;
+import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ConfigurationBuilder;
@@ -53,7 +54,7 @@ public class Test {
 	}
 	
 	public static Result test(Testable r, String name) {
-		SentryTransaction transaction = Sentry.startTransaction(name);
+		@NotNull ITransaction transaction = Sentry.startTransaction("Test", name);
 		long start = System.currentTimeMillis();
 		Throwable t = null;
 		try {
