@@ -49,6 +49,11 @@ public class Translation implements Module {
 		return Interface.getBundle(key);
 	}
 	
+	public static String colorized(String s) {
+		if (!BaseSettings.colorPatch) return s;
+		return getRandomHexColor() + s + "[white]";
+	}
+	
 	public static String add(String id, String text) {
 		String s = Thread.currentThread().getStackTrace()[2].getClassName() + text.toLowerCase().replaceAll(" ", ".");
 		registerWords(s, text);

@@ -51,6 +51,7 @@ public class WarningReport implements Serializable {
 	
 	public void report() {
 		WarningHandler.handle(this);
+		
 	}
 	
 	public WarningReport setProblem(String problem) {

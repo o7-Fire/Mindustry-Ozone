@@ -54,7 +54,8 @@ public class SchematicPool implements Module {
 						try {
 							new File(Cache.http(new URL(s)).getFile()).delete();
 						}catch (Throwable ignored) {}
-						Log.warn(s, e);
+						while (e.getCause() != null) e = e.getCause();
+						new WarningReport(e).setWhyItsAProblem("Schematic gone").setHowToFix("Ask volas").setLevel(WarningReport.Level.warn).report();
 					}
 					return null;
 				}));

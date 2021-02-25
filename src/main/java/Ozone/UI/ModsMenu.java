@@ -64,7 +64,7 @@ public class ModsMenu extends ScrollableDialog {
 	}
 	
 	public void ad(OzoneDialog dialog) {
-		table.button(Translation.get(dialog.getTitle()), dialog.icon(), dialog::show).growX();
+		table.button(Translation.colorized(dialog.getTitle()), dialog.icon(), dialog::show).growX();
 		table.row();
 	}
 }

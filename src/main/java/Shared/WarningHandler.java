@@ -29,13 +29,14 @@ public class WarningHandler {
 		//Pool.daemon(()->{
 		if (listOfProblem.contains(wr)) return;
 		if (!wr.level.equals(WarningReport.Level.debug) || SharedBoot.debug) {
-			System.out.println(wr.headlines());
+			
 			try {Sentry.addBreadcrumb(wr.headlines(), wr.level.name());}catch (Throwable ignored) {}
 			try {Manifest.toast(wr.headlines()); }catch (Throwable ignored) {}
 			listOfProblem.add(wr);
 			try {
-				Log.log(Log.LogLevel.values()[wr.level.ordinal()], "[Ozone-" + wr.thread.getName() + "] " + wr.headlines());
-			}catch (Throwable ignored) {}
+				Log.logger.log(Log.LogLevel.values()[wr.level.ordinal()], wr.headlines());
+			}catch (Throwable ignored) { System.out.println(wr.headlines());}
+			
 		}
 		//}).start();
 		
@@ -47,7 +48,7 @@ public class WarningHandler {
 	
 	public static void handle(Throwable t, boolean silent) {
 		//Pool.daemon(()->{
-		if (SharedBoot.debug) t.printStackTrace();
+		if (SharedBoot.hardDebug) t.printStackTrace();
 		try { Sentry.captureException(t); }catch (Throwable ignored) {}
 		if (!silent) {
 			try { Log.err(t);}catch (Throwable ignored) {}
