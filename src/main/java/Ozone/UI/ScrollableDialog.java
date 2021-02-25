@@ -21,6 +21,7 @@ import Atom.Utility.Random;
 import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
 import arc.Core;
+import arc.graphics.Color;
 import arc.scene.style.Drawable;
 import arc.scene.ui.Label;
 import arc.scene.ui.ScrollPane;
@@ -68,7 +69,12 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		}else scrollPane = new ScrollPane(table);
 		cont.clear();
 		table.clear();
-		setup();
+		try {
+			setup();
+		}catch (Throwable t) {
+			table.add(t.toString()).growX().growY().color(Color.red);
+			Sentry.captureException(t);
+		}
 		table.row();
 		cont.add(scrollPane).growX().growY();
 	}
@@ -112,7 +118,7 @@ public abstract class ScrollableDialog extends OzoneDialog {
 	}
 	
 	protected void ad(Object text) {
-		table.add(text.toString()).growX();
+		table.add(String.valueOf(text)).growX();
 		table.row();
 	}
 	

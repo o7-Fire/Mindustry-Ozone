@@ -154,15 +154,15 @@ public class ConnectDiagram extends AttackDiagram {
 				}
 			});
 			handleClient(Packets.Connect.class, packet -> {
-				Log.info("Connecting to server: @", packet.addressTCP);
+				Log.debug("Connecting to server: @", packet.addressTCP);
 				sendClient(randomConnectPacket(), Net.SendMode.tcp);
 			});
 			handleClient(Packets.Disconnect.class, packet -> {
-				Log.info("Disconnecting @", packet.reason);
+				Log.debug("Disconnecting @", packet.reason);
 				disconnectClient();
 			});
 			handleClient(Packets.WorldStream.class, data -> {
-				Log.info("Received world data: @ bytes.", data.stream.available());
+				Log.debug("Received world data: @ bytes.", data.stream.available());
 				clientLoaded = true;
 				if (cd.sup.isEmpty() || cd.sup.length() > maxTextLength) sendChat("");
 				else sendChat(cd.sup);
@@ -228,10 +228,10 @@ public class ConnectDiagram extends AttackDiagram {
 				}
 			}else {
 				if (object instanceof Packets.InvokePacket) {
-					Log.info("Invoke Packet: " + InformationCenter.getPacketName(((Packets.InvokePacket) object).type));
+					Log.debug("Invoke Packet: " + InformationCenter.getPacketName(((Packets.InvokePacket) object).type));
 					return;
 				}
-				Log.err("Unhandled packet type: '@'!", object);
+				Log.debug("Unhandled packet type: '@'!", object);
 			}
 			
 			
