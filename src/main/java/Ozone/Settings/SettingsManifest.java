@@ -34,7 +34,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SettingsManifest {
 	public static File settingsFile = new File("OzoneSettings.properties");
 	static ConcurrentHashMap<String, String> cache;
-	static volatile long lastFileHash = 0;
 	static HashSet<Class<?>> list = new HashSet<>();
 	
 	public static void changeFile(File neu) {
@@ -110,12 +109,13 @@ public class SettingsManifest {
 			WarningHandler.handle(new WarningReport().setProblem("Can't write to file: " + settingsFile.getAbsolutePath()).setWhyItsAProblem("its your settings file").setHowToFix("Check permission or file if its corrupted or busy").setLevel(WarningReport.Level.err));
 			return;
 		}
-		if (lastFileHash == ByteBuffer.wrap(cache.toString().getBytes()).getLong()) return;
-		if (!FileUtility.write(settingsFile, Encoder.property(cache).getBytes())) {
-			WarningHandler.handle(new WarningReport().setProblem("Failed to save: " + settingsFile.getAbsolutePath()).setWhyItsAProblem("no its your problem").setHowToFix("see if shit is corrupted or denied by system").setLevel(WarningReport.Level.warn));
-			return;
+		try {
+			if (!FileUtility.write(settingsFile, Encoder.property(cache).getBytes())) {
+				WarningHandler.handle(new WarningReport().setProblem("Failed to save: " + settingsFile.getAbsolutePath()).setWhyItsAProblem("no its your problem").setHowToFix("see if shit is corrupted or denied by system").setLevel(WarningReport.Level.warn));
+			}
+		}catch (Throwable t) {
+			new WarningReport(t).setWhyItsAProblem("No Ozone Settings Save").report();
 		}
-		lastFileHash = ByteBuffer.wrap(cache.toString().getBytes()).getLong();
 	}
 	
 }

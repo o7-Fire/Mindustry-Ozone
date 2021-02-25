@@ -16,6 +16,7 @@
 
 package Shared;
 
+import Atom.Reflect.Reflect;
 import Atom.Utility.Utility;
 import arc.Events;
 import arc.struct.Seq;
@@ -50,7 +51,23 @@ public class LoggerMode {
 			writer = settings.getDataDirectory().child("last_log.txt").writer(false);
 		}catch (Throwable ignored) {}
 		Log.logger = (level, text) -> {
-			text = "[" + Utility.getDate() + "] [" + Thread.currentThread().getName() + (Thread.currentThread().getThreadGroup() != null ? "-" + Thread.currentThread().getThreadGroup().getName() : "") + (SharedBoot.debug ? "-" + Thread.currentThread().getStackTrace()[1].toString() : "") + "] " + text;
+			int i = Reflect.callerOffset() + 3;
+			StackTraceElement st = null;
+			try {
+				st = Thread.currentThread().getStackTrace()[i];
+			}catch (Throwable ignored) {
+			
+			}
+			if (st != null) while (st.getFileName().equals("Log.java")) {
+				try {
+					i++;
+					st = Thread.currentThread().getStackTrace()[i];
+				}catch (Throwable t) {
+					st = null;
+					break;
+				}
+			}
+			text = "[" + Utility.getDate() + "] [" + Thread.currentThread().getName() + (Thread.currentThread().getThreadGroup() != null ? "-" + Thread.currentThread().getThreadGroup().getName() : "") + (st == null || !SharedBoot.debug ? "" : "-" + st.toString()) + "] " + text;
 			try {
 				writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " + Log.removeColors(text) + "\n");
 				writer.flush();
