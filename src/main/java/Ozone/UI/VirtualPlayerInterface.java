@@ -57,7 +57,9 @@ public class VirtualPlayerInterface extends ScrollableDialog {
 		}).growX();
 		table.table(t2 -> {
 			t2.labelWrap("Name: ").growX().row();
-			t2.field(virtualPlayer.name, s -> virtualPlayer.name(s)).growX().row();
+			t2.field(virtualPlayer.name, s -> {
+				virtualPlayer.name = s;
+			}).growX().row();
 			t2.labelWrap("Status: " + virtualPlayer.state.toString()).growX().row();
 			t2.labelWrap("ID: " + virtualPlayer.vid()).growX().row();
 			t2.labelWrap("UUID: " + virtualPlayer.getUUID()).growX().row();

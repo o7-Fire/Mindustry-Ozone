@@ -476,7 +476,7 @@ public class Commands implements Module {
 		}
 		targetPlayer.put(vars.id, target.id);
 		if (!Pathfinding.withinPlayerTolerance(target))
-			TaskInterface.addTask(new Move(target.tileOn(), vars) {{name = "followPlayer:" + target.name();}});
+			TaskInterface.addTask(new Move(target.tileOn(), vars) {{name = "followPlayer:" + target.name();}}, vars);
 		
 		TaskInterface.addTask(new SingleTimeTask(() -> {//basically invoke this method again if target isnt null
 			if (targetPlayer.get(vars.id) == null) return;//gone
@@ -488,7 +488,7 @@ public class Commands implements Module {
 			{
 				name = "playerFollower:" + targetPlayer;
 			}
-		});
+		}, vars);
 	}
 	
 	public static void tellUser(String s) {

@@ -179,7 +179,7 @@ public class PlayerListFragment extends Fragment {
 				content.add(new Label(user.isLocal() ? "Shooting" : user.shooting() ? "[green]True[white]" : "False"));
 			if (user.isLocal()) content.add(new Label("Follow Player"));
 			else content.button(Icon.move, () -> {
-				if (Commands.targetPlayer == null)
+				if (Commands.targetPlayer.get(player.id) == null)
 					Commands.followPlayer(new ArrayList<>(Collections.singletonList(user.id + "")));
 				else Commands.followPlayer(new ArrayList<>());
 			}).tooltip("Follow player");
