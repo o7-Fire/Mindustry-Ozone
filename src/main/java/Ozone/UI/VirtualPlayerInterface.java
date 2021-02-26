@@ -16,6 +16,7 @@
 
 package Ozone.UI;
 
+import Atom.Utility.MemoryLog;
 import Ozone.Bot.VirtualPlayer;
 import arc.Core;
 import mindustry.Vars;
@@ -54,6 +55,16 @@ public class VirtualPlayerInterface extends ScrollableDialog {
 			t1.button("Follow Me", () -> {
 				virtualPlayer.followPlayer(Vars.player);
 			}).growX().disabled(!virtualPlayer.state.equals(GameState.State.playing) || !Vars.net.active());
+			t1.row();
+			t1.button("Clear log", () -> {
+				virtualPlayer.log = new MemoryLog() {
+					@Override
+					protected void output(Object raw) {
+						raw = raw + "\n";
+						super.output(raw);
+					}
+				};
+			}).growX();
 		}).growX();
 		table.table(t2 -> {
 			t2.labelWrap("Name: ").growX().row();

@@ -19,8 +19,10 @@ package Ozone.Bot;
 import Atom.Utility.MemoryLog;
 import Ozone.Commands.Commands;
 import Ozone.Experimental.Evasion.Identification;
+import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Interface;
 import Ozone.Net.ExpandableNet;
+import Shared.SharedBoot;
 import arc.Core;
 import arc.math.Mathf;
 import arc.util.Interval;
@@ -56,6 +58,7 @@ public class VirtualPlayer extends Player {
 	public ExpandableNet net = new ExpandableNet();
 	public boolean isMobile = Vars.mobile, typing = false, building = false;
 	public Atom.Utility.Log log = new MemoryLog() {
+		
 		@Override
 		protected void output(Object raw) {
 			raw = raw + "\n";
@@ -135,7 +138,7 @@ public class VirtualPlayer extends Player {
 		});
 		
 		net.handleClient(Packets.InvokePacket.class, packet -> {
-			//lol no
+			if (SharedBoot.debug) log.debug("Received Packets: " + InformationCenter.getPacketName(packet.type));
 		});
 	}
 	
