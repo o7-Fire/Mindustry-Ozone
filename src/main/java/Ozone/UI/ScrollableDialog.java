@@ -109,7 +109,7 @@ public abstract class ScrollableDialog extends OzoneDialog {
 	protected void ad(String Object, Callable<Object> callable) {
 		Pool.submit(() -> {
 			try {
-				ad(title, callable.call());
+				ad(Object, callable.call());
 			}catch (Throwable e) {
 				e.printStackTrace();
 				Sentry.captureException(e);
@@ -123,7 +123,8 @@ public abstract class ScrollableDialog extends OzoneDialog {
 	}
 	
 	protected void ad(Object title, Object value) {
-		if (value == null) value = "null";
+		value = String.valueOf(value);
+		title = String.valueOf(title);
 		if (BaseSettings.colorPatch) title = "[" + Random.getRandomHexColor() + "]" + title;
 		Label l = new Label(title + ":");
 		table.add(l).growX();

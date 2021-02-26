@@ -35,6 +35,10 @@ public class SharedBoot {
 	public static Time timeStart = new Time(), timeFinish;
 	public static String type = "Ozone-Core";
 	
+	public static void resetTime() {
+		timeStart = new Time();
+	}
+	
 	public static void finishStartup() {
 		timeFinish = SharedBoot.timeStart.elapsed();
 		new WarningReport().setProblem("Startup in " + timeFinish.convert(TimeUnit.MICROSECONDS).toString()).setWhyItsAProblem("Successfully startup without crash").setLevel(WarningReport.Level.info).report();
