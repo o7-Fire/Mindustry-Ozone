@@ -21,31 +21,40 @@ import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
 import Ozone.Internal.Module;
 import Shared.WarningHandler;
+import Shared.WarningReport;
 import arc.Events;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.game.EventType;
-import mindustry.graphics.LoadRenderer;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class Main {
 	
 	
 	private static boolean init = false;
 	static int iteration = 0;
-	
+	public static Consumer<String> update = null;//to update on renderer
 	
 	public static void loadContent() {
 	
 	
 	}
 	
-	private static LoadRenderer renderer = null;
+	
+	public static void update(String s) {
+		if (update != null) {
+			try {
+				update.accept(s);
+			}catch (Throwable t) {}
+		}
+		Log.debug(s);
+	}
 	
 	public static <T> Collection<Class<? extends T>> getExtended(String packag, Class<T> type) {
 		Collection<Class<? extends T>> raw = null;
@@ -83,10 +92,11 @@ public class Main {
 		register();
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
 			try {
-				Log.debug("Early Init: @", s.getValue().getName());
+				update("Early Init: " + s.getValue().getName());
 				s.getValue().earlyInit();
-			}catch (Throwable e) {
-				WarningHandler.handle(e);
+			}catch (Throwable t) {
+				Sentry.captureException(t);
+				new WarningReport(t).setProblem("Error while early init module " + s.getKey().getName() + ": " + t.toString()).report();
 			}
 		}
 	}
@@ -94,10 +104,11 @@ public class Main {
 	public static void preInit() {
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
 			try {
-				Log.debug("Pre Init: @", s.getValue().getName());
+				update("Pre Init: " + s.getValue().getName());
 				s.getValue().preInit();
-			}catch (Throwable e) {
-				WarningHandler.handle(e);
+			}catch (Throwable t) {
+				Sentry.captureException(t);
+				new WarningReport(t).setProblem("Error while pre init module " + s.getKey().getName() + ": " + t.toString()).report();
 			}
 		}
 	}
@@ -105,7 +116,7 @@ public class Main {
 	public static void register() {
 		for (Class<? extends Module> m : getModule()) {
 			try {
-				Log.debug("Registering @", m.getName());
+				update("Registering: " + m.getName());
 				Module mod = m.getDeclaredConstructor().newInstance();
 				mod.setRegister();
 				
@@ -121,36 +132,34 @@ public class Main {
 		init = true;
 		
 		
-		Log.debug("Finished Registering \n");
-		Log.debug("Initializing \n");
+		update("Finished Registering \n");
+		update("Initializing \n");
 		loadModule();
-		Log.debug("Finished Initializing \n");
-		Log.debug("Initialized @ module in @ iteration", Manifest.module.size(), iteration);
-		Log.debug("Posting module \n");
+		update("Finished Initializing \n");
+		update("Initialized " + Manifest.module.size() + " module in " + iteration + " iteration");
+		update("Posting module \n");
 		Events.on(EventType.ClientLoadEvent.class, gay -> {
 			for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
 				if (!s.getValue().posted()) {
 					try {
-						Log.debug("Posting @", s.getValue().getName());
+						update("Posting " + s.getValue().getName());
 						s.getValue().postInit();
 						s.getValue().setPosted();
-						Log.debug("@ Posted", s.getValue().getName());
 					}catch (Throwable throwable) {
 						Sentry.captureException(throwable);
-						Log.err(throwable);
-						Log.err("Error while posting module @", s.getKey().getName());
-						throw new RuntimeException(throwable);
+						new WarningReport(throwable).setProblem("Error while posting module " + s.getKey().getName() + ": " + throwable.toString()).report();
 					}
 					
 				}
 		});
-		Log.debug("Post completed");
+		update("Post completed");
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
 			Pool.submit(() -> {
 				try {
 					s.getValue().loadAsync();
 				}catch (Throwable t) {
-					WarningHandler.handle(t);
+					Sentry.captureException(t);
+					new WarningReport(t).setProblem("Error while loading async module " + s.getKey().getName() + ": " + t.toString()).report();
 				}
 			});
 		
@@ -162,14 +171,12 @@ public class Main {
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
 			if (s.getValue().canLoad()) {
 				try {
-					Log.debug("Initializing @", s.getValue().getName());
+					update("Initializing " + s.getValue().getName());
 					s.getValue().init();
 					s.getValue().setLoaded();
-					Log.debug("@ Initialized", s.getValue().getName());
 					antiRecurse = true;
 				}catch (Throwable t) {
-					WarningHandler.handle(t);
-					Log.err("Error while loading module @", s.getKey().getName());
+					new WarningReport(t).setProblem("Error while initializing module " + s.getKey().getName() + ": " + t.toString()).report();
 				}
 			}
 		}
