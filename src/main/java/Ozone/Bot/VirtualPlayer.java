@@ -17,6 +17,7 @@
 package Ozone.Bot;
 
 import Atom.Utility.MemoryLog;
+import Atom.Utility.Random;
 import Ozone.Commands.Commands;
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Internal.InformationCenter;
@@ -65,7 +66,7 @@ public class VirtualPlayer extends Player {
 			super.output(raw);
 		}
 	};
-	public GameState.State state = GameState.State.menu;
+	public GameState.State state;
 	public String defName = name;
 	Player player = this;
 	int lastSent = 0;
@@ -82,7 +83,7 @@ public class VirtualPlayer extends Player {
 			admin(false);
 			
 			Packets.ConnectPacket c = new Packets.ConnectPacket();
-			c.name = name;
+			c.name = name();
 			c.locale = Core.settings.getString("locale");
 			c.mods = Vars.mods.getModStrings();
 			c.mobile = isMobile;
@@ -90,7 +91,6 @@ public class VirtualPlayer extends Player {
 			c.color = color().rgba();
 			c.usid = getUSID(packet.addressTCP);
 			c.uuid = getUUID();
-			defName = name;
 			state = (GameState.State.paused);
 			net.send(c, Net.SendMode.tcp);
 			log.info("connect packet sent");
@@ -138,8 +138,15 @@ public class VirtualPlayer extends Player {
 		});
 		
 		net.handleClient(Packets.InvokePacket.class, packet -> {
-			if (SharedBoot.debug) log.debug("Received Packets: " + InformationCenter.getPacketName(packet.type));
+			if (SharedBoot.debug) if (!InformationCenter.isCommonPacket(packet.type))
+				log.debug("Received Packets: " + InformationCenter.getPacketName(packet.type) + " " + packet.type);
 		});
+	}
+	
+	@Override
+	public void name(String name) {
+		super.name(name);
+		defName = name;
 	}
 	
 	public void disconnect() {
@@ -182,7 +189,9 @@ public class VirtualPlayer extends Player {
 	
 	@Override
 	protected VirtualPlayer clone() throws CloneNotSupportedException {
-		VirtualPlayer v = (VirtualPlayer) super.clone();
+		VirtualPlayer v = new VirtualPlayer();
+		v.name = name;
+		v.name += Random.getInt();
 		v.virtualId = System.currentTimeMillis();
 		return v;
 	}

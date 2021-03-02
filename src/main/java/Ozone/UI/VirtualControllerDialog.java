@@ -43,7 +43,6 @@ public class VirtualControllerDialog extends ScrollableDialog {
 	
 	void create() {
 		VirtualController.create();
-		init();
 	}
 	
 	void ad(VirtualPlayer virtualPlayer) {
@@ -51,7 +50,7 @@ public class VirtualControllerDialog extends ScrollableDialog {
 			
 			t.setBackground(Tex.pane);
 			t.table(t2 -> {
-				t2.labelWrap("Name: " + virtualPlayer.name).growX().left();
+				t2.labelWrap("Name: " + virtualPlayer.name()).growX().left();
 				t2.row();
 				t2.labelWrap("Status: " + virtualPlayer.state.toString()).growX().left();
 				t2.row();

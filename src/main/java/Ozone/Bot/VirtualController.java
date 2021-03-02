@@ -16,19 +16,26 @@
 
 package Ozone.Bot;
 
+import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import arc.Events;
 import mindustry.game.EventType;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 public class VirtualController implements Module {
-	public static HashSet<VirtualPlayer> virtualPlayers = new HashSet<>();
+	public static Set<VirtualPlayer> virtualPlayers = Collections.synchronizedSet(new HashSet<>());
 	
-	public static VirtualPlayer create() {
-		VirtualPlayer v = new VirtualPlayer();
-		virtualPlayers.add(v);
-		return v;
+	public static void create() {
+		
+		Interface.showInput("Virtual Player Name", s -> {
+			VirtualPlayer v = new VirtualPlayer();
+			v.name = s;
+			virtualPlayers.add(v);
+			
+		});
 	}
 	
 	@Override

@@ -17,6 +17,7 @@
 package Ozone.Internal;
 
 
+import Atom.Reflect.Reflect;
 import Atom.Struct.Filter;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
@@ -24,6 +25,7 @@ import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
 import arc.Core;
 import arc.Events;
+import arc.func.Cons;
 import arc.graphics.Pixmap;
 import arc.graphics.Texture;
 import arc.graphics.g2d.TextureRegion;
@@ -43,6 +45,8 @@ import mindustry.game.EventType;
 import mindustry.gen.*;
 import mindustry.type.Item;
 import mindustry.world.Tile;
+import mindustry.world.blocks.distribution.Sorter;
+import mindustry.world.blocks.sandbox.ItemSource;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -54,6 +58,14 @@ import static mindustry.Vars.player;
 public class Interface {
 	public static final ObjectMap<String, String> bundle = new ObjectMap<>();
 	private static long lastToast = 0;
+	
+	public static void showInput(String about, Cons<String> s) {
+		String key = Reflect.getCallerClassStackTrace().toString();
+		Vars.ui.showTextInput(about, about, 1000, Core.settings.getString(key, ""), se -> {
+			Core.settings.put(key, se);
+			s.get(se);
+		});
+	}
 	
 	public static Drawable getDrawableSized(String path, Drawable def) {
 		Drawable d = getDrawable(path, def);
@@ -232,6 +244,13 @@ public class Interface {
 	
 	public static Future<Building> getBuild(Filter<Building> buildFilter) {
 		return Pool.submit(() -> Random.getRandom(Objects.requireNonNull(getBuilds(buildFilter)).get()));
+	}
+	
+	public static Future<Building> getRandomSorterLikeShit() {
+		return Interface.getBuild(build -> {
+			if (build == null) return false;
+			return build.interactable(Vars.player.team()) && (build.block() instanceof Sorter || build.block() instanceof ItemSource);
+		});
 	}
 	
 	public static Future<ArrayList<Building>> getBuilds(Filter<Building> buildingFilter) {

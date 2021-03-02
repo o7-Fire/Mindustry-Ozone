@@ -21,6 +21,7 @@ import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Experimental.Evasion.Identification;
+import Ozone.Gen.Callable;
 import Ozone.Internal.InformationCenter;
 import Ozone.Net.OzoneFrameworkNetProvider;
 import Ozone.Patch.Translation;
@@ -40,21 +41,29 @@ import mindustry.core.Version;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
 import mindustry.net.*;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 import static mindustry.Vars.maxNameLength;
 import static mindustry.Vars.maxTextLength;
 
+//Pure madness
+//TODO fuck it
 public class ConnectDiagram extends AttackDiagram {
-	final String ip, sup;
-	final int port, maxThread;
-	final boolean join;
-	final Queue<Future<?>> taskList = new Queue<>();
+	public String ip, sup;
+	public int port, maxThread;
+	public boolean join;
+	protected Queue<Future<?>> taskList = new Queue<>();
+	
+	public ConnectDiagram() {
+	
+	}
 	
 	public ConnectDiagram(String ip, int port, String suprise, int maxThread, boolean enableJoinMessage) {
 		this.ip = ip;
@@ -69,6 +78,7 @@ public class ConnectDiagram extends AttackDiagram {
 		Player p = null;
 		if (Groups.player.size() > 2) p = Random.getRandom(Groups.player);
 		c.name = p == null ? (Random.getBool() ? Utility.capitalizeEnforce(WordGenerator.newWord(Random.getInt(5, maxNameLength))) : WordGenerator.newWord(Random.getInt(5, maxNameLength))) : p.name + Translation.getRandomHexColor();
+		c.name += "[]";
 		c.locale = null;//lol no
 		c.mods = new Seq<>();
 		c.mobile = Random.getBool();
@@ -78,27 +88,34 @@ public class ConnectDiagram extends AttackDiagram {
 		c.uuid = Identification.getRandomUID();
 		return c;
 	}
+	
 	int i = 0;
 	int last = i;
+	
+	public static Future<?> summonDiagram(String ip, int port, ConnectDiagram some, Consumer<ConnectDiagramProvider> payload) {
+		return Pool.submit(() -> {
+			ConnectDiagramProvider p = new ConnectDiagramProvider(some);
+			p.payload = payload;
+			p.disconnectClient();
+			AtomicBoolean b = new AtomicBoolean(false);
+			p.connectClient(ip, port, () -> {
+				if (payload == null) p.disconnectClient();
+				b.set(true);
+			}, () -> {
+				b.set(true);
+			});
+			while (!b.get()) {
+				try { Thread.sleep(100); }catch (Throwable ignored) { }
+			}
+			p.dispose();
+		});
+	}
+	
 	@Override
 	public void run() {
 		while (taskList.size < maxThread) {
 			i++;
-			taskList.addLast(Pool.submit(() -> {
-				ConnectDiagramProvider p = new ConnectDiagramProvider(this);
-				p.disconnectClient();
-				AtomicBoolean b = new AtomicBoolean(false);
-				p.connectClient(ip, port, () -> {
-					p.disconnectClient();
-					b.set(true);
-				}, () -> {
-					b.set(true);
-				});
-				while (!b.get()) {
-					try { Thread.sleep(100); }catch (Throwable ignored) { }
-				}
-				p.dispose();
-			}));
+			taskList.addLast(summonDiagram(ip, port, this, null));
 		}
 		
 		Future<?> f = taskList.first();
@@ -120,13 +137,18 @@ public class ConnectDiagram extends AttackDiagram {
 		private final ReusableByteOutStream OUT = new ReusableByteOutStream(8192);
 		private final Writes WRITE = new Writes(new DataOutputStream(OUT));
 		private Client client;
-		private ConnectDiagram cd;
+		public Callable call;
 		private Runnable suc = null;
 		private boolean clientLoaded, connecting;
+		public Net net;
+		public Consumer<ConnectDiagramProvider> payload;
+		@Nullable
+		private ConnectDiagram cd;
 		
-		
-		public ConnectDiagramProvider(ConnectDiagram cc) {
+		public ConnectDiagramProvider(@Nullable ConnectDiagram cc) {
 			cd = cc;
+			net = new Net(this);
+			call = new Callable(net);
 			Prov<DatagramPacket> packetSupplier = () -> new DatagramPacket(new byte[512], 512);
 			client = new Client(8192, 8192, new ArcNetProvider.PacketSerializer());
 			client.setDiscoveryPacket(packetSupplier);
@@ -164,24 +186,20 @@ public class ConnectDiagram extends AttackDiagram {
 			handleClient(Packets.WorldStream.class, data -> {
 				Log.debug("Received world data: @ bytes.", data.stream.available());
 				clientLoaded = true;
-				if (cd.sup.isEmpty() || cd.sup.length() > maxTextLength) sendChat("");
-				else sendChat(cd.sup);
-				if (cd.join) confirmConnect();
+				if (cd != null) {
+					if (cd.sup.isEmpty() || cd.sup.length() > maxTextLength) sendChat("");
+					else sendChat(cd.sup);
+					if (cd.join) call.connectConfirm();
+				}else {
+					sendChat("");
+					call.connectConfirm();
+				}
+				if (payload != null) payload.accept(this);
 				suc.run();
 			});
 		}
 		
-		public void confirmConnect() {
-			//Call.connectConfirm();
-			mindustry.net.Packets.InvokePacket packet = arc.util.pooling.Pools.obtain(mindustry.net.Packets.InvokePacket.class, mindustry.net.Packets.InvokePacket::new);
-			packet.priority = (byte) 0;
-			packet.type = (byte) 10;
-			OUT.reset();
-			packet.bytes = OUT.getBytes();
-			packet.length = OUT.size();
-			sendClient(packet, Net.SendMode.tcp);
-		}
-		
+
 		public void sendChat(String s) {
 			//Call.sendChatMessage(s);
 			mindustry.net.Packets.InvokePacket packet = arc.util.pooling.Pools.obtain(mindustry.net.Packets.InvokePacket.class, mindustry.net.Packets.InvokePacket::new);
@@ -252,7 +270,7 @@ public class ConnectDiagram extends AttackDiagram {
 					Pool.daemon(() -> {
 						try {
 							client.run();
-						}catch (Exception e) {
+						}catch (Exception ignored) {
 						
 						}
 					}).start();

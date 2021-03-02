@@ -35,6 +35,7 @@ import mindustry.mod.Mod;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
 import mindustry.ui.Styles;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -57,7 +58,8 @@ public class Manifest {
 	
 	public static ModuleFrag moduleFrag;
 	public static ArrayList<Class<?>> settings = new ArrayList<>();//for GUI purpose
-	public static String lastServer = "";
+	public static String currentServer = "";
+	public static int currentPort = Vars.port;
 	public static Mod ozone;
 	public static final HashMap<Class<? extends Module>, Module> module = new HashMap<>();
 	
@@ -69,17 +71,31 @@ public class Manifest {
 		return null;
 	}
 	
+	public static int getCurrentServerPort() {
+		try {
+			return getCurrentClientNet().getRemoteAddressTCP().getPort();
+		}catch (Throwable t) {
+			return currentPort;
+		}
+	}
+	
 	public static String getCurrentServerIP() {
-		if (!Vars.net.active()) return lastServer;
+		try {
+			return getCurrentClientNet().getRemoteAddressTCP().getAddress().getHostAddress();
+		}catch (Throwable t) {
+			return currentServer;
+		}
+		
+	}
+	
+	public static @Nullable Client getCurrentClientNet() {
 		try {
 			Net.NetProvider n = Reflect.getField(Vars.net.getClass(), "provider", Vars.net);
 			if (!(n instanceof ArcNetProvider)) return null;
 			ArcNetProvider arc = (ArcNetProvider) n;
-			Client c = Reflect.getField(arc.getClass(), "client", arc);
-			return c.getRemoteAddressTCP().getHostName() + ":" + c.getRemoteAddressTCP().getPort();
+			return Reflect.getField(arc.getClass(), "client", arc);
 		}catch (Throwable ignored) { }
-		return lastServer;
-		
+		return null;
 	}
 	
 	public static void saveSettings() {

@@ -50,7 +50,7 @@ public class Main {
 	public static void update(String s) {
 		if (update != null) {
 			try {
-				update.accept(s);
+				//update.accept(s);
 			}catch (Throwable t) {}
 		}
 		Log.debug(s);

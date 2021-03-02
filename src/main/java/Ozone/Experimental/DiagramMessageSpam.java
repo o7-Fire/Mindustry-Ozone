@@ -21,25 +21,26 @@ import Ozone.Manifest;
 import arc.Core;
 import mindustry.Vars;
 
+import java.util.function.Consumer;
+
 public class DiagramMessageSpam implements Experimental {
-	
-	@Override
-	public void run() {
+	public static void execute(Consumer<ConnectDiagram.ConnectDiagramProvider> c) {
 		int thread = 4;
 		try {thread = Runtime.getRuntime().availableProcessors() * 2;}catch (Throwable ignored) {}
 		int finalThread = thread;
+		String prefixS = DiagramMessageSpam.class.getName();
 		//holy shit get to outside
-		Vars.ui.showTextInput("Enter server ip", "", Core.settings.getString(this.getClass().getName() + ".ip", "127.0.0.1"), s1 -> {
-			Vars.ui.showTextInput("Enter server port", "", 6, Core.settings.getString(this.getClass().getName() + ".port", Vars.port + ""), true, s2 -> {
+		Vars.ui.showTextInput("Enter server ip", "", Core.settings.getString(prefixS + ".ip", "127.0.0.1"), s1 -> {
+			Vars.ui.showTextInput("Enter server port", "", 6, Core.settings.getString(prefixS + ".port", Vars.port + ""), true, s2 -> {
 				Vars.ui.showTextInput("Max Thread", "careful idiot", 2, finalThread + "", true, s3 -> {
 					Vars.ui.showTextInput("Surprise ?", "Send spam message", "randomizer", s5 -> {
-						Vars.ui.showTextInput("Enable Join Message", "true/false", Core.settings.getBool(this.getClass().getName() + ".join", true) + "", s6 -> {
+						Vars.ui.showTextInput("Enable Join Message", "true/false", Core.settings.getBool(prefixS + ".join", true) + "", s6 -> {
 							Vars.ui.showConfirm("Confirm", "Are you sure ?", () -> {
 								try {
-									Core.settings.put(this.getClass().getName() + ".ip", s1);
-									Core.settings.put(this.getClass().getName() + ".port", s2);
+									Core.settings.put(prefixS + ".ip", s1);
+									Core.settings.put(prefixS + ".port", s2);
 									boolean joinMessage = Boolean.parseBoolean(s6);
-									Core.settings.put(this.getClass().getName() + ".join", joinMessage);
+									Core.settings.put(DiagramMessageSpam.class.getName() + ".join", joinMessage);
 									String s4 = s5;
 									if (s4.equals("randomizer")) s4 = "";
 									if (s4.toUpperCase().contains("2tqguRj".toUpperCase()) || s4.toUpperCase().contains("ozone".toUpperCase()))
@@ -55,5 +56,10 @@ public class DiagramMessageSpam implements Experimental {
 				});
 			});
 		});
+	}
+	
+	@Override
+	public void run() {
+		execute(null);
 	}
 }

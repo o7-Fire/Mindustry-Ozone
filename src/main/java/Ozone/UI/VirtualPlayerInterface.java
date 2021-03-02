@@ -17,11 +17,14 @@
 package Ozone.UI;
 
 import Atom.Utility.MemoryLog;
+import Atom.Utility.Random;
 import Ozone.Bot.VirtualPlayer;
 import arc.Core;
 import mindustry.Vars;
 import mindustry.core.GameState;
+import mindustry.gen.Groups;
 import mindustry.gen.Icon;
+import mindustry.gen.Player;
 
 public class VirtualPlayerInterface extends ScrollableDialog {
 	VirtualPlayer virtualPlayer;
@@ -65,12 +68,15 @@ public class VirtualPlayerInterface extends ScrollableDialog {
 					}
 				};
 			}).growX();
+			t1.button("Impersonate someone", () -> {
+				Player p = Random.getRandom(Groups.player);
+				virtualPlayer.name = p.name + "[]";
+				init();
+			}).growX().disabled(Groups.player.size() < 2);//why this is look cursed
 		}).growX();
 		table.table(t2 -> {
 			t2.labelWrap("Name: ").growX().row();
-			t2.field(virtualPlayer.name, s -> {
-				virtualPlayer.name = s;
-			}).growX().row();
+			t2.field(virtualPlayer.name(), s -> virtualPlayer.name(s)).growX().row();
 			t2.labelWrap("Status: " + virtualPlayer.state.toString()).growX().row();
 			t2.labelWrap("ID: " + virtualPlayer.vid()).growX().row();
 			t2.labelWrap("UUID: " + virtualPlayer.getUUID()).growX().row();

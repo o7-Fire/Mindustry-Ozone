@@ -46,8 +46,6 @@ import mindustry.net.Net;
 import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.Tile;
-import mindustry.world.blocks.distribution.Sorter;
-import mindustry.world.blocks.sandbox.ItemSource;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -59,13 +57,14 @@ public class Commands implements Module {
 	
 	public static final Queue<Task> commandsQueue = new Queue<>();
 	public static final Map<String, Command> commandsList = new TreeMap<>();
-	
+	public static final TreeMap<String, Payload> payloads = new TreeMap<>();
 	public static HashMap<Integer, Integer> targetPlayer = new HashMap<>();
 	private static boolean falseVote = false;
 	private static boolean drainCore = false;
 	private static boolean chatting = false;
 	private volatile static boolean rotatingconveyor = false;
 	private static VirtualPlayer virtualPlayer = null;
+	private static int i = 0;
 	
 	public static void virtualPlayer(VirtualPlayer virtualPlayer) {
 		Commands.virtualPlayer = virtualPlayer;
@@ -84,7 +83,7 @@ public class Commands implements Module {
 		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer -Nexity");
 		register("task-deconstruct", new Command(Commands::taskDeconstruct));
 		register("send-colorize", new Command(Commands::sendColorize));
-		register("follow-player", new Command(Commands::followPlayer), "follow a player use ID or startsWith/full name");
+		register("follow-player", new Command(Commands::followPlayer), "follow a player use ID or s2tartsWith/full name");
 		
 		//Commands with icon support no-argument-commands (user input is optional)
 		register("rotate-conveyor", new Command(Commands::rotateconveyor, Icon.rotate), "rotate a fucking conveyor");
@@ -104,10 +103,15 @@ public class Commands implements Module {
 			register("debug", new Command(Commands::debug, Icon.pause), "so you just found debug mode");
 		register("module-reset", new Command(Commands::moduleReset, Icon.eraser), "Reset all module as if you loading the world");
 		register("gc", new Command(Commands::garbageCollector, Icon.cancel), "Trigger Garbage Collector");
+		
+		//Payload for connect diagram
+		payloads.put("sorter-shuffle", new Payload(Commands::shuffleSorterPayload));
+		
 		Log.infoTag("Ozone", "Commands Center Initialized");
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
+		Log.infoTag("Ozone", payloads.size() + " payload loaded");
 	}
-	
+
 	public static void hudFragToast(ArrayList<String> arg) {
 		String s = "[" + Random.getRandomHexColor() + "]Test " + Random.getString(16);
 		if (!arg.isEmpty()) s = Utility.joiner(arg, " ");
@@ -148,8 +152,6 @@ public class Commands implements Module {
 		commandsList.put(name, command);
 	}
 	
-	private static int i = 0;
-	
 	public static void taskDeconstruct(ArrayList<String> s) {
 		taskDeconstruct(s, Vars.player);
 	}
@@ -174,16 +176,6 @@ public class Commands implements Module {
 			tellUser("The code mason, what do they mean");
 		}
 		i++;
-	}
-	
-	@Override
-	public ArrayList<Class<? extends Module>> dependOnModule() {
-		return new ArrayList<>(Arrays.asList(Translation.class));
-	}
-	
-	@Override
-	public void init() {
-		register();
 	}
 	
 	public static void taskClear() {
@@ -381,6 +373,14 @@ public class Commands implements Module {
 		
 	}
 	
+	public static void shuffleSorterPayload(Callable c) {
+		try {
+			shuffleSorterCall(c, Interface.getRandomSorterLikeShit().get());
+		}catch (Throwable t) {
+			Log.err(t);
+		}
+	}
+	
 	public static void shuffleSorter() {
 		shuffleSorter(Vars.net);
 	}
@@ -407,6 +407,16 @@ public class Commands implements Module {
 		}
 	}
 	
+	public static void shuffleSorterCall(Callable call, Building t) {
+		if (t == null || t.tile == null) {
+			tellUser("block can't be find");
+			return;
+		}
+		Item target = Random.getRandom(Vars.content.items());
+		t.tile.build.block.lastConfig = target;
+		call.tileConfig(null, t.tile.build, target);
+	}
+	
 	public static void shuffleSorter(Net net) {
 		
 		TaskInterface.addTask(new Completable() {
@@ -414,10 +424,7 @@ public class Commands implements Module {
 			
 			{
 				name = "shuffleSorter";
-				f = Interface.getBuild(build -> {
-					if (build == null) return false;
-					return build.interactable(Vars.player.team()) && (build.block() instanceof Sorter || build.block() instanceof ItemSource);
-				});
+				f = Interface.getRandomSorterLikeShit();
 				if (f == null) {
 					tellUser("wtf ? shuffle sorter future is null");
 					completed = true;
@@ -431,15 +438,7 @@ public class Commands implements Module {
 				if (completed) return;
 				completed = true;
 				try {
-					Building t = f.get();
-					if (t == null || t.tile == null) {
-						tellUser("block can't be find");
-						return;
-					}
-					Item target = Random.getRandom(Vars.content.items());
-					Callable call = new Callable(net);
-					t.tile.build.block.lastConfig = target;
-					call.tileConfig(null, t.tile.build, target);
+					shuffleSorterCall(new Callable(net), f.get());
 				}catch (IndexOutOfBoundsException gay) {
 					Commands.tellUser("No item");
 				}catch (InterruptedException | ExecutionException e) {
@@ -536,7 +535,7 @@ public class Commands implements Module {
 			tellUser("kicking ended");
 		}
 	}
-
+	
 	public static void chatRepeater(ArrayList<String> arg) {
 		chatting = !chatting;
 		if (chatting) {
@@ -577,14 +576,30 @@ public class Commands implements Module {
 		}
 	}
 	
-	
 	public static void setHud(String s) {
 		if (Vars.ui != null && Vars.ui.hudfrag != null) Vars.ui.hudfrag.setHudText(s);
 	}
 	
 	@Override
+	public ArrayList<Class<? extends Module>> dependOnModule() {
+		return new ArrayList<>(Arrays.asList(Translation.class));
+	}
+	
+	@Override
+	public void init() {
+		register();
+	}
+	
+	@Override
 	public void reset() throws Throwable {
 		targetPlayer.clear();
+	}
+	
+	public static class Payload {
+		public final Consumer<Callable> payloadConsumer;
+		
+		
+		public Payload(Consumer<Callable> payloadConsumer) {this.payloadConsumer = payloadConsumer;}
 	}
 	
 	public static class Command {
@@ -602,7 +617,8 @@ public class Commands implements Module {
 			this.method = strings -> r.run();//cursed
 			this.icon = icon;
 		}
-		public Command(Consumer<ArrayList<String>> r, TextureRegionDrawable icon){
+		
+		public Command(Consumer<ArrayList<String>> r, TextureRegionDrawable icon) {
 			this.method = r;
 			this.icon = icon;
 		}
