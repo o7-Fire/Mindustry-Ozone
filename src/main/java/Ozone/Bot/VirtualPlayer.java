@@ -130,7 +130,6 @@ public class VirtualPlayer extends Player {
 				reset();
 				return;
 			}
-			net.call.sendMessage("gay");
 			net.call.connectConfirm();
 			net.setClientLoaded(true);
 			log.info("Connected");
@@ -138,7 +137,7 @@ public class VirtualPlayer extends Player {
 		});
 		
 		net.handleClient(Packets.InvokePacket.class, packet -> {
-			if (SharedBoot.debug) if (!InformationCenter.isCommonPacket(packet.type))
+			if (SharedBoot.debug) if (!InformationCenter.isCommonPacketReceive(packet.type))
 				log.debug("Received Packets: " + InformationCenter.getPacketName(packet.type) + " " + packet.type);
 		});
 	}

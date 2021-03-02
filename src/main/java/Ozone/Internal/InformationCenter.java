@@ -19,23 +19,29 @@ package Ozone.Internal;
 import Atom.Reflect.Reflect;
 import arc.struct.Seq;
 import mindustry.gen.Call;
+import mindustry.gen.RemoteReadClient;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class InformationCenter {
 	protected static ArrayList<String> moduleRegistered = new ArrayList<>(), moduleLoaded = new ArrayList<>(), modulePost = new ArrayList<>();
 	private static ArrayList<String> packetName = new ArrayList<>();
 	private static ArrayList<Integer> commonPacket = new ArrayList<>(Arrays.asList(17,//effect
-			58,//set Tile
+			31,//ping response
+			59, 18, 58,//set Tile
 			7,//client unreliable
 			8,//Snapshot
-			30));//Ping
+			30));//
+	private static HashSet<Integer> commonPacketReceive = new HashSet<>();
 	
 	static {
-		
+		commonPacketReceive.add(59);
+		commonPacketReceive.add(31);
+		commonPacketReceive.add(18);
 		Seq<Method> a = new Seq<>(Call.class.getDeclaredMethods());
 		a.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 		for (Method m : a) {
@@ -63,10 +69,19 @@ public class InformationCenter {
 	
 	public static String getPacketName(int id) {
 		try {
+			RemoteReadClient.readPacket(null, id);
+		}catch (Throwable t) {
+			return t.getMessage().replace("Failed to read remote method", "");
+		}
+		try {
 			return packetName.get(id);
-		}catch (Throwable t){
+		}catch (Throwable t) {
 			return "Unknown Packet";
 		}
+	}
+	
+	public static boolean isCommonPacketReceive(int b) {
+		return commonPacketReceive.contains(b);
 	}
 	
 	public static boolean isCommonPacket(int id) {
@@ -74,6 +89,6 @@ public class InformationCenter {
 	}
 	
 	public static ArrayList<String> getPacketsName() {
-		return new ArrayList<>(packetName);
+		return new ArrayList<>(packetName);//what r u doing debil
 	}
 }
