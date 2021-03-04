@@ -80,6 +80,10 @@ Linux: /home/USERNAME/.local/share/Mindustry/mods/
 - copy the jar to the mods folder
 - launch mindustry (for desktop ozone recommend to use **Run** instead)
 
+```
+tl;dr both can be manually installed and have installer built-in 
+```
+
 # Preview
 
 (mostly ozone core)

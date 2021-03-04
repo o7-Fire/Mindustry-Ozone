@@ -81,7 +81,7 @@ public class ExpandableNet extends Net {
 	
 	@Override
 	public void send(Object object, SendMode mode) {
-		super.send(object, mode);
+		netProvider.sendClient(object, mode);
 	}
 	
 	@Override
