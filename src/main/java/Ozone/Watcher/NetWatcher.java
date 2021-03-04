@@ -18,26 +18,21 @@ package Ozone.Watcher;
 
 import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Interface;
-import arc.func.Cons;
-import arc.func.Cons2;
+import Ozone.Net.ModifiableNet;
 import arc.util.Log;
 import mindustry.Vars;
-import mindustry.net.*;
+import mindustry.net.Net;
+import mindustry.net.Packet;
+import mindustry.net.Packets;
 
-import java.io.IOException;
-
-public class NetWatcher extends Net {
-	Net net;
-	
-	public NetWatcher(NetProvider provider) {
-		super(provider);
-		Log.infoTag("Net-Watcher", provider.getClass().getName());
-		Interface.showInfo("Net Watcher: " + provider.getClass().getName());
-	}
+public class NetWatcher extends ModifiableNet {
 	
 	public NetWatcher(Net net) {
-		this(Vars.platform.getNet());
-		this.net = net;
+		super(net);
+		Object provider = Vars.platform.getNet();
+		Log.infoTag("Net-Watcher", provider.getClass().getName());
+		Interface.showInfo("Net Watcher: " + provider.getClass().getName());
+		
 	}
 	
 	@Override
@@ -57,118 +52,4 @@ public class NetWatcher extends Net {
 		net.handleClientReceived(object);
 	}
 	
-	@Override
-	public void handleException(Throwable e) {
-		net.handleException(e);
-	}
-	
-	@Override
-	public void showError(Throwable e) {
-		net.showError(e);
-	}
-	
-	@Override
-	public void setClientLoaded(boolean loaded) {
-		net.setClientLoaded(loaded);
-	}
-	
-	@Override
-	public void setClientConnected() {
-		net.setClientConnected();
-	}
-	
-	@Override
-	public void connect(String ip, int port, Runnable success) {
-		net.connect(ip, port, success);
-	}
-	
-	@Override
-	public void host(int port) throws IOException {
-		net.host(port);
-	}
-	
-	@Override
-	public void closeServer() {
-		net.closeServer();
-	}
-	
-	@Override
-	public void reset() {
-		net.reset();
-	}
-	
-	@Override
-	public void disconnect() {
-		net.disconnect();
-	}
-	
-	@Override
-	public byte[] compressSnapshot(byte[] input) {
-		return net.compressSnapshot(input);
-	}
-	
-	@Override
-	public byte[] decompressSnapshot(byte[] input, int size) {
-		return net.decompressSnapshot(input, size);
-	}
-	
-	@Override
-	public void discoverServers(Cons<Host> cons, Runnable done) {
-		net.discoverServers(cons, done);
-	}
-	
-	@Override
-	public Iterable<NetConnection> getConnections() {
-		return net.getConnections();
-	}
-	
-	@Override
-	public void sendExcept(NetConnection except, Object object, SendMode mode) {
-		net.sendExcept(except, object, mode);
-	}
-	
-	@Override
-	public Streamable.StreamBuilder getCurrentStream() {
-		return net.getCurrentStream();
-	}
-	
-	@Override
-	public <T> void handleClient(Class<T> type, Cons<T> listener) {
-		net.handleClient(type, listener);
-	}
-	
-	@Override
-	public <T> void handleServer(Class<T> type, Cons2<NetConnection, T> listener) {
-		net.handleServer(type, listener);
-	}
-	
-	@Override
-	public void handleServerReceived(NetConnection connection, Object object) {
-		net.handleServerReceived(connection, object);
-	}
-	
-	@Override
-	public void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> failed) {
-		net.pingHost(address, port, valid, failed);
-	}
-	
-	@Override
-	public boolean active() {
-		return net.active();
-	}
-	
-	@Override
-	public boolean server() {
-		return net.server();
-	}
-	
-	@Override
-	public boolean client() {
-		return net.client();
-	}
-	
-	@Override
-	public void dispose() {
-		net.dispose();
-	}
 }
