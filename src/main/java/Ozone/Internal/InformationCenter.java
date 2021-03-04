@@ -17,9 +17,14 @@
 package Ozone.Internal;
 
 import Atom.Reflect.Reflect;
+import arc.net.Client;
 import arc.struct.Seq;
+import mindustry.Vars;
 import mindustry.gen.Call;
 import mindustry.gen.RemoteReadClient;
+import mindustry.net.ArcNetProvider;
+import mindustry.net.Net;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -30,6 +35,8 @@ public class InformationCenter {
 	protected static ArrayList<String> moduleRegistered = new ArrayList<>(), moduleLoaded = new ArrayList<>(), modulePost = new ArrayList<>();
 	private static ArrayList<String> clientSendPackets = new ArrayList<>();
 	private static HashSet<Integer> commonPacketReceive = new HashSet<>(), commonPacketClientSend = new HashSet<>();
+	public static String currentServerIP = "";
+	public static int currentServerPort = 0;
 	
 	static {
 		commonPacketReceive.add(59);
@@ -66,6 +73,33 @@ public class InformationCenter {
 		}catch (Throwable t) {
 			return "Unknown Packet";
 		}
+	}
+	
+	public static int getCurrentServerPort() {
+		try {
+			return getCurrentClientNet().getRemoteAddressTCP().getPort();
+		}catch (Throwable t) {
+			return currentServerPort;
+		}
+	}
+	
+	public static String getCurrentServerIP() {
+		try {
+			return getCurrentClientNet().getRemoteAddressTCP().getAddress().getHostAddress();
+		}catch (Throwable t) {
+			return currentServerIP;
+		}
+		
+	}
+	
+	public static @Nullable Client getCurrentClientNet() {
+		try {
+			Net.NetProvider n = Reflect.getField(Vars.net.getClass(), "provider", Vars.net);
+			if (!(n instanceof ArcNetProvider)) return null;
+			ArcNetProvider arc = (ArcNetProvider) n;
+			return Reflect.getField(arc.getClass(), "client", arc);
+		}catch (Throwable ignored) { }
+		return null;
 	}
 	
 	public static String getPacketNameClientReceive(int id) {
