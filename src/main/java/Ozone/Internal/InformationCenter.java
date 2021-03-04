@@ -107,6 +107,8 @@ public class InformationCenter {
 	}
 	
 	public static String getPacketNameClientReceive(int id) {
+		
+		
 		try {
 			RemoteReadClient.readPacket(null, id);
 		}catch (Throwable t) {
