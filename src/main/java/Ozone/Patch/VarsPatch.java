@@ -22,6 +22,7 @@ import Ozone.Internal.Module;
 import Ozone.Internal.RepoCached;
 import Ozone.Patch.Mindustry.DesktopInputPatched;
 import Ozone.Patch.Mindustry.MobileInputPatched;
+import Ozone.Patch.Mindustry.NetPatched;
 import Ozone.Settings.BaseSettings;
 import Ozone.Settings.SettingsManifest;
 import Shared.SharedBoot;
@@ -88,6 +89,8 @@ public class VarsPatch implements Module {
 			try {
 				menu = Reflect.getField(Vars.ui.menufrag.getClass(), "container", Vars.ui.menufrag);
 			}catch (Throwable ignored) {}
+			Vars.net = new NetPatched(Vars.net);
+			
 			Log.infoTag("Ozone", "Patching Complete");
 		}catch (Throwable t) {
 			Log.infoTag("Ozone", "Patch failed");
