@@ -25,10 +25,10 @@ import mindustry.net.Streamable;
 
 import java.io.IOException;
 
-public class ModifiableNet extends Net {
+public class LoggableNet extends Net {
 	protected Net net;
 	
-	public ModifiableNet(Net net) {
+	public LoggableNet(Net net) {
 		super(null);
 	}
 	

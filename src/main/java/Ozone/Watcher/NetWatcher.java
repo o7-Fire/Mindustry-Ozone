@@ -18,14 +18,14 @@ package Ozone.Watcher;
 
 import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Interface;
-import Ozone.Net.ModifiableNet;
+import Ozone.Net.LoggableNet;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.net.Net;
 import mindustry.net.Packet;
 import mindustry.net.Packets;
 
-public class NetWatcher extends ModifiableNet {
+public class NetWatcher extends LoggableNet {
 	
 	public NetWatcher(Net net) {
 		super(net);
