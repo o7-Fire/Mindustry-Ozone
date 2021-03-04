@@ -37,18 +37,20 @@ public class NetWatcher extends LoggableNet {
 	
 	@Override
 	public void send(Object object, SendMode mode) {
-		if (object instanceof Packets.InvokePacket)
-			Log.infoTag("Packet-" + mode.name() + "-Send", "[" + ((Packets.InvokePacket) object).type + "] " + InformationCenter.getPacketNameClientSend(((Packets.InvokePacket) object).type));
-		else if (object instanceof Packet) Log.infoTag("Packet-" + mode.name() + "-Send", object.getClass().getName());
+		if (object instanceof Packets.InvokePacket) {
+			if (!InformationCenter.isCommonPacketClientSend(((Packets.InvokePacket) object).type))
+				Log.infoTag("Packet-" + mode.name() + "-Send", "[" + ((Packets.InvokePacket) object).type + "] " + InformationCenter.getPacketNameClientSend(((Packets.InvokePacket) object).type));
+		}else if (object instanceof Packet) Log.infoTag("Packet-" + mode.name() + "-Send", object.getClass().getName());
 		
 		net.send(object, mode);
 	}
 	
 	@Override
 	public void handleClientReceived(Object object) {
-		if (object instanceof Packets.InvokePacket)
-			Log.infoTag("Packet-Receive", "[" + ((Packets.InvokePacket) object).type + "] " + InformationCenter.getPacketNameClientReceive(((Packets.InvokePacket) object).type));
-		else if (object instanceof Packet) Log.infoTag("Packet-Receive", object.getClass().getName());
+		if (object instanceof Packets.InvokePacket) {
+			if (!InformationCenter.isCommonPacketClientReceive(((Packets.InvokePacket) object).type))
+				Log.infoTag("Packet-Receive", "[" + ((Packets.InvokePacket) object).type + "] " + InformationCenter.getPacketNameClientReceive(((Packets.InvokePacket) object).type));
+		}else if (object instanceof Packet) Log.infoTag("Packet-Receive", object.getClass().getName());
 		net.handleClientReceived(object);
 	}
 	

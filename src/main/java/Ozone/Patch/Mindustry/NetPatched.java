@@ -21,6 +21,8 @@ import Ozone.Net.LoggableNet;
 import mindustry.net.Net;
 
 public class NetPatched extends LoggableNet {
+	
+	
 	public NetPatched(Net net) {
 		super(net);
 	}

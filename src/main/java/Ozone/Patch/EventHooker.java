@@ -17,6 +17,7 @@
 package Ozone.Patch;
 
 import Ozone.Event.EventExtended;
+import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
@@ -81,6 +82,7 @@ public class EventHooker implements Module {
 			}
 		});
 		Events.run(EventExtended.Game.Start, () -> {
+			Log.debug("Server: " + InformationCenter.getCurrentServerIP() + ":" + InformationCenter.getCurrentServerPort());
 			resets();
 		});
 		Events.run(EventExtended.Game.Stop, () -> {

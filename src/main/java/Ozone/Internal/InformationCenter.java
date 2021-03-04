@@ -22,6 +22,7 @@ import arc.struct.Seq;
 import mindustry.Vars;
 import mindustry.gen.Call;
 import mindustry.gen.RemoteReadClient;
+import mindustry.gen.RemoteReadServer;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
 import org.jetbrains.annotations.Nullable;
@@ -34,14 +35,16 @@ import java.util.HashSet;
 public class InformationCenter {
 	protected static ArrayList<String> moduleRegistered = new ArrayList<>(), moduleLoaded = new ArrayList<>(), modulePost = new ArrayList<>();
 	private static ArrayList<String> clientSendPackets = new ArrayList<>();
-	private static HashSet<Integer> commonPacketReceive = new HashSet<>(), commonPacketClientSend = new HashSet<>();
+	private static HashSet<Integer> commonPacketClientReceive = new HashSet<>(), commonPacketClientSend = new HashSet<>();
 	public static String currentServerIP = "";
 	public static int currentServerPort = 0;
 	
 	static {
-		commonPacketReceive.add(59);
-		commonPacketReceive.add(31);
-		commonPacketReceive.add(18);
+		commonPacketClientReceive.add(59);//state snapshot
+		commonPacketClientReceive.add(31);//ping response
+		commonPacketClientReceive.add(18);//entity snapshot
+		commonPacketClientSend.add(8);//client snapshot
+		commonPacketClientSend.add(30);//ping response
 		Seq<Method> a = new Seq<>(Call.class.getDeclaredMethods());
 		a.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 		for (Method m : a) {
@@ -69,10 +72,11 @@ public class InformationCenter {
 	
 	public static String getPacketNameClientSend(int id) {
 		try {
-			return clientSendPackets.get(id);
+			RemoteReadServer.readPacket(null, id, Vars.player);
 		}catch (Throwable t) {
-			return "Unknown Packet";
+			return t.getMessage().replace("Failed to read remote method", "");
 		}
+		return "Unknown Packet";
 	}
 	
 	public static int getCurrentServerPort() {
@@ -124,8 +128,12 @@ public class InformationCenter {
 		}
 	}
 	
-	public static boolean isCommonPacketReceive(int b) {
-		return commonPacketReceive.contains(b);
+	public static boolean isCommonPacketClientSend(int b) {
+		return commonPacketClientSend.contains(b);
+	}
+	
+	public static boolean isCommonPacketClientReceive(int b) {
+		return commonPacketClientReceive.contains(b);
 	}
 	
 	public static boolean isCommonPacket(int id) {
