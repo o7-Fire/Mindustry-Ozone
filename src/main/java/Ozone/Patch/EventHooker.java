@@ -73,6 +73,7 @@ public class EventHooker implements Module {
 				});
 			});
 			SharedBoot.finishStartup();
+			
 			// setOzoneLogger();
 		});
 		Events.run(EventType.Trigger.draw, () -> {

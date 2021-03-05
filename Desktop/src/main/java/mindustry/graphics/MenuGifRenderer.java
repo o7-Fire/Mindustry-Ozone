@@ -52,7 +52,7 @@ public class MenuGifRenderer implements Disposable {
 		try {
 			Repo r = new Repo();
 			r.init();
-			url.addAll(r.getString("Desktop/gif.txt").split("\n"));
+			url.addAll(r.readString("Desktop/gif.txt").split("\n"));
 		}catch (Throwable i) {
 			Sentry.captureException(i);
 		}

@@ -26,9 +26,15 @@ import io.sentry.Sentry;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.Future;
 
 public class Repo extends Atom.File.Repo implements Module {
+	private static Repo INSTANCE = null;
+	
+	public static Repo getRepo() {
+		return INSTANCE;
+	}
 	
 	@Override
 	protected ArrayList<Future<URL>> parallelSearch(String s) {
@@ -42,15 +48,20 @@ public class Repo extends Atom.File.Repo implements Module {
 	public void init() throws Throwable {
 		addRepo(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master"));
 		try {
-			for (String s : Encoder.readString(getResource("src/repos.txt").openStream()).split("\n"))
+			for (String s : readString("src/repos.txt").split("\n"))
 				addRepo(new URL(s));
 		}catch (Throwable t) {
 			Sentry.captureException(t);//sentry go brrrrrrr
 		}
 		addRepo(new URL("https://o7inc.ddns.net/ozone"));
+		INSTANCE = this;
 	}
 	
-	public String getString(String path) throws IOException {
+	public HashMap<String, String> readMap(String path) throws IOException {
+		return Encoder.parseProperty(getResource(path).openStream());
+	}
+	
+	public String readString(String path) throws IOException {
 		return Encoder.readString(getResource(path).openStream());
 	}
 	
