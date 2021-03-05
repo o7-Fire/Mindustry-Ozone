@@ -1,0 +1,65 @@
+
+name: Java CI
+
+on: [pull_request]
+
+jobs:
+  Build-Test-Merge:
+    runs-on: ubuntu-latest
+
+    steps:
+     # Check out current repository
+    - name: Fetch Sources
+      uses: actions/checkout@v2
+    - name: Set up JDK 14
+      uses: actions/setup-java@v1
+      with:
+        java-version: 14
+
+    - name: Clone Atom
+      run: git clone --depth=1 --branch=master https://github.com/o7-Fire/Atomic-Library ../Atom
+
+    - name: Change wrapper permissions
+      run: chmod +x ./gradlew
+
+    # Cache Gradle dependencies
+    - name: Setup Gradle Dependencies Cache
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
+    # Cache Gradle Wrapper
+    - name: Setup Gradle Wrapper Cache
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+      
+    - name: Build mod jar
+      run: ./gradlew deploy -Pversion="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
+
+    - name: Upload built desktop jar file
+      uses: actions/upload-artifact@v2
+      with:
+        name: Mindustry-Desktop
+        path: Desktop/build/libs/Ozone-Desktop.jar
+    - name: Upload built core jar file
+      uses: actions/upload-artifact@v2
+      with:
+        name: Mindustry-Core
+        path: build/libs/Ozone.jar
+    - name: Upload built android jar file
+      uses: actions/upload-artifact@v2
+      with:
+        name: Mindustry-Core-Dexed
+        path: build/libs/Ozone-Dexed.jar
+
+    - name: Upload Manifest
+      uses: actions/upload-artifact@v2
+      with:
+        name: Ozone-Manifest
+        path: src/main/resources/Manifest.properties
+
+    - name: Ozone Test
+      run: java -DozoneTest=true -jar Desktop/build/libs/Ozone-Desktop.jar
+      # Remove old release drafts by using the curl request for the available releases with draft flag
