@@ -40,7 +40,7 @@ public class Repo extends Atom.File.Repo implements Module {
 	@Override
 	public void init() throws Throwable {
 		addRepo(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master"));
-		addRepo(new URL("https://o7.ddns.net/ozone"));
+		addRepo(new URL("https://o7inc.ddns.net/ozone"));
 	}
 	
 	public String getString(String path) throws IOException {
