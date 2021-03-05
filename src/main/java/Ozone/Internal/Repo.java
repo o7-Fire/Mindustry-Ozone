@@ -21,6 +21,7 @@ import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
 import arc.graphics.Pixmap;
 import arc.util.Log;
+import io.sentry.Sentry;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,6 +41,12 @@ public class Repo extends Atom.File.Repo implements Module {
 	@Override
 	public void init() throws Throwable {
 		addRepo(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master"));
+		try {
+			for (String s : Encoder.readString(getResource("src/repos.txt").openStream()).split("\n"))
+				addRepo(new URL(s));
+		}catch (Throwable t) {
+			Sentry.captureException(t);//sentry go brrrrrrr
+		}
 		addRepo(new URL("https://o7inc.ddns.net/ozone"));
 	}
 	
