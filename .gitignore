@@ -3,6 +3,7 @@
 .attach_*
 /dependencies
 /gen/
+src/main/java/Ozone/Experimental/Private
 SimpleLearning.mdl
 ## Java
 Tools/build
