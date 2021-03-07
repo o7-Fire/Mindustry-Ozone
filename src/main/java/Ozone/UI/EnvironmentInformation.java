@@ -31,6 +31,7 @@ import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.gen.Sounds;
+import net.jpountz.lz4.LZ4Factory;
 
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
@@ -54,6 +55,8 @@ public class EnvironmentInformation extends ScrollableDialog {
 		ad("Current Nanos", System.nanoTime());
 		ad("Current Jar", InformationCenter.getCurrentJar().getAbsolutePath());
 		ad("Ozone Settings", SettingsManifest.settingsFile.getAbsolutePath());
+		ad("Fastest LZ4 Decompressor", LZ4Factory.fastestInstance().fastDecompressor().getClass().getName());
+		ad("Fastest LZ4 Compressor", LZ4Factory.fastestInstance().fastCompressor().getClass().getName());
 		try {
 			ad("Compilation Time Total (ms)", ManagementFactory.getCompilationMXBean().getTotalCompilationTime());
 			ad("isCompilationTimeMonitoringSupported", ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());

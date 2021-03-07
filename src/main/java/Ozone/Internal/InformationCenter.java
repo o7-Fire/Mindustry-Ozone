@@ -25,6 +25,7 @@ import mindustry.gen.RemoteReadClient;
 import mindustry.gen.RemoteReadServer;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
+import mindustry.net.Packets;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -33,11 +34,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class InformationCenter {
+	public static String currentServerIP = "";
+	public static int currentServerPort = 0;
 	protected static ArrayList<String> moduleRegistered = new ArrayList<>(), moduleLoaded = new ArrayList<>(), modulePost = new ArrayList<>();
 	private static ArrayList<String> clientSendPackets = new ArrayList<>();
 	private static HashSet<Integer> commonPacketClientReceive = new HashSet<>(), commonPacketClientSend = new HashSet<>();
-	public static String currentServerIP = "";
-	public static int currentServerPort = 0;
 	
 	static {
 		commonPacketClientReceive.add(59);//state snapshot
@@ -107,8 +108,6 @@ public class InformationCenter {
 	}
 	
 	public static String getPacketNameClientReceive(int id) {
-		
-		
 		try {
 			RemoteReadClient.readPacket(null, id);
 		}catch (Throwable t) {
@@ -117,18 +116,22 @@ public class InformationCenter {
 		return "Unknown Packet";
 	}
 	
-	public static String getPacketName(int id) {
-		try {
-			RemoteReadClient.readPacket(null, id);
-		}catch (Throwable t) {
-			return t.getMessage().replace("Failed to read remote method", "");
-		}
-		try {
-			return clientSendPackets.get(id);
-		}catch (Throwable t) {
-			return "Unknown Packet";
-		}
+	public static String getPacketNameServerSend(int id) {
+		return getPacketNameClientReceive(id);//drug
 	}
+	
+	public static String getPacketNameServerReceive(int id) {
+		return getPacketNameClientSend(id);//drug
+	}
+	
+	public static String getPacketNameServerSend(Packets.InvokePacket packet) {
+		return getPacketNameClientReceive(packet.type);//drug
+	}
+	
+	public static String getPacketNameServerReceive(Packets.InvokePacket packet) {
+		return getPacketNameClientSend(packet.type);//drug
+	}
+	
 	
 	public static boolean isCommonPacketClientSend(int b) {
 		return commonPacketClientSend.contains(b);
@@ -144,5 +147,37 @@ public class InformationCenter {
 	
 	public static ArrayList<String> getPacketsName() {
 		return new ArrayList<>(clientSendPackets);//what r u doing debil
+	}
+	
+	public static boolean isCommonPacketClientReceive(Packets.InvokePacket packet) {
+		return isCommonPacketClientReceive(packet.type);
+	}
+	
+	public static String getPacketNameClientReceive(Packets.InvokePacket packet) {
+		return getPacketNameClientReceive(packet.type);
+	}
+	
+	public static boolean isCommonPacketClientSend(Packets.InvokePacket packet) {
+		return isCommonPacketClientSend(packet.type);
+	}
+	
+	public static boolean isCommonPacketServerReceive(int type) {
+		return isCommonPacketClientSend(type);
+	}
+	
+	public static boolean isCommonPacketServerSend(int type) {
+		return isCommonPacketClientReceive(type);
+	}
+	
+	public static boolean isCommonPacketServerReceive(Packets.InvokePacket packet) {
+		return isCommonPacketClientSend(packet.type);
+	}
+	
+	public static boolean isCommonPacketServerSend(Packets.InvokePacket packet) {
+		return isCommonPacketClientReceive(packet.type);
+	}
+	
+	public static String getPacketNameClientSend(Packets.InvokePacket packet) {
+		return getPacketNameClientSend(packet.type);
 	}
 }

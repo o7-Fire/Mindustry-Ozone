@@ -26,6 +26,7 @@ public class StartServerPoint {
 		try {
 			args = new String[]{"host", "Ancient_Caldera", "sandbox"};
 			DesktopBootstrap.classloaderNoParent();
+			DesktopBootstrap.loadClasspath();
 			String version = Propertied.Manifest.get("MindustryVersion");
 			if (version == null) throw new NullPointerException("MindustryVersion not found in property");
 			DesktopBootstrap.ozoneLoader.addURL(new URL("https://github.com/Anuken/Mindustry/releases/download/" + version + "/server-release.jar"));

@@ -34,8 +34,8 @@ public class BasicConnectDiagram extends AttackDiagram {
 		if (randomName) onTaskCompleted(s -> Vars.player.name = name);
 	}
 	
-	@Override
-	public void run() {
+	
+	void run() {
 		Vars.netClient.disconnectQuietly();
 		if (randomName) name = Vars.player.name;
 		logic.reset();

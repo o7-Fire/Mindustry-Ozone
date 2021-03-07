@@ -16,22 +16,49 @@
 
 package Ozone.Experimental.Evasion;
 
+import Atom.String.WordGenerator;
 import Atom.Utility.Pool;
+import Atom.Utility.Random;
+import Atom.Utility.Utility;
+import Ozone.Patch.Translation;
 import arc.Core;
+import arc.graphics.Color;
 import arc.math.Rand;
+import arc.struct.Seq;
 import arc.util.serialization.Base64Coder;
 import io.sentry.Sentry;
 import mindustry.Vars;
+import mindustry.core.Version;
+import mindustry.gen.Groups;
+import mindustry.gen.Player;
+import mindustry.net.Packets;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static mindustry.Vars.maxNameLength;
 
 public class Identification {
 	public static HashMap<String, Object> getValue() throws NoSuchFieldException, IllegalAccessException {
 		Field f = Core.settings.getClass().getDeclaredField("values");
 		f.setAccessible(true);
 		return (HashMap<String, Object>) f.get(Core.settings);
+	}
+	
+	public static Packets.ConnectPacket randomConnectPacket() {
+		Packets.ConnectPacket c = new Packets.ConnectPacket();
+		Player p = null;
+		if (Groups.player.size() > 2) p = Random.getRandom(Groups.player);
+		c.name = p == null ? (Random.getBool() ? Utility.capitalizeEnforce(WordGenerator.newWord(Random.getInt(5, maxNameLength))) : WordGenerator.newWord(Random.getInt(5, maxNameLength))) : p.name + Translation.getRandomHexColor();
+		c.locale = null;//lol no
+		c.mods = new Seq<>();
+		c.mobile = Random.getBool();
+		c.versionType = Version.type;
+		c.color = p == null ? Color.valueOf(Random.getRandomHexColor()).rgba() : p.color.rgba();
+		c.usid = Identification.getRandomUID();
+		c.uuid = Identification.getRandomUID();
+		return c;
 	}
 	
 	public static String getUUID(String player) {

@@ -246,7 +246,7 @@ public class ConnectDiagram extends AttackDiagram {
 				}
 			}else {
 				if (object instanceof Packets.InvokePacket) {
-					Log.debug("Invoke Packet: " + InformationCenter.getPacketName(((Packets.InvokePacket) object).type));
+					Log.debug("Invoke Packet: " + InformationCenter.getPacketNameClientReceive(((Packets.InvokePacket) object).type));
 					return;
 				}
 				Log.debug("Unhandled packet type: '@'!", object);

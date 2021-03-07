@@ -58,13 +58,17 @@ public class LoggerMode {
 			}catch (Throwable ignored) {
 			
 			}
-			if (st != null) while (st.getFileName().equals("Log.java")) {
-				try {
-					i++;
-					st = Thread.currentThread().getStackTrace()[i];
-				}catch (Throwable t) {
-					st = null;
-					break;
+			if (st != null && st.getFileName() != null) {
+				while (true) {
+					assert st.getFileName() != null;//wtf intellj
+					if (!st.getFileName().equals("Log.java")) break;
+					try {
+						i++;
+						st = Thread.currentThread().getStackTrace()[i];
+					}catch (Throwable t) {
+						st = null;
+						break;
+					}
 				}
 			}
 			text = "[" + Utility.getDate() + "] [" + Thread.currentThread().getName() + (Thread.currentThread().getThreadGroup() != null ? "-" + Thread.currentThread().getThreadGroup().getName() : "") + (st == null || !SharedBoot.debug ? "" : "-" + st.toString()) + "] " + text;

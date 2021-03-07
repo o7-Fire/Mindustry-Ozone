@@ -29,18 +29,21 @@ public class Callable {
 	protected final Writes WRITE = new Writes(new DataOutputStream(OUT));
 	
 	private Net net, original;
+	private static StaticNet staticNet = new StaticNet();
+	private Net.NetProvider provider;
 	
 	public Callable(Net net) {
 		this.net = net;
 	}
 	
-	private void sendClient(Object packet, Net.SendMode sendMode) {
-		net.send(packet, sendMode);
+	public Callable(Net.NetProvider provider) {
+		this.provider = provider;
 	}
 	
 	public void pre() {
 		original = Vars.net;
-		Vars.net = net;
+		staticNet.setNet(net).setProvider(provider);
+		Vars.net = staticNet;
 	}
 	
 	public void post() {
@@ -49,5 +52,36 @@ public class Callable {
 	
 	public void base() {
 		pre();
+	}
+	
+	private static class StaticNet extends Net {
+		NetProvider provider;
+		Net net;
+		
+		public StaticNet() {
+			super(null);
+		}
+		
+		public StaticNet setProvider(NetProvider provider) {
+			this.provider = provider;
+			return this;
+		}
+		
+		public StaticNet setNet(Net net) {
+			this.net = net;
+			return this;
+		}
+		
+		@Override
+		public void send(Object object, SendMode mode) {
+			if (provider != null) {
+				provider.sendClient(object, mode);
+				provider = null;
+			}
+			if (net != null) {
+				net.send(object, mode);
+				net = null;
+			}
+		}
 	}
 }

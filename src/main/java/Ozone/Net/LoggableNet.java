@@ -31,7 +31,7 @@ public class LoggableNet extends Net {
 	public LoggableNet(Net net) {
 		super(null);
 		this.net = net;
-		if (net == null) throw new NullPointerException("Net is null");
+		if (net == null) throw new NullPointerException("OzoneNet is null");
 	}
 	
 	@Override

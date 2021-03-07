@@ -16,6 +16,7 @@
 
 public class Meth {
 	public static void main(String[] args) {
+		recommendedThreadCount();
 		int sum = 0, sum2;
 		int n = 7;
 		int k = 1;
@@ -31,6 +32,26 @@ public class Meth {
 		sum2 = n * (n + 1) / 2;
 		sum2 = calc(sum2);
 		System.out.println(sum == sum2 ? "Calculation Valid" : "Invalid: " + sum2);
+	}
+	
+	public static int recommendedThreadCount() {
+		int mRtnValue = 0;
+		Runtime runtime = Runtime.getRuntime();
+		long maxMemory = runtime.maxMemory();
+		long mTotalMemory = runtime.totalMemory();
+		long freeMemory = runtime.freeMemory();
+		int mAvailableProcessors = runtime.availableProcessors();
+		long increase = freeMemory * 10;
+		freeMemory += increase;
+		mTotalMemory += increase;
+		maxMemory += increase;
+		mAvailableProcessors += 20;
+		long mTotalFreeMemory = freeMemory + (maxMemory - mTotalMemory);
+		mRtnValue = (int) (mTotalFreeMemory / 1024);
+		
+		int mNoOfThreads = mAvailableProcessors - 1;
+		if (mNoOfThreads < mRtnValue) mRtnValue = mNoOfThreads;
+		return mRtnValue;
 	}
 	
 	public static int calc(int i) {

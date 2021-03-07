@@ -138,7 +138,7 @@ public class VirtualPlayer extends Player {
 		
 		net.handleClient(Packets.InvokePacket.class, packet -> {
 			if (SharedBoot.debug) if (!InformationCenter.isCommonPacketClientReceive(packet.type))
-				log.debug("Received Packets: " + InformationCenter.getPacketName(packet.type) + " " + packet.type);
+				log.debug("Received Packets: " + InformationCenter.getPacketNameClientReceive(packet.type) + " " + packet.type);
 		});
 	}
 	

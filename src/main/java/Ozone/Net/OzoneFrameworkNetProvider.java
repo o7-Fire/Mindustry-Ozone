@@ -22,7 +22,10 @@ import arc.func.Prov;
 import arc.net.Client;
 import arc.struct.Seq;
 import arc.util.Time;
-import mindustry.net.*;
+import mindustry.net.ArcNetProvider;
+import mindustry.net.Host;
+import mindustry.net.NetConnection;
+import mindustry.net.NetworkIO;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -36,12 +39,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static mindustry.Vars.*;
 
-public class OzoneFrameworkNetProvider implements Net.NetProvider {
+public class OzoneFrameworkNetProvider implements OzoneNet.NetProvider {
 	public static Prov<DatagramPacket> staticPacketSupplier;
 	@Nullable
 	public static Client staticClient; //don't use it for actual purpose
 	@Nullable
 	public static ArcNetProvider fallbackProvider;
+	public static int maxBuffer = 8192;
 	
 	static {
 		staticPacketSupplier = () -> new DatagramPacket(new byte[512], 512);
@@ -112,7 +116,7 @@ public class OzoneFrameworkNetProvider implements Net.NetProvider {
 	}
 	
 	@Override
-	public void sendClient(Object object, Net.SendMode mode) {
+	public void sendClient(Object object, OzoneNet.SendMode mode) {
 	
 	}
 	

@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-package Ozone.Experimental;
+package Ozone.Net;
 
-import Ozone.Commands.Task.Completable;
+import Ozone.Gen.Callable;
 
-public abstract class AttackDiagram extends Completable {
+public class OzoneNetProvider extends OzoneClientFrameworkProvider {
 	
-	void run() {
+	public final Callable call = new Callable(this);
 	
+	protected OzoneNetProvider() {
+		super();
+		
 	}
 	
 	@Override
-	public void update() {
-		if (!completed) run();
+	protected void handleException(Exception e) {
+		handleException((Throwable) e);//neat java
+	}
+	
+	protected void handleException(Throwable e) {
+	
 	}
 }

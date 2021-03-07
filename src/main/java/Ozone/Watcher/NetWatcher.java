@@ -30,8 +30,8 @@ public class NetWatcher extends LoggableNet {
 	public NetWatcher(Net net) {
 		super(net);
 		Object provider = Vars.platform.getNet();
-		Log.infoTag("Net-Watcher", provider.getClass().getName());
-		Interface.showInfo("Net Watcher: " + provider.getClass().getName());
+		Log.infoTag("OzoneNet-Watcher", provider.getClass().getName());
+		Interface.showInfo("OzoneNet Watcher: " + provider.getClass().getName());
 		
 	}
 	

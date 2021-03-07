@@ -49,7 +49,7 @@ public class Repo extends Atom.File.Repo implements Module {
 		addRepo(new URL("https://raw.githubusercontent.com/o7-Fire/Mindustry-Ozone/master"));
 		try {
 			for (String s : readString("src/repos.txt").split("\n"))
-				addRepo(new URL(s));
+				if (!s.startsWith("#")) addRepo(new URL(s));
 		}catch (Throwable t) {
 			Sentry.captureException(t);//sentry go brrrrrrr
 		}

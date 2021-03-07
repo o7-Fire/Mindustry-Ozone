@@ -24,7 +24,6 @@ import Shared.WarningHandler;
 import Shared.WarningReport;
 import arc.Events;
 import arc.util.Log;
-import io.sentry.ITransaction;
 import io.sentry.Sentry;
 import mindustry.game.EventType;
 
@@ -94,10 +93,8 @@ public class Main {
 		register();
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
 			try {
-				ITransaction tr = Sentry.startTransaction(s.getValue().getName(), "Early Init");
 				update("Early Init: " + s.getValue().getName());
 				s.getValue().earlyInit();
-				tr.finish();
 			}catch (Throwable t) {
 				Sentry.captureException(t);
 				new WarningReport(t).setProblem("Error while early init module " + s.getKey().getName() + ": " + t.toString()).report();
@@ -108,10 +105,8 @@ public class Main {
 	public static void preInit() {
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
 			try {
-				ITransaction tr = Sentry.startTransaction(s.getValue().getName(), "Pre Init");
 				update("Pre Init: " + s.getValue().getName());
 				s.getValue().preInit();
-				tr.finish();
 			}catch (Throwable t) {
 				Sentry.captureException(t);
 				new WarningReport(t).setProblem("Error while pre init module " + s.getKey().getName() + ": " + t.toString()).report();
@@ -122,12 +117,10 @@ public class Main {
 	public static void register() {
 		for (Class<? extends Module> m : getModule()) {
 			try {
-				ITransaction tr = Sentry.startTransaction(m.getName(), "Register");
 				update("Registering: " + m.getName());
 				Module mod = m.getDeclaredConstructor().newInstance();
 				mod.setRegister();
 				Manifest.module.put(m, mod);
-				tr.finish();
 			}catch (Throwable e) {
 				WarningHandler.handle(e);
 			}
@@ -149,11 +142,9 @@ public class Main {
 			for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
 				if (!s.getValue().posted()) {
 					try {
-						ITransaction tr = Sentry.startTransaction(s.getValue().getName(), "Post");
 						update("Posting " + s.getValue().getName());
 						s.getValue().postInit();
 						s.getValue().setPosted();
-						tr.finish();
 					}catch (Throwable throwable) {
 						Sentry.captureException(throwable);
 						new WarningReport(throwable).setProblem("Error while posting module " + s.getKey().getName() + ": " + throwable.toString()).report();
@@ -165,9 +156,7 @@ public class Main {
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
 			Pool.submit(() -> {
 				try {
-					ITransaction tr = Sentry.startTransaction(s.getValue().getName(), "Async");
 					s.getValue().loadAsync();
-					tr.finish();
 				}catch (Throwable t) {
 					Sentry.captureException(t);
 					new WarningReport(t).setProblem("Error while loading async module " + s.getKey().getName() + ": " + t.toString()).report();
@@ -182,12 +171,10 @@ public class Main {
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
 			if (s.getValue().canLoad()) {
 				try {
-					ITransaction tr = Sentry.startTransaction(s.getValue().getName(), "Init");
 					update("Initializing " + s.getValue().getName());
 					s.getValue().init();
 					s.getValue().setLoaded();
 					antiRecurse = true;
-					tr.finish();
 				}catch (Throwable t) {
 					new WarningReport(t).setProblem("Error while initializing module " + s.getKey().getName() + ": " + t.toString()).report();
 				}

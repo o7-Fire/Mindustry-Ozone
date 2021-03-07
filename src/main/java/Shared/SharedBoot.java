@@ -23,9 +23,7 @@ import Ozone.Settings.SettingsManifest;
 import Ozone.Version;
 import io.sentry.Scope;
 import io.sentry.Sentry;
-import io.sentry.protocol.User;
 
-import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -69,8 +67,7 @@ public class SharedBoot {
 		if (t == null) return def;
 		return t;
 	}
-
-
+	
 	public static void initSentry() {
 		if (hardDebug) return;
 		Sentry.init(options -> {
@@ -88,16 +85,8 @@ public class SharedBoot {
 		try {
 			scope.setTag("Ozone.Desktop.Version", Version.desktop);
 			scope.setTag("Ozone.Core.Version", Version.core);
-			scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("sun.arch.data.model"));
+			scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("os.arch"));
 			scope.setTag("Java.Version", System.getProperty("java.version"));
-			try {
-				User u = new User();
-				long l = ByteBuffer.wrap(System.getenv().toString().getBytes()).getLong();// ? cant reverse it to full byte array
-				u.setId(l + "");
-				scope.setUser(u);//easier to filter asshole
-			}catch (Throwable t) {
-				Sentry.captureException(t);
-			}
 			for (Map.Entry<String, String> e : Propertied.Manifest.entrySet())
 				scope.setTag(e.getKey(), e.getValue());
 		}catch (Throwable t) {
