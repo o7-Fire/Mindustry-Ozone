@@ -25,6 +25,7 @@ import arc.func.Cons;
 import arc.util.Strings;
 import mindustry.Vars;
 import mindustry.desktop.DesktopLauncher;
+import net.jpountz.util.Native;
 
 //basically its a patcher
 public class OzoneMindustry extends DesktopLauncher {
@@ -40,6 +41,9 @@ public class OzoneMindustry extends DesktopLauncher {
 		//  new Thread(()-> {
 		arg = args;
 		DesktopBootstrap.customBootstrap = true;
+		try {
+			Native.load();//for some reason it wont load automagically
+		}catch (Throwable t) {}
 		try {
 			Vars.loadLogger();
 			

@@ -152,7 +152,7 @@ allprojects {
 
         //From core to every project
         dependencies{
-            implementation ('io.sentry:sentry:4.2.0'){
+            implementation ('io.sentry:sentry:4.3.0'){
                 exclude group: 'com.google.code.gson', module: "gson"
             }
 
