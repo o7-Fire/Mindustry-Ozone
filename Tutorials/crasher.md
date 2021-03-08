@@ -26,7 +26,7 @@ So, you want to crash io or you just hate a specific server. Well, now you can.
 - oh shit a mod is online, ah fuck you got banned
 - no worries, just reset your UID and (use a vpn or restart router)
 
-**Note: 1000 thread rarely/can/maybe/possibly/will consume 1GB of RAM**
+**Note: 1000 thread rarely/can/maybe/possibly/will/definitely/can't/probably consume 1GB of RAM**
 ```
 Current DDOSER server notes
 to crash .io use arround 5000 and 8000 threads
