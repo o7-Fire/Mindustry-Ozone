@@ -1,5 +1,5 @@
 Tired of being banned for doing nothing wrong or being banned because you like griefing? Well with our client you can bypass it.\
-This requires the mod being installed so install it if you havent already.\
+This requires the mod being installed so install it if you havent already.
 
 # Bypassing Kicks
 \
