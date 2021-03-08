@@ -82,8 +82,6 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 tasks.withType(JavaCompile) {
-    sourceCompatibility = 11
-    targetCompatibility = 11
     options.encoding = "UTF-8"
     options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
 }

@@ -169,6 +169,7 @@ allprojects {
             compileOnly( group: 'org.jetbrains', name: 'annotations', version: '20.1.0'){
                 because("compile")
             }
+
         }
 
     }
@@ -220,8 +221,6 @@ jar {
     }
 }
 tasks.withType(JavaCompile) {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
     options.encoding = "UTF-8"
     options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
     if (JavaVersion.current() != JavaVersion.VERSION_1_8) {

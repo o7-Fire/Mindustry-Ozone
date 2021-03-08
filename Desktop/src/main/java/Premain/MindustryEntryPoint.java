@@ -22,6 +22,8 @@ import io.sentry.Sentry;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+//if you have intellij just run this class, it will load mindustry
+//oh also add the jar to the mods folder for modLoader to invoke
 public class MindustryEntryPoint {
 	public static void main(String[] args) {
 		try {
