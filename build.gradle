@@ -253,7 +253,10 @@ task makeJar(type: Jar){
     dependsOn jar
     archiveFileName = "Ozone-Dexed.jar"
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-
+    manifest {
+        attributes 'Main-Class': 'Premain.InstallerEntryPoint'
+        attributes 'SplashScreen-Image': 'gif/loading.gif'
+    }
     if(new File(sdkD8).exists()) {
         from() {
             zipTree(new File(rootDir, "build/libs/Dex.jar"))

@@ -23,7 +23,7 @@ https://github.com/o7-Fire/Mindustry-Ozone/wiki
 
 - In-game Painter because a mere mortal can't draw with by typing code
 - ~~Create mindustry class patcher~~
-- Stop relying on third party library for bootstrap
+- ~~Stop relying on third party library for bootstrap~~
 - ~~Bootstrap in less than 10 second for first time setup (worst: 40 second)~~
 - Improve download bar (its keep teleporting wtf)
 - Remove useless commands and duplicate
@@ -36,7 +36,7 @@ https://github.com/o7-Fire/Mindustry-Ozone/wiki
 - Somehow fix the horrible updater
 - Create player watcher
 - Add logic display toggle (goddamn those nsfw image)
-- Stabilize Bot Launcher
+- ~~Stabilize Bot Launcher~~
 - Auto start bot-server when launching bot(or remove that button ?)
 - Make updater much more living(add GUI)
 - Headless ?
@@ -46,21 +46,21 @@ https://github.com/o7-Fire/Mindustry-Ozone/wiki
 - Add proxy ?
 - Auto create efficient miner block pool using bruteforce
 - Brainwash nexity to not mess with this README.md
-- Create AIO script to launch ozone (non java user)
+- Create AIO script to launch ozone (non java user, or user that allergic to installer)
 - Auto Java, switch java version when launched from another version
 - World logger, VCS like system ?
-- Unify library folder
-- Steam support ?
+- ~~Unify library folder~~
+- ~~Steam support ?~~
 - Event based key listener
 - ~~Fix shutdown stall~~
-- Fix javac commands
+- ~~Fix javac commands~~
 - Integrated png to draw logic tool
 - ~~Mobile support~~
 - ~~Schematic Pools~~
 - Fix the goddamn buggy Pathfinding
 - Ozone Extension Support
 - Video player
-- Logic scanner/obfuscator/jammer
+- Logic scanner/obfuscator/jammer (fckn porn everywhere)
 - Move library/utility class to Atomic-Library
 - Encrypted Broadcast
 
