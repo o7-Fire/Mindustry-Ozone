@@ -7,36 +7,9 @@
 ![](https://img.shields.io/badge/Android%20API-14-blue)
 ![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fo7-Fire%2FMindustry-Ozone.svg?type=shield)
 
-# Download
-### Mindustry
 
-### Ozone
-Note: Ozone Desktop is an independent loader with some extension (Ozone Core + Desktop Extension + Loader)\
-Note: for Mindustry 124+ use Mindustry built in mods browser instead\
-Note: Dexed mean support for android, compatible with pc\
-Note: Ozone Desktop need to be installed manually\
-[Latest](https://github.com/o7-Fire/Mindustry-Ozone/releases) [Github]\
-[Nightly](https://github.com/o7-Fire/Mindustry-Ozone/actions) [Github] [Zipped and need github login]\
-[Other Release](https://github.com/o7-Fire/Mindustry-Ozone/tags) [Github]
-
-### Java
-
-`because life never been any harder if you don't install java`\
-[AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk14&jvmVariant=hotspot) [OpenJDK-OpenJRE 14]\
-[AdoptOpenJDK](https://adoptopenjdk.net/releases.html?variant=openjdk8&jvmVariant=hotspot) [OpenJDK-OpenJRE 8]\
-[Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) [JDK 14 only require login]\
-[Zulu JDK](https://www.azul.com/downloads/zulu-community/?version=java-8-lts&package=jdk) [OpenJDK-OpenJRE 8]
-
-# Requirement
-
-* Java 14+ and added to JAVA_HOME (mindustry desktop can run on java 14+) (For Ozone-Desktop)
-* Java 8+ and added to JAVA_HOME (mindustry core can run on java 8+) (For Ozone-Core)  (don't need to install if you
-  have the mindustry.exe version/ bundled JRE)
-* Internet connection (required to download library at runtime and can impact loading speed) (For Ozone-Desktop)
-* Year 2006+ Computer
-* Android 4.0+ / sdk version 14+
-* 2 GB of **free** RAM because java
-
+# Installation
+https://github.com/o7-Fire/Mindustry-Ozone/wiki
 
 # Build
 
@@ -46,71 +19,6 @@ Note: Ozone Desktop need to be installed manually\
 * 3.you get the Core mods in `build/libs/`
 * 4.you get the Android mods in `Android/build/libs` if you have android sdk set to ANDROID_HOME
 
-# Install
-
-`Ozone destkop`
-
-- install Java 14
-- `java -jar Mindustry-Ozone.jar` or double click if can
-- click install
-- optional: **Run** to download mindustry and run it
-- use java 14 to launch Mindustry
-
-`Ozone core`
-
-- install java 8+ (don't need to install if you have the mindustry.exe version or bundled JRE)
-- `java -jar Mindustry-Ozone.jar` or double click if can
-- it's copied to mindustry mods folder\
-  or
-- open mindustry [124+]
-- open mod browser
-- search ozone
-- install it
-
-`Ozone Everything`
-
-- locate Mindustry mods folder
-
-```css
-Android: Android/data/io.anuken.mindustry/files/mods
-Windows: %APPDATA%/Roaming/Mindustry/mods or C:/Users/USERNAME/.AppData/Roaming/Mindustry/mods
-Linux: /home/USERNAME/.local/share/Mindustry/mods/
-```
-
-- copy the jar to the mods folder
-- launch mindustry (for desktop ozone recommend to use **Run** instead)
-
-```
-tl;dr both can be manually installed and have installer built-in 
-```
-
-# Preview
-
-(mostly ozone core)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809627146846470144/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809627233010319380/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809634916300095498/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809635106779299861/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809635148282462218/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809635252502265886/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809635310522204210/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809635755419893820/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809636037360877598/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809635992977932298/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809636104637644800/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809636322272084058/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809636450755674133/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809637463382425620/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809638887873445898/sortshuffle.gif)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809663462023102484/drainCore.gif)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809668927571230760/FollowP1.gif)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809669870849490954/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809734631775666206/unknown.png)
-![](https://cdn.discordapp.com/attachments/809580979777568828/809734704894967828/unknown.png)
-![](https://cdn.discordapp.com/attachments/801061985034305556/812999650532655125/unknown.png)
-![](https://cdn.discordapp.com/attachments/801061985034305556/812975333288574996/unknown.png)
-![]()
-![]()
 # Impossible things to do
 
 - In-game Painter because a mere mortal can't draw with by typing code
