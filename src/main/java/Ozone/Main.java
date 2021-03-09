@@ -180,6 +180,7 @@ public class Main {
 				}
 			}
 		}
+		
 		if (!loadAnything) throw new RuntimeException("Recursion/Deadlock/Bug !!!");
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
 			if (!s.getValue().loaded()) loadModule();
