@@ -1,6 +1,7 @@
 You dont know how to download ozone? well heres how
 
 note: this doesnt work on android. we havent added support for that yet\
+also it wont work if you have foo's client enabled\
 open this link https://github.com/o7-Fire/Mindustry-Ozone/actions and download the core.\
 click the ones that have a green circle next to it.\
 ![image](https://user-images.githubusercontent.com/46597698/110272571-7a4d2500-8005-11eb-860c-eba2e3cc47c9.png)\
