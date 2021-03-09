@@ -167,20 +167,20 @@ public class Main {
 	
 	private static void loadModule() throws IOException {
 		iteration++;
-		boolean antiRecurse = false;
+		boolean loadAnything = false;
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
 			if (s.getValue().canLoad()) {
 				try {
 					update("Initializing " + s.getValue().getName());
 					s.getValue().init();
 					s.getValue().setLoaded();
-					antiRecurse = true;
+					loadAnything = true;
 				}catch (Throwable t) {
 					new WarningReport(t).setProblem("Error while initializing module " + s.getKey().getName() + ": " + t.toString()).report();
 				}
 			}
 		}
-		if (!antiRecurse) throw new RuntimeException("Recursion/Deadlock/Bug !!!");
+		if (!loadAnything) throw new RuntimeException("Recursion/Deadlock/Bug !!!");
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
 			if (!s.getValue().loaded()) loadModule();
 	}
