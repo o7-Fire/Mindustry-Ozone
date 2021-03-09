@@ -102,6 +102,9 @@ public class SharedBoot {
 			scope.setTag("Ozone.Core.Version", Version.core);
 			scope.setTag("Operating.System", System.getProperty("os.name") + " x" + System.getProperty("os.arch"));
 			scope.setTag("Java.Version", System.getProperty("java.version"));
+			try {
+				scope.setTag("Client.Version", mindustry.core.Version.combined());
+			}catch (Throwable ignored) {}
 			for (Map.Entry<String, String> e : Propertied.Manifest.entrySet())
 				scope.setTag(e.getKey(), e.getValue());
 		}catch (Throwable t) {

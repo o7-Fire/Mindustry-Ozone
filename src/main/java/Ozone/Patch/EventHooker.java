@@ -22,6 +22,7 @@ import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
 import Shared.SharedBoot;
+import arc.Core;
 import arc.Events;
 import arc.util.Log;
 import io.sentry.Sentry;
@@ -67,6 +68,11 @@ public class EventHooker implements Module {
 			arc.Core.settings.getBoolOnce("OzoneDisclaimer", () -> {
 				Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning", "Use this mods at your own risk", "Accept", "Accept", () -> { }, () -> { });
 			});
+			if (System.getProperty("Ozone-Foo") != null) {
+				Core.settings.getBoolOnce("OzoneFoo", () -> {
+					Vars.ui.showText("[royal]Ozone[white]-[red]Warning", "Foo client with ozone ????, are you a savage");
+				});
+			}
 			SharedBoot.finishStartup();
 			// setOzoneLogger();
 		});

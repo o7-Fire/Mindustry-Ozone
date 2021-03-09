@@ -71,14 +71,18 @@ public class VarsPatch implements Module {
 	
 	@Override
 	public void init() throws Throwable {
-
-			Log.infoTag("Ozone", "Patching");
+		
+		Log.infoTag("Ozone", "Patching");
+		try {
 			mindustry.Vars.ui.chatfrag.addMessage("gay", "no");
-			
-			
-			Vars.enableConsole = true;
-			if (BaseSettings.debugMode) Log.level = (Log.LogLevel.debug);
-			Log.debug("Ozone-Debug: @", "Debugs, peoples, debugs");
+		}catch (NoSuchMethodError t) {
+			System.setProperty("Ozone-Foo", "true");
+		}
+		
+		
+		Vars.enableConsole = true;
+		if (BaseSettings.debugMode) Log.level = (Log.LogLevel.debug);
+		Log.debug("Ozone-Debug: @", "Debugs, peoples, debugs");
 		if (Vars.control.input instanceof MobileInput) {
 			Log.debug("its mobile input");
 			Vars.control.input = new MobileInputPatched();

@@ -514,11 +514,15 @@ public class Commands implements Module {
 			virtualPlayer.log.info(s);
 			return;
 		}
-		Log.info(Strings.stripColors(s));
+		
 		if (Vars.ui == null) return;
 		if (Vars.ui.scriptfrag.shown()) Log.infoTag("Ozone", s);
+		else Log.info(Strings.stripColors(s));
+		
 		if (Vars.state.isGame()) {
-			Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
+			try {
+				Vars.ui.chatfrag.addMessage("[white][[[royal]Ozone[white]]: " + s, null);
+			}catch (NoSuchMethodError ignored) {}
 			if (BaseSettings.commandsToast) {
 				if (s.contains("\n")) for (String u : s.split("\n"))
 					Interface.showToast(u, 800);
