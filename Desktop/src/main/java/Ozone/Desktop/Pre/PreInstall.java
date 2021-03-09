@@ -102,6 +102,7 @@ public class PreInstall {
 					String ext = self.getName();
 					if (!ext.contains(".")) throw new RuntimeException("WTF !?!, i am not a jar");
 					ext = ext.substring(ext.indexOf('.') + 1);
+					if (self.isDirectory()) throw new RuntimeException("Wtf i am a directory ???");
 					if (!ext.startsWith("jar")) throw new RuntimeException("WTF !?!, i am not a jar");
 					Files.copy(self.toPath(), ozone.toPath(), StandardCopyOption.REPLACE_EXISTING);
 					m.labelStatus.setText("Finished");
