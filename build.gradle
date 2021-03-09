@@ -92,8 +92,8 @@ allprojects {
                 "displayName: \"Ozone Mindustry\"\n" +
                 "author: \"o7-Fire\"\n" +
                 "main: \"Premain.EntryPoint\"\n" +
-                "description: \"o7-Fire Ozone Project.\"\n" +
-                "minGameVersion: 123\n" +
+                "description: \"o7-Fire Griefing Mod. https://github.com/o7-Fire/Mindustry-Ozone .\"\n" +
+                "minGameVersion: 126\n" +
                 "hidden: true\n"
         modhjson += "version: " + versionCore+"."+versionDesktop+"\n"
         if(project.hasProperty("gRepo"))
