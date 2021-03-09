@@ -1,7 +1,9 @@
-Tired of being banned for doing nothing wrong or being banned because you like griefing? Well with our client you can bypass it.\
+Tired of being banned for doing nothing wrong or being banned because you like griefing? Well with our client you can
+bypass it.\
 This requires the mod being installed so install it if you havent already.
 
 # Bypassing Kicks
+
 \
 the votekick system is very gay. good thing you can bypass it easily. (under 15 seconds)\
 Go to the main menu and you see this Ozone button on the bottom right. Click it.
@@ -13,6 +15,7 @@ Click OK.\
 Now you a new person as if you didnt get kicked. be sure to change your name so people dont think you can bypass kicks.\
 
 # Bypassing Bans
+
 \
 First, do the steps taken to bypass kicks. (shown above)\
 now, use your fancy vpn. you dont have one? well dont worry, download nordvpn\
