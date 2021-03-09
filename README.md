@@ -66,7 +66,7 @@ https://github.com/o7-Fire/Mindustry-Ozone/wiki
 
 # Disclaimer
 
-It's totally for entertainment purpose, we are fully responsible for you using this tools
+It's totally for entertainment purpose, the user is fully responsible for using this tools
 
 # Bonus
 
