@@ -1,4 +1,4 @@
-/*
+/*******************************************************************************
  * Copyright 2021 Itzbenz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,19 +12,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ ******************************************************************************/
 
 package Ozone.Desktop.Pre;
 
-import java.io.File;
-import java.net.URL;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JProgressBar;
-
 import Atom.Net.Download;
 import Ozone.Desktop.Swing.DownloadBar;
+
+import javax.swing.*;
+import java.io.File;
+import java.net.URL;
 
 //probably will be relocated to Atom library
 public class DownloadSwing extends Download {

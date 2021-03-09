@@ -1,4 +1,4 @@
-/*
+/*******************************************************************************
  * Copyright 2021 Itzbenz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ ******************************************************************************/
 
 package Ozone.Test;/*
  * Copyright 2020 Itzbenz
@@ -30,13 +30,13 @@ package Ozone.Test;/*
  * limitations under the License.
  */
 
-import java.io.File;
-import java.net.URL;
-
 import Atom.File.FileUtility;
 import Atom.Net.Download;
 import Ozone.Desktop.Pre.DownloadSwing;
 import Ozone.Propertied;
+
+import java.io.File;
+import java.net.URL;
 
 public class NetTest extends Test {
 	

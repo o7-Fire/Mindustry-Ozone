@@ -131,6 +131,7 @@ allprojects {
         sb.append("#Dexed mean android support can be used on pc too").append("\n")
         sb.append("#Recommend to use built in mods browser in mindustry if you want ozone core").append("\n")
         sb.append("#Note desktop version must use the same mindustry version or else crash\n")
+        sb.append("#why im writing this in .gradle\n")
         sb.append("AtomHash").append("=").append(atomHash).append("\n")
         sb.append("ArcHash").append("=").append(arcHash).append("\n")
         sb.append("MindustryVersion").append("=").append(mindustryVersion).append("\n")
