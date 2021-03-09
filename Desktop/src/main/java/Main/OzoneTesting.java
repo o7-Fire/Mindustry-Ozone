@@ -16,6 +16,7 @@
 
 package Main;
 
+import Atom.String.WordGenerator;
 import Atom.Time.Time;
 import Atom.Utility.Random;
 import Ozone.Commands.Commands;
@@ -28,6 +29,8 @@ import Shared.SharedBoot;
 import arc.struct.ObjectMap;
 import arc.util.Log;
 import io.sentry.Sentry;
+import mindustry.Vars;
+import mindustry.gen.Player;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -51,6 +54,7 @@ public class OzoneTesting {
 		};
 		SharedBoot.finishStartup();
 		Log.info("Preparing Test");
+		prepare();
 		tests = new OzoneTest();
 		tests.add("Commands, DesktopCommands, Patch, Events", () -> {
 			Commands.register();
@@ -75,6 +79,11 @@ public class OzoneTesting {
 			for (String k : unmodified.keySet())
 				assert !modified.get(k).equals(unmodified.get(k)) : "Modified and Unmodified are same: " + k + ":" + unmodified.get(k);
 		});
+	}
+	
+	public static void prepare() {
+		Vars.player = Player.create();
+		Vars.player.name = WordGenerator.newWord(16);
 	}
 	
 	public static void main(String[] args) {
