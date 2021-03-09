@@ -92,7 +92,7 @@ allprojects {
                 "displayName: \"Ozone Mindustry\"\n" +
                 "author: \"o7-Fire\"\n" +
                 "main: \"Premain.EntryPoint\"\n" +
-                "description: \"o7-Fire Griefing Mod. https://github.com/o7-Fire/Mindustry-Ozone .\"\n" +
+                "description: \"o7-Fire Ozone Project, a multipurpose mods.\"\n" +
                 "minGameVersion: 126\n" +
                 "hidden: true\n"
         modhjson += "version: " + versionCore+"."+versionDesktop+"\n"
