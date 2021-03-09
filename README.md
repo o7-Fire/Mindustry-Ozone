@@ -21,6 +21,7 @@ https://github.com/o7-Fire/Mindustry-Ozone/wiki
 
 # Impossible things to do
 
+- Ozone patch once, crash everywhere
 - In-game Painter because a mere mortal can't draw with by typing code
 - ~~Create mindustry class patcher~~
 - ~~Stop relying on third party library for bootstrap~~
