@@ -11,11 +11,11 @@
 
   1. Freeware
 
-  You may use the Content without charge. o7 Fire (Inc) will monitor the content behaviour (e.g.,
-  Crash Log, Java JVM Specification). The Content contains Automatic Update feature to update the Content to new version
-  available over the Internet, without any charge. The automatically updated version of the software
-  will also be bound by this EULA. o7 Fire (Inc) is responsible for any kind of physical or mental
-  damage done by the Content users.
+  You may use the Content without charge. o7 Fire (Inc) will monitor of your use (e.g., Name,
+  IP Address and/or ID, Credit Card information, etc.). The Content contains Automatic Update
+  feature to update the Content to new version available over the Internet, without any charge.
+  The automatically updated version of the software  will also be bound by this EULA. o7 Fire
+  (Inc) is responsible for any kind of physical or mental damage done by the Content users.
 
   2. Distribution of SOFTWARE.
 
