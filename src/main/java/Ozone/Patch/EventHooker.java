@@ -65,15 +65,9 @@ public class EventHooker implements Module {
 		}));
 		Events.on(EventType.ClientLoadEvent.class, s -> {
 			arc.Core.settings.getBoolOnce("OzoneDisclaimer", () -> {
-				Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning", "Use this mods at your own risk", "Accept", "Accept", () -> {
-				}, () -> {
-					BaseSettings.colorPatch = false;
-					arc.Core.settings.put("ozone.colorPatch", false);
-					arc.Core.settings.forceSave();
-				});
+				Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning", "Use this mods at your own risk", "Accept", "Accept", () -> { }, () -> { });
 			});
 			SharedBoot.finishStartup();
-			
 			// setOzoneLogger();
 		});
 		Events.run(EventType.Trigger.draw, () -> {
