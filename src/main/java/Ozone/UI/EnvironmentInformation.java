@@ -50,7 +50,9 @@ public class EnvironmentInformation extends ScrollableDialog {
 	
 	protected void setup() {
 		ad("Player Name", Vars.player.name);
-		ad("UUID", Core.settings.getString("uuid"));
+		ad("UUID", Core.settings.getString("uuid"), s -> {
+			if (Identification.getRandomUID().length() == s.length()) Core.settings.put("uuid", s);
+		});
 		ad("Current Millis", System.currentTimeMillis());
 		ad("Current Nanos", System.nanoTime());
 		ad("Current Jar", InformationCenter.getCurrentJar().getAbsolutePath());
@@ -74,13 +76,16 @@ public class EnvironmentInformation extends ScrollableDialog {
 		try {
 			ArrayList<String> yikes = Identification.getKeys();
 			for (String k : yikes) {
-				ad(k, Core.settings.getString(k));
+				ad(k, Core.settings.getString(k), s -> {
+					if (Identification.getRandomUID().length() == s.length()) Core.settings.put(k, s);
+				});
 			}
 		}catch (Throwable t) {
 			Log.err(t);
 			Sentry.captureException(t);
 			t.printStackTrace();
 		}
+		/*
 		try {
 			for (Thread t : Thread.getAllStackTraces().keySet()) {
 				
@@ -116,6 +121,8 @@ public class EnvironmentInformation extends ScrollableDialog {
 			Sentry.captureException(t);
 			t.printStackTrace();
 		}
+		
+		 */
 		for (Map.Entry<Object, Object> s : System.getProperties().entrySet())
 			ad(s.getKey().toString(), s.getValue().toString());
 		for (Field f : Sounds.class.getFields()) {

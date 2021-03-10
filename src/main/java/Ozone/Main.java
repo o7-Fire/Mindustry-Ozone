@@ -130,8 +130,7 @@ public class Main {
 	public static void init() throws IOException {
 		if (init) return;
 		init = true;
-		
-		
+		System.setProperty("Mindustry.Ozone.Loaded", "true");
 		update("Finished Registering \n");
 		update("Initializing \n");
 		loadModule();

@@ -72,7 +72,6 @@ public class UIPatch implements Module {
 		ModsMenu.add(new VirtualControllerDialog());
 		Manifest.modsMenu = new ModsMenu();
 		Manifest.commFrag.build(Vars.ui.hudGroup);
-		
 		Events.on(EventType.ResizeEvent.class, c -> {
 			onResize();
 		});

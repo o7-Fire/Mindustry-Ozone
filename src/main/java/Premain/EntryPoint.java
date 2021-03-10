@@ -35,6 +35,7 @@ import Ozone.Bootstrap.OzoneBootstrap;
 import Ozone.Main;
 import Ozone.Manifest;
 import Shared.LoggerMode;
+import Shared.WarningHandler;
 import arc.Core;
 import arc.util.Log;
 import io.sentry.ITransaction;
@@ -45,6 +46,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class EntryPoint extends Mod {
 	static {
+		if (WarningHandler.isLoaded()) throw new IllegalStateException("Already loaded");
 		try {
 			LoggerMode.loadLogger();
 			Log.info("Ozone Standalone");
@@ -68,9 +70,11 @@ public class EntryPoint extends Mod {
 			Log.err(t);
 			throw new RuntimeException(t);
 		}
+		
 	}
 	
 	public EntryPoint() {
+		if (WarningHandler.isLoaded()) throw new IllegalStateException("Already loaded");
 		@NotNull ITransaction s = null;
 		try { s = Sentry.startTransaction("Init", "Pre Init"); }catch (Throwable ignored) {}
 		if (Core.settings != null) {
@@ -94,6 +98,7 @@ public class EntryPoint extends Mod {
 	
 	@Override
 	public void init() {
+		if (WarningHandler.isLoaded()) throw new IllegalStateException("Already loaded");
 		@NotNull ITransaction s = null;
 		try { s = Sentry.startTransaction("Init", "Init"); }catch (Throwable ignored) {}
 		try {
@@ -112,6 +117,7 @@ public class EntryPoint extends Mod {
 	
 	@Override
 	public void loadContent() {
+		if (WarningHandler.isLoaded()) throw new IllegalStateException("Already loaded");
 		@NotNull ITransaction s = null;
 		try { s = Sentry.startTransaction("Init", "Load Content"); }catch (Throwable ignored) {}
 		try {

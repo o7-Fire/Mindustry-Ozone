@@ -21,11 +21,11 @@ public class Version {
 	public static String core;
 	
 	static {
-		desktop = Propertied.Manifest.get("Version.Desktop");
-		core = Propertied.Manifest.get("Version.Core");
-		if (core == null)
-			core = "0.0.0-[Manifest Failed]";
-		if (desktop == null)
-			desktop = "0.12.0-[Manifest Failed]";
+		try {
+			desktop = Propertied.Manifest.get("Version.Desktop");
+			core = Propertied.Manifest.get("Version.Core");
+		}catch (Throwable ignored) {}
+		if (core == null) core = "0.0.0-[Manifest Failed]";
+		if (desktop == null) desktop = "0.12.0-[Manifest Failed]";
 	}
 }

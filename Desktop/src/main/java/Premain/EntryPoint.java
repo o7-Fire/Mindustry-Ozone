@@ -19,6 +19,7 @@ package Premain;
 import Main.Ozone;
 import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Ozone.Propertied;
+import Shared.WarningHandler;
 import arc.backend.sdl.jni.SDL;
 import arc.util.Log;
 import arc.util.Strings;
@@ -36,6 +37,7 @@ public class EntryPoint extends Mod {
 	public Mod OzoneMod = null;
 	
 	public EntryPoint() {
+		if (WarningHandler.isLoaded()) throw new IllegalStateException("Already loaded");
 		if (DesktopBootstrap.debug) Log.level = Log.LogLevel.debug;
 		Log.infoTag("Version", Strings.stripColors(Version.combined()));
 		String required = Propertied.Manifest.getOrDefault("MindustryVersion", "Mindustry Version is gone");
@@ -83,6 +85,7 @@ public class EntryPoint extends Mod {
 	
 	@Override
 	public void init() {
+		if (WarningHandler.isLoaded()) throw new IllegalStateException("Already loaded");
 		try {
 			if (OzoneMod != null) OzoneMod.init();
 		}catch (Throwable t) {
@@ -94,6 +97,7 @@ public class EntryPoint extends Mod {
 	
 	@Override
 	public void loadContent() {
+		if (WarningHandler.isLoaded()) throw new IllegalStateException("Already loaded");
 		try {
 			if (OzoneMod != null) OzoneMod.loadContent();
 		}catch (Throwable t) {

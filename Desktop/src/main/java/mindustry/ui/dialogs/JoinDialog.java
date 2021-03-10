@@ -271,7 +271,7 @@ public class JoinDialog extends BaseDialog {
 		
 		cont.clear();
 		cont.table(t -> {
-			t.button(Icon.imageSmall, () -> ui.showInfoText("Preview", "[coral][[[" + Random.getHex(player.color().rgba8888()) + "]" + player.name() + "[coral]]:[white] Preview")).padRight(10);
+			t.button(Icon.fileImage, () -> ui.showInfoText("Preview", "[coral][[[" + Random.getHex(player.color().rgba8888()) + "]" + player.name().trim() + "[coral]]:[white] Preview")).padRight(10);
 			t.field(Core.settings.getString("name"), text -> {
 				player.name(text);
 				Core.settings.put("name", text);

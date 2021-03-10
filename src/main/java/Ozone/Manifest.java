@@ -17,7 +17,6 @@
 package Ozone;
 
 import Ozone.Internal.Module;
-import Ozone.Patch.Warning;
 import Ozone.Settings.SettingsManifest;
 import Ozone.UI.*;
 import arc.Core;

@@ -51,6 +51,7 @@ import mindustry.net.Packets;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static mindustry.Vars.maxNameLength;
 
@@ -114,8 +115,15 @@ public class Identification {
 	
 	public static void changeID() throws NoSuchFieldException, IllegalAccessException {
 		ArrayList<String> yikes = getKeys();
-		
-		for (String s : yikes) Core.settings.put(s, getRandomUID());
+		AtomicInteger i = new AtomicInteger();
+		Vars.ui.loadfrag.setProgress(() -> (float) i.get() / yikes.size());
+		for (String s : yikes) {
+			if (Vars.ui != null && Vars.ui.loadfrag != null) {
+				Vars.ui.loadfrag.setText(i.get() + "/" + yikes.size());
+			}
+			Core.settings.put(s, getRandomUID());
+			i.getAndIncrement();
+		}
 		
 	}
 	

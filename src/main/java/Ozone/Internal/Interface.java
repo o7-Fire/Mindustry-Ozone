@@ -48,7 +48,6 @@ import arc.math.Mathf;
 import arc.scene.actions.Actions;
 import arc.scene.style.Drawable;
 import arc.scene.style.TextureRegionDrawable;
-import arc.scene.ui.Label;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
 import arc.util.Log;
@@ -56,22 +55,37 @@ import arc.util.Time;
 import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.game.EventType;
+import mindustry.game.Team;
 import mindustry.gen.*;
 import mindustry.type.Item;
+import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Sorter;
 import mindustry.world.blocks.sandbox.ItemSource;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static Ozone.Patch.Translation.getRandomHexColor;
 import static mindustry.Vars.player;
+import static mindustry.Vars.ui;
 
-public class Interface {
+public class Interface implements Module {
 	public static final ObjectMap<String, String> bundle = new ObjectMap<>();
+	public static Map<Integer, ArrayList<Building>> buildingCache = Collections.synchronizedMap(new WeakHashMap<>());
 	private static long lastToast = 0;
+	
+	public static void openLink(String url) {
+		Vars.ui.showConfirm("Open URL", "Are you sure want to open\n \"" + url + "\"", () -> {
+			Pool.submit(() -> {
+				if (!Core.app.openURI(url)) {
+					ui.showErrorMessage("@linkfail");
+					Core.app.setClipboardText(url);
+				}
+			});
+		});
+	}
 	
 	public static void showInput(String about, Cons<String> s) {
 		String key = Reflect.getCallerClassStackTrace().toString();
@@ -133,7 +147,7 @@ public class Interface {
 				});
 				table.margin(12.0F);
 				table.image(icon).pad(3.0F);
-				((Label) table.add(text).wrap().width(280.0F).get()).setAlignment(1, 1);
+				table.add(text).wrap().width(280.0F).get().setAlignment(1, 1);
 				table.pack();
 				Table container = Core.scene.table();
 				container.top().add(table);
@@ -209,10 +223,11 @@ public class Interface {
 		return false;
 	}
 	
-	public static boolean withdrawItem(Building tile, Item item){
-		if(tile == null || !tile.isValid() || tile.items == null || !tile.items.has(item) || !tile.interactable(player.team())) return false;
+	public static boolean withdrawItem(Building tile, Item item) {
+		if (tile == null || !tile.isValid() || tile.items == null || !tile.items.has(item) || !tile.interactable(player.team()))
+			return false;
 		int amount = Math.min(1, player.unit().maxAccepted(item));
-		if(amount > 0){
+		if (amount > 0) {
 			Call.requestItem(player, tile, item, amount);
 			return true;
 		}
@@ -260,6 +275,33 @@ public class Interface {
 		return Pool.submit(() -> Random.getRandom(Objects.requireNonNull(getBuilds(buildFilter)).get()));
 	}
 	
+	@SafeVarargs
+	public static Future<ArrayList<Building>> getBuilding(Team team, Class<? extends Block>... list) {
+		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
+		return Pool.submit(() -> {
+			ArrayList<Building> arr = new ArrayList<>();
+			try {
+				int hash = Arrays.hashCode(list);
+				if (buildingCache.containsKey(hash)) return buildingCache.get(hash);
+				ArrayList<Tile> t = Interface.getTiles(f -> {
+					if (f == null) return false;
+					if (!f.interactable(team)) return false;
+					if (f.build == null) return false;
+					for (Class<? extends Block> l : list) {
+						if (l.isInstance(f.build.block)) return true;
+					}
+					return false;
+				}).get();
+				for (Tile te : t)
+					arr.add(te.build);
+				if (!arr.isEmpty()) buildingCache.put(hash, arr);
+				return arr;
+			}catch (InterruptedException | ExecutionException ignored) {
+			}
+			return new ArrayList<>();
+		});
+	}
+	
 	public static Future<Building> getRandomSorterLikeShit() {
 		return Interface.getBuild(build -> {
 			if (build == null) return false;
@@ -278,6 +320,7 @@ public class Interface {
 			return list;
 		});
 	}
+	
 	public static Future<ArrayList<Tile>> getTiles(Filter<Tile> filter) {
 		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
 		return Pool.submit(() -> {
@@ -293,6 +336,10 @@ public class Interface {
 	public static Future<Tile> getTile(Filter<Tile> filter) {
 		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
 		return Pool.submit(() -> Random.getRandom(Objects.requireNonNull(getTiles(filter)).get()));
+	}
+	
+	public void reset() {
+		buildingCache.clear();
 	}
 }
 

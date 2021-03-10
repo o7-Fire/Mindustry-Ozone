@@ -18,7 +18,6 @@ package Ozone.UI;
 
 import Atom.Time.Time;
 import Atom.Utility.Pool;
-import arc.scene.ui.Label;
 import arc.struct.ObjectMap;
 import arc.util.Log;
 import io.sentry.ITransaction;
@@ -36,20 +35,19 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class WorldInformation extends ScrollableDialog {
-	
-	private Label label = new Label("World calculation began...");
 	
 	public WorldInformation() {
 		super("World Information");
 		
 	}
 	
+	public volatile static Future task;
+	
 	public void setup() {
-		label = new Label("World calculation began...");
-		label.visible = false;
 		ad("Word Name", Vars.state.map.name());
 		ad("Players Count", Groups.player.size());
 		ad("Drawc Count", Groups.draw.size());
@@ -60,9 +58,8 @@ public class WorldInformation extends ScrollableDialog {
 		ad("World height", Vars.world.height());
 		ad("World width", Vars.world.width());
 		ad("World square", Vars.world.width() * Vars.world.height());
-		table.add(label).growX();
 		table.row();
-		Pool.submit(() -> {
+		if (task == null || task.isDone()) task = Pool.submit(() -> {
 			Time te = new Time();
 			Log.debug("World calculation began");
 			@NotNull ITransaction st = Sentry.startTransaction(Vars.world.width() + "x" + Vars.world.height(), "world-calculation");
@@ -71,14 +68,18 @@ public class WorldInformation extends ScrollableDialog {
 				long totalOre = 0;
 				int total = Vars.world.height() * Vars.world.width();
 				int height = Vars.world.height();
+				AtomicInteger a = new AtomicInteger(0);
 				AtomicLong buildableTile = new AtomicLong();
-				label.visible = true;
-				label.setText("World calculation began...");
+				Vars.ui.loadfrag.show("World calculation began...");
+				Vars.ui.loadfrag.setButton(() -> {
+					Vars.ui.loadfrag.hide();
+				});
 				ArrayList<Future<ObjectMap<String, Integer>>> futures = new ArrayList<>();
+				Vars.ui.loadfrag.setProgress(() -> (float) a.get() / total);
 				for (int i = 0; i < height; i++) {
 					int finalI = i;
-					int a = i * height;
-					label.setText("World indexing: " + a + "/" + total);
+					a.set(i * height);
+					Vars.ui.loadfrag.setText("World indexing: " + a + "/" + total);
 					futures.add(Pool.submit(() -> {//hail concurrency
 						ObjectMap<String, Integer> count = new ObjectMap<>();
 						//Overcautious people be like
@@ -107,31 +108,33 @@ public class WorldInformation extends ScrollableDialog {
 								} catch (Throwable ignored) {
 								}
 							}
-						} catch (Throwable ignored) {
+						}catch (Throwable ignored) {
 						}
 						return count;
 					}));
 				}
-
+				
 				long futc = futures.size();
 				ArrayList<Future<?>> fut = new ArrayList<>(futures);
+				Vars.ui.loadfrag.setProgress(() -> (float) (futc - fut.size()) / futc);
 				for (Future<ObjectMap<String, Integer>> f : futures) {
 					try {
 						for (ObjectMap.Entry<String, Integer> s : f.get().entries()) {
-							if (mainCount.get(s.key) == null)
-								mainCount.put(s.key, 0);
+							if (mainCount.get(s.key) == null) mainCount.put(s.key, 0);
 							mainCount.put(s.key, mainCount.get(s.key) + s.value);
 						}
 						fut.remove(f);
 						Pool.submit(() -> {
 							String s = "";
+							float pr = 0;
+							
 							try {
-								s = ((((float) (futc - fut.size()) / futc) * 100)) + "%";
+								pr = (((float) (futc - fut.size())) / futc);
 								s = (futc - fut.size()) + "/" + futc;
-								label.setText("World calculating: " + s);
-							} catch (Throwable t) {
+								Vars.ui.loadfrag.setText("World calculating: " + s);
+							}catch (Throwable t) {
 								s = (futc - fut.size()) + "/" + futc;
-								label.setText("World calculating: " + s);
+								Vars.ui.loadfrag.setText("World calculating: " + s);
 							}
 						});
 						
@@ -144,7 +147,7 @@ public class WorldInformation extends ScrollableDialog {
 				ad("Total Ores", totalOre);
 				ad("Buildable Tiles", buildableTile);
 				ad(mainCount);
-				Log.debug("World calculation finished in @", te.elapsedS());
+				Log.debug("World calculation finished in @", te.elapsed().convert(TimeUnit.MILLISECONDS).toString());
 				if (te.elapsed().convert(TimeUnit.MILLISECONDS).getSrc() > 3000)
 					Vars.ui.showInfo("World calculation finished: " + te.elapsed().convert(TimeUnit.MILLISECONDS).toString());
 			}catch (Throwable i) {
@@ -155,7 +158,7 @@ public class WorldInformation extends ScrollableDialog {
 				throw new RuntimeException(i);
 			}finally {
 				if (st != null) st.finish();
-				label.visible = false;
+				Vars.ui.loadfrag.hide();
 			}
 		});
 		

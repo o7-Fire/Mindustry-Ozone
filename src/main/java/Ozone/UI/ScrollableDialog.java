@@ -32,6 +32,7 @@ import mindustry.ui.dialogs.BaseDialog;
 
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 public abstract class ScrollableDialog extends OzoneDialog {
 	protected Table table = new Table();
@@ -123,6 +124,10 @@ public abstract class ScrollableDialog extends OzoneDialog {
 	}
 	
 	protected void ad(Object title, Object value) {
+		ad(title, value, null);
+	}
+	
+	protected void ad(Object title, Object value, Consumer<String> cs) {
 		value = String.valueOf(value);
 		title = String.valueOf(title);
 		if (BaseSettings.colorPatch) title = "[" + Random.getRandomHexColor() + "]" + title;
@@ -133,6 +138,7 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		table.field(finalValue, s -> {
 			Core.app.setClipboardText(finalValue);
 			Manifest.toast("Copied");
+			if (cs != null) cs.accept(s);
 		}).expandX().growX();
 		table.row();
 	}

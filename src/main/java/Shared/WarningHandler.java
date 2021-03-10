@@ -40,6 +40,10 @@ import java.util.ArrayList;
 public class WarningHandler {
 	public static ArrayList<WarningReport> listOfProblem = new ArrayList<>();
 	
+	public static boolean isLoaded() {//safest class
+		return System.getProperty("Mindustry.Ozone.Loaded") != null;
+	}
+	
 	public static void handle(WarningReport wr) {
 		//Pool.daemon(()->{
 		if (listOfProblem.contains(wr)) return;

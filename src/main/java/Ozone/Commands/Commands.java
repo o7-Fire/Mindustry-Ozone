@@ -55,12 +55,16 @@ import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Strings;
 import mindustry.Vars;
+import mindustry.game.Team;
 import mindustry.gen.*;
 import mindustry.net.Administration;
 import mindustry.net.Net;
 import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.Tile;
+import mindustry.world.blocks.distribution.ArmoredConveyor;
+import mindustry.world.blocks.distribution.Conveyor;
+import mindustry.world.blocks.distribution.StackConveyor;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -101,7 +105,7 @@ public class Commands implements Module {
 		register("follow-player", new Command(Commands::followPlayer), "follow a player use ID or s2tartsWith/full name");
 		
 		//Commands with icon support no-argument-commands (user input is optional)
-		register("rotate-conveyor", new Command(Commands::rotateconveyor, Icon.rotate), "rotate a fucking conveyor");
+		register("rotate-conveyor", new Command((Runnable) Commands::rotateConveyor, Icon.rotate), "rotate some conveyor");
 		register("drain-core", new Command(Commands::drainCore, Icon.hammer), "drain a core");
 		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
 		register("info-unit", new Command(Commands::infoUnit, Icon.units));
@@ -121,12 +125,13 @@ public class Commands implements Module {
 		
 		//Payload for connect diagram
 		payloads.put("sorter-shuffle", new Payload(Commands::shuffleSorterPayload));
-		
+		//hey bitch dare you put the spyware in here, im gonna kill you
 		Log.infoTag("Ozone", "Commands Center Initialized");
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
 		Log.infoTag("Ozone", payloads.size() + " payload loaded");
 	}
-
+	
+	
 	public static void hudFragToast(ArrayList<String> arg) {
 		String s = "[" + Random.getRandomHexColor() + "]Test " + Random.getString(16);
 		if (!arg.isEmpty()) s = Utility.joiner(arg, " ");
@@ -571,9 +576,31 @@ public class Commands implements Module {
 		}
 	}
 	
-	public static void rotateconveyor() {
+	public static void rotateConveyor() {
+		rotateConveyor(Vars.player.team(), new Callable(Vars.net));
+	}
+	
+	public static void rotateConveyor(Team team, Callable callable) {
 		//Call.rotateBlock(Vars.player, t.build, true);
-		tellUser("under maintenance, fuck you nexity");
+		TaskInterface.addTask(new Completable() {
+			Future<ArrayList<Building>> build;
+			
+			{
+				name = "RotateAConveyor";
+				build = Interface.getBuilding(team, Conveyor.class, ArmoredConveyor.class, StackConveyor.class);
+			}
+			
+			@Override
+			public void update() {
+				if (!build.isDone()) return;
+				try {
+					callable.rotateBlock(null, Random.getRandom(build.get()), Random.getBool());
+				}catch (InterruptedException | ExecutionException ignored) {
+				}
+				completed = true;
+			}
+		});
+		
 	}
 	
 	public static void drainCore() {

@@ -17,6 +17,7 @@
 package Ozone.UI;
 
 import Ozone.Experimental.Evasion.Identification;
+import Ozone.Internal.Interface;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
 import mindustry.Vars;
@@ -29,6 +30,17 @@ public class ModsMenu extends ScrollableDialog {
 	
 	public static void add(OzoneDialog dialog) {
 		dialogs.add(dialog);
+	}
+	
+	@Override
+	protected void ctor() {
+		super.ctor();
+		buttons.button("o7-Discord", Icon.discord, () -> {
+			Interface.openLink("https://discord.gg/2tqguRj");
+		}).size(210f, 64f);
+		buttons.button("Ozone-Wiki", Icon.bookOpen, () -> {
+			Interface.openLink("https://github.com/o7-Fire/Mindustry-Ozone/wiki");
+		}).size(210f, 64f);
 	}
 	
 	public void setup() {

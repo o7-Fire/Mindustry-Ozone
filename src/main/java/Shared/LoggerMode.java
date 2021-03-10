@@ -43,13 +43,14 @@ import mindustry.game.EventType;
 
 import java.io.Writer;
 
+import static Shared.WarningHandler.isLoaded;
 import static arc.Core.settings;
 import static mindustry.Vars.*;
 
 public class LoggerMode {
 	
 	static Writer writer;
-	static volatile boolean loaded;
+	static volatile boolean loaded = isLoaded();
 	public static Seq<String> logBuffer = new Seq<>();
 	public static String[] tags = {"[green][D][]", "[royal][I][]", "[yellow][W][]", "[scarlet][E][]", ""};
 	public static String[] color = {"[green]", "[royal]", "[yellow]", "[scarlet]", "[white]"};

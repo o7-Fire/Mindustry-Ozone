@@ -14,11 +14,11 @@
  * limitations under the License.
  ******************************************************************************/
 
-package Ozone.Patch;
+package Ozone.UI;
 
 import Atom.Utility.Utility;
 import Ozone.Experimental.ThreadStackTrace;
-import Ozone.UI.ScrollableDialog;
+import Ozone.Internal.Interface;
 import Shared.WarningHandler;
 import Shared.WarningReport;
 import arc.graphics.Color;
@@ -36,6 +36,11 @@ public class Warning extends ScrollableDialog {
 		example.report();
 	}
 	
+	@Override
+	protected void ctor() {
+		super.ctor();
+		buttons.button("Troubleshoot", Icon.warning, () -> Interface.openLink("https://github.com/o7-Fire/Mindustry-Ozone/wiki/Troubleshoot")).size(210f, 64f);
+	}
 	
 	@Override
 	protected void setup() {
