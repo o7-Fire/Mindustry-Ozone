@@ -93,7 +93,7 @@ allprojects {
                 "author: \"o7-Fire\"\n" +
                 "main: \"Premain.EntryPoint\"\n" +
                 "description: \"o7-Fire Ozone Project, a multipurpose mods.\"\n" +
-                "minGameVersion: 126\n" +
+                "minGameVersion: 123\n" +//bitch dare you change this again without proper approval
                 "hidden: true\n"
         modhjson += "version: " + versionCore+"."+versionDesktop+"\n"
         if(project.hasProperty("gRepo"))

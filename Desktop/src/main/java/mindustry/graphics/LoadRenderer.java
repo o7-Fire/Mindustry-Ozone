@@ -1,7 +1,6 @@
 package mindustry.graphics;
 
 import Atom.Utility.Random;
-import Ozone.Main;
 import arc.Core;
 import arc.func.Boolp;
 import arc.func.Floatp;
@@ -46,8 +45,6 @@ public class LoadRenderer implements Disposable {
 	private WindowedMean renderTimes = new WindowedMean(20);
 	private long lastFrameTime;
 	
-	private static String load = "";
-	
 	{
 		//some systems don't support rgba8888 w/ a stencil buffer
 		try {
@@ -55,16 +52,14 @@ public class LoadRenderer implements Disposable {
 		}catch (Exception e) {
 			fx = new FxProcessor(Format.rgb565, 2, 2, false, true);
 		}
-		Main.update = s -> {
-			load = s;
-			draw();
-		};
+		
 		//vignetting is probably too much
 		fx.addEffect(new VignettingFilter(false));
 		//fx.addEffect(new BloomFilter());
 		//meaningless bar
 		bars = new Bar[]{new Bar("s_proc#", OS.cores / 16f, OS.cores < 4), new Bar("c_aprog", () -> assets != null, () -> assets.getProgress(), () -> false), new Bar("g_vtype", graphics.getGLVersion().type == GLVersion.GlType.GLES ? 0.5f : 1f, graphics.getGLVersion().type == GLVersion.GlType.GLES), new Bar("s_mem#", () -> true, () -> Core.app.getJavaHeap() / 1024f / 1024f / 200f, () -> Core.app.getJavaHeap() > 1024 * 1024 * 110), new Bar("v_ver#", () -> Version.build != 0, () -> Version.build == -1 ? 0.3f : (Version.build - 103f) / 10f, () -> !Version.modifier.equals("release")), new Bar("s_osv", OS.isWindows ? 0.35f : OS.isLinux ? 0.9f : OS.isMac ? 0.5f : 0.2f, OS.isMac), new Bar("v_worlds#", () -> Vars.control != null && Vars.control.saves != null, () -> Vars.control.saves.getSaveSlots().size / 30f, () -> Vars.control.saves.getSaveSlots().size > 30), new Bar("c_datas#", () -> settings.keySize() > 0, () -> settings.keySize() / 50f, () -> settings.keySize() > 20), new Bar("v_alterc", () -> Vars.mods != null, () -> (Vars.mods.list().size + 1) / 6f, () -> Vars.mods.list().size > 0), new Bar("g_vcomp#", (graphics.getGLVersion().majorVersion + graphics.getGLVersion().minorVersion / 10f) / 4.6f, !graphics.getGLVersion().atLeast(3, 2)),};
 	}
+	
 	@Override
 	public void dispose() {
 		mesh.dispose();
@@ -445,22 +440,24 @@ public class LoadRenderer implements Disposable {
 		
 		//note for translators: this text is unreadable and for debugging/show anyway, so it's not translated
 		if (assets.isLoaded("tech")) {
+			String name = assets.getCurrentLoading() != null ? assets.getCurrentLoading().fileName.toLowerCase() : "system";
+			
 			
 			Font font = assets.get("tech");
 			font.setColor(Pal.accent);
 			Draw.color(Color.black);
 			
 			//too much
-			if (!load.isEmpty()) {
-				font.draw(load, w / 2f, h / 2f + 110 * s, Align.center);
-				load = "";
-			}else {
+			
+			
+			if (ran) {
 				font.draw(red + Random.getString(Random.getInt(3, 14)), w / 2f, h / 2f + 110 * s, Align.center);
-				if (ran) {
-					for (int i = 0; i < Random.getInt(5); i++)
-						font.draw(red + Random.getString(Random.getInt(4, 16)), w / Mathf.random(0.1f, 10f), h / Mathf.random(0.2f, 10f) + 110 * s, Align.center);
-				}
+				for (int i = 0; i < Random.getInt(5); i++)
+					font.draw(red + Random.getString(Random.getInt(4, 16)), w / Mathf.random(0.1f, 10f), h / Mathf.random(0.2f, 10f) + 110 * s, Align.center);
+			}else {
+				font.draw(red + name, w / 2f, h / 2f + 110 * s, Align.center);
 			}
+			
 		}
 		
 		Draw.flush();

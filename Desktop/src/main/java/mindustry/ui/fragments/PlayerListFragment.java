@@ -193,7 +193,6 @@ public class PlayerListFragment extends Fragment {
 		}
 		
 		content.marginBottom(5);
-		content.pack();
 	}
 	
 	public void toggle() {
