@@ -156,6 +156,7 @@ allprojects {
             implementation ('io.sentry:sentry:4.3.0'){
                 exclude group: 'com.google.code.gson', module: "gson"
             }
+            implementation group: 'info.debatty', name: 'java-string-similarity', version: '2.0.0'
 
             compileOnly ("com.github.Anuken.Arc:arc-core:$arcHash"){
                 because("provided")

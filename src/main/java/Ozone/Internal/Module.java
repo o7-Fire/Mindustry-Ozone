@@ -41,6 +41,7 @@ import java.util.Map;
 import static Ozone.Internal.InformationCenter.*;
 
 public interface Module extends Loadable {
+	
 	default void earlyInit() throws Throwable {
 	
 	}
@@ -49,7 +50,7 @@ public interface Module extends Loadable {
 	
 	}
 	
-	default void reset() throws Throwable {
+	default void reset() throws Throwable {//User reset, world reset
 	
 	}
 	
@@ -62,6 +63,13 @@ public interface Module extends Loadable {
 	
 	}
 	
+	default void onWoldUnload() throws Throwable {//disconnect world
+	
+	}
+	
+	default void onWorldLoad() throws Throwable {//connect world
+	
+	}
 	
 	default void setRegister() {//invoked from outside
 		try {

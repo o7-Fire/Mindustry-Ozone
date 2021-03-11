@@ -62,9 +62,9 @@ import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Sorter;
 import mindustry.world.blocks.sandbox.ItemSource;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static Ozone.Patch.Translation.getRandomHexColor;
@@ -276,30 +276,42 @@ public class Interface implements Module {
 	}
 	
 	@SafeVarargs
-	public static Future<ArrayList<Building>> getBuilding(Team team, Class<? extends Block>... list) {
+	public static Future<ArrayList<Building>> getBuildingBlock(Team team, Class<? extends Block>... list) {
+		return getBuildingBlock(team, false, list);
+	}
+	
+	@SafeVarargs
+	public static ArrayList<Building> getBuildingBlockSync(Team team, Class<? extends Block>... list) {
+		return getBuildingBlockSync(team, true, list);
+	}
+	
+	@SafeVarargs
+	public static @NotNull ArrayList<Building> getBuildingBlockSync(Team team, boolean cache, Class<? extends Block>... list) {
+		ArrayList<Building> arr = new ArrayList<>();
+		try {
+			int hash = Arrays.hashCode(list);
+			if (cache && buildingCache.containsKey(hash)) return buildingCache.get(hash);
+			ArrayList<Tile> t = Interface.getTiles(f -> {
+				if (f == null) return false;
+				if (!f.interactable(team)) return false;
+				if (f.build == null) return false;
+				for (Class<? extends Block> l : list) {
+					if (l.isInstance(f.build.block)) return true;
+				}
+				return false;
+			}).get();
+			for (Tile te : t)
+				arr.add(te.build);
+			if (!arr.isEmpty()) buildingCache.put(hash, arr);
+			return arr;
+		}catch (Throwable ignored) {}
+		return arr;
+	}
+	
+	@SafeVarargs
+	public static Future<ArrayList<Building>> getBuildingBlock(Team team, boolean cache, Class<? extends Block>... list) {
 		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
-		return Pool.submit(() -> {
-			ArrayList<Building> arr = new ArrayList<>();
-			try {
-				int hash = Arrays.hashCode(list);
-				if (buildingCache.containsKey(hash)) return buildingCache.get(hash);
-				ArrayList<Tile> t = Interface.getTiles(f -> {
-					if (f == null) return false;
-					if (!f.interactable(team)) return false;
-					if (f.build == null) return false;
-					for (Class<? extends Block> l : list) {
-						if (l.isInstance(f.build.block)) return true;
-					}
-					return false;
-				}).get();
-				for (Tile te : t)
-					arr.add(te.build);
-				if (!arr.isEmpty()) buildingCache.put(hash, arr);
-				return arr;
-			}catch (InterruptedException | ExecutionException ignored) {
-			}
-			return new ArrayList<>();
-		});
+		return Pool.submit(() -> getBuildingBlockSync(team, cache, list));
 	}
 	
 	public static Future<Building> getRandomSorterLikeShit() {
@@ -309,28 +321,32 @@ public class Interface implements Module {
 		});
 	}
 	
+	public static ArrayList<Building> getBuildsSync(Filter<Building> buildingFilter) {
+		ArrayList<Building> list = new ArrayList<>();
+		for (Building t : Groups.build) {
+			if (!buildingFilter.accept(t)) continue;
+			list.add(t);
+		}
+		return list;
+	}
+	
 	public static Future<ArrayList<Building>> getBuilds(Filter<Building> buildingFilter) {
 		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
-		return Pool.submit(() -> {
-			ArrayList<Building> list = new ArrayList<>();
-			for (Building t : Groups.build) {
-				if (!buildingFilter.accept(t)) continue;
-				list.add(t);
-			}
-			return list;
-		});
+		return Pool.submit(() -> getBuildsSync(buildingFilter));
+	}
+	
+	public static ArrayList<Tile> getTilesSync(Filter<Tile> filter) {
+		ArrayList<Tile> list = new ArrayList<>();
+		for (Tile t : Vars.world.tiles) {
+			if (!filter.accept(t)) continue;
+			list.add(t);
+		}
+		return list;
 	}
 	
 	public static Future<ArrayList<Tile>> getTiles(Filter<Tile> filter) {
 		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
-		return Pool.submit(() -> {
-			ArrayList<Tile> list = new ArrayList<>();
-			for (Tile t : Vars.world.tiles) {
-				if (!filter.accept(t)) continue;
-				list.add(t);
-			}
-			return list;
-		});
+		return Pool.submit(() -> getTilesSync(filter));
 	}
 	
 	public static Future<Tile> getTile(Filter<Tile> filter) {

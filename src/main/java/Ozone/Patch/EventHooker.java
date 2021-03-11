@@ -40,6 +40,7 @@ import static Ozone.Commands.Commands.garbageCollector;
 public class EventHooker implements Module {
 	public static ArrayList<Runnable> drawc = new ArrayList<>();
 	
+	
 	public static void resets() {
 		for (Map.Entry<Class<? extends Module>, Module> m : Manifest.module.entrySet()) {
 			try {
@@ -85,13 +86,14 @@ public class EventHooker implements Module {
 		Events.run(EventExtended.Game.Start, () -> {
 			Log.debug("Server: " + InformationCenter.getCurrentServerIP() + ":" + InformationCenter.getCurrentServerPort());
 			resets();
+			Manifest.invokeAllModule(Module::onWorldLoad);
 		});
 		Events.run(EventExtended.Game.Stop, () -> {
 			resets();
+			Manifest.invokeAllModule(Module::onWoldUnload);
 		});
 		Events.run(EventExtended.Connect.Disconnected, () -> {
 		
-			
 		});
 		Events.on(EventType.StateChangeEvent.class, s -> {
 			Log.debug("Ozone-Event-@: State changed from @ to @", s.getClass().getSimpleName(), s.from, s.to);

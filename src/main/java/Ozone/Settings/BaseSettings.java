@@ -36,7 +36,7 @@ import static Ozone.Settings.SettingsManifest.settingsFile;
 
 public class BaseSettings implements Module {
 	
-	public static boolean colorPatch = false, debugMode = false;
+	public static boolean colorPatch = false, debugMode = false, logicCodeScanner = false;
 	public static boolean antiSpam = false, worldLog = false, blockDebug = false, commandsToast = true;
 	public static String commandsPrefix = ",";
 	
@@ -55,8 +55,9 @@ public class BaseSettings implements Module {
 		t.put("blockDebug", "Block Debug(ctrl+mouse left)");
 		t.put("commandsToast", "Commands output use Hud Toast");
 		t.put("worldLog", "Spam your console with world interaction log");
+		t.put("logicCodeScanner", "Enable Logic Code Scanner and jam dangerous content automatically");
 		Translation.addSettings(t);
-
+		
 	}
 	
 	@Override

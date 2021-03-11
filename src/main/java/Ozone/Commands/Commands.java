@@ -587,7 +587,7 @@ public class Commands implements Module {
 			
 			{
 				name = "RotateAConveyor";
-				build = Interface.getBuilding(team, Conveyor.class, ArmoredConveyor.class, StackConveyor.class);
+				build = Interface.getBuildingBlock(team, Conveyor.class, ArmoredConveyor.class, StackConveyor.class);
 			}
 			
 			@Override

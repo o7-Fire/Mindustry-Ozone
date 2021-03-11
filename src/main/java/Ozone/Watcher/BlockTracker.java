@@ -27,6 +27,8 @@ import arc.input.KeyCode;
 import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.world.Tile;
+import mindustry.world.blocks.logic.LogicBlock;
+import mindustry.world.blocks.logic.LogicDisplay;
 
 public class BlockTracker implements Module {
 	private static Tile target = null;
@@ -36,14 +38,19 @@ public class BlockTracker implements Module {
 	}
 	
 	private static void update() {
-		if (BaseSettings.blockDebug) if (Vars.state.isPlaying()) {
+		if (BaseSettings.blockDebug && Vars.state.isPlaying()) {
 			if (Core.input.keyDown(KeyCode.controlLeft))
 				if (Core.input.keyDown(KeyCode.mouseLeft)) target = Interface.getMouseTile();
 			
 			if (target != null) {
 				StringBuilder sb = new StringBuilder();
-				if (target.build != null) sb.append(FieldTool.getFieldDetails(target.build).replace("\n", "[white]\n"));
-				else sb.append(FieldTool.getFieldDetails(target).replace("\n", "[white]\n"));
+				if (target.build != null) {
+					sb.append(FieldTool.getFieldDetails(target.build).replace("\n", "[white]\n"));
+					if (target.build instanceof LogicDisplay.LogicDisplayBuild)
+						sb.append("GPUCommandsHash=").append(((LogicDisplay.LogicDisplayBuild) target.build).commands.toString().hashCode()).append("[white]\n");
+					if (target.build instanceof LogicBlock.LogicBuild)
+						sb.append("CodeHash=").append(((LogicBlock.LogicBuild) target.build).code.hashCode()).append("[white]\n");
+				}else sb.append(FieldTool.getFieldDetails(target).replace("\n", "[white]\n"));
 				sb.append("SafetyIndex:").append(Pathfinding.isSafe(target)).append("[white]\n");
 				Vars.ui.hudfrag.setHudText(sb.toString());
 			}

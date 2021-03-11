@@ -16,6 +16,7 @@
 
 package Ozone;
 
+import Atom.Struct.UnstableConsumer;
 import Ozone.Internal.Module;
 import Ozone.Settings.SettingsManifest;
 import Ozone.UI.*;
@@ -25,6 +26,7 @@ import arc.math.Interp;
 import arc.scene.actions.Actions;
 import arc.scene.event.Touchable;
 import arc.scene.ui.layout.Table;
+import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.EventType;
@@ -34,6 +36,7 @@ import mindustry.ui.Styles;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("Unchecked")
 public class Manifest {
@@ -57,6 +60,16 @@ public class Manifest {
 	public static Mod ozone;
 	public static final HashMap<Class<? extends Module>, Module> module = new HashMap<>();
 	
+	public static void invokeAllModule(UnstableConsumer<Module> me) {
+		for (Map.Entry<Class<? extends Module>, Module> m : Manifest.module.entrySet()) {
+			try {
+				me.accept(m.getValue());
+			}catch (Throwable throwable) {
+				Log.err(throwable);
+				Sentry.captureException(throwable);
+			}
+		}
+	}
 	
 	public static <T extends Module> T getModule(Class<? extends Module> clazz) {
 		try {
