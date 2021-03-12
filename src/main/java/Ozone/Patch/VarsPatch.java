@@ -18,7 +18,6 @@ package Ozone.Patch;
 
 import Atom.Reflect.FieldTool;
 import Atom.Reflect.Reflect;
-import Ozone.Internal.Module;
 import Ozone.Internal.RepoCached;
 import Ozone.Patch.Mindustry.DesktopInputPatched;
 import Ozone.Patch.Mindustry.MobileInputPatched;
@@ -46,7 +45,7 @@ public class VarsPatch implements Module {
 	
 	@Override
 	public void earlyInit() throws Throwable {
-		SettingsManifest.changeFile(new File(Vars.dataDirectory.file(), SettingsManifest.settingsFile.getAbsolutePath()));
+		SettingsManifest.changeFile(new File(Vars.dataDirectory.file(), SettingsManifest.settingsFile.getName()));
 		if (SharedBoot.debug) {
 			Log.level = Log.LogLevel.debug;
 			BaseSettings.debugMode = true;
