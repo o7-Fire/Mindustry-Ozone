@@ -21,6 +21,7 @@ import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
+import Ozone.Patch.Mindustry.LogicDialogPatch;
 import Ozone.Patch.Mindustry.SettingsDialog;
 import Ozone.UI.*;
 import Shared.SharedBoot;
@@ -72,6 +73,7 @@ public class UIPatch implements Module {
 		ModsMenu.add(new VirtualControllerDialog());
 		Manifest.modsMenu = new ModsMenu();
 		Manifest.commFrag.build(Vars.ui.hudGroup);
+		ui.logic = new LogicDialogPatch();
 		Events.on(EventType.ResizeEvent.class, c -> {
 			onResize();
 		});

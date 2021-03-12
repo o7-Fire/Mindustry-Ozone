@@ -58,8 +58,8 @@ public class InformationCenter {
 		commonPacketClientReceive.add(59);//state snapshot
 		commonPacketClientReceive.add(31);//ping response
 		commonPacketClientReceive.add(18);//entity snapshot
-		commonPacketClientSend.add(8);//client snapshot
 		commonPacketClientSend.add(30);//ping response
+		commonPacketClientSend.add(72);//client snapshot
 		Seq<Method> a = new Seq<>(Call.class.getDeclaredMethods());
 		a.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 		for (Method m : a) {

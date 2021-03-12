@@ -23,11 +23,13 @@ import Ozone.Internal.Module;
 import Ozone.Internal.Repo;
 import Ozone.Internal.RepoCached;
 import Ozone.Manifest;
+import Shared.SharedBoot;
 import Shared.WarningReport;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.Schematic;
+import mindustry.game.Schematics;
 
 import java.io.File;
 import java.net.URL;
@@ -42,7 +44,15 @@ public class SchematicPool implements Module {
 		Repo rc = Manifest.getModule(Repo.class);
 		assert rc != null;
 		URL u = rc.getResource("src/schematic-pool.txt");
-		if (u == null) throw new RuntimeException("Can't find src/schematic-pool.txt");
+		if (u == null) {
+			try {
+				Vars.schematics.all().add(Schematics.readBase64("bXNjaAF4nBXHMQ7CMAwF0B+oxMAJumXrBrdhtxy3WGqcKD8Dx0d920NCumEJqYZVJbaZd4+SOfRN/VqV6Uo8i1GH9+ktgIRHNVIOw5XLkrB+2il82c8yZ+t5GHuL4nHc/3xKHH4="));
+			}catch (Throwable t) {
+				if (SharedBoot.debug) t.printStackTrace();
+				;
+			}
+			throw new RuntimeException("Can't find src/schematic-pool.txt");
+		}
 		try {
 			ArrayList<Future<Schematic>> future = new ArrayList<>();
 			for (String s : Encoder.readString(u.openStream()).split("\n"))

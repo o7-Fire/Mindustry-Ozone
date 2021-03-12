@@ -32,6 +32,9 @@ package Ozone.Internal;
 
 import Ozone.Manifest;
 import arc.assets.Loadable;
+import mindustry.gen.Building;
+import mindustry.gen.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,6 +50,14 @@ public interface Module extends Loadable {
 	}
 	
 	default void preInit() throws Throwable {
+	
+	}
+	
+	default void update() throws Throwable {
+	
+	}
+	
+	default void onTileConfig(@Nullable Player player, Building building, @Nullable Object value) {
 	
 	}
 	

@@ -20,7 +20,6 @@ import Ozone.Event.EventExtended;
 import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
-import Ozone.Settings.BaseSettings;
 import Shared.SharedBoot;
 import arc.Core;
 import arc.Events;
@@ -65,6 +64,12 @@ public class EventHooker implements Module {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			Events.fire(EventExtended.Shutdown.class, new EventExtended.Shutdown());
 		}));
+		Events.on(EventType.ConfigEvent.class, s -> {
+			Manifest.invokeAllModule(m -> m.onTileConfig(s.player, s.tile, s.value));
+		});
+		Events.run(EventType.Trigger.update, () -> {
+			Manifest.invokeAllModule(Module::update);
+		});
 		Events.on(EventType.ClientLoadEvent.class, s -> {
 			arc.Core.settings.getBoolOnce("OzoneDisclaimer", () -> {
 				Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning", "Use this mods at your own risk", "Accept", "Accept", () -> { }, () -> { });
@@ -101,7 +106,7 @@ public class EventHooker implements Module {
 			else if (s.from.equals(GameState.State.menu) && s.to.equals(GameState.State.playing)) Events.fire(EventExtended.Game.Start);
 			
 		});
-		if (!BaseSettings.worldLog) return;
+		
 		Events.on(EventType.ClientPreConnectEvent.class, s -> {
 			Log.debug("Ozone-Event-@: @:@ = @", s.getClass().getSimpleName(), s.host.address, s.host.port, s.host.name);
 			Events.fire(EventExtended.Connect.Connected);

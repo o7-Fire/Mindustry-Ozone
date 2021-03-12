@@ -46,6 +46,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Interp;
 import arc.math.Mathf;
 import arc.scene.actions.Actions;
+import arc.scene.event.Touchable;
 import arc.scene.style.Drawable;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.layout.Table;
@@ -58,6 +59,7 @@ import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.*;
 import mindustry.type.Item;
+import mindustry.ui.Styles;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Sorter;
@@ -352,6 +354,28 @@ public class Interface implements Module {
 	public static Future<Tile> getTile(Filter<Tile> filter) {
 		if (!Vars.state.getState().equals(GameState.State.playing)) return null;
 		return Pool.submit(() -> Random.getRandom(Objects.requireNonNull(getTiles(filter)).get()));
+	}
+	
+	public static void copy(String s) {
+		try {
+			Core.app.setClipboardText(s);
+			toast("Copied");
+		}catch (Throwable t) {
+			toast(t.getMessage());
+		}
+	}
+	
+	public static void toast(String text) {
+		if (Vars.ui == null) {
+			Events.on(EventType.ClientLoadEvent.class, se -> toast(text));
+			return;
+		}
+		Table table = new Table();
+		table.touchable = Touchable.disabled;
+		table.setFillParent(true);
+		table.actions(Actions.fadeOut(4.0F, Interp.fade), Actions.remove());
+		table.bottom().add(text).style(Styles.outlineLabel).padBottom(80);
+		Core.scene.add(table);
 	}
 	
 	public void reset() {

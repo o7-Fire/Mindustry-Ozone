@@ -34,13 +34,11 @@ package Ozone.Commands;
 import Ozone.Commands.Task.Task;
 import Ozone.Internal.Module;
 import Shared.SharedBoot;
-import arc.Events;
 import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.struct.Queue;
 import arc.util.Log;
 import mindustry.Vars;
-import mindustry.game.EventType;
 import mindustry.gen.Player;
 import mindustry.world.Tile;
 
@@ -54,10 +52,10 @@ public class TaskInterface implements Module {
 	
 	
 	public void init() {
-		Events.run(EventType.Trigger.update, TaskInterface::update);
+	
 	}
 	
-	private static void update() {
+	public void update() {
 		if (taskQueue.isEmpty()) return;
 		for (Map.Entry<Integer, Queue<Task>> q : taskQueue.entrySet()) {
 			Queue<Task> queue = q.getValue();

@@ -77,5 +77,6 @@ public class LogicCodeEScanner implements Module {
 	@Override
 	public void init() throws Throwable {
 		INSTANCE = this;
+		
 	}
 }

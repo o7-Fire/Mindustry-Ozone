@@ -84,7 +84,13 @@ public class SharedBoot {
 	}
 	
 	public static void initSentry() {
-		if (hardDebug) return;
+		if (hardDebug) {
+			System.out.println("Hard Debug, disabling sentry");
+			return;
+		}
+		if (debug) {
+			System.out.println("Sentry: Debug");
+		}
 		Sentry.init(options -> {
 			options.setDsn("https://cd76eb6bd6614c499808176eaaf02b0b@o473752.ingest.sentry.io/5509036");
 			options.setRelease(Version.core + ":" + Version.desktop);
