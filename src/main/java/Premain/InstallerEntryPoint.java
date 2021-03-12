@@ -44,6 +44,11 @@ public class InstallerEntryPoint {
 		System.out.println("Copying to:");
 		System.out.println(target.getAbsolutePath());
 		if (!target.exists()) target.createNewFile();//100
+		System.out.println("Current archive: " + InstallerEntryPoint.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+		if (!new File(InstallerEntryPoint.class.getProtectionDomain().getCodeSource().getLocation().getFile()).isFile()) {
+			System.out.println("Not a file.....");
+			return;
+		}
 		Files.copy(new File(InstallerEntryPoint.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		
 		System.out.println("Finished");
