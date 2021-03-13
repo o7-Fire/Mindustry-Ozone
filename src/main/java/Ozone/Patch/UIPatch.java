@@ -19,15 +19,18 @@ package Ozone.Patch;
 import Atom.Reflect.Reflect;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
+import Ozone.Experimental.Evasion.Identification;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.Patch.Mindustry.LogicDialogPatch;
-import Ozone.Patch.Mindustry.SettingsDialog;
 import Ozone.UI.*;
 import Shared.SharedBoot;
 import arc.Core;
 import arc.Events;
 import arc.scene.ui.Dialog;
+import arc.scene.ui.layout.Table;
+import arc.util.Log;
+import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.gen.Icon;
@@ -38,6 +41,7 @@ import mindustry.ui.MobileButton;
 import mindustry.ui.Styles;
 import mindustry.ui.fragments.MenuFragment;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -57,7 +61,22 @@ public class UIPatch implements Module {
 			}
 		};
 		
-		Vars.ui.settings = new SettingsDialog();//how to patch mindustry UI
+		Vars.ui.settings.game.row();
+		Vars.ui.settings.game.table(gameTable -> {
+			gameTable.row();
+			gameTable.table(this::h).growX().row();
+			Vars.ui.settings.hidden(Manifest::saveSettings);
+			gameTable.button("Save Ozone Settings", Manifest::saveSettings).growX().row();
+			gameTable.button("Reset UID", () -> {
+				try {
+					Identification.changeID();
+					Vars.ui.showInfo("Successful");
+				}catch (Throwable t) {
+					Vars.ui.showException(t);
+					Sentry.captureException(t);
+				}
+			}).growX();
+		}).center();
 		Manifest.taskList = new TaskList();
 		Manifest.warning = new Warning();
 		Manifest.bundleViewer = new BundleViewer();
@@ -96,6 +115,44 @@ public class UIPatch implements Module {
 					}).bottom();
 				}
 				VarsPatch.menu.button(Translation.get("Ozone"), Icon.file, Manifest.modsMenu::show).growX().bottom();
+			}
+		}
+	}
+	
+	void h(Table gameTable) {
+		for (Field f : Manifest.getSettings()) {
+			String name = f.getDeclaringClass().getName() + "." + f.getName();
+			gameTable.left();
+			try {
+				f.setAccessible(true);
+				Class<?> type = f.getType();
+				if (type.equals(boolean.class)) {
+					gameTable.check(Translation.get(name), (Boolean) f.get(null), b -> {
+						try {
+							f.set(null, b);
+						}catch (IllegalAccessException e) {
+							throw new RuntimeException(e);
+						}
+					}).left();
+					gameTable.row();
+					continue;
+				}
+				gameTable.label(() -> Translation.get(name) + ": ").left().growX().row();
+				gameTable.field(f.get(null).toString(), s -> {
+					try {
+						Object o = Reflect.parseStringToPrimitive(s, f.getType());
+						if (o != null) f.set(null, o);
+					}catch (NumberFormatException t) {
+						Vars.ui.showException("Failed to parse", t);//100% user fault
+					}catch (Throwable t) {
+						Vars.ui.showException(t);
+						Sentry.captureException(t);
+					}
+				}).growX().left().row();
+			}catch (Throwable t) {
+				Sentry.captureException(t);
+				Log.err(t);
+				Log.err("Failed to load settings");
 			}
 		}
 	}
