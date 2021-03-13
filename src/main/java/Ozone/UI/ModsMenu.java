@@ -28,6 +28,10 @@ import java.util.HashSet;
 public class ModsMenu extends ScrollableDialog {
 	static HashSet<OzoneDialog> dialogs = new HashSet<>();
 	
+	public ModsMenu() {
+		super("Ozone Mods Menu");
+	}
+	
 	public static void add(OzoneDialog dialog) {
 		dialogs.add(dialog);
 	}

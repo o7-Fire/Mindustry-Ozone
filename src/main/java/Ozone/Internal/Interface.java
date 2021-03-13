@@ -189,11 +189,14 @@ public class Interface implements Module {
 		if (bundle.containsKey(key)) return bundle.get(key);
 		if (Core.bundle.getOrNull(key) != null) return Core.bundle.get(key);
 		try {
-			
 			Class s = Interface.class.getClassLoader().loadClass(key);
 			registerWords(s.getName(), s.getSimpleName());
 			return bundle.get(key);
 		}catch (Throwable ignored) {}
+		if (!key.contains(".")) {
+			registerWords(key, key);
+			return bundle.get(key);
+		}
 		return Core.bundle.get(key);
 	}
 	

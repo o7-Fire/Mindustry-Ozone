@@ -131,6 +131,7 @@ public class UIPatch implements Module {
 				Interface.toast("Sent: " + "Hash-" + hash);
 			});
 		}).size(210f, 64f);
+		
 		Events.on(EventType.ResizeEvent.class, c -> {
 			onResize();
 		});
