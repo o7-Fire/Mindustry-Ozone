@@ -82,7 +82,7 @@ public abstract class ScrollableDialog extends OzoneDialog {
 	
 	protected void ad(Map<?, ?> map) {
 		for (Map.Entry<?, ?> s : map.entrySet())
-			ad(s.getKey().toString(), s.getValue());
+			ad(s.getKey(), s.getValue());
 	}
 	
 	protected void ad(String name, Drawable i, BaseDialog bd) {

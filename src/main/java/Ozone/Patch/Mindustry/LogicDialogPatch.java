@@ -16,11 +16,10 @@
 
 package Ozone.Patch.Mindustry;
 
+import Atom.Utility.Digest;
 import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Interface;
 import Ozone.UI.ScrollableDialog;
-import arc.func.Cons;
-import arc.scene.Action;
 import io.sentry.Sentry;
 import io.sentry.UserFeedback;
 import mindustry.Vars;
@@ -28,7 +27,7 @@ import mindustry.gen.Icon;
 import mindustry.logic.LogicDialog;
 
 public class LogicDialogPatch extends LogicDialog {
-	protected String src = "";
+
 	
 	public LogicDialogPatch() {
 		super();
@@ -36,19 +35,27 @@ public class LogicDialogPatch extends LogicDialog {
 			new ScrollableDialog("Hash Code") {
 				@Override
 				protected void setup() {
+					String src = canvas.save();
 					int hash = src.hashCode();
+					long lhash = Digest.longHash(src);
 					table.button(hash + "", () -> {
 						Interface.copy(hash + "");
-					}).tooltip("Copy").growX().growY();
+					}).tooltip("Copy").growY();
+					table.button(lhash + "", () -> {
+						Interface.copy(lhash + "");
+					}).tooltip("Copy").growY();
 				}
 			}.show();
 		}).size(210f, 64f);
 		buttons.button("Report to Ozone-Sentry", Icon.fileText, () -> {
 			Interface.showInput("Reason ?", s -> {
+				String src = canvas.save();
+				long Lhash = Digest.longHash(src);
 				int hash = src.hashCode();
 				UserFeedback feedback = new UserFeedback(Sentry.captureMessage("Logic-Code-Report-" + hash));
 				feedback.setName("Reporter-" + Vars.player.name.hashCode());
 				StringBuilder sb = new StringBuilder();
+				sb.append("LHash:").append(Lhash).append("\n");
 				sb.append("Hash:").append(hash).append("\n");
 				sb.append("Reason:").append(s).append("\n");
 				if (Vars.net.active())
@@ -60,19 +67,4 @@ public class LogicDialogPatch extends LogicDialog {
 		}).size(210f, 64f);
 	}
 	
-	@Override
-	public void hide(Action action) {
-		super.hide(action);
-		src = "";
-	}
-	
-	@Override
-	public void show(String code, Cons<String> modified) {
-		src = code;
-		super.show(code, s -> {
-			src = s;
-			modified.get(s);
-		});
-		
-	}
 }

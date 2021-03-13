@@ -22,6 +22,7 @@ import Ozone.Internal.InformationCenter;
 import Ozone.Patch.Updater;
 import Ozone.Propertied;
 import Ozone.Settings.SettingsManifest;
+import Ozone.Watcher.LogicCodeEScanner;
 import arc.Core;
 import arc.audio.Sound;
 import arc.scene.style.TextureRegionDrawable;
@@ -140,6 +141,7 @@ public class EnvironmentInformation extends ScrollableDialog {
 			table.button(s.key, s.value, () -> {}).growX().disabled(true);
 			table.row();
 		}
+		ad(LogicCodeEScanner.database);
 	}
 	
 	

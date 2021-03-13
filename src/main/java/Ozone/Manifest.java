@@ -17,6 +17,7 @@
 package Ozone;
 
 import Atom.Struct.UnstableConsumer;
+import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import Ozone.Settings.SettingsManifest;
 import Ozone.UI.*;
@@ -90,6 +91,7 @@ public class Manifest {
 		}
 		try {
 			SettingsManifest.saveMap();
+			Interface.toast("Saved");
 		}catch (Throwable e) {
 			e.printStackTrace();
 			Sentry.captureException(e);

@@ -66,6 +66,7 @@ public class UIPatch implements Module {
 			gameTable.row();
 			gameTable.table(this::h).growX().row();
 			Vars.ui.settings.hidden(Manifest::saveSettings);
+			gameTable.button("Ozone Mods Menu", Manifest.modsMenu::show).growX().row();
 			gameTable.button("Save Ozone Settings", Manifest::saveSettings).growX().row();
 			gameTable.button("Reset UID", () -> {
 				try {

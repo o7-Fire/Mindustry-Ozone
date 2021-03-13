@@ -18,6 +18,7 @@ package Ozone.Patch;
 
 import Atom.Reflect.FieldTool;
 import Atom.Reflect.Reflect;
+import Ozone.Internal.Module;
 import Ozone.Internal.RepoCached;
 import Ozone.Patch.Mindustry.DesktopInputPatched;
 import Ozone.Patch.Mindustry.MobileInputPatched;

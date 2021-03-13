@@ -16,39 +16,56 @@
 
 package Ozone.Watcher;
 
+import Atom.Reflect.UnThread;
+import Atom.Utility.Digest;
 import Atom.Utility.Pool;
 import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
+import Ozone.Internal.Repo;
 import Ozone.Settings.BaseSettings;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.world.blocks.logic.LogicBlock;
 
+import java.io.IOException;
+import java.util.HashMap;
+
 public class LogicCodeEScanner implements Module {
 	public static LogicCodeEScanner INSTANCE;
 	protected Thread daemon = null;
-	
-	public static boolean enabled() {
-		return BaseSettings.logicCodeScanner;
-	}
-	
-	public static void displayScan() {
-	
-	
-	}
-	
-	public static void logicScan() {
-		for (Building b : Interface.getBuildingBlockSync(Vars.player.team(), false, LogicBlock.class)) {
-			
-			//if(b instanceof LogicBlock.LogicBuild)
-			//((LogicBlock.LogicBuild) b).executor
-		}
-	}
+	public static HashMap<String, String> database = new HashMap<>();
+	protected static volatile boolean fetched;
 	
 	public static void fullScan() {
-		displayScan();
-		logicScan();
+		while (!fetched) UnThread.sleep(200);
 		
+		if (fetched) {
+			for (Building b : Interface.getBuildingBlockSync(Vars.player.team(), false, LogicBlock.class)) {
+				
+				if (b instanceof LogicBlock.LogicBuild) {
+					LogicBlock.LogicBuild lb = (LogicBlock.LogicBuild) b;
+					String l = String.valueOf(Digest.longHash(lb.code));
+					if (!database.containsKey(l)) continue;
+					
+					lb.updateCode("#" + database.get(l) + "\n" + "noop");
+				}
+			}
+		}
+		
+		
+	}
+	
+	public boolean enabled() {
+		return BaseSettings.logicCodeScanner && fetched;
+	}
+	
+	@Override
+	public void loadAsync() {
+		try {
+			database = Repo.getRepo().readMap("src/LogicCodeDatabase.txt");
+		}catch (IOException e) {
+		
+		}
 	}
 	
 	public static void isNSFWCode(String str) {
