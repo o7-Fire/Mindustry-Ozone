@@ -8,9 +8,7 @@ import arc.Events;
 import arc.Net;
 import arc.graphics.Color;
 import arc.input.KeyCode;
-import arc.math.Mathf;
 import arc.scene.ui.*;
-import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Collapser;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
@@ -59,7 +57,10 @@ public class JoinDialog extends BaseDialog {
 		buttons.add().growX().width(-1);
 		
 		addCloseButton();
-		
+		buttons.buttonCenter("@server.add", Icon.add, () -> {
+			renaming = null;
+			add.show();
+		}).size(210f, 64f);
 		buttons.add().growX().width(-1);
 		if (!steam) {
 			buttons.button("?", () -> ui.showInfo("@join.info")).size(60f, 64f).width(-1);
@@ -135,7 +136,7 @@ public class JoinDialog extends BaseDialog {
 						connect(server.ip, server.port);
 					}
 				}
-			}).width(targetWidth()).pad(4f).get();
+			}).growX().get();
 			
 			button.getLabel().setWrap(true);
 			
@@ -235,27 +236,30 @@ public class JoinDialog extends BaseDialog {
 		content.table(t -> {
 			t.add("[yellow]USID: " + Identification.getUsid(host.address + ":" + host.port)).left().growX();
 			t.row();
-			t.add("[lightgray]" + host.name + "   " + versionString).width(targetWidth() - 10f).left().get().setEllipsis(true);
+			t.add("[lightgray]" + host.name + "   " + versionString).growX().left().get().setEllipsis(true);
 			t.row();
 			if (!host.description.isEmpty()) {
-				t.add("[gray]" + host.description).width(targetWidth() - 10f).left().wrap();
+				t.add("[gray]" + host.description).growX();
 				t.row();
 			}
 			t.add("[lightgray]" + (Core.bundle.format("players" + (host.players == 1 && host.playerLimit <= 0 ? ".single" : ""), (host.players == 0 ? "[lightgray]" : "[accent]") + host.players + (host.playerLimit > 0 ? "[lightgray]/[accent]" + host.playerLimit : "") + "[lightgray]"))).left();
 			t.row();
-			t.add("[lightgray]" + Core.bundle.format("save.map", host.mapname) + "[lightgray] / " + (host.modeName == null ? host.mode.toString() : host.modeName)).width(targetWidth() - 10f).left().get().setEllipsis(true);
-			if (host.ping > 0) {
-				t.row();
-				t.add(Iconc.chartBar + " " + host.ping + "ms").color(Color.gray).left();
-			}
-		}).expand().left().bottom().padLeft(12f).padBottom(8);
+			t.add("[lightgray]" + Core.bundle.format("save.map", host.mapname) + "[lightgray] / " + (host.modeName == null ? host.mode.toString() : host.modeName)).growX().left().get().setEllipsis(true);
+			t.row();
+			t.table(small -> {
+				small.add(Iconc.chartBar + " " + host.ping + "ms ").color(Color.gray).left();
+				small.add(host.address + ":" + host.port + " ").color(Color.gray).left();
+			}).left();
+			
+			
+		}).expand().tooltip(host.description).left().bottom().padLeft(12f).padBottom(8);
 	}
 	
 	void setup() {
 		local.clear();
 		remote.clear();
 		global.clear();
-		float w = targetWidth();
+		
 		
 		hosts.clear();
 		
@@ -284,29 +288,11 @@ public class JoinDialog extends BaseDialog {
 				});
 			}).size(54f).get();
 			button.update(() -> button.getStyle().imageUpColor = player.color());
-		}).width(w).height(70f).pad(4);
+		}).growX();
 		cont.row();
-		cont.add(pane).width(w + 38).pad(0);
+		cont.add(pane).growX().growY();
 		cont.row();
-		cont.buttonCenter("@server.add", Icon.add, () -> {
-			renaming = null;
-			add.show();
-		}).marginLeft(10).width(w).height(80f).update(button -> {
-			float pw = w;
-			float pad = 0f;
-			if (pane.getChildren().first().getPrefHeight() > pane.getHeight()) {
-				pw = w + 30;
-				pad = 6;
-			}
-			
-			Cell cell = ((Table) pane.parent).getCell(button);
-			
-			if (!Mathf.equal(cell.minWidth(), pw)) {
-				cell.width(pw);
-				cell.padLeft(pad);
-				pane.parent.invalidateHierarchy();
-			}
-		});
+		
 	}
 	
 	void section(String label, Table servers, boolean eye) {
@@ -331,7 +317,7 @@ public class JoinDialog extends BaseDialog {
 		hosts.row();
 		hosts.image().growX().pad(5).padLeft(10).padRight(10).height(3).color(Pal.accent);
 		hosts.row();
-		hosts.add(coll).width(targetWidth());
+		hosts.add(coll).growX();
 		hosts.row();
 	}
 	
@@ -367,7 +353,7 @@ public class JoinDialog extends BaseDialog {
 					
 					//add header
 					if (groupTable[0] == null) {
-						global.table(t -> groupTable[0] = t).row();
+						global.table(t -> groupTable[0] = t).growX().row();
 						
 						groupTable[0].table(head -> {
 							if (!group.name.isEmpty()) {
@@ -385,7 +371,7 @@ public class JoinDialog extends BaseDialog {
 								}
 							}).size(40f).get();
 							image[0].addListener(new Tooltip(t -> t.background(Styles.black6).margin(4).label(() -> !group.hidden() ? "@server.shown" : "@server.hidden")));
-						}).width(targetWidth()).padBottom(-2).row();
+						}).growX().padBottom(-2).row();
 					}
 					
 					addGlobalHost(res, groupTable[0]);
@@ -411,7 +397,7 @@ public class JoinDialog extends BaseDialog {
 			}else {
 				safeConnect(host.address, host.port, host.version);
 			}
-		}).width(w).row();
+		}).growX().row();
 	}
 	
 	void finishLocalHosts() {
@@ -439,7 +425,7 @@ public class JoinDialog extends BaseDialog {
 		local.button(b -> buildServer(host, b), Styles.cleart, () -> {
 			Events.fire(new ClientPreConnectEvent(host));
 			safeConnect(host.address, host.port, host.version);
-		}).width(w);
+		}).growX();
 	}
 	
 	public void connect(String ip, int port) {
