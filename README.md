@@ -17,7 +17,6 @@ https://github.com/o7-Fire/Mindustry-Ozone/wiki
 * 1.run `./gradlew deploy`
 * 2.you get the Desktop mods in `Desktop/build/libs/`
 * 3.you get the Core mods in `build/libs/`
-* 4.you get the Android mods in `Android/build/libs` if you have android sdk set to ANDROID_HOME
 
 # Impossible things to do
 
