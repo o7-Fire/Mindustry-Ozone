@@ -20,6 +20,7 @@ import Atom.Reflect.Reflect;
 import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
 import Ozone.Internal.Module;
+import Shared.SharedBoot;
 import Shared.WarningHandler;
 import Shared.WarningReport;
 import arc.Events;
@@ -96,6 +97,7 @@ public class Main {
 				update("Early Init: " + s.getValue().getName());
 				s.getValue().earlyInit();
 			}catch (Throwable t) {
+				if (SharedBoot.debug) t.printStackTrace();
 				Sentry.captureException(t);
 				new WarningReport(t).setProblem("Error while early init module " + s.getKey().getName() + ": " + t.toString()).report();
 			}
@@ -108,6 +110,7 @@ public class Main {
 				update("Pre Init: " + s.getValue().getName());
 				s.getValue().preInit();
 			}catch (Throwable t) {
+				if (SharedBoot.debug) t.printStackTrace();
 				Sentry.captureException(t);
 				new WarningReport(t).setProblem("Error while pre init module " + s.getKey().getName() + ": " + t.toString()).report();
 			}
@@ -122,6 +125,7 @@ public class Main {
 				mod.setRegister();
 				Manifest.module.put(m, mod);
 			}catch (Throwable e) {
+				if (SharedBoot.debug) e.printStackTrace();
 				WarningHandler.handle(e);
 			}
 		}
@@ -145,6 +149,7 @@ public class Main {
 						s.getValue().postInit();
 						s.getValue().setPosted();
 					}catch (Throwable throwable) {
+						if (SharedBoot.debug) throwable.printStackTrace();
 						Sentry.captureException(throwable);
 						new WarningReport(throwable).setProblem("Error while posting module " + s.getKey().getName() + ": " + throwable.toString()).report();
 					}
@@ -157,6 +162,7 @@ public class Main {
 				try {
 					s.getValue().loadAsync();
 				}catch (Throwable t) {
+					if (SharedBoot.debug) t.printStackTrace();
 					Sentry.captureException(t);
 					new WarningReport(t).setProblem("Error while loading async module " + s.getKey().getName() + ": " + t.toString()).report();
 				}
@@ -167,6 +173,7 @@ public class Main {
 	private static void loadModule() throws IOException {
 		iteration++;
 		boolean loadAnything = false;
+		Throwable cause = null;
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
 			if (s.getValue().canLoad()) {
 				try {
@@ -175,12 +182,14 @@ public class Main {
 					s.getValue().setLoaded();
 					loadAnything = true;
 				}catch (Throwable t) {
+					cause = t;
+					if (SharedBoot.debug) t.printStackTrace();
 					new WarningReport(t).setProblem("Error while initializing module " + s.getKey().getName() + ": " + t.toString()).report();
 				}
 			}
 		}
 		
-		if (!loadAnything) throw new RuntimeException("Recursion/Deadlock/Bug !!!");
+		if (!loadAnything) throw new RuntimeException("Recursion/Deadlock/Bug !!!", cause);
 		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
 			if (!s.getValue().loaded()) loadModule();
 	}

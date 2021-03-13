@@ -17,12 +17,14 @@
 package Ozone.Patch;
 
 import Atom.Reflect.Reflect;
+import Atom.Utility.Digest;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Experimental.Evasion.Identification;
+import Ozone.Internal.InformationCenter;
+import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
-import Ozone.Patch.Mindustry.LogicDialogPatch;
 import Ozone.UI.*;
 import Shared.SharedBoot;
 import arc.Core;
@@ -31,6 +33,7 @@ import arc.scene.ui.Dialog;
 import arc.scene.ui.layout.Table;
 import arc.util.Log;
 import io.sentry.Sentry;
+import io.sentry.UserFeedback;
 import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.gen.Icon;
@@ -61,23 +64,7 @@ public class UIPatch implements Module {
 			}
 		};
 		
-		Vars.ui.settings.game.row();
-		Vars.ui.settings.game.table(gameTable -> {
-			gameTable.row();
-			gameTable.table(this::h).growX().row();
-			Vars.ui.settings.hidden(Manifest::saveSettings);
-			gameTable.button("Ozone Mods Menu", Manifest.modsMenu::show).growX().row();
-			gameTable.button("Save Ozone Settings", Manifest::saveSettings).growX().row();
-			gameTable.button("Reset UID", () -> {
-				try {
-					Identification.changeID();
-					Vars.ui.showInfo("Successful");
-				}catch (Throwable t) {
-					Vars.ui.showException(t);
-					Sentry.captureException(t);
-				}
-			}).growX();
-		}).center();
+
 		Manifest.taskList = new TaskList();
 		Manifest.warning = new Warning();
 		Manifest.bundleViewer = new BundleViewer();
@@ -93,7 +80,57 @@ public class UIPatch implements Module {
 		ModsMenu.add(new VirtualControllerDialog());
 		Manifest.modsMenu = new ModsMenu();
 		Manifest.commFrag.build(Vars.ui.hudGroup);
-		ui.logic = new LogicDialogPatch();
+		ui.settings.game.row();
+		ui.settings.game.table(gameTable -> {
+			gameTable.row();
+			gameTable.table(this::h).growX().row();
+			Vars.ui.settings.hidden(Manifest::saveSettings);
+			gameTable.button("Ozone Mods Menu", Manifest.modsMenu::show).growX().row();
+			gameTable.button("Save Ozone Settings", Manifest::saveSettings).growX().row();
+			gameTable.button("Reset UID", () -> {
+				try {
+					Identification.changeID();
+					Vars.ui.showInfo("Successful");
+				}catch (Throwable t) {
+					Vars.ui.showException(t);
+					Sentry.captureException(t);
+				}
+			}).growX();
+		}).center();
+		ui.logic.buttons.button("Show Hash", Icon.list, () -> {
+			new ScrollableDialog("Hash Code") {
+				@Override
+				protected void setup() {
+					String src = ui.logic.canvas.save();
+					int hash = src.hashCode();
+					long lhash = Digest.longHash(src);
+					table.button(hash + "", () -> {
+						Interface.copy(hash + "");
+					}).tooltip("Copy").growY();
+					table.button(lhash + "", () -> {
+						Interface.copy(lhash + "");
+					}).tooltip("Copy").growY();
+				}
+			}.show();
+		}).size(210f, 64f);
+		ui.logic.buttons.button("Report to Ozone-Sentry", Icon.fileText, () -> {
+			Interface.showInput("Reason ?", s -> {
+				String src = ui.logic.canvas.save();
+				long Lhash = Digest.longHash(src);
+				int hash = src.hashCode();
+				UserFeedback feedback = new UserFeedback(Sentry.captureMessage("Logic-Code-Report-" + hash));
+				feedback.setName("Reporter-" + Vars.player.name.hashCode());
+				StringBuilder sb = new StringBuilder();
+				sb.append("LHash:").append(Lhash).append("\n");
+				sb.append("Hash:").append(hash).append("\n");
+				sb.append("Reason:").append(s).append("\n");
+				if (Vars.net.active())
+					sb.append("server:").append(InformationCenter.getCurrentServerIP()).append(":").append(InformationCenter.getCurrentServerPort());
+				feedback.setComments(sb.toString());
+				Sentry.captureUserFeedback(feedback);
+				Interface.toast("Sent: " + "Hash-" + hash);
+			});
+		}).size(210f, 64f);
 		Events.on(EventType.ResizeEvent.class, c -> {
 			onResize();
 		});
