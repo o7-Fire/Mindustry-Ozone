@@ -22,6 +22,8 @@ import arc.scene.Action;
 import arc.scene.Scene;
 import arc.scene.style.Drawable;
 import arc.scene.ui.Dialog;
+import arc.scene.ui.TextButton;
+import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Collapser;
 import arc.util.Align;
 import arc.util.Strings;
@@ -53,6 +55,19 @@ public abstract class OzoneDialog extends BaseDialog {
 		update(this::update);
 		addCloseButton();
 		
+	}
+	
+	
+	protected Cell<TextButton> addNavButton(String name, Drawable icon, Runnable doSmth) {
+		if (Vars.mobile) return buttons.button(name, icon, doSmth).growX();
+		else return buttons.button(name, icon, doSmth).size(210f, 64f);
+		
+	}
+	
+	@Override
+	public void addCloseButton() {
+		addNavButton("@back", Icon.left, this::hide);
+		addCloseListener();
 	}
 	
 	public String getTitle() {

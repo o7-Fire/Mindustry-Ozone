@@ -39,12 +39,12 @@ public class ModsMenu extends ScrollableDialog {
 	@Override
 	protected void ctor() {
 		super.ctor();
-		buttons.button("o7-Discord", Icon.discord, () -> {
+		addNavButton("o7-Discord", Icon.discord, () -> {
 			Interface.openLink("https://discord.gg/2tqguRj");
-		}).size(210f, 64f);
-		buttons.button("Ozone-Wiki", Icon.bookOpen, () -> {
+		});
+		addNavButton("Ozone-Wiki", Icon.bookOpen, () -> {
 			Interface.openLink("https://github.com/o7-Fire/Mindustry-Ozone/wiki");
-		}).size(210f, 64f);
+		});
 	}
 	
 	public void setup() {

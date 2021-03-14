@@ -5,4 +5,4 @@ main: "Premain.EntryPoint"
 description: "o7-Fire Ozone Project.\n\nNote:UI Fix ??"
 minGameVersion: 123
 hidden: true
-version: 0.20.0.0.18.0
+version: 0.20.1.0.18.0

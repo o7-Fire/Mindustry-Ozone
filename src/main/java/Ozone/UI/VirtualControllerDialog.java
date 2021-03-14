@@ -26,7 +26,7 @@ public class VirtualControllerDialog extends ScrollableDialog {
 	@Override
 	protected void ctor() {
 		super.ctor();
-		buttons.button("Create Virtual Player", Icon.add, this::create).size(210f, 64f);
+		addNavButton("Create Virtual Player", Icon.add, this::create);
 	}
 	
 	@Override

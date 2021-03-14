@@ -39,7 +39,7 @@ public abstract class OzoneBaseDialog extends OzoneDialog {
 	}
 	
 	protected void addRefreshButton() {
-		buttons.button("Refresh", Icon.refresh, this::setup).size(210f, 64f);
+		addNavButton("Refresh", Icon.refresh, this::setup);
 	}
 	
 	protected abstract void setup();

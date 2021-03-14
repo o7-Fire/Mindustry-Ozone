@@ -39,7 +39,7 @@ public class Warning extends ScrollableDialog {
 	@Override
 	protected void ctor() {
 		super.ctor();
-		buttons.button("Troubleshoot", Icon.warning, () -> Interface.openLink("https://github.com/o7-Fire/Mindustry-Ozone/wiki/Troubleshoot")).size(210f, 64f);
+		addNavButton("Troubleshoot", Icon.warning, () -> Interface.openLink("https://github.com/o7-Fire/Mindustry-Ozone/wiki/Troubleshoot")).size(210f, 64f);
 	}
 	
 	@Override
