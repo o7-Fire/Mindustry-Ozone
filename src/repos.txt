@@ -1,3 +1,2 @@
 #\n separated priority from high to low
 https://o7inc.ddns.net/ozone/
-https://o7-rtc.serveirc.com/

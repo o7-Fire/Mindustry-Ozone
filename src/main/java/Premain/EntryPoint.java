@@ -36,7 +36,6 @@ import Ozone.Main;
 import Ozone.Manifest;
 import Shared.LoggerMode;
 import Shared.WarningHandler;
-import arc.Core;
 import arc.util.Log;
 import io.sentry.ITransaction;
 import io.sentry.Sentry;
@@ -46,41 +45,38 @@ import org.jetbrains.annotations.NotNull;
 
 public class EntryPoint extends Mod {
 	static {
-		if (WarningHandler.isLoaded()) throw new IllegalStateException("Already loaded");
-		try {
-			LoggerMode.loadLogger();
-			Log.info("Ozone Standalone");
-			OzoneBootstrap.init();
-		}catch (Throwable t) {
-			t.printStackTrace();
-			Log.err(t);
-			Sentry.captureException(t);
-		}
-		@NotNull ITransaction s = null;
-		try { s = Sentry.startTransaction("Init", "Early Init"); }catch (Throwable ignored) {}
-		try {
-			Main.earlyInit();
-			if (s != null) s.finish();
-		}catch (Throwable t) {
-			if (s != null) {
-				s.setThrowable(t);
-				s.setStatus(SpanStatus.INTERNAL_ERROR);
+		if (!WarningHandler.isLoaded()) {
+			try {
+				LoggerMode.loadLogger();
+				Log.info("Ozone Standalone");
+				OzoneBootstrap.init();
+			}catch (Throwable t) {
+				t.printStackTrace();
+				Log.err(t);
+				Sentry.captureException(t);
 			}
-			Sentry.captureException(t);
-			Log.err(t);
-			throw new RuntimeException(t);
+			@NotNull ITransaction s = null;
+			try { s = Sentry.startTransaction("Init", "Early Init"); }catch (Throwable ignored) {}
+			try {
+				Main.earlyInit();
+				if (s != null) s.finish();
+			}catch (Throwable t) {
+				if (s != null) {
+					s.setThrowable(t);
+					s.setStatus(SpanStatus.INTERNAL_ERROR);
+				}
+				Sentry.captureException(t);
+				Log.err(t);
+				throw new RuntimeException(t);
+			}
 		}
 		
 	}
 	
 	public EntryPoint() {
-		if (WarningHandler.isLoaded()) throw new IllegalStateException("Already loaded");
+		if (WarningHandler.isLoaded()) return;
 		@NotNull ITransaction s = null;
 		try { s = Sentry.startTransaction("Init", "Pre Init"); }catch (Throwable ignored) {}
-		if (Core.settings != null) {
-			Core.settings.put("crashreport", true);
-			Core.settings.put("uiscalechanged", false);//shut
-		}
 		try {
 			Manifest.ozone = this;
 			Main.preInit();
@@ -98,7 +94,7 @@ public class EntryPoint extends Mod {
 	
 	@Override
 	public void init() {
-		if (WarningHandler.isLoaded()) throw new IllegalStateException("Already loaded");
+		if (WarningHandler.isLoaded()) return;
 		@NotNull ITransaction s = null;
 		try { s = Sentry.startTransaction("Init", "Init"); }catch (Throwable ignored) {}
 		try {
@@ -117,7 +113,7 @@ public class EntryPoint extends Mod {
 	
 	@Override
 	public void loadContent() {
-		if (WarningHandler.isLoaded()) throw new IllegalStateException("Already loaded");
+		if (WarningHandler.isLoaded()) return;
 		@NotNull ITransaction s = null;
 		try { s = Sentry.startTransaction("Init", "Load Content"); }catch (Throwable ignored) {}
 		try {

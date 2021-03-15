@@ -4,6 +4,7 @@ apply plugin: 'java'
 apply plugin: 'java-library'
 sourceCompatibility = "11"
 targetCompatibility = "11"
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation (Atom("Atomic")){
@@ -85,6 +86,7 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
 }
+
 
 artifacts {
     archives sourcesJar
