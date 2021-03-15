@@ -2,7 +2,7 @@ name: "Ozone-Mindustry"
 displayName: "Ozone Mindustry"
 author: "o7-Fire"
 main: "Premain.EntryPoint"
-description: "o7-Fire Ozone Project.\n\nNote:UI Fix ??"
+description: "o7-Fire Ozone Project.\n\nNote:[red]red, UI Fix ??"
 minGameVersion: 123
 hidden: true
-version: 0.20.1.0.18.0
+version: 0.20.2.0.18.0

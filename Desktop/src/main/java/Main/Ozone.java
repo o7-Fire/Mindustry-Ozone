@@ -16,107 +16,23 @@
 
 package Main;
 
-import Ozone.Desktop.Manifest;
-import Ozone.Desktop.Patch.DesktopPatcher;
-import Ozone.Event.DesktopEvent;
-import Ozone.Main;
+import Shared.OzoneMods;
 import arc.Core;
-import arc.Events;
-import arc.util.Log;
-import io.sentry.ITransaction;
-import io.sentry.Sentry;
-import io.sentry.SpanStatus;
-import mindustry.Vars;
-import mindustry.mod.Mod;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Itzbenz
  */
-public class Ozone extends Mod {
-	static {
-		@NotNull ITransaction s = null;
-		try { s = Sentry.startTransaction("Init", "Early Init"); }catch (Throwable ignored) {}
-		try {
-			Main.earlyInit();
-			if (s != null) s.finish();
-		}catch (Throwable t) {
-			if (s != null) {
-				s.setThrowable(t);
-				s.setStatus(SpanStatus.INTERNAL_ERROR);
-			}
-			Sentry.captureException(t);
-			Log.err(t);
-			throw new RuntimeException(t);
-		}
-	}
+public class Ozone extends OzoneMods {
 	
 	public Ozone() {
-		@NotNull ITransaction s = null;
-		try { s = Sentry.startTransaction("Init", "Pre Init"); }catch (Throwable ignored) {}
-		Events.on(DesktopEvent.InitUI.class, se -> {
-			if (!Vars.headless) {
-			
-				
-			}
-		});
 		
 		if (Core.settings != null) {
 			Core.settings.put("crashreport", false);
 			Core.settings.put("uiscalechanged", false);//shut
 		}
-		try {
-			Manifest.ozone = this;
-			Main.preInit();
-			if (s != null) s.finish();
-		}catch (Throwable t) {
-			if (s != null) {
-				s.setThrowable(t);
-				s.setStatus(SpanStatus.INTERNAL_ERROR);
-			}
-			Sentry.captureException(t);
-			Log.err(t);
-			throw new RuntimeException(t);
-		}
 	}
 	
-	
-	@Override
-	public void init() {
-		@NotNull ITransaction s = null;
-		try { s = Sentry.startTransaction("Init", "Init"); }catch (Throwable ignored) {}
-		try {
-			DesktopPatcher.register();
-			Main.init();
-			if (s != null) s.finish();
-		}catch (Throwable t) {
-			if (s != null) {
-				s.setThrowable(t);
-				s.setStatus(SpanStatus.INTERNAL_ERROR);
-			}
-			Sentry.captureException(t);
-			Log.err(t);
-			throw new RuntimeException(t);
-		}
-	}
-	
-	@Override
-	public void loadContent() {
-		@NotNull ITransaction s = null;
-		try { s = Sentry.startTransaction("Init", "Init"); }catch (Throwable ignored) {}
-		try {
-			DesktopPatcher.async();
-			Main.loadContent();
-			if (s != null) s.finish();
-		}catch (Throwable t) {
-			if (s != null) {
-				s.setThrowable(t);
-				s.setStatus(SpanStatus.INTERNAL_ERROR);
-			}
-			Sentry.captureException(t);
-			Log.err(t);
-			throw new RuntimeException(t);
-		}
-	}
+
+
 	
 }

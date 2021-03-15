@@ -17,13 +17,10 @@
 package Ozone.Desktop.Patch;
 
 import Atom.Reflect.Reflect;
-import arc.Core;
-import arc.Events;
 import arc.net.Client;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
-import mindustry.game.EventType;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
 
@@ -51,15 +48,4 @@ public class DesktopPatcher {
 	}
 	
 	
-	public static void register() {
-		
-		
-		Events.on(EventType.ClientLoadEvent.class, s -> {
-			Core.settings.getBoolOnce("CrashReportv1", () -> Vars.ui.showConfirm("Anonymous Data Reporter", "We collect your anonymous insensitive data (crash-log) so we can fix thing, no turning back", () -> {
-			}));
-			
-			
-		});
-		
-	}
 }

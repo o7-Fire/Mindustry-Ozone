@@ -60,6 +60,7 @@ public class EventHooker implements Module {
 	
 	@Override
 	public void init() throws Throwable {
+		
 		Vars.loadLogger();
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			Events.fire(EventExtended.Shutdown.class, new EventExtended.Shutdown());
@@ -74,6 +75,8 @@ public class EventHooker implements Module {
 			arc.Core.settings.getBoolOnce("OzoneDisclaimer", () -> {
 				Vars.ui.showCustomConfirm("[royal]Ozone[white]-[red]Warning", "Use this mods at your own risk", "Accept", "Accept", () -> { }, () -> { });
 			});
+			Core.settings.getBoolOnce("CrashReport1", () -> Vars.ui.showConfirm("Anonymous Data Reporter", "We collect your anonymous data e.g crash-log, to make your experience much worse", () -> {
+			}));
 			if (System.getProperty("Ozone-Foo") != null) {
 				Core.settings.getBoolOnce("OzoneFoo", () -> {
 					Vars.ui.showText("[royal]Ozone[white]-[red]Warning", "Foo client with ozone ????, are you a savage");

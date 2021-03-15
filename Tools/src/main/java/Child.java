@@ -22,4 +22,8 @@ public class Child extends Base {
 	public Child() {
 		System.out.println("Child ctor");
 	}
+	
+	public Child(String s) {
+		System.out.println("Child ctor" + s);
+	}
 }
