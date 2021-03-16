@@ -2,7 +2,7 @@ if(!(JavaVersion.current().ordinal() < JavaVersion.VERSION_14.ordinal())){
     include 'Desktop'
     include 'Tools'
 }
-
+println "Java: " + JavaVersion.current()
 rootProject.name = 'Ozone'
 
 def use = { ... names ->

@@ -17,7 +17,9 @@ dependencies {
     compileOnly (group: 'com.miglayout', name: 'miglayout-swing', version: '5.2'){
         because("runtime")
     }
-
+    compileOnly (group: 'com.edwardraff', name: 'JSAT', version: '0.0.9'){
+        because("runtime")
+    }
     implementation rootProject
 
     implementation (Atom("Desktop")){

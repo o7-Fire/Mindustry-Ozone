@@ -60,7 +60,6 @@ public class LoggerMode {
 		if (loaded) return;
 		loaded = true;
 		
-		
 		if (SharedBoot.debug) Log.level = Log.LogLevel.debug;
 		try {
 			settings.setAppName(appName);
