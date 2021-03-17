@@ -359,9 +359,9 @@ public class Interface implements Module {
 		return Pool.submit(() -> Random.getRandom(Objects.requireNonNull(getTiles(filter)).get()));
 	}
 	
-	public static void copy(String s) {
+	public static void copy(Object s) {
 		try {
-			Core.app.setClipboardText(s);
+			Core.app.setClipboardText(String.valueOf(s));
 			toast("Copied");
 		}catch (Throwable t) {
 			toast(t.getMessage());

@@ -2,13 +2,17 @@ package mindustry.ui.fragments;
 
 import Atom.Reflect.FieldTool;
 import Ozone.Commands.Commands;
+import Ozone.Internal.Interface;
 import Ozone.UI.ScrollableDialog;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.scene.Group;
 import arc.scene.event.Touchable;
-import arc.scene.ui.*;
+import arc.scene.ui.Dialog;
+import arc.scene.ui.Image;
+import arc.scene.ui.SettingsDialog;
+import arc.scene.ui.TextField;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
@@ -167,11 +171,9 @@ public class PlayerListFragment extends Fragment {
 			content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
 			content.table(t -> {
 				if (Settings.showPlayerID) {
-					if (user.isLocal()) t.add(new Label("ID"));
-					else t.button(user.id + "", () -> {
-						Core.app.setClipboardText(user.id + "");
-						Commands.tellUser("Copied");
-					});
+					if (!user.isLocal()) t.button(user.id + "", () -> {
+						Interface.copy(user.id);
+					}).tooltip("User ID, copy");
 				}
 				if (Settings.showPlayerTyping) if (!user.isLocal())
 					t.button(user.typing() ? "[green]True[white]" : "False", () -> {}).tooltip("Typing").disabled(true);
