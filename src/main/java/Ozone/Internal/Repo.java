@@ -41,6 +41,7 @@ import io.sentry.Sentry;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.Future;
 
@@ -74,6 +75,10 @@ public class Repo extends Atom.File.Repo implements Module {
 	
 	public HashMap<String, String> readMap(String path) throws IOException {
 		return Encoder.parseProperty(getResource(path).openStream());
+	}
+	
+	public ArrayList<String> readArrayString(String path) throws IOException {
+		return new ArrayList<>(Arrays.asList(readString(path).split("\n")));
 	}
 	
 	public String readString(String path) throws IOException {

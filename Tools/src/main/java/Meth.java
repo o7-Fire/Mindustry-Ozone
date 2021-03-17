@@ -16,10 +16,19 @@
 
 public class Meth {
 	public static void main(String[] args) {
+		int total = 2;
+		for (int i = 0; i < 15; i++) {
+			System.out.println(i + ". " + total);
+			total = total + 3;
+			
+		}
+		System.out.println(total);
+		//if(true) return;
+		
 		recommendedThreadCount();
 		int sum = 0, sum2;
-		int n = 7;
-		int k = 1;
+		int n = 6;
+		int k = 2;
 		int i;
 		
 		// A summation can be written as a for loop. Here the loop represents a summation from i=1 to n.
@@ -55,6 +64,6 @@ public class Meth {
 	}
 	
 	public static int calc(int i) {
-		return i * 3 + 2;
+		return i * 5 - 6;
 	}
 }

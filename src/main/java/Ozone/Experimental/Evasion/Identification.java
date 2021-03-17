@@ -133,6 +133,10 @@ public class Identification {
 		return new String(Base64Coder.encode(bytes));
 	}
 	
+	public static String getUsid(String ip, int port) {
+		return getUsid(ip + ":" + port);
+	}
+	
 	public static String getUsid(String ip) {
 		if (ip.contains("/")) {
 			ip = ip.substring(ip.indexOf("/") + 1);

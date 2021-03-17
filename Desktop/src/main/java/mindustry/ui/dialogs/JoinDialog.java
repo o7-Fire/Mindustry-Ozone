@@ -234,7 +234,7 @@ public class JoinDialog extends BaseDialog {
 		}
 		
 		content.table(t -> {
-			t.add("[yellow]USID: " + Identification.getUsid(host.address + ":" + host.port)).left().growX();
+			t.add("[yellow]USID: " + Identification.getUsid(host.address, host.port)).left().growX();
 			t.row();
 			t.add("[lightgray]" + host.name + "   " + versionString).growX().left().get().setEllipsis(true);
 			t.row();
