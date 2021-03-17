@@ -64,18 +64,21 @@ public class MostWanted implements Module {
 				synchronized (reported) {
 					if (reported.contains(p.id)) return;
 					String s = Strings.stripColors(Strings.stripGlyphs(p.name()));
-					for (String se : mostWanted) {
-						if (provider.distance(s, se) < 10) {
-							UserFeedback report = new UserFeedback(Sentry.captureMessage("Wanted-On-Server"));
-							report.setName(se);
-							StringBuilder sb = new StringBuilder(FieldTool.getFieldDetails(p, true));
-							sb.append("CurrentServer: ").append(InformationCenter.getCurrentServerIP()).append(":").append(InformationCenter.getCurrentServerPort()).append("\n");
-							report.setComments(sb.toString());
-							Sentry.captureUserFeedback(report);
+					synchronized (mostWanted) {
+						for (String se : mostWanted) {
+							if (provider.distance(s, se) < 10) {
+								UserFeedback report = new UserFeedback(Sentry.captureMessage("Wanted-On-Server"));
+								report.setName(se);
+								StringBuilder sb = new StringBuilder(FieldTool.getFieldDetails(p, true));
+								sb.append("CurrentServer: ").append(InformationCenter.getCurrentServerIP()).append(":").append(InformationCenter.getCurrentServerPort()).append("\n");
+								report.setComments(sb.toString());
+								Sentry.captureUserFeedback(report);
+							}
 						}
 					}
+					reported.add(p.id);
 				}
-				reported.add(p.id);
+				
 			});
 			
 		}
