@@ -19,6 +19,7 @@ package Ozone.UI;
 
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Internal.InformationCenter;
+import Ozone.Internal.MostWanted;
 import Ozone.Patch.Updater;
 import Ozone.Propertied;
 import Ozone.Settings.SettingsManifest;
@@ -32,6 +33,7 @@ import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.gen.Sounds;
+import mindustry.ui.dialogs.BaseDialog;
 import net.jpountz.lz4.LZ4Factory;
 
 import java.lang.management.ManagementFactory;
@@ -49,6 +51,22 @@ public class EnvironmentInformation extends ScrollableDialog {
 		shown(this::init);
 	}
 	
+	@Override
+	protected void ctor() {
+		super.ctor();
+		BaseDialog mostWanted = new ScrollableDialog("Most Wanted") {
+			
+			@Override
+			protected void setup() {
+				synchronized (MostWanted.mostWanted) {
+					for (String s : MostWanted.mostWanted)
+						table.add(s).growX().row();
+				}
+			}
+		};
+		addNavButton("Most Wanted", Icon.players, mostWanted::show);
+	}
+	
 	protected void setup() {
 		ad("Player Name", Vars.player.name);
 		ad("UUID", Core.settings.getString("uuid"), s -> {
@@ -64,7 +82,7 @@ public class EnvironmentInformation extends ScrollableDialog {
 			ad("Compilation Time Total (ms)", ManagementFactory.getCompilationMXBean().getTotalCompilationTime());
 			ad("isCompilationTimeMonitoringSupported", ManagementFactory.getCompilationMXBean().isCompilationTimeMonitoringSupported());
 		}catch (Throwable ignored) {}
-		ad("Updater Task", Updater.future.toString());
+		ad("Updater Task", Updater.future.isDone() ? "Done" : "Fetching...");
 		ad(Propertied.Manifest);
 		ad(SettingsManifest.getMap());
 		uid();

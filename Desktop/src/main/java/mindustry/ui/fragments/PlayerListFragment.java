@@ -1,15 +1,14 @@
 package mindustry.ui.fragments;
 
+import Atom.Reflect.FieldTool;
 import Ozone.Commands.Commands;
+import Ozone.UI.ScrollableDialog;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.scene.Group;
 import arc.scene.event.Touchable;
-import arc.scene.ui.Image;
-import arc.scene.ui.Label;
-import arc.scene.ui.SettingsDialog;
-import arc.scene.ui.TextField;
+import arc.scene.ui.*;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
@@ -166,23 +165,49 @@ public class PlayerListFragment extends Fragment {
 			}
 			
 			content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
-			if (Settings.showPlayerID) {
-				if (user.isLocal()) content.add(new Label("ID"));
-				else content.button(user.id + "", () -> {
-					Core.app.setClipboardText(user.id + "");
-					Commands.tellUser("Copied");
-				});
-			}
-			if (Settings.showPlayerTyping)
-				content.add(new Label(user.isLocal() ? "Typing" : user.typing() ? "[green]True[white]" : "False"));
-			if (Settings.showPlayerShooting)
-				content.add(new Label(user.isLocal() ? "Shooting" : user.shooting() ? "[green]True[white]" : "False"));
-			if (user.isLocal()) content.add(new Label("Follow Player"));
-			else content.button(Icon.move, () -> {
-				if (Commands.targetPlayer.get(player.id) == null)
-					Commands.followPlayer(new ArrayList<>(Collections.singletonList(user.id + "")));
-				else Commands.followPlayer(new ArrayList<>());
-			}).tooltip("Follow player");
+			content.table(t -> {
+				if (Settings.showPlayerID) {
+					if (user.isLocal()) t.add(new Label("ID"));
+					else t.button(user.id + "", () -> {
+						Core.app.setClipboardText(user.id + "");
+						Commands.tellUser("Copied");
+					});
+				}
+				if (Settings.showPlayerTyping) if (!user.isLocal())
+					t.button(user.typing() ? "[green]True[white]" : "False", () -> {}).tooltip("Typing").disabled(true);
+				if (Settings.showPlayerShooting) if (!user.isLocal())
+					t.button(user.shooting() ? "[green]True[white]" : "False", () -> {}).disabled(true).tooltip("Shooting");
+				
+				if (!user.isLocal()) {
+					t.button(Icon.move, () -> {
+						if (Commands.targetPlayer.get(player.id) == null)
+							Commands.followPlayer(new ArrayList<>(Collections.singletonList(user.id + "")));
+						else Commands.followPlayer(new ArrayList<>());
+					}).tooltip("Follow player");
+				}
+				if (!user.isLocal()) t.button(Icon.infoCircle, () -> {
+					ui.loadfrag.show();
+					new ScrollableDialog(user.name) {
+						@Override
+						public Dialog show() {
+							ui.loadfrag.hide();
+							return super.show();
+						}
+						
+						@Override
+						protected void setup() {
+							table.field(user.name, s -> {
+							
+							}).growX().row();
+							table.field(user.id + "", s -> {
+							
+							}).growX().row();
+							table.add(FieldTool.getFieldDetails(user, true)).growX().growY();
+						}
+					}.show();
+				}).tooltip("Players Details");
+			}).growX();
+			
 			content.row();
 			content.image().height(4f).color(state.rules.pvp ? user.team().color : Pal.gray).growX();
 			content.row();
