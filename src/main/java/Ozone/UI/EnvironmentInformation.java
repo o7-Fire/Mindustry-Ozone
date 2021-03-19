@@ -19,11 +19,11 @@ package Ozone.UI;
 
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Internal.InformationCenter;
-import Ozone.Internal.MostWanted;
 import Ozone.Patch.Updater;
 import Ozone.Propertied;
 import Ozone.Settings.SettingsManifest;
 import Ozone.Watcher.LogicCodeEScanner;
+import Ozone.Watcher.MostWanted;
 import arc.Core;
 import arc.audio.Sound;
 import arc.scene.style.TextureRegionDrawable;
