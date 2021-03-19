@@ -14,11 +14,14 @@
  * limitations under the License.
  ******************************************************************************/
 
-package Ozone.Internal;
+package Ozone.Watcher;
 
 import Atom.Reflect.FieldTool;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
+import Ozone.Internal.InformationCenter;
+import Ozone.Internal.Module;
+import Ozone.Internal.Repo;
 import Shared.WarningReport;
 import arc.util.Strings;
 import info.debatty.java.stringsimilarity.experimental.Sift4;
