@@ -3,7 +3,7 @@
 .attach_*
 /dependencies
 /gen/
-src/main/java/Ozone/Experimental/Private
+src/java/Ozone/Experimental/Private
 SimpleLearning.mdl
 ## Java
 Tools/build
@@ -17,8 +17,8 @@ Android/build/
 /lib/
 *.war
 *.ear
-src/main/resources/Manifest.properties
-src/main/resources/META-INF
+src/resources/Manifest.properties
+src/resources/META-INF
 hs_err_pid*
 crash-report-*
 Android/build
@@ -145,13 +145,9 @@ config/settings.bin
 src/test/resources/
 CodeGen/
 Desktop/out/production/resources/
-Desktop/src/main/java/Bot/Interface/Client/
-Desktop/src/main/java/Bot/Interface/Server/
-Desktop/src/main/java/mindustry/world/
 out/production/resources/
 /src/main/resources/dependencies
 /Manifest/src/main/resources/Manifest.properties
 OzoneSettings.properties
 Manifest/out/production/resources/Manifest.properties
-/src/main/resources/mod.hjson
-/src/main/resources/reflections/core-reflections.json
+/src/resources/reflections/core-reflections.json

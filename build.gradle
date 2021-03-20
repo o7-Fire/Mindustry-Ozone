@@ -203,6 +203,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
+
 jar {
     archiveFileName = "Ozone.jar"
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
@@ -283,3 +284,5 @@ artifacts {
     archives sourcesJar
     archives makeJar
 }
+    sourceSets.main.java.srcDirs += ['src/java']
+    sourceSets.main.resources.srcDirs = [ "src/resources" ]

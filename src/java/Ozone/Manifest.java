@@ -21,6 +21,7 @@ import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import Ozone.Settings.SettingsManifest;
 import Ozone.UI.*;
+import Shared.OzoneMods;
 import arc.Core;
 import arc.Events;
 import arc.math.Interp;
@@ -31,7 +32,6 @@ import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.EventType;
-import mindustry.mod.Mod;
 import mindustry.ui.Styles;
 
 import java.lang.reflect.Field;
@@ -58,7 +58,7 @@ public class Manifest {
 	public static ArrayList<Class<?>> settings = new ArrayList<>();//for GUI purpose
 	
 	public static int currentPort = Vars.port;
-	public static Mod ozone;
+	public static OzoneMods ozone;
 	public static final HashMap<Class<? extends Module>, Module> module = new HashMap<>();
 	
 	public static void invokeAllModule(UnstableConsumer<Module> me) {
