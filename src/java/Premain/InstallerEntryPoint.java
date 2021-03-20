@@ -18,6 +18,7 @@
 package Premain;
 
 import Atom.File.FileUtility;
+import Shared.InfoBox;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,12 +33,15 @@ public class InstallerEntryPoint {
 		if (!target.exists()) target.createNewFile();//100
 		System.out.println("Current archive: " + InstallerEntryPoint.class.getProtectionDomain().getCodeSource().getLocation().getFile());
 		if (!new File(InstallerEntryPoint.class.getProtectionDomain().getCodeSource().getLocation().getFile()).isFile()) {
-			System.out.println("Not a file.....");
+			System.out.println("This is not a file.....");
+			InfoBox.errorBox("Installer", "This is not a file... ");
 			return;
 		}
 		Files.copy(new File(InstallerEntryPoint.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		
 		System.out.println("Finished");
-		
+		InfoBox.infoBox("Installer", "Finished copying to: " + target.getAbsolutePath());
 	}
+	
+	
 }

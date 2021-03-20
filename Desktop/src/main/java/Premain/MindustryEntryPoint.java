@@ -17,6 +17,7 @@
 package Premain;
 
 import Ozone.Desktop.Bootstrap.DesktopBootstrap;
+import Shared.InfoBox;
 import io.sentry.Sentry;
 
 import java.util.ArrayList;
@@ -37,9 +38,9 @@ public class MindustryEntryPoint {
 		}catch (Throwable t) {
 			t.printStackTrace();
 			if (t.getCause() != null) t = t.getCause();
-			Catch.write(t);
+			InfoBox.write(t);
 			Sentry.captureException(t);
-			Catch.errorBox(t.toString(), "Ozone Environment");
+			InfoBox.errorBox(t.toString(), "Ozone Environment");
 			System.exit(1);
 		}
 	}

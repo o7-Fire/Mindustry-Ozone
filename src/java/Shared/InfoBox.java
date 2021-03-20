@@ -14,22 +14,20 @@
  * limitations under the License.
  ******************************************************************************/
 
-package Premain;
+package Shared;
 
-
-import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 
-public class Catch {
+public class InfoBox {
 	
-	
-	public static void write(Throwable t){
+	public static void write(Throwable t) {
 		File f = new File("crash-report-" + Thread.currentThread().getStackTrace()[2].getClassName() + ".txt");
 		try {
 			StringWriter out = new StringWriter();
@@ -41,10 +39,27 @@ public class Catch {
 		}catch (Throwable ignored) {}
 	}
 	
-	public static void errorBox(String infoMessage, String titleBar) {
+	public static void box(String title, String message, int type) {
 		try {
-			DesktopBootstrap.requireDisplay();
-			javax.swing.JOptionPane.showMessageDialog(null, infoMessage, "Error: " + titleBar, JOptionPane.ERROR_MESSAGE);
+			requireDisplay();
+			javax.swing.JOptionPane.showMessageDialog(null, message, title, type);
 		}catch (Throwable ignored) {}
+	}
+	
+	public static void requireDisplay() {
+		try {
+			if (GraphicsEnvironment.isHeadless())
+				throw new RuntimeException(new IllegalStateException("This operation require GraphicsEnvironment"));
+		}catch (Throwable ignored) {
+			throw new RuntimeException(new IllegalStateException("This operation require GraphicsEnvironment"));
+		}
+	}
+	
+	public static void infoBox(String title, String message) {
+		box(title, message, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public static void errorBox(String infoMessage, String titleBar) {
+		box(titleBar, infoMessage, JOptionPane.ERROR_MESSAGE);
 	}
 }

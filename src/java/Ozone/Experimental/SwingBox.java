@@ -14,28 +14,26 @@
  * limitations under the License.
  ******************************************************************************/
 
-package Premain;
+package Ozone.Experimental;
 
-import Ozone.Desktop.Bootstrap.DesktopBootstrap;
+import Atom.Utility.Pool;
+import Ozone.Internal.Interface;
 import Shared.InfoBox;
-import io.sentry.Sentry;
+import mindustry.Vars;
 
-public class TestEntryPoint {
-	public static void main(String[] args) {
-		if (System.getProperty("ozoneTest") == null) System.setProperty("ozoneTest", "true");
-		try {
-			DesktopBootstrap.classloaderNoParent();
-			DesktopBootstrap.loadRuntime();
-			DesktopBootstrap.loadClasspath();
-			DesktopBootstrap.loadMindustry();
-			DesktopBootstrap.loadMain("Main.OzoneTesting", args);
-			System.exit(0);
-		}catch (Throwable t) {
-			InfoBox.write(t);
-			t.printStackTrace();
-			if (t.getCause() != null) t = t.getCause();
-			Sentry.captureException(t);
-			System.exit(1);
-		}
+public class SwingBox implements Experimental {
+	
+	@Override
+	public void run() {
+		Interface.showInput("Title", s -> Interface.showInput("Text", s1 -> {
+			Pool.submit(() -> {
+				try {
+					InfoBox.requireDisplay();
+					InfoBox.infoBox(s, s1);
+				}catch (Throwable t) {
+					Vars.ui.showException(t);
+				}
+			});
+		}));
 	}
 }

@@ -18,8 +18,8 @@ package Ozone.Desktop.Pre;
 
 import Atom.Utility.Pool;
 import Ozone.Desktop.Swing.Main;
-import Premain.Catch;
 import Premain.MindustryEntryPoint;
+import Shared.InfoBox;
 import Shared.SharedBoot;
 import io.sentry.Sentry;
 
@@ -75,11 +75,11 @@ public class PreInstall {
 					t.printStackTrace();
 					if (t.getCause() != null) t = t.getCause();
 					Sentry.captureException(t);
-					Catch.errorBox(t.toString(), "Ozone Environment");
+					InfoBox.errorBox(t.toString(), "Ozone Environment");
 				}
 			}).start();
 			else
-				Catch.errorBox("Due to java hostile environment, you can't run mindustry 2 times from this", "Warning-Ozone-Bootstrap");
+				InfoBox.errorBox("Due to java hostile environment, you can't run mindustry 2 times from this", "Warning-Ozone-Bootstrap");
 		});
 		//Install Button
 		m.buttonInstall.addActionListener(e -> {

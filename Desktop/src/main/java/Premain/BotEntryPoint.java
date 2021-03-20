@@ -17,6 +17,7 @@
 package Premain;
 
 import Ozone.Desktop.Bootstrap.DesktopBootstrap;
+import Shared.InfoBox;
 import io.sentry.Sentry;
 
 import java.io.File;
@@ -37,11 +38,11 @@ public class BotEntryPoint {
 			DesktopBootstrap.loadMain("Main.OxygenMindustry", args);
 			System.exit(0);
 		}catch (Throwable t) {
-			Catch.write(t);
+			InfoBox.write(t);
 			t.printStackTrace();
 			if (t.getCause() != null) t = t.getCause();
 			Sentry.captureException(t);
-			Catch.errorBox(t.toString(), "Bot Launcher");
+			InfoBox.errorBox(t.toString(), "Bot Launcher");
 			System.exit(1);
 		}
 	}

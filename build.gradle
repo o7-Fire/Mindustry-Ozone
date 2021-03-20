@@ -1,11 +1,10 @@
-    import org.reflections.Reflections
+import org.reflections.Configuration
+import org.reflections.Reflections
 import org.reflections.serializers.JsonSerializer
 import org.reflections.util.ConfigurationBuilder
 
 import java.nio.file.Files
-import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
-import java.text.SimpleDateFormat
 
 buildscript {
     repositories {
@@ -250,7 +249,7 @@ tasks.withType(JavaCompile) {
 
         // collect all classes
         ClassLoader classLoader = new URLClassLoader(urls, ClassLoader.systemClassLoader)
-        org.reflections.Configuration config = ConfigurationBuilder.build()
+        Configuration config = ConfigurationBuilder.build()
                 .addClassLoader(classLoader)
                 .setUrls(urls)
         Reflections reflections = new Reflections(config)

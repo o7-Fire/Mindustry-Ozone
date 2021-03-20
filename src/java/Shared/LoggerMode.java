@@ -63,7 +63,7 @@ public class LoggerMode {
 		if (SharedBoot.debug) Log.level = Log.LogLevel.debug;
 		try {
 			settings.setAppName(appName);
-			writer = settings.getDataDirectory().child("last_log.txt").writer(false);
+			writer = settings.getDataDirectory().child("last_log_ozone.txt").writer(false);
 		}catch (Throwable ignored) {}
 		Log.logger = (level, text) -> {
 			int i = Reflect.callerOffset() + 3;

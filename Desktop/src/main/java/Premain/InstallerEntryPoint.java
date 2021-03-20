@@ -17,6 +17,7 @@
 package Premain;
 
 import Ozone.Desktop.Bootstrap.DesktopBootstrap;
+import Shared.InfoBox;
 import io.sentry.Sentry;
 
 
@@ -42,11 +43,11 @@ public class InstallerEntryPoint {
 			DesktopBootstrap.loadClasspath();
 			DesktopBootstrap.loadMain("Main.OzoneInstaller", args);
 		}catch (Throwable t) {
-			Catch.write(t);
+			InfoBox.write(t);
 			t.printStackTrace();
 			if (t.getCause() != null) t = t.getCause();
 			Sentry.captureException(t);
-			Catch.errorBox(t.toString(), "Ozone Installer");
+			InfoBox.errorBox(t.toString(), "Ozone Installer");
 			System.exit(1);
 		}
 	}

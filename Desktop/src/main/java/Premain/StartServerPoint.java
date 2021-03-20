@@ -18,6 +18,7 @@ package Premain;
 
 import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import Ozone.Propertied;
+import Shared.InfoBox;
 
 import java.net.URL;
 
@@ -33,7 +34,7 @@ public class StartServerPoint {
 			DesktopBootstrap.loadMain("mindustry.server.ServerLauncher", args);
 		}catch (Throwable t) {
 			t.printStackTrace();
-			Catch.write(t);
+			InfoBox.write(t);
 			
 			System.exit(1);
 		}
