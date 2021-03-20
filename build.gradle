@@ -122,8 +122,8 @@ allprojects {
                 return "com.github.o7-Fire.Atomic-Library:$name:$atomHash"
             }
         }
-        def atomMeta = new File(rootDir, "src/main/resources/Manifest.properties")
-        def manifestMeta = new File(rootDir, "Manifest/src/main/resources/Manifest.properties")
+        def atomMeta = new File(rootDir, "src/resources/Manifest.properties")
+        def manifestMeta = new File(rootDir, "Manifest/src/resources/Manifest.properties")
         try {
             atomMeta.delete()
             atomMeta.createNewFile()
@@ -255,7 +255,7 @@ tasks.withType(JavaCompile) {
                 .setUrls(urls)
         Reflections reflections = new Reflections(config)
 
-        def resDir = new File(rootDir, "/src/main/resources/")
+        def resDir = new File(rootDir, "/src/resources/")
         // save as JSON file into the assets folder
         // (a) generate file for current debug or release build
         println(reflections.save(new File(resDir,"reflections/core-reflections.json").getAbsolutePath(),
