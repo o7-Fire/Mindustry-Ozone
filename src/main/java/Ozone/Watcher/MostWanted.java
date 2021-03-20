@@ -74,9 +74,7 @@ public class MostWanted implements Module {
 				if (provider.distance(s, se) < 10) {
 					UserFeedback report = new UserFeedback(Sentry.captureMessage("Wanted-On-Server"));
 					report.setName(se);
-					StringBuilder sb = new StringBuilder(FieldTool.getFieldDetails(p, true));
-					sb.append("CurrentServer: ").append(InformationCenter.getCurrentServerIP()).append(":").append(InformationCenter.getCurrentServerPort()).append("\n");
-					report.setComments(sb.toString());
+					report.setComments(FieldTool.getFieldDetails(p, true) + "CurrentServer: " + InformationCenter.getCurrentServerIP() + ":" + InformationCenter.getCurrentServerPort() + "\n");
 					Sentry.captureUserFeedback(report);
 				}
 			}
