@@ -33,6 +33,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
 public class Main {
@@ -100,6 +102,7 @@ public class Main {
 				if (SharedBoot.debug) t.printStackTrace();
 				Sentry.captureException(t);
 				new WarningReport(t).setProblem("Error while early init module " + s.getKey().getName() + ": " + t.toString()).report();
+				if (SharedBoot.test) throw new RuntimeException(t);
 			}
 		}
 	}
@@ -113,6 +116,7 @@ public class Main {
 				if (SharedBoot.debug) t.printStackTrace();
 				Sentry.captureException(t);
 				new WarningReport(t).setProblem("Error while pre init module " + s.getKey().getName() + ": " + t.toString()).report();
+				if (SharedBoot.test) throw new RuntimeException(t);
 			}
 		}
 	}
@@ -127,11 +131,12 @@ public class Main {
 			}catch (Throwable e) {
 				if (SharedBoot.debug) e.printStackTrace();
 				WarningHandler.handle(e);
+				if (SharedBoot.test) throw new RuntimeException(e);
 			}
 		}
 	}
 	
-	public static void init() throws IOException {
+	public static void init() throws IOException, ExecutionException, InterruptedException {
 		if (init) return;
 		init = true;
 		System.setProperty("Mindustry.Ozone.Loaded", Version.core + ":" + Version.desktop);
@@ -148,25 +153,29 @@ public class Main {
 						update("Posting " + s.getValue().getName());
 						s.getValue().postInit();
 						s.getValue().setPosted();
-					}catch (Throwable throwable) {
-						if (SharedBoot.debug) throwable.printStackTrace();
-						Sentry.captureException(throwable);
-						new WarningReport(throwable).setProblem("Error while posting module " + s.getKey().getName() + ": " + throwable.toString()).report();
+					}catch (Throwable t) {
+						if (SharedBoot.debug) t.printStackTrace();
+						Sentry.captureException(t);
+						new WarningReport(t).setProblem("Error while posting module " + s.getKey().getName() + ": " + t.toString()).report();
+						if (SharedBoot.test) throw new RuntimeException(t);
 					}
 					
 				}
 		});
 		update("Post completed");
-		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
-			Pool.submit(() -> {
+		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
+			Future f = Pool.submit(() -> {
 				try {
 					s.getValue().loadAsync();
 				}catch (Throwable t) {
 					if (SharedBoot.debug) t.printStackTrace();
 					Sentry.captureException(t);
 					new WarningReport(t).setProblem("Error while loading async module " + s.getKey().getName() + ": " + t.toString()).report();
+					if (SharedBoot.test) throw new RuntimeException(t);
 				}
 			});
+			if (SharedBoot.test) f.get();
+		}
 		
 	}
 	
@@ -185,6 +194,7 @@ public class Main {
 					cause = t;
 					if (SharedBoot.debug) t.printStackTrace();
 					new WarningReport(t).setProblem("Error while initializing module " + s.getKey().getName() + ": " + t.toString()).report();
+					if (SharedBoot.test) throw new RuntimeException(t);
 				}
 			}
 		}

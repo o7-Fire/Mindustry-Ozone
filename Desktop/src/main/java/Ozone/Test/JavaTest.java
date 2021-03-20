@@ -25,8 +25,8 @@ import mindustry.core.Version;
 
 import java.math.BigInteger;
 
-public class OzoneTest extends Test {
-	public OzoneTest() {
+public class JavaTest extends Test {
+	public JavaTest() {
 		add("Java Logic", () -> {
 			assert 1 == 1;
 			assert "b".equals("B".toLowerCase());

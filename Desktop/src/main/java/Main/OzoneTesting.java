@@ -16,19 +16,23 @@
 
 package Main;
 
+import Atom.File.FileUtility;
 import Atom.String.WordGenerator;
 import Atom.Time.Time;
-import Ozone.Test.OzoneTest;
 import Ozone.Test.Test;
 import Shared.LoggerMode;
 import Shared.OzoneMods;
 import Shared.SharedBoot;
+import arc.Core;
+import arc.files.Fi;
+import arc.mock.MockApplication;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.gen.Player;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class OzoneTesting {
 	public static Test tests;
@@ -41,7 +45,7 @@ public class OzoneTesting {
 		SharedBoot.finishStartup();
 		Log.info("Preparing Test");
 		prepare();
-		tests = new OzoneTest();
+		tests = new Test();
 		tests.add("Make new Ozone", () -> {
 			ozone = new Ozone();
 		});
@@ -82,6 +86,12 @@ public class OzoneTesting {
 	public static void prepare() {
 		Vars.player = Player.create();
 		Vars.player.name = WordGenerator.newWord(16);
+		Core.app = new MockApplication();
+		try {
+			Vars.init();
+		}catch (Throwable ignored) {}
+		Vars.dataDirectory = new Fi(FileUtility.getTempDir());
+		
 	}
 	
 	public static void main(String[] args) {
@@ -92,7 +102,7 @@ public class OzoneTesting {
 		Log.info("\b");
 		Log.info("Test Result: ");
 		for (String s : Test.getResult(r).split("\n")) Log.info(s);
-		Log.info("Finished in " + t.elapsedS());
+		Log.info("Finished in " + t.convert(TimeUnit.MILLISECONDS).elapsedS());
 		
 		for (Test.Result rs : r) if (!rs.success) System.exit(1);
 	}
