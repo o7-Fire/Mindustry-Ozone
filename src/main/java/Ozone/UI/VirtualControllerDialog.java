@@ -31,6 +31,8 @@ public class VirtualControllerDialog extends ScrollableDialog {
 	
 	@Override
 	protected void setup() {
+		table.button("[red]WIP", () -> {
+		}).center().growX().disabled(true);
 		if (VirtualController.virtualPlayers.size() == 0) {
 			table.button("Such an empty, go create a [orange]Virtual Player", () -> {
 			}).center().growX().disabled(true);

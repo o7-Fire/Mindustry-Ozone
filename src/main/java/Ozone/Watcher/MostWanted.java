@@ -65,8 +65,6 @@ public class MostWanted implements Module {
 		if (Vars.state.isGame() && Vars.net.active() && reported.size() != 0) {
 			Player p = Random.getRandom(Groups.player);
 			if (p == null) return;
-			
-			
 			if (reported.contains(p.id)) return;
 			String s = Strings.stripColors(Strings.stripGlyphs(p.name())).toUpperCase();
 			

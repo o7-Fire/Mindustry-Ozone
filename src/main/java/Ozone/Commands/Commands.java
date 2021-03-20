@@ -81,7 +81,6 @@ public class Commands implements Module {
 	private static boolean falseVote = false;
 	private static boolean drainCore = false;
 	private static boolean chatting = false;
-	private volatile static boolean rotatingconveyor = false;
 	private static VirtualPlayer virtualPlayer = null;
 	private static int i = 0;
 	
@@ -102,7 +101,7 @@ public class Commands implements Module {
 		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer -Nexity");
 		register("task-deconstruct", new Command(Commands::taskDeconstruct));
 		register("send-colorize", new Command(Commands::sendColorize));
-		register("follow-player", new Command(Commands::followPlayer), "follow a player use ID or s2tartsWith/full name");
+		register("follow-player", new Command(Commands::followPlayer), "follow a player use ID or startsWith/full name");
 		
 		//Commands with icon support no-argument-commands (user input is optional)
 		register("rotate-conveyor", new Command((Runnable) Commands::rotateConveyor, Icon.rotate), "rotate some conveyor");
@@ -120,7 +119,7 @@ public class Commands implements Module {
 		register("kick-jammer", new Command(Commands::kickJammer, Icon.hammer), "Jamm votekick system so player cant kick you");
 		if (BaseSettings.debugMode)
 			register("debug", new Command(Commands::debug, Icon.pause), "so you just found debug mode");
-		register("module-reset", new Command(Commands::moduleReset, Icon.eraser), "Reset all module as if you loading the world");
+		register("module-reset", new Command(Commands::moduleReset, Icon.eraser), "Reset all module as if you reset the world");
 		register("gc", new Command(Commands::garbageCollector, Icon.cancel), "Trigger Garbage Collector");
 		
 		//Payload for connect diagram

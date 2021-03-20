@@ -37,7 +37,7 @@ import static Ozone.Settings.SettingsManifest.settingsFile;
 public class BaseSettings implements Module {
 	
 	public static boolean colorPatch = false, debugMode = false, logicCodeScanner = false;
-	public static boolean antiSpam = false, worldLog = false, blockDebug = false, commandsToast = true;
+	public static boolean worldLog = false, blockDebug = false, commandsToast = true;
 	public static String commandsPrefix = ",";
 	
 	static {
