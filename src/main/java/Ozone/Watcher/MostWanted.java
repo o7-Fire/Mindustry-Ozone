@@ -17,12 +17,12 @@
 package Ozone.Watcher;
 
 import Atom.Reflect.FieldTool;
-import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Module;
 import Ozone.Internal.Repo;
 import Shared.WarningReport;
+import arc.Core;
 import arc.util.Strings;
 import info.debatty.java.stringsimilarity.experimental.Sift4;
 import info.debatty.java.stringsimilarity.interfaces.StringDistance;
@@ -46,10 +46,12 @@ public class MostWanted implements Module {
 	public void loadAsync() {
 		try {
 			ArrayList<String> ss = Repo.getRepo().readArrayString("src/MostWanted.txt");
-			synchronized (mostWanted) {
+			Core.app.post(() -> {
 				for (String s : ss)
 					mostWanted.add(s.toUpperCase());
-			}
+			});
+			
+			
 			new WarningReport().setProblem("Loaded: " + ss.size() + " most wanted player").setWhyItsAProblem("Top most wanted criminals").setLevel(WarningReport.Level.info).report();
 		}catch (IOException e) {
 		
@@ -60,29 +62,27 @@ public class MostWanted implements Module {
 	public void update() throws Throwable {
 		tick++;
 		if (tick < 60) return;
-		if (Vars.state.isGame() && Vars.net.active()) {
+		if (Vars.state.isGame() && Vars.net.active() && reported.size() != 0) {
 			Player p = Random.getRandom(Groups.player);
 			if (p == null) return;
-			Pool.submit(() -> {
-				synchronized (reported) {
-					if (reported.contains(p.id)) return;
-					String s = Strings.stripColors(Strings.stripGlyphs(p.name()));
-					synchronized (mostWanted) {
-						for (String se : mostWanted) {
-							if (provider.distance(s, se) < 10) {
-								UserFeedback report = new UserFeedback(Sentry.captureMessage("Wanted-On-Server"));
-								report.setName(se);
-								StringBuilder sb = new StringBuilder(FieldTool.getFieldDetails(p, true));
-								sb.append("CurrentServer: ").append(InformationCenter.getCurrentServerIP()).append(":").append(InformationCenter.getCurrentServerPort()).append("\n");
-								report.setComments(sb.toString());
-								Sentry.captureUserFeedback(report);
-							}
+			
+			
+			if (reported.contains(p.id)) return;
+			String s = Strings.stripColors(Strings.stripGlyphs(p.name())).toUpperCase();
+			synchronized (mostWanted) {
+				for (String se : mostWanted) {
+					if (provider.distance(s, se) < 10) {
+						UserFeedback report = new UserFeedback(Sentry.captureMessage("Wanted-On-Server"));
+						report.setName(se);
+						StringBuilder sb = new StringBuilder(FieldTool.getFieldDetails(p, true));
+						sb.append("CurrentServer: ").append(InformationCenter.getCurrentServerIP()).append(":").append(InformationCenter.getCurrentServerPort()).append("\n");
+						report.setComments(sb.toString());
+						Sentry.captureUserFeedback(report);
+					}
 						}
 					}
 					reported.add(p.id);
-				}
-				
-			});
+			
 			
 		}
 	}
