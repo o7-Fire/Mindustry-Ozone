@@ -102,7 +102,7 @@ allprojects {
                 "displayName: \"Ozone Mindustry\"\n" +
                 "author: \"o7-Fire\"\n" +
                 "main: \"Premain.EntryPoint\"\n" +
-                "description: \"o7-Fire Ozone Project.\\n\\nNote:"+ Note +"\"\n" +
+                "description: \""+ description + "\n\n" + Note +"\"\n" +
                 "minGameVersion: 123\n" +//bitch dare you change this again without proper approval
                 "hidden: true\n"
         modhjson += "version: " + versionCore+":"+versionDesktop+"\n"

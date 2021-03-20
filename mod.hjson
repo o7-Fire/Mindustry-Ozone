@@ -2,7 +2,16 @@ name: "Ozone-Mindustry"
 displayName: "Ozone Mindustry"
 author: "o7-Fire"
 main: "Premain.EntryPoint"
-description: "o7-Fire Ozone Project.\n\nNote:[red]red, UI Fix ??"
+description: "o7-Fire Ozone Project, a client enhancement mods.
+
+Minimum Requirement:
+Android version:4.0.2.
+CPU: 4Core x 2ghz or 2Core x 3ghz
+RAM: 2GB of free RAM
+
+Wiki:https://github.com/o7-Fire/Mindustry-Ozone/wiki
+
+Changelog: Wasted potential"
 minGameVersion: 123
 hidden: true
-version: 0.20.4.0.18.5
+version: 0.20.4:0.18.5
