@@ -19,8 +19,6 @@ package Premain;
 import Ozone.Desktop.Bootstrap.DesktopBootstrap;
 import io.sentry.Sentry;
 
-import java.util.Arrays;
-
 public class TestEntryPoint {
 	public static void main(String[] args) {
 		if (System.getProperty("ozoneTest") == null) System.setProperty("ozoneTest", "true");
@@ -28,7 +26,7 @@ public class TestEntryPoint {
 			DesktopBootstrap.classloaderNoParent();
 			DesktopBootstrap.loadRuntime();
 			DesktopBootstrap.loadClasspath();
-			DesktopBootstrap.loadMindustry(Arrays.asList(args));
+			DesktopBootstrap.loadMindustry();
 			DesktopBootstrap.loadMain("Main.OzoneTesting", args);
 			System.exit(0);
 		}catch (Throwable t) {

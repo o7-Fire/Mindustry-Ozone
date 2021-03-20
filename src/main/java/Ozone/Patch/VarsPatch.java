@@ -73,27 +73,30 @@ public class VarsPatch implements Module {
 	public void init() throws Throwable {
 		
 		Log.infoTag("Ozone", "Patching");
-		try {
-			mindustry.Vars.ui.chatfrag.addMessage("gay", "no");
-		}catch (NoSuchMethodError t) {
-			System.setProperty("Ozone-Foo", "true");
-		}
-		
-		
 		Vars.enableConsole = true;
 		if (BaseSettings.debugMode) Log.level = (Log.LogLevel.debug);
 		Log.debug("Ozone-Debug: @", "Debugs, peoples, debugs");
-		if (Vars.control.input instanceof MobileInput) {
-			Log.debug("its mobile input");
-			Vars.control.input = new MobileInputPatched();
-		}else if (Vars.control.input instanceof DesktopInput) {
-			Log.debug("its desktop input");
-			Vars.control.input = new DesktopInputPatched();
-		}else Log.warn("Vars.control.input not patched");
+		if (Vars.ui != null) {
+			try {
+				mindustry.Vars.ui.chatfrag.addMessage("gay", "no");
+			}catch (NoSuchMethodError t) {
+				System.setProperty("Ozone-Foo", "true");
+			}
+		}
+		
+		if (Vars.control != null) {
+			if (Vars.control.input instanceof MobileInput) {
+				Log.debug("its mobile input");
+				Vars.control.input = new MobileInputPatched();
+			}else if (Vars.control.input instanceof DesktopInput) {
+				Log.debug("its desktop input");
+				Vars.control.input = new DesktopInputPatched();
+			}else Log.warn("Vars.control.input not patched");
+		}
 		try {
 			menu = Reflect.getField(Vars.ui.menufrag.getClass(), "container", Vars.ui.menufrag);
 		}catch (Throwable ignored) {}
-		Vars.net = new NetPatched(Vars.net);
+		if (Vars.net != null) Vars.net = new NetPatched(Vars.net);
 		Log.infoTag("Ozone", "Patching Complete");
 		
 		

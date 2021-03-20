@@ -41,6 +41,8 @@ public class OzoneMods extends Mod {
 					t.printStackTrace();
 					Log.err(t);
 					Sentry.captureException(t);
+					while (t.getCause() != null) t = t.getCause();
+					throw new RuntimeException(t);
 				}
 			}
 			@NotNull ITransaction s = null;
@@ -55,6 +57,7 @@ public class OzoneMods extends Mod {
 				}
 				Sentry.captureException(t);
 				Log.err(t);
+				while (t.getCause() != null) t = t.getCause();
 				throw new RuntimeException(t);
 			}
 		}
@@ -76,6 +79,7 @@ public class OzoneMods extends Mod {
 			}
 			Sentry.captureException(t);
 			Log.err(t);
+			while (t.getCause() != null) t = t.getCause();
 			throw new RuntimeException(t);
 		}
 	}
@@ -90,6 +94,7 @@ public class OzoneMods extends Mod {
 			Main.init();
 			if (s != null) s.finish();
 		}catch (Throwable t) {
+			
 			if (s != null) {
 				s.setThrowable(t);
 				s.setStatus(SpanStatus.INTERNAL_ERROR);
@@ -97,6 +102,8 @@ public class OzoneMods extends Mod {
 			t.printStackTrace();
 			Sentry.captureException(t);
 			Log.err(t);
+			while (t.getCause() != null) t = t.getCause();
+			throw new RuntimeException(t);
 		}
 	}
 	
@@ -115,6 +122,7 @@ public class OzoneMods extends Mod {
 			}
 			Sentry.captureException(t);
 			Log.err(t);
+			while (t.getCause() != null) t = t.getCause();
 			throw new RuntimeException(t);
 		}
 	}

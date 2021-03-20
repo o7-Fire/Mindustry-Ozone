@@ -63,8 +63,7 @@ public class UIPatch implements Module {
 				titleFontColor = Pal.accent;
 			}
 		};
-		
-
+		if (SharedBoot.test) return;
 		Manifest.taskList = new TaskList();
 		Manifest.warning = new Warning();
 		Manifest.bundleViewer = new BundleViewer();

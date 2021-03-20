@@ -21,6 +21,7 @@ import Ozone.Desktop.Bootstrap.OzoneLoader;
 import Ozone.Desktop.UI.BotControllerDialog;
 import Ozone.Desktop.UI.DebugMenuDialog;
 import Ozone.Internal.Module;
+import Shared.SharedBoot;
 import arc.Events;
 import mindustry.core.Version;
 import mindustry.game.EventType;
@@ -35,6 +36,7 @@ import static Ozone.Desktop.Manifest.*;
 public class DesktopUI implements Module {
 	@Override
 	public void init() throws Throwable {
+		if (SharedBoot.test) return;
 		botControllerDialog = new BotControllerDialog();
 		dbgMenu = new DebugMenuDialog();
 		Events.on(EventType.ResizeEvent.class, s -> {

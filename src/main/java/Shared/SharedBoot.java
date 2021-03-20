@@ -43,7 +43,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class SharedBoot {
-	public static boolean standalone, hardDebug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null || System.getProperty("ozoneTest") != null;
+	public static boolean test = System.getProperty("ozoneTest") != null;
+	public static boolean standalone, hardDebug = System.getProperty("intellij.debug.agent") != null || System.getProperty("debug") != null || test;
 	public static boolean debug = hardDebug;
 	public static Time timeStart = new Time(), timeFinish;
 	public static String type = "Ozone-Core";
@@ -84,7 +85,7 @@ public class SharedBoot {
 	}
 	
 	public static void initSentry() {
-		if (hardDebug) {
+		if (hardDebug && !test) {
 			System.out.println("Hard Debug, disabling sentry");
 			return;
 		}
@@ -97,7 +98,7 @@ public class SharedBoot {
 			options.setDebug(debug);
 			options.setTracesSampleRate(1.0);
 			options.setEnvironment(getOrDefault(Propertied.Manifest, "VHash", "unspecified").equals("unspecified") ? "dev" : "release");
-			if (System.getProperty("ozoneTest") != null) options.setEnvironment("test");
+			if (test) options.setEnvironment("test");
 		}, true);
 		Sentry.configureScope(SharedBoot::registerSentry);
 	}

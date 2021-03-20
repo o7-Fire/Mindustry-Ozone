@@ -18,44 +18,40 @@ package Main;
 
 import Atom.String.WordGenerator;
 import Atom.Time.Time;
-import Atom.Utility.Random;
-import Ozone.Commands.Commands;
-import Ozone.Desktop.Patch.TranslationDesktop;
-import Ozone.Internal.Interface;
-import Ozone.Patch.Translation;
 import Ozone.Test.OzoneTest;
 import Ozone.Test.Test;
+import Shared.LoggerMode;
+import Shared.OzoneMods;
 import Shared.SharedBoot;
-import arc.struct.ObjectMap;
 import arc.util.Log;
-import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.gen.Player;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.TreeMap;
-
-import static arc.util.ColorCodes.*;
-import static arc.util.Log.format;
-import static arc.util.Log.logger;
 
 public class OzoneTesting {
 	public static Test tests;
 	protected static String[] tags = {"&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", ""};
 	protected static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss"), autosaveDate = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH-mm-ss");
+	protected static OzoneMods ozone;
 	
 	static {
-		logger = (level1, text) -> {
-			Sentry.addBreadcrumb(text, level1.name());
-			String result = bold + lightBlack + "[" + dateTime.format(LocalDateTime.now()) + "] " + reset + format(tags[level1.ordinal()] + " " + text + "&fr");
-			System.out.println(result);
-		};
+		LoggerMode.loadLogger();
 		SharedBoot.finishStartup();
 		Log.info("Preparing Test");
 		prepare();
 		tests = new OzoneTest();
+		tests.add("Make new Ozone", () -> {
+			ozone = new Ozone();
+		});
+		tests.add("Init Ozone", () -> {
+			ozone.init();
+		});
+		tests.add("Load Content Ozone", () -> {
+			ozone.loadContent();
+		});
+		/*
 		tests.add("Commands, DesktopCommands, Patch, Events", () -> {
 			Commands.register();
 			assert Commands.commandsList.size() > 5 : "Commands list is less than 5";
@@ -79,6 +75,8 @@ public class OzoneTesting {
 			for (String k : unmodified.keySet())
 				assert !modified.get(k).equals(unmodified.get(k)) : "Modified and Unmodified are same: " + k + ":" + unmodified.get(k);
 		});
+		
+		 */
 	}
 	
 	public static void prepare() {
