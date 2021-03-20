@@ -105,7 +105,7 @@ allprojects {
                 "description: \"o7-Fire Ozone Project.\\n\\nNote:"+ Note +"\"\n" +
                 "minGameVersion: 123\n" +//bitch dare you change this again without proper approval
                 "hidden: true\n"
-        modhjson += "version: " + versionCore+"."+versionDesktop+"\n"
+        modhjson += "version: " + versionCore+":"+versionDesktop+"\n"
         if(project.hasProperty("gRepo"))
             modhjson += "repo: \"" + gRepo +"\" \n"
         try{
