@@ -69,8 +69,8 @@ public class MostWanted implements Module {
 			
 			if (reported.contains(p.id)) return;
 			String s = Strings.stripColors(Strings.stripGlyphs(p.name())).toUpperCase();
-			synchronized (mostWanted) {
-				for (String se : mostWanted) {
+			
+			for (String se : mostWanted) {
 					if (provider.distance(s, se) < 10) {
 						UserFeedback report = new UserFeedback(Sentry.captureMessage("Wanted-On-Server"));
 						report.setName(se);
@@ -80,8 +80,8 @@ public class MostWanted implements Module {
 						Sentry.captureUserFeedback(report);
 					}
 						}
-					}
-					reported.add(p.id);
+			
+			reported.add(p.id);
 			
 			
 		}
