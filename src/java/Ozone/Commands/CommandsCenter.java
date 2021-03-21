@@ -628,7 +628,7 @@ public class CommandsCenter implements Module {
 	}
 
 	public static void testCommand() {
-		tellUser(Vars.player.closestCore().items());
+		tellUser(Vars.player.closestCore().items().toString());
 	}
 	
 	public static void drainCore() {
