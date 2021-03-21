@@ -626,7 +626,8 @@ public class CommandsCenter implements Module {
 		});
 		
 	}
-
+	
+	//TODO make it so you can drain a specific item from core
 	public static void testCommand() {
 		tellUser(Vars.player.closestCore().items().toString());
 	}
