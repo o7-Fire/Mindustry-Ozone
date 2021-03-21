@@ -33,7 +33,7 @@ package Ozone.Bot;
 
 import Atom.Utility.MemoryLog;
 import Atom.Utility.Random;
-import Ozone.Commands.Commands;
+import Ozone.Commands.CommandsCenter;
 import Ozone.Experimental.Evasion.Identification;
 import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Interface;
@@ -174,11 +174,11 @@ public class VirtualPlayer extends Player {
 			log.err("Can't find main player, on server");
 			return;
 		}
-		Commands.virtualPlayer(this);
-		if (Commands.targetPlayer.get(id) == null)
-			Commands.followPlayer(new ArrayList<>(Collections.singletonList(p.id + "")), this);
-		else Commands.followPlayer(new ArrayList<>(), this);
-		Commands.virtualPlayer();
+		CommandsCenter.virtualPlayer(this);
+		if (CommandsCenter.targetPlayer.get(id) == null)
+			CommandsCenter.followPlayer(new ArrayList<>(Collections.singletonList(p.id + "")), this);
+		else CommandsCenter.followPlayer(new ArrayList<>(), this);
+		CommandsCenter.virtualPlayer();
 	}
 	
 	public String getUUID() {

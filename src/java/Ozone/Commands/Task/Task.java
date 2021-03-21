@@ -31,7 +31,7 @@
 
 package Ozone.Commands.Task;
 
-import Ozone.Commands.Commands;
+import Ozone.Commands.CommandsCenter;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -51,7 +51,7 @@ public abstract class Task {
 	}
 	
 	public void tellUser(String s) {
-		Commands.tellUser(s);
+		CommandsCenter.tellUser(s);
 	}
 	
 	public void onCompleted() {

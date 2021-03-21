@@ -18,7 +18,7 @@ package Ozone.Patch;
 
 import Atom.Reflect.Reflect;
 import Atom.Utility.Random;
-import Ozone.Commands.Commands;
+import Ozone.Commands.CommandsCenter;
 import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
 import Ozone.Manifest;
@@ -73,8 +73,8 @@ public class Translation implements Module {
 		}
 		
 		arc.Core.bundle.setProperties(modified);
-		for (Map.Entry<String, Commands.Command> c : Commands.commandsList.entrySet())
-			c.getValue().description = Commands.getTranslation(c.getKey());
+		for (Map.Entry<String, CommandsCenter.Command> c : CommandsCenter.commandsList.entrySet())
+			c.getValue().description = CommandsCenter.getTranslation(c.getKey());
 	}
 	
 	public static void register() {

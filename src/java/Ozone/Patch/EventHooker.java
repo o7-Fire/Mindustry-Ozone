@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
-import static Ozone.Commands.Commands.garbageCollector;
+import static Ozone.Commands.CommandsCenter.garbageCollector;
 
 //no shit not that hooker rent
 public class EventHooker implements Module {

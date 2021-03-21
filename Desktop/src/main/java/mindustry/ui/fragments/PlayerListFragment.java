@@ -1,7 +1,7 @@
 package mindustry.ui.fragments;
 
 import Atom.Reflect.FieldTool;
-import Ozone.Commands.Commands;
+import Ozone.Commands.CommandsCenter;
 import Ozone.Internal.Interface;
 import Ozone.UI.ScrollableDialog;
 import arc.Core;
@@ -182,9 +182,9 @@ public class PlayerListFragment extends Fragment {
 				
 				if (!user.isLocal()) {
 					t.button(Icon.move, () -> {
-						if (Commands.targetPlayer.get(player.id) == null)
-							Commands.followPlayer(new ArrayList<>(Collections.singletonList(user.id + "")));
-						else Commands.followPlayer(new ArrayList<>());
+						if (CommandsCenter.targetPlayer.get(player.id) == null)
+							CommandsCenter.followPlayer(new ArrayList<>(Collections.singletonList(user.id + "")));
+						else CommandsCenter.followPlayer(new ArrayList<>());
 					}).tooltip("Follow player");
 				}
 				if (!user.isLocal()) t.button(Icon.infoCircle, () -> {

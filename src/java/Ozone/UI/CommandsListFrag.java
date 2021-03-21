@@ -17,7 +17,7 @@
 package Ozone.UI;
 
 import Atom.Utility.Random;
-import Ozone.Commands.Commands;
+import Ozone.Commands.CommandsCenter;
 import Ozone.Commands.Task.CommandsSpam;
 import Ozone.Commands.TaskInterface;
 import Ozone.Patch.Translation;
@@ -59,7 +59,7 @@ public class CommandsListFrag extends Fragment {
 			
 			
 			cont.table(Tex.buttonTrans, pane -> {
-				pane.labelWrap(Commands.commandsList.size() + " Commands in total").marginLeft(20);
+				pane.labelWrap(CommandsCenter.commandsList.size() + " Commands in total").marginLeft(20);
 				pane.row();
 				sField = pane.field(commands, (res) -> commands = res).fillX().growX().get();
 				pane.button(Icon.exportSmall, () -> Vars.ui.showTextInput("Commands", "How many times you want to run this", 2, "1", true, c -> Vars.ui.showTextInput("Commands", "Delay in millisecond", 3, "100", true, d -> TaskInterface.addTask((new CommandsSpam(c, d, commands))))));
@@ -78,7 +78,7 @@ public class CommandsListFrag extends Fragment {
 	
 	public void rebuild() {
 		content.clear();
-		for (Map.Entry<String, Commands.Command> cl : Commands.commandsList.entrySet()) {
+		for (Map.Entry<String, CommandsCenter.Command> cl : CommandsCenter.commandsList.entrySet()) {
 			Table table = new Table();
 			boolean allowed = cl.getValue().icon != null;
 			String name = (BaseSettings.colorPatch ? "[" + Random.getRandomHexColor() + "]" : "") + cl.getKey() + "[white]";

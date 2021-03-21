@@ -1,6 +1,6 @@
 package mindustry.ui.fragments;
 
-import Ozone.Commands.Commands;
+import Ozone.Commands.CommandsCenter;
 import arc.Core;
 import arc.Input.TextInput;
 import arc.func.Boolp;
@@ -185,7 +185,7 @@ public class ChatFragment extends Table {
 		clearChatInput();
 		
 		if (message.isEmpty()) return;
-		if (Commands.call(message)) return;
+		if (CommandsCenter.call(message)) return;
 		history.insert(1, message);
 		
 		Call.sendChatMessage(message);

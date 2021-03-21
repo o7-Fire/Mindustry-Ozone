@@ -56,9 +56,9 @@ public class OzoneTesting {
 			ozone.loadContent();
 		});
 		/*
-		tests.add("Commands, DesktopCommands, Patch, Events", () -> {
-			Commands.register();
-			assert Commands.commandsList.size() > 5 : "Commands list is less than 5";
+		tests.add("CommandsCenter, DesktopCommands, Patch, Events", () -> {
+			CommandsCenter.register();
+			assert CommandsCenter.commandsList.size() > 5 : "CommandsCenter list is less than 5";
 		});
 		tests.add("Translation, DesktopTranslation, Patch, Events", () -> {
 			TranslationDesktop.register();
@@ -67,7 +67,7 @@ public class OzoneTesting {
 			assert Interface.bundle.size > 5 : "Bundle list is less than 5";
 		});
 		
-		tests.add("Color Patcher, Commands Description, Translation Patch", () -> {
+		tests.add("Color Patcher, CommandsCenter Description, Translation Patch", () -> {
 			TreeMap<String, String> modified = new TreeMap<>(), unmodified = new TreeMap<>();
 			for (ObjectMap.Entry<String, String> s : Interface.bundle) {
 				unmodified.put(s.key, s.value);

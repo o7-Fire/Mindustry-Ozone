@@ -16,6 +16,7 @@
 
 package Ozone.Commands.Class;
 
+import Ozone.Commands.CommandsCenter;
 import Ozone.Gen.Callable;
 import mindustry.gen.Player;
 
@@ -25,6 +26,9 @@ public abstract class CommandsClass {
 	
 	abstract void run() throws Exception;
 	
+	public static void tellUser(String s) {
+		CommandsCenter.tellUser(s);
+	}
 	
 	public boolean supportNetwork() {
 		return false;

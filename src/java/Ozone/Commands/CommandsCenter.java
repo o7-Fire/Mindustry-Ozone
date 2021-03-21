@@ -72,7 +72,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class Commands implements Module {
+public class CommandsCenter implements Module {
 	
 	public static final Queue<Task> commandsQueue = new Queue<>();
 	public static final Map<String, Command> commandsList = new TreeMap<>();
@@ -85,7 +85,7 @@ public class Commands implements Module {
 	private static int i = 0;
 	
 	public static void virtualPlayer(VirtualPlayer virtualPlayer) {
-		Commands.virtualPlayer = virtualPlayer;
+		CommandsCenter.virtualPlayer = virtualPlayer;
 	}
 	
 	public static void virtualPlayer() {
@@ -94,40 +94,40 @@ public class Commands implements Module {
 	
 	public static void register() {
 		
-		//register("message-log", new Command(Commands::messageLog, Icon.rotate));
-		//register("shuffle-configurable", new Command(Commands::shuffleConfigurable, Icon.rotate));
-		register("task-move", new Command(Commands::taskMove));
-		register("info-pathfinding", new Command(Commands::infoPathfinding));
-		register("chat-repeater", new Command(Commands::chatRepeater), "Chat Spammer -Nexity");
-		register("task-deconstruct", new Command(Commands::taskDeconstruct));
-		register("send-colorize", new Command(Commands::sendColorize));
-		register("follow-player", new Command(Commands::followPlayer), "follow a player use ID or startsWith/full name");
-		register("power-node", new Command(Commands::powerNode), "Control power node");
+		//register("message-log", new Command(CommandsCenter::messageLog, Icon.rotate));
+		//register("shuffle-configurable", new Command(CommandsCenter::shuffleConfigurable, Icon.rotate));
+		register("task-move", new Command(CommandsCenter::taskMove));
+		register("info-pathfinding", new Command(CommandsCenter::infoPathfinding));
+		register("chat-repeater", new Command(CommandsCenter::chatRepeater), "Chat Spammer -Nexity");
+		register("task-deconstruct", new Command(CommandsCenter::taskDeconstruct));
+		register("send-colorize", new Command(CommandsCenter::sendColorize));
+		register("follow-player", new Command(CommandsCenter::followPlayer), "follow a player use ID or startsWith/full name");
+		register("power-node", new Command(CommandsCenter::powerNode), "Control power node");
 		
-		//Commands with icon support no-argument-commands (user input is optional)
-		register("rotate-conveyor", new Command((Runnable) Commands::rotateConveyor, Icon.rotate), "rotate some conveyor");
-		register("drain-core", new Command(Commands::drainCore, Icon.hammer), "drain a core");
-		register("random-kick", new Command(Commands::randomKick, Icon.hammer));
-		register("info-unit", new Command(Commands::infoUnit, Icon.units));
-		register("force-exit", new Command(Commands::forceExit, Icon.exit));
-		register("task-clear", new Command(Commands::taskClear, Icon.cancel));
-		register("shuffle-sorter", new Command((Runnable) Commands::shuffleSorter, Icon.rotate));//java being dick again
-		register("clear-pathfinding-overlay", new Command(Commands::clearPathfindingOverlay, Icon.cancel));
-		register("hud-frag", new Command(Commands::hudFrag, Icon.info), "HUD Test");
-		register("hud-frag-toast", new Command(Commands::hudFragToast, Icon.info), "HUD Toast Test");
-		register("info-pos", new Command(Commands::infoPos, Icon.move));
-		register("help", new Command(Commands::help, Icon.infoCircle));
-		register("kick-jammer", new Command(Commands::kickJammer, Icon.hammer), "Jamm votekick system so player cant kick you");
-		register("power-node-connect-all", new Command(Commands::powerNodeConnectAll, Icon.power), "connect all power node to every possible way");
-		register("power-node-connect-all", new Command(Commands::powerNodeDisconnectAll, Icon.power), "disconnect all power node");
+		//CommandsCenter with icon support no-argument-commands (user input is optional)
+		register("rotate-conveyor", new Command((Runnable) CommandsCenter::rotateConveyor, Icon.rotate), "rotate some conveyor");
+		register("drain-core", new Command(CommandsCenter::drainCore, Icon.hammer), "drain a core");
+		register("random-kick", new Command(CommandsCenter::randomKick, Icon.hammer));
+		register("info-unit", new Command(CommandsCenter::infoUnit, Icon.units));
+		register("force-exit", new Command(CommandsCenter::forceExit, Icon.exit));
+		register("task-clear", new Command(CommandsCenter::taskClear, Icon.cancel));
+		register("shuffle-sorter", new Command((Runnable) CommandsCenter::shuffleSorter, Icon.rotate));//java being dick again
+		register("clear-pathfinding-overlay", new Command(CommandsCenter::clearPathfindingOverlay, Icon.cancel));
+		register("hud-frag", new Command(CommandsCenter::hudFrag, Icon.info), "HUD Test");
+		register("hud-frag-toast", new Command(CommandsCenter::hudFragToast, Icon.info), "HUD Toast Test");
+		register("info-pos", new Command(CommandsCenter::infoPos, Icon.move));
+		register("help", new Command(CommandsCenter::help, Icon.infoCircle));
+		register("kick-jammer", new Command(CommandsCenter::kickJammer, Icon.hammer), "Jamm votekick system so player cant kick you");
+		register("power-node-connect-all", new Command(CommandsCenter::powerNodeConnectAll, Icon.power), "connect all power node to every possible way");
+		register("power-node-connect-all", new Command(CommandsCenter::powerNodeDisconnectAll, Icon.power), "disconnect all power node");
 		
 		if (BaseSettings.debugMode)
-			register("debug", new Command(Commands::debug, Icon.pause), "so you just found debug mode");
-		register("module-reset", new Command(Commands::moduleReset, Icon.eraser), "Reset all module as if you reset the world");
-		register("gc", new Command(Commands::garbageCollector, Icon.cancel), "Trigger Garbage Collector");
+			register("debug", new Command(CommandsCenter::debug, Icon.pause), "so you just found debug mode");
+		register("module-reset", new Command(CommandsCenter::moduleReset, Icon.eraser), "Reset all module as if you reset the world");
+		register("gc", new Command(CommandsCenter::garbageCollector, Icon.cancel), "Trigger Garbage Collector");
 		
 		//Payload for connect diagram
-		payloads.put("sorter-shuffle", new Payload(Commands::shuffleSorterPayload));
+		payloads.put("sorter-shuffle", new Payload(CommandsCenter::shuffleSorterPayload));
 		Log.infoTag("Ozone", "Commands Center Initialized");
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
 		Log.infoTag("Ozone", payloads.size() + " payload loaded");
@@ -483,7 +483,7 @@ public class Commands implements Module {
 				try {
 					shuffleSorterCall(new Callable(net), f.get());
 				}catch (IndexOutOfBoundsException gay) {
-					Commands.tellUser("No item");
+					CommandsCenter.tellUser("No item");
 				}catch (InterruptedException | ExecutionException e) {
 					Log.errTag("Ozone-Executor", "Failed to get tile:\n" + e.toString());
 				}
@@ -534,7 +534,7 @@ public class Commands implements Module {
 	}
 	
 	public static void tellUser(String s) {
-		if (Commands.virtualPlayer != null) {
+		if (CommandsCenter.virtualPlayer != null) {
 			virtualPlayer.log.info(s);
 			return;
 		}

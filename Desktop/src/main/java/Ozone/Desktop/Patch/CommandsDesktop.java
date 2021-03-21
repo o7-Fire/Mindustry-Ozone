@@ -19,7 +19,7 @@ package Ozone.Desktop.Patch;
 import Atom.Struct.Stream;
 import Atom.Utility.Pool;
 import Atom.Utility.Utility;
-import Ozone.Commands.Commands;
+import Ozone.Commands.CommandsCenter;
 import Ozone.Internal.Module;
 import arc.util.Log;
 import mindustry.Vars;
@@ -29,7 +29,7 @@ import mindustry.world.Tile;
 import java.util.Arrays;
 import java.util.List;
 
-import static Ozone.Commands.Commands.*;
+import static Ozone.Commands.CommandsCenter.*;
 
 public class CommandsDesktop implements Module {
 
@@ -40,19 +40,13 @@ public class CommandsDesktop implements Module {
 		register("info-pos", new Command(CommandsDesktop::infoPos, Icon.move));
 	}
 	
-	@Override
-	public List<Class<? extends Module>> dependOnModule() {
-		return Arrays.asList(Commands.class);
-	}
-	
 	public static void infoPos() {
 		tellUser("Mouse x,y: " + Vars.player.mouseX + ", " + Vars.player.mouseY);
 		Tile mouseTile = Vars.world.tileWorld(Vars.player.mouseX, Vars.player.mouseY);
 		if (mouseTile != null)
 			if (mouseTile.build != null) tellUser("MouseTile: Class: " + mouseTile.build.getClass().getName());
-		Ozone.Commands.Commands.infoPos();
+		CommandsCenter.infoPos();
 	}
-	
 	
 	public static void javac(List<String> arg) {
 		
@@ -69,7 +63,7 @@ public class CommandsDesktop implements Module {
 		
 		Pool.daemon(() -> {
 			try {
-				Atom.Runtime.Compiler.runLine(code, Stream.getReader(Commands::tellUser));
+				Atom.Runtime.Compiler.runLine(code, Stream.getReader(CommandsCenter::tellUser));
 			}catch (Throwable t) {
 				t.printStackTrace();
 				Log.errTag("Compiler", t.toString());
@@ -77,6 +71,11 @@ public class CommandsDesktop implements Module {
 			}
 		}).start();
 		
+	}
+	
+	@Override
+	public List<Class<? extends Module>> dependOnModule() {
+		return Arrays.asList(CommandsCenter.class);
 	}
 	
 	
