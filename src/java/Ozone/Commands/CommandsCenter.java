@@ -105,6 +105,7 @@ public class CommandsCenter implements Module {
 		register("power-node", new Command(CommandsCenter::powerNode), "Control power node");
 		
 		//CommandsCenter with icon support no-argument-commands (user input is optional)
+		register("test-command", new Command((Runnable) CommandsCenter::testCommand, Icon.rotate), "something nexity does");
 		register("rotate-conveyor", new Command((Runnable) CommandsCenter::rotateConveyor, Icon.rotate), "rotate some conveyor");
 		register("drain-core", new Command(CommandsCenter::drainCore, Icon.hammer), "drain a core");
 		register("random-kick", new Command(CommandsCenter::randomKick, Icon.hammer));
@@ -624,6 +625,10 @@ public class CommandsCenter implements Module {
 			}
 		});
 		
+	}
+
+	public static void testCommand() {
+		tellUser(Vars.player.closestCore().items());
 	}
 	
 	public static void drainCore() {
