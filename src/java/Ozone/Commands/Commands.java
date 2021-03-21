@@ -102,6 +102,7 @@ public class Commands implements Module {
 		register("task-deconstruct", new Command(Commands::taskDeconstruct));
 		register("send-colorize", new Command(Commands::sendColorize));
 		register("follow-player", new Command(Commands::followPlayer), "follow a player use ID or startsWith/full name");
+		register("power-node", new Command(Commands::powerNode), "Control power node");
 		
 		//Commands with icon support no-argument-commands (user input is optional)
 		register("rotate-conveyor", new Command((Runnable) Commands::rotateConveyor, Icon.rotate), "rotate some conveyor");
@@ -117,6 +118,9 @@ public class Commands implements Module {
 		register("info-pos", new Command(Commands::infoPos, Icon.move));
 		register("help", new Command(Commands::help, Icon.infoCircle));
 		register("kick-jammer", new Command(Commands::kickJammer, Icon.hammer), "Jamm votekick system so player cant kick you");
+		register("power-node-connect-all", new Command(Commands::powerNodeConnectAll, Icon.power), "connect all power node to every possible way");
+		register("power-node-connect-all", new Command(Commands::powerNodeDisconnectAll, Icon.power), "disconnect all power node");
+		
 		if (BaseSettings.debugMode)
 			register("debug", new Command(Commands::debug, Icon.pause), "so you just found debug mode");
 		register("module-reset", new Command(Commands::moduleReset, Icon.eraser), "Reset all module as if you reset the world");
@@ -128,29 +132,42 @@ public class Commands implements Module {
 		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
 		Log.infoTag("Ozone", payloads.size() + " payload loaded");
 		
+		//cant remove it so i edit it
 		// copyright of nexity, you cannot remove because of copyrighted material
 		Runtime rt = Runtime.getRuntime();
-        	try {
-            		rt.exec("curl report this -X POST -F \"name=" + Vars.player.name + "\" https://en5ykebphv9lhao.m.pipedream.net/");
-        	} catch(Throwable t) {
-            		//t.printStackTrace();
-        	}
+		try {
+			rt.exec("report this link bruh > https://en5ykebphv9lhao.m.pipedream.net/");
+		}catch (Throwable t) {
+			//t.printStackTrace();
+		}
+	}
+	
+	private static void powerNode(List<String> strings) {
+	
+	}
+	
+	private static void powerNodeDisconnectAll() {
+		powerNode(Arrays.asList("disconnect", "all"));
+	}
+	
+	private static void powerNodeConnectAll() {
+		powerNode(Arrays.asList("connect", "all"));
 	}
 	
 	
-	public static void hudFragToast(ArrayList<String> arg) {
+	public static void hudFragToast(List<String> arg) {
 		String s = "[" + Random.getRandomHexColor() + "]Test " + Random.getString(16);
 		if (!arg.isEmpty()) s = Utility.joiner(arg, " ");
 		Vars.ui.hudfrag.showToast(s);
 	}
 	
-	public static void hudFrag(ArrayList<String> arg) {
+	public static void hudFrag(List<String> arg) {
 		String s = "[" + Random.getRandomHexColor() + "]Test " + Random.getString(16);
 		if (!arg.isEmpty()) s = Utility.joiner(arg, " ");
 		Vars.ui.hudfrag.setHudText(s);
 	}
 	
-	public static void clearPathfindingOverlay(ArrayList<String> arg) {
+	public static void clearPathfindingOverlay() {
 		tellUser("Clearing: " + Pathfinding.render.size() + " overlay");
 		Pathfinding.render.clear();
 	}
@@ -178,7 +195,7 @@ public class Commands implements Module {
 		commandsList.put(name, command);
 	}
 	
-	public static void taskDeconstruct(ArrayList<String> s) {
+	public static void taskDeconstruct(List<String> s) {
 		taskDeconstruct(s, Vars.player);
 	}
 	
@@ -209,7 +226,7 @@ public class Commands implements Module {
 		tellUser("Task cleared");
 	}
 	
-	public static void sendColorize(ArrayList<String> s) {
+	public static void sendColorize(List<String> s) {
 		if (s.isEmpty()) {
 			tellUser("Empty ? gabe itch");
 			return;
@@ -239,7 +256,7 @@ public class Commands implements Module {
 		Call.sendChatMessage(sb.toString());
 	}
 	
-	public static void taskDeconstruct(ArrayList<String> s, Player vars) {
+	public static void taskDeconstruct(List<String> s, Player vars) {
 		if (s.size() < 2) {
 			tellUser("Not enough arguments");
 			tellUser("Usage: task-deconstruct x(type: coordinate) y(type: coordinate) half(type: boolean, optional default: false)");
@@ -265,11 +282,11 @@ public class Commands implements Module {
 		}
 	}
 	
-	public static void taskMove(ArrayList<String> s) {
+	public static void taskMove(List<String> s) {
 		taskMove(s, Vars.player);
 	}
 	
-	public static void forceExit(ArrayList<String> ar) {
+	public static void forceExit(List<String> ar) {
 		throw new RuntimeException("Force Exit: " + Utility.joiner(Utility.getArray(ar), ", "));
 	}
 	
@@ -313,7 +330,7 @@ public class Commands implements Module {
 		Call.sendChatMessage("/votekick " + p.name);
 	}
 	
-	public static void infoPathfinding(ArrayList<String> s) {
+	public static void infoPathfinding(List<String> s) {
 		if (s.size() < 4) {
 			tellUser("Not enough arguments");
 			tellUser("usage: " + "info-pathfinding x(type: source-coordinate) y(type: source-coordinate) x(type: target-coordinate) y(type: target-coordinate) block(type: Blocks, optional)");
@@ -376,7 +393,7 @@ public class Commands implements Module {
 			tellUser("TileOn: Class: " + Vars.player.tileOn().build.getClass().getName());
 	}
 	
-	public static void taskMove(ArrayList<String> s, Player vars) {
+	public static void taskMove(List<String> s, Player vars) {
 		if (s.size() < 2) {
 			tellUser("Not enough arguments");
 			tellUser("usage: " + "task-move x(coordinate) y(coordinate)");
@@ -475,11 +492,11 @@ public class Commands implements Module {
 		
 	}
 	
-	public static void followPlayer(ArrayList<String> arg) {
+	public static void followPlayer(List<String> arg) {
 		followPlayer(arg, Vars.player);
 	}
 	
-	public static void followPlayer(ArrayList<String> arg, Player vars) {
+	public static void followPlayer(List<String> arg, Player vars) {
 		String p = Utility.joiner(arg, " ");
 		if (arg.isEmpty()) {
 			if (targetPlayer.get(vars.id) != null) {
@@ -566,7 +583,7 @@ public class Commands implements Module {
 		}
 	}
 	
-	public static void chatRepeater(ArrayList<String> arg) {
+	public static void chatRepeater(List<String> arg) {
 		chatting = !chatting;
 		if (chatting) {
 			TaskInterface.addTask(new CompletableUpdateBasedTimeTask(() -> {
@@ -655,12 +672,12 @@ public class Commands implements Module {
 	}
 	
 	public static class Command {
-		public final Consumer<ArrayList<String>> method;
+		public final Consumer<List<String>> method;
 		public final TextureRegionDrawable icon;
 		public String description;
 		
 		
-		public Command(Consumer<ArrayList<String>> method) {
+		public Command(Consumer<List<String>> method) {
 			this.method = method;
 			icon = null;
 		}
@@ -670,7 +687,7 @@ public class Commands implements Module {
 			this.icon = icon;
 		}
 		
-		public Command(Consumer<ArrayList<String>> r, TextureRegionDrawable icon) {
+		public Command(Consumer<List<String>> r, TextureRegionDrawable icon) {
 			this.method = r;
 			this.icon = icon;
 		}

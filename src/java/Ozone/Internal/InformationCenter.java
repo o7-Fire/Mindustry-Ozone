@@ -31,6 +31,7 @@
 package Ozone.Internal;
 
 import Atom.Reflect.Reflect;
+import Ozone.Gen.Callable;
 import arc.net.Client;
 import arc.struct.Seq;
 import mindustry.Vars;
@@ -66,6 +67,14 @@ public class InformationCenter {
 			if (!clientSendPackets.contains(m.getName())) clientSendPackets.add(m.getName());
 		}
 		
+	}
+	
+	protected static Callable callable;
+	
+	public static Callable getCallableMain() {
+		if (callable == null) callable = new Callable(Vars.net);
+		
+		return callable;
 	}
 	
 	public static File getCurrentJar() {

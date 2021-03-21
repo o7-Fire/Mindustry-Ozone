@@ -16,6 +16,9 @@
 
 public class Meth {
 	public static void main(String[] args) {
+		String s = "ˈ⃢ˈ⃢ˈ⃢ˈ⃢ˈ⃢";
+		for (int i : s.toCharArray())
+			System.out.println(i);
 		int total = 2;
 		for (int i = 0; i < 15; i++) {
 			System.out.println(i + ". " + total);

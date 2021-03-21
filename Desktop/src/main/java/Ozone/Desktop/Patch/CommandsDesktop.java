@@ -26,7 +26,6 @@ import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.world.Tile;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class CommandsDesktop implements Module {
 	}
 	
 	
-	public static void javac(ArrayList<String> arg) {
+	public static void javac(List<String> arg) {
 		
 		
 		String code = Utility.joiner(arg, " ");

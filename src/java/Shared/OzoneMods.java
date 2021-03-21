@@ -19,12 +19,14 @@ package Shared;
 import Ozone.Bootstrap.OzoneBootstrap;
 import Ozone.Main;
 import Ozone.Manifest;
+import arc.Events;
 import arc.files.Fi;
-import arc.util.CommandHandler;
 import arc.util.Log;
 import io.sentry.ITransaction;
 import io.sentry.Sentry;
 import io.sentry.SpanStatus;
+import mindustry.Vars;
+import mindustry.game.EventType;
 import mindustry.mod.Mod;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,11 +40,7 @@ public class OzoneMods extends Mod {
 					Log.info("Ozone Standalone");
 					OzoneBootstrap.init();
 				}catch (Throwable t) {
-					t.printStackTrace();
-					Log.err(t);
-					Sentry.captureException(t);
-					while (t.getCause() != null) t = t.getCause();
-					throw new RuntimeException(t);
+					catchs(t);
 				}
 			}
 			@NotNull ITransaction s = null;
@@ -55,14 +53,10 @@ public class OzoneMods extends Mod {
 					s.setThrowable(t);
 					s.setStatus(SpanStatus.INTERNAL_ERROR);
 				}
-				Sentry.captureException(t);
-				Log.err(t);
-				while (t.getCause() != null) t = t.getCause();
-				throw new RuntimeException(t);
+				catchs(t);
 			}
 		}
 	}
-	
 	public OzoneMods() {
 		if (SharedBoot.hardDebug) Log.debug("Ctor");
 		if (WarningHandler.isLoaded()) return;
@@ -77,11 +71,19 @@ public class OzoneMods extends Mod {
 				s.setThrowable(t);
 				s.setStatus(SpanStatus.INTERNAL_ERROR);
 			}
-			Sentry.captureException(t);
-			Log.err(t);
-			while (t.getCause() != null) t = t.getCause();
-			throw new RuntimeException(t);
+			catchs(t);
 		}
+	}
+	
+	public static void catchs(Throwable t) {
+		if (t instanceof OutOfMemoryError) throw new RuntimeException(t);//no fuck you
+		if (SharedBoot.debug) t.printStackTrace();
+		Sentry.captureException(t);
+		while (t.getCause() != null) t = t.getCause();
+		Log.err(t);
+		Throwable finalT = t;
+		Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showException(finalT));
+		throw new RuntimeException(t);
 	}
 	
 	@Override
@@ -94,16 +96,11 @@ public class OzoneMods extends Mod {
 			Main.init();
 			if (s != null) s.finish();
 		}catch (Throwable t) {
-			
 			if (s != null) {
 				s.setThrowable(t);
 				s.setStatus(SpanStatus.INTERNAL_ERROR);
 			}
-			t.printStackTrace();
-			Sentry.captureException(t);
-			Log.err(t);
-			while (t.getCause() != null) t = t.getCause();
-			throw new RuntimeException(t);
+			catchs(t);
 		}
 	}
 	
@@ -120,10 +117,7 @@ public class OzoneMods extends Mod {
 				s.setThrowable(t);
 				s.setStatus(SpanStatus.INTERNAL_ERROR);
 			}
-			Sentry.captureException(t);
-			Log.err(t);
-			while (t.getCause() != null) t = t.getCause();
-			throw new RuntimeException(t);
+			catchs(t);
 		}
 	}
 	
@@ -133,15 +127,4 @@ public class OzoneMods extends Mod {
 		return super.getConfig();
 	}
 	
-	@Override
-	public void registerServerCommands(CommandHandler handler) {
-		if (SharedBoot.hardDebug) Log.debug("registerServerCommands");
-		super.registerServerCommands(handler);
-	}
-	
-	@Override
-	public void registerClientCommands(CommandHandler handler) {
-		if (SharedBoot.hardDebug) Log.debug("registerServerCommands");
-		super.registerClientCommands(handler);
-	}
 }

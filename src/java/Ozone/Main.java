@@ -24,6 +24,7 @@ import Shared.SharedBoot;
 import Shared.WarningHandler;
 import Shared.WarningReport;
 import arc.Events;
+import arc.util.CommandHandler;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.game.EventType;
@@ -205,4 +206,7 @@ public class Main {
 	}
 	
 	
+	public static void registerClientCommands(CommandHandler handler) {
+	
+	}
 }
