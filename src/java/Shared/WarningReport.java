@@ -61,7 +61,8 @@ public class WarningReport implements Serializable {
 	}
 	
 	public WarningReport(Throwable t) {
-		this(t.getLocalizedMessage() + "-" + t.getStackTrace()[0], "Because its java", "only god know how", Level.err);
+		if (t instanceof VirtualMachineError) throw new RuntimeException(t);//no thx
+		setProblem(t.getLocalizedMessage() + "-" + t.getStackTrace()[0]).setWhyItsAProblem("Because its java").setHowToFix("only god know how").setLevel(Level.err);
 	}
 	
 	public void report() {

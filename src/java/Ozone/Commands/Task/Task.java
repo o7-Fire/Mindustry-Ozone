@@ -40,7 +40,7 @@ public abstract class Task {
 	protected ArrayList<Consumer<Object>> onTaskCompleted = new ArrayList<>();
 	protected int tick = 1;
 	protected int currentTick = 0;
-	protected String name = null;
+	public String name = null;
 	
 	public String getName() {
 		return name == null ? this.getClass().getSimpleName() : name;

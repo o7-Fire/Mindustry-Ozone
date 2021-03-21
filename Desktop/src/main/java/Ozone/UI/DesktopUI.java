@@ -22,9 +22,7 @@ import Ozone.Desktop.UI.BotControllerDialog;
 import Ozone.Desktop.UI.DebugMenuDialog;
 import Ozone.Internal.Module;
 import Shared.SharedBoot;
-import arc.Events;
 import mindustry.core.Version;
-import mindustry.game.EventType;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,18 +37,9 @@ public class DesktopUI implements Module {
 		if (SharedBoot.test) return;
 		botControllerDialog = new BotControllerDialog();
 		dbgMenu = new DebugMenuDialog();
-		Events.on(EventType.ResizeEvent.class, s -> {
-			onResize();
-		});
-		onResize();
-		modsMenu.shown(this::modsMenuShown);
-		envInf.shown(this::envInfShown);
-	}
-	
-	void modsMenuShown() {
-		modsMenu.cont.row();
-		modsMenu.ad(botControllerDialog);
-		modsMenu.ad(dbgMenu);
+		ModsMenu.add(botControllerDialog);
+		ModsMenu.add(dbgMenu);
+		envInf.onInit(this::envInfShown);
 	}
 	
 	void envInfShown() {
@@ -58,10 +47,6 @@ public class DesktopUI implements Module {
 		dep();
 	}
 	
-	void onResize() {
-		modsMenuShown();
-		envInfShown();
-	}
 	
 	@Override
 	public List<Class<? extends Module>> dependOnModule() throws IOException {

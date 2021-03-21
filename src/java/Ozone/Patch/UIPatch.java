@@ -77,6 +77,9 @@ public class UIPatch implements Module {
 		Manifest.uiDebug = new UILayout();
 		Manifest.experiment = new ExperimentDialog();
 		ModsMenu.add(new VirtualControllerDialog());
+		if (SharedBoot.debug) {
+			ModsMenu.add(new CommandsListDebug());
+		}
 		Manifest.modsMenu = new ModsMenu();
 		Manifest.commFrag.build(Vars.ui.hudGroup);
 		ui.settings.game.row();

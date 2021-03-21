@@ -23,10 +23,10 @@ import Ozone.Patch.Translation;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class ModsMenu extends ScrollableDialog {
-	static HashSet<OzoneDialog> dialogs = new HashSet<>();
+	static ArrayList<OzoneDialog> dialogs = new ArrayList<>();
 	
 	public ModsMenu() {
 		super("Ozone Mods Menu");

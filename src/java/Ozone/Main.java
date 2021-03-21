@@ -24,7 +24,6 @@ import Shared.SharedBoot;
 import Shared.WarningHandler;
 import Shared.WarningReport;
 import arc.Events;
-import arc.util.CommandHandler;
 import arc.util.Log;
 import io.sentry.Sentry;
 import mindustry.game.EventType;
@@ -88,7 +87,7 @@ public class Main {
 	}
 	
 	public static Collection<Class<? extends Module>> getModule() {
-		return getExtended("Ozone", Module.class);
+		return getExtended(Main.class.getPackage().getName(), Module.class);
 	}
 	
 	public static void earlyInit() {
@@ -205,8 +204,4 @@ public class Main {
 			if (!s.getValue().loaded()) loadModule();
 	}
 	
-	
-	public static void registerClientCommands(CommandHandler handler) {
-	
-	}
 }

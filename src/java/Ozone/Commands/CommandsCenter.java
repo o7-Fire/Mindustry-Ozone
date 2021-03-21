@@ -36,15 +36,18 @@ import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Bot.VirtualPlayer;
+import Ozone.Commands.Class.CommandsClass;
 import Ozone.Commands.Task.*;
 import Ozone.Gen.Callable;
 import Ozone.Internal.Interface;
 import Ozone.Internal.Module;
+import Ozone.Main;
 import Ozone.Manifest;
 import Ozone.Patch.EventHooker;
 import Ozone.Patch.Translation;
 import Ozone.Settings.BaseSettings;
 import Shared.SharedBoot;
+import Shared.WarningReport;
 import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.Colors;
@@ -82,6 +85,7 @@ public class CommandsCenter implements Module {
 	private static boolean drainCore = false;
 	private static boolean chatting = false;
 	private static VirtualPlayer virtualPlayer = null;
+	public static final TreeMap<String, CommandsClass> commandsListClass = new TreeMap<>();
 	private static int i = 0;
 	
 	public static void virtualPlayer(VirtualPlayer virtualPlayer) {
@@ -93,6 +97,14 @@ public class CommandsCenter implements Module {
 	}
 	
 	public static void register() {
+		for (Class<? extends CommandsClass> c : Main.getExtended(CommandsClass.class.getPackage().getName(), CommandsClass.class)) {
+			try {
+				CommandsClass cc = c.getDeclaredConstructor().newInstance();
+				commandsListClass.put(cc.name.toLowerCase(), cc);
+			}catch (Throwable t) {
+				new WarningReport(t).setWhyItsAProblem("A commands class failed to load").setLevel(WarningReport.Level.warn).report();
+			}
+		}
 		
 		//register("message-log", new Command(CommandsCenter::messageLog, Icon.rotate));
 		//register("shuffle-configurable", new Command(CommandsCenter::shuffleConfigurable, Icon.rotate));
@@ -119,9 +131,7 @@ public class CommandsCenter implements Module {
 		register("info-pos", new Command(CommandsCenter::infoPos, Icon.move));
 		register("help", new Command(CommandsCenter::help, Icon.infoCircle));
 		register("kick-jammer", new Command(CommandsCenter::kickJammer, Icon.hammer), "Jamm votekick system so player cant kick you");
-		register("power-node-connect-all", new Command(CommandsCenter::powerNodeConnectAll, Icon.power), "connect all power node to every possible way");
-		register("power-node-connect-all", new Command(CommandsCenter::powerNodeDisconnectAll, Icon.power), "disconnect all power node");
-		
+
 		if (BaseSettings.debugMode)
 			register("debug", new Command(CommandsCenter::debug, Icon.pause), "so you just found debug mode");
 		register("module-reset", new Command(CommandsCenter::moduleReset, Icon.eraser), "Reset all module as if you reset the world");
@@ -682,6 +692,9 @@ public class CommandsCenter implements Module {
 		public final TextureRegionDrawable icon;
 		public String description;
 		
+		public TextureRegionDrawable icon() {
+			return icon == null ? Icon.box : icon;
+		}
 		
 		public Command(Consumer<List<String>> method) {
 			this.method = method;
@@ -696,6 +709,15 @@ public class CommandsCenter implements Module {
 		public Command(Consumer<List<String>> r, TextureRegionDrawable icon) {
 			this.method = r;
 			this.icon = icon;
+		}
+		
+		public boolean supportNoArg() {
+			return icon != null;
+		}
+		
+		@Override
+		public String toString() {
+			return description;
 		}
 	}
 }

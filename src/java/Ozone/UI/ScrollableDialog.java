@@ -30,6 +30,7 @@ import io.sentry.Sentry;
 import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
@@ -37,7 +38,7 @@ import java.util.function.Consumer;
 public abstract class ScrollableDialog extends OzoneDialog {
 	protected Table table = new Table();
 	protected ScrollPane scrollPane = new ScrollPane(table);
-	
+	protected ArrayList<Runnable> onInit = new ArrayList<>();
 	protected boolean async = false;
 	
 	public ScrollableDialog() {
@@ -50,6 +51,10 @@ public abstract class ScrollableDialog extends OzoneDialog {
 	
 	public ScrollableDialog(String title) {
 		super(title);
+	}
+	
+	public void onInit(Runnable r) {
+		onInit.add(r);
 	}
 	
 	@Override
@@ -72,10 +77,14 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		table.clear();
 		try {
 			setup();
+		}catch (VirtualMachineError v) {
+			throw new RuntimeException(v);
 		}catch (Throwable t) {
 			table.add(t.toString()).growX().growY().color(Color.red);
 			Sentry.captureException(t);
 		}
+		for (Runnable r : onInit)
+			r.run();
 		table.row();
 		cont.add(scrollPane).growX().growY();
 	}

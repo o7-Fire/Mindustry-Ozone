@@ -17,6 +17,7 @@
 package Ozone.Commands.Class;
 
 import com.beust.jcommander.Parameter;
+import mindustry.gen.Icon;
 
 public class PowerNode extends CommandsClass {
 	@Parameter(names = "-all", description = "all nodes")
@@ -25,6 +26,11 @@ public class PowerNode extends CommandsClass {
 	public boolean disconnect = false;
 	@Parameter(names = "-connect", description = "connect nodes")
 	public boolean connect = false;
+	
+	public PowerNode() {
+		description = "Manage Power nodes";
+		icon = Icon.power;
+	}
 	
 	@Override
 	void run() throws Exception {
