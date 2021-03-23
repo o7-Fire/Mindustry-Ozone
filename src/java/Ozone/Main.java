@@ -59,6 +59,8 @@ public class Main {
 			if (Atom.Manifest.internalRepo.resourceExists(reflect)) {
 				InputStream is = Atom.Manifest.internalRepo.getResourceAsStream(reflect);
 				raw = Reflect.getExtendedClassFromJson(Encoder.readString(is), type);
+			}else {
+				throw new RuntimeException("eat shit");
 			}
 		}catch (VirtualMachineError e) {
 			throw new RuntimeException("Eat shit", e);
