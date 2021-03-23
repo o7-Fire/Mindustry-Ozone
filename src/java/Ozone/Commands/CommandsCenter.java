@@ -31,11 +31,13 @@
 
 package Ozone.Commands;
 
+import Atom.Reflect.Reflect;
 import Atom.Time.Time;
 import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Bot.VirtualPlayer;
+import Ozone.Commands.Class.CommandsArgument;
 import Ozone.Commands.Class.CommandsClass;
 import Ozone.Commands.Task.*;
 import Ozone.Gen.Callable;
@@ -69,6 +71,7 @@ import mindustry.world.blocks.distribution.ArmoredConveyor;
 import mindustry.world.blocks.distribution.Conveyor;
 import mindustry.world.blocks.distribution.StackConveyor;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -96,11 +99,43 @@ public class CommandsCenter implements Module {
 		virtualPlayer = null;
 	}
 	
+	//behold, java dark magic
+	public static void registerArgument(CommandsClass unfreeze, CommandsArgument ca, Iterator<Field> iterator) {
+		if (iterator.hasNext()) {
+			Field f = iterator.next();
+			Interface.showInput(f.getDeclaringClass().getCanonicalName() + "." + f.getName(), "[" + Translation.get(f.getType().getName()) + "]-" + ca.getTranslate(f.getName()), s -> {
+				try {
+					f.set(ca, Reflect.parseStringToPrimitive(s, f.getType()));
+					registerArgument(unfreeze, ca, iterator);
+				}catch (Throwable t) {
+					if (SharedBoot.debug) t.printStackTrace();
+					Vars.ui.showException(t);
+				}
+				
+			});
+		}else {
+			unfreeze.run(ca);
+		}
+		
+	}
+	
 	public static void register() {
+		//Register Ozone.Commands.Class
 		for (Class<? extends CommandsClass> c : Main.getExtended(CommandsClass.class.getPackage().getName(), CommandsClass.class)) {
 			try {
 				CommandsClass cc = c.getDeclaredConstructor().newInstance();
-				commandsListClass.put(cc.name.toLowerCase(), cc);
+				String name = cc.name.toLowerCase();
+				commandsListClass.put(name, cc);
+				register(name, new Command(() -> {
+					CommandsClass unfreeze = commandsListClass.get(name);
+					CommandsArgument argument = unfreeze.getArgumentClass();
+					if (argument != null) {
+						Iterator<Field> iterator = Arrays.asList(argument.getClass().getFields()).listIterator();
+						registerArgument(unfreeze, argument, iterator);
+					}else {
+						unfreeze.run(null);
+					}
+				}, cc.icon), cc.description);
 			}catch (Throwable t) {
 				new WarningReport(t).setWhyItsAProblem("A commands class failed to load").setLevel(WarningReport.Level.warn).report();
 			}

@@ -176,8 +176,6 @@ allprojects {
             compileOnly ("com.github.Anuken.Mindustry:core:$mindustryVersion"){
                 because("provided")
             }
-            implementation group: 'com.beust', name: 'jcommander', version: '1.81'
-
             compileOnly( group: 'org.jetbrains', name: 'annotations', version: '20.1.0'){
                 because("compile")
             }

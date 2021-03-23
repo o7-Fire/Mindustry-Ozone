@@ -23,15 +23,13 @@ import Ozone.Gen.Callable;
 import Ozone.Internal.InformationCenter;
 import Ozone.Patch.Translation;
 import arc.scene.style.TextureRegionDrawable;
-import com.beust.jcommander.Parameter;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.gen.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-
-public abstract class CommandsClass implements Cloneable {
+public abstract class CommandsClass<A extends CommandsArgument> {
 	@NotNull
 	public Player player = Vars.player;
 	@NotNull
@@ -40,30 +38,43 @@ public abstract class CommandsClass implements Cloneable {
 	public String description = "none", name = this.getClass().getSimpleName();//CommandsClass
 	@NotNull
 	public TextureRegionDrawable icon = Icon.box;
-	@Parameter
-	public ArrayList<String> parameters = new ArrayList<>();
-	public boolean supportNoArg = false,//Support no user input if there is none
-			taskBound = false,//using task as mean to achieve objective
-			supportNetwork = false,//support called from network diagram payload
-			supportDirectInvoke = false;//support direct invoke without need to create new CommandsClass();
+	public A argument;
+	public boolean taskBound = false,//using task as mean to achieve objective
+			supportNetwork = false;//support called from network diagram payload
+	
 	
 	public CommandsClass() {
 	
+	}
+	
+	public void playerCallDefault() {
+		player = Vars.player;
+		callable = InformationCenter.getCallableMain();
 	}
 	
 	public static void addTask(Task t) {
 		TaskInterface.addTask(t);//bro wtf
 	}
 	
-	abstract void run() throws Exception;
+	public void run(A argument) {
+		try {
+			this.argument = argument;
+			run();
+		}catch (VirtualMachineError v) {
+			throw new RuntimeException(v);
+		}catch (Throwable t) {
+			Vars.ui.showException(t);
+		}
+	}
+	
+	public abstract void run() throws Exception;
 	
 	public String nameTranslated() {
 		return Translation.get(name);
 	}
 	
-	public void runDirect(ArrayList<String> s) {
-	
-	}
+	@Nullable
+	public abstract A getArgumentClass();
 	
 	public static void tellUser(String s) {
 		CommandsCenter.tellUser(s);

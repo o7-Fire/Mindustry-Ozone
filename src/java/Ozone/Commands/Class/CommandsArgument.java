@@ -16,30 +16,15 @@
 
 package Ozone.Commands.Class;
 
-import mindustry.gen.Icon;
-import org.jetbrains.annotations.Nullable;
+import Ozone.Patch.Translation;
 
-public class PowerNode extends CommandsClass {
+import java.io.Serializable;
+import java.util.HashMap;
 
-	public boolean all = false;
+public abstract class CommandsArgument implements Serializable {
+	protected final HashMap<String, String> description = new HashMap<>();
 	
-	public boolean disconnect = false;
-	
-	public boolean connect = false;
-	
-	public PowerNode() {
-		description = "Manage Power nodes";
-		icon = Icon.power;
-	}
-	
-	@Override
-	public void run() throws Exception {
-	
-	}
-	
-	@Nullable
-	@Override
-	public CommandsArgument getArgumentClass() {
-		return null;
+	public String getTranslate(String key) {
+		return Translation.get(description.get(key));
 	}
 }

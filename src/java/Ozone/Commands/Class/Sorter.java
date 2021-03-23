@@ -21,30 +21,29 @@ import Ozone.Commands.CommandsCenter;
 import Ozone.Commands.Task.Completable;
 import Ozone.Internal.Interface;
 import arc.util.Log;
-import com.beust.jcommander.Parameter;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
 import mindustry.type.Item;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class Sorter extends CommandsClass {
-	@Parameter(names = "-shuffle", description = "shuffle sorter")
-	public boolean shuffle = false;
-	//@Parameter(names = "-all", description = "all sorter")
-	//public boolean all = false;
+
+public class Sorter extends CommandsClass<Sorter.SorterArgument> {
+	
 	
 	public Sorter() {
 		icon = Icon.rotate;
 		description = "Manage Sorter";
 		supportNetwork = true;
+		taskBound = true;
 	}
 	
 	@Override
-	void run() throws Exception {
-		if (shuffle) {
+	public void run() throws Exception {
+		if (argument.shuffle) {
 			addTask(new Completable() {
 				final Future<Building> f;
 				
@@ -75,6 +74,12 @@ public class Sorter extends CommandsClass {
 		}
 	}
 	
+	@Override
+	@Nullable
+	public Sorter.SorterArgument getArgumentClass() {
+		return new SorterArgument();
+	}
+	
 	public void shuffleSorterCall(Building t) {
 		if (t == null || t.tile == null) {
 			tellUser("block can't be find");
@@ -85,4 +90,11 @@ public class Sorter extends CommandsClass {
 		callable.tileConfig(null, t.tile.build, target);
 	}
 	
+	public static class SorterArgument extends CommandsArgument {
+		public boolean shuffle = false;
+		
+		{
+			description.put("shuffle", "shuffle sorter");
+		}
+	}
 }

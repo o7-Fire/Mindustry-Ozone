@@ -37,6 +37,7 @@ import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
+import Shared.SharedBoot;
 import arc.Core;
 import arc.Events;
 import arc.func.Cons;
@@ -89,12 +90,21 @@ public class Interface implements Module {
 		});
 	}
 	
-	public static void showInput(String about, Cons<String> s) {
-		String key = Reflect.getCallerClassStackTrace().toString();
-		Vars.ui.showTextInput(about, about, 1000, Core.settings.getString(key, ""), se -> {
+	
+	public static void showInput(String key, String title, String about, Cons<String> s) {
+		Vars.ui.showTextInput(title, about, 1000, Core.settings.getString(key, ""), se -> {
 			Core.settings.put(key, se);
 			s.get(se);
 		});
+	}
+	
+	public static void showInput(String about, Cons<String> s) {
+		showInput(Reflect.getCallerClassStackTrace().toString(), about, s);
+		
+	}
+	
+	public static void showInput(String key, String about, Cons<String> s) {
+		showInput(key, about, about, s);
 	}
 	
 	public static Drawable getDrawableSized(String path, Drawable def) {
@@ -190,7 +200,8 @@ public class Interface implements Module {
 		if (Core.bundle.getOrNull(key) != null) return Core.bundle.get(key);
 		try {
 			Class s = Interface.class.getClassLoader().loadClass(key);
-			registerWords(s.getName(), s.getSimpleName());
+			if (SharedBoot.hardDebug) registerWords(s.getName(), s.getCanonicalName());
+			else registerWords(s.getName(), s.getSimpleName());
 			return bundle.get(key);
 		}catch (Throwable ignored) {}
 		if (!key.contains(".")) {
