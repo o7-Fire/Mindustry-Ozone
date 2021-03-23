@@ -1,7 +1,7 @@
 import org.reflections.Configuration
 import org.reflections.Reflections
 import org.reflections.serializers.JsonSerializer
-
+import org.reflections.util.ConfigurationBuilder
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 buildscript {
