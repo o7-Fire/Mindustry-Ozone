@@ -40,7 +40,7 @@ import mindustry.world.Tile;
 
 import java.util.*;
 
-public class TilesOverlay implements Module {
+public class TilesOverlay extends AbstractModule {
 	public final static ArrayList<TilesOverlay> overlays = new ArrayList<>();
 	public static float size = 2f;
 	public static float f = 2;

@@ -17,8 +17,9 @@
 package Ozone.Patch;
 
 import Ozone.Event.EventExtended;
+import Ozone.Internal.AbstractModule;
 import Ozone.Internal.InformationCenter;
-import Ozone.Internal.Module;
+import Ozone.Internal.ModuleInterfaced;
 import Ozone.Manifest;
 import Shared.SharedBoot;
 import arc.Core;
@@ -36,12 +37,12 @@ import java.util.Map;
 import static Ozone.Commands.CommandsCenter.garbageCollector;
 
 //no shit not that hooker rent
-public class EventHooker implements Module {
+public class EventHooker extends AbstractModule {
 	public static ArrayList<Runnable> drawc = new ArrayList<>();
 	
 	
 	public static void resets() {
-		for (Map.Entry<Class<? extends Module>, Module> m : Manifest.module.entrySet()) {
+		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> m : Manifest.module.entrySet()) {
 			try {
 				m.getValue().reset();
 			}catch (Throwable throwable) {
@@ -69,7 +70,7 @@ public class EventHooker implements Module {
 			Manifest.invokeAllModule(m -> m.onTileConfig(s.player, s.tile, s.value));
 		});
 		Events.run(EventType.Trigger.update, () -> {
-			Manifest.invokeAllModule(Module::update);
+			Manifest.invokeAllModule(ModuleInterfaced::update);
 		});
 		Events.on(EventType.ClientLoadEvent.class, s -> {
 			arc.Core.settings.getBoolOnce("OzoneDisclaimer", () -> {
@@ -94,11 +95,11 @@ public class EventHooker implements Module {
 		Events.run(EventExtended.Game.Start, () -> {
 			Log.debug("Server: " + InformationCenter.getCurrentServerIP() + ":" + InformationCenter.getCurrentServerPort());
 			resets();
-			Manifest.invokeAllModule(Module::onWorldLoad);
+			Manifest.invokeAllModule(ModuleInterfaced::onWorldLoad);
 		});
 		Events.run(EventExtended.Game.Stop, () -> {
 			resets();
-			Manifest.invokeAllModule(Module::onWoldUnload);
+			Manifest.invokeAllModule(ModuleInterfaced::onWoldUnload);
 		});
 		Events.run(EventExtended.Connect.Disconnected, () -> {
 		

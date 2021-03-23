@@ -18,15 +18,15 @@ package Ozone.Watcher;
 
 import Atom.Reflect.FieldTool;
 import Ozone.Commands.Pathfinding;
+import Ozone.Internal.AbstractModule;
 import Ozone.Internal.Interface;
-import Ozone.Internal.Module;
 import Ozone.Settings.BaseSettings;
 import arc.Core;
 import arc.input.KeyCode;
 import mindustry.Vars;
 import mindustry.world.Tile;
 
-public class BlockTracker implements Module {
+public class BlockTracker extends AbstractModule {
 	private static Tile target = null;
 	
 	public static void stub() {

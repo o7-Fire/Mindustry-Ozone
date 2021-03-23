@@ -19,13 +19,13 @@ package Ozone.Patch;
 import Atom.Reflect.Reflect;
 import Atom.Utility.Random;
 import Ozone.Commands.CommandsCenter;
+import Ozone.Internal.AbstractModule;
 import Ozone.Internal.Interface;
-import Ozone.Internal.Module;
+import Ozone.Internal.ModuleInterfaced;
 import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
 import arc.struct.ObjectMap;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,8 +33,8 @@ import java.util.Map;
 
 import static Ozone.Internal.Interface.registerWords;
 
-//TODO decentralize translation
-public class Translation implements Module {
+//TODO decentralize text id translation
+public class Translation extends AbstractModule {
 	public static final ArrayList<String> normalSinglet = new ArrayList<>(Arrays.asList("Run"));
 	public static final ArrayList<String> singlet1 = new ArrayList<>(Arrays.asList("String", "Integer", "Float", "Long", "Boolean", "Commands", "Settings"));
 	public static final HashMap<String, String> generalSettings = new HashMap<>();
@@ -117,11 +117,8 @@ public class Translation implements Module {
 		
 	}
 	
-	@Override
-	public void init() throws Throwable {
-		register();
-		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
-			registerWords(s.getValue().getName());
+	{
+		dependsOn.addAll(Reflect.getExtendedClass("Ozone", Translation.class));
 	}
 	
 	public static String add(String text) {
@@ -135,11 +132,10 @@ public class Translation implements Module {
 	}
 	
 	@Override
-	public ArrayList<Class<? extends Module>> dependOnModule() throws IOException {
-		ArrayList<Class<? extends Module>> arr = new ArrayList<>();
-		try {
-			arr.addAll(Reflect.getExtendedClass("Ozone", Translation.class));
-		}catch (Throwable ignored) {}
-		return arr;
+	public void init() throws Throwable {
+		register();
+		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> s : Manifest.module.entrySet())
+			registerWords(s.getValue().getName());
 	}
+	
 }

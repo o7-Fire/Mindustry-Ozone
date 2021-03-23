@@ -83,6 +83,9 @@ public class OzoneMods extends Mod {
 		Log.err(t);
 		Throwable finalT = t;
 		Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showException(finalT));
+		if (t instanceof RuntimeException) {
+			throw (RuntimeException) t;//epic
+		}
 		throw new RuntimeException(t);
 	}
 	

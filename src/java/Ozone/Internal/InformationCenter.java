@@ -51,7 +51,7 @@ import java.util.HashSet;
 public class InformationCenter {
 	public static String currentServerIP = "";
 	public static int currentServerPort = 0;
-	protected static ArrayList<String> moduleRegistered = new ArrayList<>(), moduleLoaded = new ArrayList<>(), modulePost = new ArrayList<>();
+	public static Callable callable;
 	private static ArrayList<String> clientSendPackets = new ArrayList<>();
 	private static HashSet<Integer> commonPacketClientReceive = new HashSet<>(), commonPacketClientSend = new HashSet<>();
 	
@@ -69,7 +69,7 @@ public class InformationCenter {
 		
 	}
 	
-	protected static Callable callable;
+	protected static HashSet<String> moduleRegistered = new HashSet<>(), moduleLoaded = new HashSet<>(), modulePost = new HashSet<>();
 	
 	public static Callable getCallableMain() {
 		if (callable == null) callable = new Callable(Vars.net);

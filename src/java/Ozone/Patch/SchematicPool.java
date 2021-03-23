@@ -19,7 +19,7 @@ package Ozone.Patch;
 import Atom.Utility.Cache;
 import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
-import Ozone.Internal.Module;
+import Ozone.Internal.AbstractModule;
 import Ozone.Internal.Repo;
 import Ozone.Internal.RepoCached;
 import Ozone.Manifest;
@@ -34,10 +34,9 @@ import mindustry.game.Schematics;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.Future;
 
-public class SchematicPool implements Module {
+public class SchematicPool extends AbstractModule {
 	
 	@Override
 	public void loadAsync() {
@@ -90,10 +89,8 @@ public class SchematicPool implements Module {
 		}
 	}
 	
-	
-	@Override
-	public ArrayList<Class<? extends Module>> dependOnModule() {
-		return new ArrayList<>(Arrays.asList(RepoCached.class));
+	{
+		dependsOn.add(RepoCached.class);
 	}
 	
 	public void init() {

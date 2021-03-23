@@ -31,8 +31,8 @@
 
 package Ozone.Bot;
 
+import Ozone.Internal.AbstractModule;
 import Ozone.Internal.Interface;
-import Ozone.Internal.Module;
 import arc.Events;
 import mindustry.game.EventType;
 
@@ -40,7 +40,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class VirtualController implements Module {
+public class VirtualController extends AbstractModule {
 	public static Set<VirtualPlayer> virtualPlayers = Collections.synchronizedSet(new HashSet<>());
 	
 	public static void create() {

@@ -17,7 +17,8 @@
 package Ozone.UI;
 
 import Atom.Reflect.FieldTool;
-import Ozone.Internal.Module;
+import Ozone.Internal.AbstractModule;
+import Ozone.Internal.ModuleInterfaced;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
 import mindustry.gen.Icon;
@@ -32,10 +33,10 @@ public class ModuleFrag extends ScrollableDialog {
 	}
 	
 	protected void setup() {
-		TreeMap<String, Module> t = new TreeMap<>();
-		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
+		TreeMap<String, ModuleInterfaced> t = new TreeMap<>();
+		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> s : Manifest.module.entrySet())
 			t.put(s.getValue().getName(), s.getValue());
-		for (Map.Entry<String, Module> s : t.entrySet())
+		for (Map.Entry<String, ModuleInterfaced> s : t.entrySet())
 			ad(s.getValue());
 	}
 	
@@ -43,11 +44,11 @@ public class ModuleFrag extends ScrollableDialog {
 		table.button("----", () -> {}).growX();
 	}
 	
-	void ad(Module s) {
+	void ad(AbstractModule s) {
 		table.button(Translation.get(s.getName()), () -> {}).growX().tooltip(FieldTool.getFieldDetails(s));
 		try {
-			for (Class<? extends Module> m : s.dependClean()) {
-				Module mod = Manifest.module.get(m);
+			for (Class<? extends ModuleInterfaced> m : s.dependOnModule()) {
+				ModuleInterfaced mod = Manifest.module.get(m);
 				table.button(Translation.get(mod.getName()), () -> {}).growX().tooltip(FieldTool.getFieldDetails(mod)).disabled(true);
 			}
 		}catch (IOException e) {

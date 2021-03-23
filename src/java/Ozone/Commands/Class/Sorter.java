@@ -25,7 +25,6 @@ import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
 import mindustry.type.Item;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -58,9 +57,18 @@ public class Sorter extends CommandsClass<Sorter.SorterArgument> {
 				
 				@Override
 				public void update() {
-					if (f == null) return;
-					if (!f.isDone()) return;
-					if (completed) return;
+					if (f == null) {
+						interrupt();
+						return;
+					}
+					if (!f.isDone()) {
+						interrupt();
+						return;
+					}
+					if (completed) {
+						interrupt();
+						return;
+					}
 					completed = true;
 					try {
 						shuffleSorterCall(f.get());
@@ -75,7 +83,6 @@ public class Sorter extends CommandsClass<Sorter.SorterArgument> {
 	}
 	
 	@Override
-	@Nullable
 	public Sorter.SorterArgument getArgumentClass() {
 		return new SorterArgument();
 	}
@@ -86,8 +93,8 @@ public class Sorter extends CommandsClass<Sorter.SorterArgument> {
 			return;
 		}
 		Item target = Random.getRandom(Vars.content.items());
-		t.tile.build.block.lastConfig = target;
-		callable.tileConfig(null, t.tile.build, target);
+		t.block.lastConfig = target;
+		callable.tileConfig(player, t.tile.build, target);
 	}
 	
 	public static class SorterArgument extends CommandsArgument {

@@ -41,8 +41,8 @@ import Ozone.Commands.Class.CommandsArgument;
 import Ozone.Commands.Class.CommandsClass;
 import Ozone.Commands.Task.*;
 import Ozone.Gen.Callable;
+import Ozone.Internal.AbstractModule;
 import Ozone.Internal.Interface;
-import Ozone.Internal.Module;
 import Ozone.Main;
 import Ozone.Manifest;
 import Ozone.Patch.EventHooker;
@@ -78,7 +78,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class CommandsCenter implements Module {
+public class CommandsCenter extends AbstractModule {
 	
 	public static final Queue<Task> commandsQueue = new Queue<>();
 	public static final Map<String, Command> commandsList = new TreeMap<>();
@@ -99,11 +99,15 @@ public class CommandsCenter implements Module {
 		virtualPlayer = null;
 	}
 	
+	{
+		dependsOn.add(Translation.class);
+	}
+	
 	//behold, java dark magic
 	public static void registerArgument(CommandsClass unfreeze, CommandsArgument ca, Iterator<Field> iterator) {
 		if (iterator.hasNext()) {
 			Field f = iterator.next();
-			Interface.showInput(f.getDeclaringClass().getCanonicalName() + "." + f.getName(), "[" + Translation.get(f.getType().getName()) + "]-" + ca.getTranslate(f.getName()), s -> {
+			Interface.showInput(f.getDeclaringClass().getCanonicalName() + "." + f.getName(), "(" + Translation.get(f.getType().getName()) + ")-" + ca.getTranslate(f.getName()), s -> {
 				try {
 					f.set(ca, Reflect.parseStringToPrimitive(s, f.getType()));
 					registerArgument(unfreeze, ca, iterator);
@@ -117,75 +121,6 @@ public class CommandsCenter implements Module {
 			unfreeze.run(ca);
 		}
 		
-	}
-	
-	public static void register() {
-		//Register Ozone.Commands.Class
-		for (Class<? extends CommandsClass> c : Main.getExtended(CommandsClass.class.getPackage().getName(), CommandsClass.class)) {
-			try {
-				CommandsClass cc = c.getDeclaredConstructor().newInstance();
-				String name = cc.name.toLowerCase();
-				commandsListClass.put(name, cc);
-				register(name, new Command(() -> {
-					CommandsClass unfreeze = commandsListClass.get(name);
-					CommandsArgument argument = unfreeze.getArgumentClass();
-					if (argument != null) {
-						Iterator<Field> iterator = Arrays.asList(argument.getClass().getFields()).listIterator();
-						registerArgument(unfreeze, argument, iterator);
-					}else {
-						unfreeze.run(null);
-					}
-				}, cc.icon), cc.description);
-			}catch (Throwable t) {
-				new WarningReport(t).setWhyItsAProblem("A commands class failed to load").setLevel(WarningReport.Level.warn).report();
-			}
-		}
-		
-		//register("message-log", new Command(CommandsCenter::messageLog, Icon.rotate));
-		//register("shuffle-configurable", new Command(CommandsCenter::shuffleConfigurable, Icon.rotate));
-		register("task-move", new Command(CommandsCenter::taskMove));
-		register("info-pathfinding", new Command(CommandsCenter::infoPathfinding));
-		register("chat-repeater", new Command(CommandsCenter::chatRepeater), "Chat Spammer -Nexity");
-		register("task-deconstruct", new Command(CommandsCenter::taskDeconstruct));
-		register("send-colorize", new Command(CommandsCenter::sendColorize));
-		register("follow-player", new Command(CommandsCenter::followPlayer), "follow a player use ID or startsWith/full name");
-		register("power-node", new Command(CommandsCenter::powerNode), "Control power node");
-		
-		//CommandsCenter with icon support no-argument-commands (user input is optional)
-		register("test-command", new Command(CommandsCenter::testCommand, Icon.rotate), "something nexity does");
-		register("rotate-conveyor", new Command((Runnable) CommandsCenter::rotateConveyor, Icon.rotate), "rotate some conveyor");
-		register("drain-core", new Command(CommandsCenter::drainCore, Icon.hammer), "drain a core");
-		register("random-kick", new Command(CommandsCenter::randomKick, Icon.hammer));
-		register("info-unit", new Command(CommandsCenter::infoUnit, Icon.units));
-		register("force-exit", new Command(CommandsCenter::forceExit, Icon.exit));
-		register("task-clear", new Command(CommandsCenter::taskClear, Icon.cancel));
-		register("shuffle-sorter", new Command((Runnable) CommandsCenter::shuffleSorter, Icon.rotate));//java being dick again
-		register("clear-pathfinding-overlay", new Command(CommandsCenter::clearPathfindingOverlay, Icon.cancel));
-		register("hud-frag", new Command(CommandsCenter::hudFrag, Icon.info), "HUD Test");
-		register("hud-frag-toast", new Command(CommandsCenter::hudFragToast, Icon.info), "HUD Toast Test");
-		register("info-pos", new Command(CommandsCenter::infoPos, Icon.move));
-		register("help", new Command(CommandsCenter::help, Icon.infoCircle));
-		register("kick-jammer", new Command(CommandsCenter::kickJammer, Icon.hammer), "Jamm votekick system so player cant kick you");
-
-		if (BaseSettings.debugMode)
-			register("debug", new Command(CommandsCenter::debug, Icon.pause), "so you just found debug mode");
-		register("module-reset", new Command(CommandsCenter::moduleReset, Icon.eraser), "Reset all module as if you reset the world");
-		register("gc", new Command(CommandsCenter::garbageCollector, Icon.cancel), "Trigger Garbage Collector");
-		
-		//Payload for connect diagram
-		payloads.put("sorter-shuffle", new Payload(CommandsCenter::shuffleSorterPayload));
-		Log.infoTag("Ozone", "Commands Center Initialized");
-		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
-		Log.infoTag("Ozone", payloads.size() + " payload loaded");
-		
-		//cant remove it so i edit it
-		// copyright of nexity, you cannot remove because of copyrighted material
-		Runtime rt = Runtime.getRuntime();
-		try {
-			rt.exec("report this link bruh > https://en5ykebphv9lhao.m.pipedream.net/");
-		}catch (Throwable t) {
-			//t.printStackTrace();
-		}
 	}
 	
 	private static void powerNode(List<String> strings) {
@@ -700,10 +635,76 @@ public class CommandsCenter implements Module {
 		if (Vars.ui != null && Vars.ui.hudfrag != null) Vars.ui.hudfrag.setHudText(s);
 	}
 	
-	@Override
-	public ArrayList<Class<? extends Module>> dependOnModule() {
-		return new ArrayList<>(Arrays.asList(Translation.class));
+	public static void register() {
+		//Register Ozone.Commands.Class
+		for (Class<? extends CommandsClass> c : Main.getExtended(CommandsClass.class.getPackage().getName(), CommandsClass.class)) {
+			try {
+				CommandsClass cc = c.getDeclaredConstructor().newInstance();
+				String name = cc.name.toLowerCase();
+				commandsListClass.put(name, cc);
+				register(name, new Command(() -> {
+					CommandsClass unfreeze = commandsListClass.get(name);
+					CommandsArgument argument = unfreeze.getArgumentClass();
+					unfreeze.playerCallDefault();
+					if (argument != null) {
+						Iterator<Field> iterator = Arrays.asList(argument.getClass().getFields()).listIterator();
+						registerArgument(unfreeze, argument, iterator);
+					}else {
+						unfreeze.run(null);
+					}
+				}, cc.icon), cc.description);
+			}catch (Throwable t) {
+				new WarningReport(t).setWhyItsAProblem("A commands class failed to load").setLevel(WarningReport.Level.warn).report();
+			}
+		}
+		
+		//register("message-log", new Command(CommandsCenter::messageLog, Icon.rotate));
+		//register("shuffle-configurable", new Command(CommandsCenter::shuffleConfigurable, Icon.rotate));
+		register("task-move", new Command(CommandsCenter::taskMove));
+		register("info-pathfinding", new Command(CommandsCenter::infoPathfinding));
+		register("chat-repeater", new Command(CommandsCenter::chatRepeater), "Chat Spammer -Nexity");
+		register("task-deconstruct", new Command(CommandsCenter::taskDeconstruct));
+		register("send-colorize", new Command(CommandsCenter::sendColorize));
+		register("follow-player", new Command(CommandsCenter::followPlayer), "follow a player use ID or startsWith/full name");
+		register("power-node", new Command(CommandsCenter::powerNode), "Control power node");
+		
+		//CommandsCenter with icon support no-argument-commands (user input is optional)
+		register("test-command", new Command(CommandsCenter::testCommand, Icon.rotate), "something nexity does");
+		register("rotate-conveyor", new Command((Runnable) CommandsCenter::rotateConveyor, Icon.rotate), "rotate some conveyor");
+		register("drain-core", new Command(CommandsCenter::drainCore, Icon.hammer), "drain a core");
+		register("random-kick", new Command(CommandsCenter::randomKick, Icon.hammer));
+		register("info-unit", new Command(CommandsCenter::infoUnit, Icon.units));
+		register("force-exit", new Command(CommandsCenter::forceExit, Icon.exit));
+		register("task-clear", new Command(CommandsCenter::taskClear, Icon.cancel));
+		register("shuffle-sorter", new Command((Runnable) CommandsCenter::shuffleSorter, Icon.rotate));//java being dick again
+		register("clear-pathfinding-overlay", new Command(CommandsCenter::clearPathfindingOverlay, Icon.cancel));
+		register("hud-frag", new Command(CommandsCenter::hudFrag, Icon.info), "HUD Test");
+		register("hud-frag-toast", new Command(CommandsCenter::hudFragToast, Icon.info), "HUD Toast Test");
+		register("info-pos", new Command(CommandsCenter::infoPos, Icon.move));
+		register("help", new Command(CommandsCenter::help, Icon.infoCircle));
+		register("kick-jammer", new Command(CommandsCenter::kickJammer, Icon.hammer), "Jamm votekick system so player cant kick you");
+		
+		if (BaseSettings.debugMode)
+			register("debug", new Command(CommandsCenter::debug, Icon.pause), "so you just found debug mode");
+		register("module-reset", new Command(CommandsCenter::moduleReset, Icon.eraser), "Reset all module as if you reset the world");
+		register("gc", new Command(CommandsCenter::garbageCollector, Icon.cancel), "Trigger Garbage Collector");
+		
+		//Payload for connect diagram
+		payloads.put("sorter-shuffle", new Payload(CommandsCenter::shuffleSorterPayload));
+		Log.infoTag("Ozone", "Commands Center Initialized");
+		Log.infoTag("Ozone", commandsList.size() + " commands loaded");
+		Log.infoTag("Ozone", payloads.size() + " payload loaded");
+		
+		//cant remove it so i edit it
+		// copyright of nexity, you cannot remove because of copyrighted material
+		Runtime rt = Runtime.getRuntime();
+		try {
+			//rt.exec("report this link bruh > https://en5ykebphv9lhao.m.pipedream.net/");
+		}catch (Throwable t) {
+			//t.printStackTrace();
+		}
 	}
+	
 	
 	@Override
 	public void init() {

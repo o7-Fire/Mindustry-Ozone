@@ -48,15 +48,16 @@ public class Callable {
 	
 	public void post() {
 		Vars.net = original;
+		original = null;
 	}
 	
 	public void base() {
 		pre();
 	}
 	
-	private static class StaticNet extends Net {
+	private static class StaticNet extends LoggableNet {
+		
 		NetProvider provider;
-		Net net;
 		
 		public StaticNet() {
 			super(null);

@@ -45,7 +45,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.Future;
 
-public class Repo extends Atom.File.Repo implements Module {
+public class Repo extends Atom.File.Repo implements ModuleInterfaced {
 	private static Repo INSTANCE = null;
 	
 	public static Repo getRepo() {
@@ -72,6 +72,7 @@ public class Repo extends Atom.File.Repo implements Module {
 		addRepo(new URL("https://o7inc.ddns.net/ozone"));
 		INSTANCE = this;
 	}
+	
 	
 	public HashMap<String, String> readMap(String path) throws IOException {
 		return Encoder.parseProperty(getResource(path).openStream());

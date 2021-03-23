@@ -63,7 +63,7 @@ public class DesktopBootstrap {
 	
 	private static void moduleCheck(String name) {
 		if (loadedList.contains(name))
-			throw new RuntimeException(new IllegalStateException("Module: " + name + " already loaded"));
+			throw new RuntimeException(new IllegalStateException("AbstractModule: " + name + " already loaded"));
 		loadedList.add(name);
 	}
 	

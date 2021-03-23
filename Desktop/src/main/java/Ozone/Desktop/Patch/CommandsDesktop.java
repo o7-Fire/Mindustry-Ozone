@@ -20,19 +20,21 @@ import Atom.Struct.Stream;
 import Atom.Utility.Pool;
 import Atom.Utility.Utility;
 import Ozone.Commands.CommandsCenter;
-import Ozone.Internal.Module;
+import Ozone.Internal.AbstractModule;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.world.Tile;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static Ozone.Commands.CommandsCenter.*;
 
-public class CommandsDesktop implements Module {
-
+public class CommandsDesktop extends AbstractModule {
+	
+	{
+		dependsOn.add(CommandsCenter.class);
+	}
 	
 	public void init() {
 		register("javac", new Command(CommandsDesktop::javac));
@@ -73,10 +75,6 @@ public class CommandsDesktop implements Module {
 		
 	}
 	
-	@Override
-	public List<Class<? extends Module>> dependOnModule() {
-		return Arrays.asList(CommandsCenter.class);
-	}
 	
 	
 }

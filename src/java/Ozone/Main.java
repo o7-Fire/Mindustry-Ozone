@@ -19,7 +19,8 @@ package Ozone;
 import Atom.Reflect.Reflect;
 import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
-import Ozone.Internal.Module;
+import Ozone.Internal.AbstractModule;
+import Ozone.Internal.ModuleInterfaced;
 import Shared.SharedBoot;
 import Shared.WarningHandler;
 import Shared.WarningReport;
@@ -35,14 +36,10 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.function.Consumer;
 
 public class Main {
-	
-	
 	private static boolean init = false;
-	static int iteration = 0;
-	public static Consumer<String> update = null;//to update on renderer
+	private static int iteration = 0;
 	
 	public static void loadContent() {
 	
@@ -51,12 +48,6 @@ public class Main {
 	
 	
 	public static void update(String s) {
-		if (update != null) {
-			try {
-				//update.accept(s);
-			}catch (Throwable t) {}
-		}
-		
 		Log.debug(s);
 	}
 	
@@ -86,15 +77,15 @@ public class Main {
 		}
 	}
 	
-	public static Collection<Class<? extends Module>> getModule() {
-		return getExtended(Main.class.getPackage().getName(), Module.class);
+	public static Collection<Class<? extends ModuleInterfaced>> getModule() {
+		return getExtended(Main.class.getPackage().getName(), ModuleInterfaced.class);
 	}
 	
 	public static void earlyInit() {
 		Log.infoTag("Ozone", "Hail o7");
 		Log.debug("Registering module\n");
 		register();
-		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
+		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> s : Manifest.module.entrySet()) {
 			try {
 				update("Early Init: " + s.getValue().getName());
 				s.getValue().earlyInit();
@@ -108,7 +99,7 @@ public class Main {
 	}
 	
 	public static void preInit() {
-		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
+		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> s : Manifest.module.entrySet()) {
 			try {
 				update("Pre Init: " + s.getValue().getName());
 				s.getValue().preInit();
@@ -122,10 +113,11 @@ public class Main {
 	}
 	
 	public static void register() {
-		for (Class<? extends Module> m : getModule()) {
+		for (Class<? extends ModuleInterfaced> m : getModule()) {
 			try {
+				if (m == AbstractModule.class) continue;
 				update("Registering: " + m.getName());
-				Module mod = m.getDeclaredConstructor().newInstance();
+				ModuleInterfaced mod = m.getDeclaredConstructor().newInstance();
 				mod.setRegister();
 				Manifest.module.put(m, mod);
 			}catch (Throwable e) {
@@ -147,7 +139,7 @@ public class Main {
 		update("Initialized " + Manifest.module.size() + " module in " + iteration + " iteration");
 		update("Posting module \n");
 		Events.on(EventType.ClientLoadEvent.class, gay -> {
-			for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
+			for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> s : Manifest.module.entrySet())
 				if (!s.getValue().posted()) {
 					try {
 						update("Posting " + s.getValue().getName());
@@ -163,7 +155,7 @@ public class Main {
 				}
 		});
 		update("Post completed");
-		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
+		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> s : Manifest.module.entrySet()) {
 			Future f = Pool.submit(() -> {
 				try {
 					s.getValue().loadAsync();
@@ -179,17 +171,34 @@ public class Main {
 		
 	}
 	
+	private static boolean loadModule(ModuleInterfaced module) throws Throwable {
+		boolean dep = module.canLoadWithDep();
+		if (dep) for (Class<? extends ModuleInterfaced> cc : module.dependOnModule()) {
+			ModuleInterfaced m = Manifest.getModule(cc);
+			if (m == null) throw new NullPointerException("Cant find: " + cc.getCanonicalName() + " on module");
+			if (m.loaded()) continue;
+			if (!loadModule(m)) throw new RuntimeException("Failed to load: " + m.getName());
+		}
+		if (module.canLoad() || dep) {
+			update("Initializing " + module.getName());
+			module.init();
+			module.setLoaded();
+			return true;
+		}
+		return false;
+	}
+	
 	private static void loadModule() throws IOException {
 		iteration++;
 		boolean loadAnything = false;
 		Throwable cause = null;
-		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet()) {
-			if (s.getValue().canLoad()) {
+		
+		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> s : Manifest.module.entrySet()) {
+			boolean dep = s.getValue().canLoadWithDep();
+			if (s.getValue().canLoad() || dep) {
+				ModuleInterfaced module = s.getValue();
 				try {
-					update("Initializing " + s.getValue().getName());
-					s.getValue().init();
-					s.getValue().setLoaded();
-					loadAnything = true;
+					loadAnything = loadModule(module);
 				}catch (Throwable t) {
 					cause = t;
 					if (SharedBoot.debug) t.printStackTrace();
@@ -200,7 +209,7 @@ public class Main {
 		}
 		
 		if (!loadAnything) throw new RuntimeException("Recursion/Deadlock/Bug !!!", cause);
-		for (Map.Entry<Class<? extends Module>, Module> s : Manifest.module.entrySet())
+		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> s : Manifest.module.entrySet())
 			if (!s.getValue().loaded()) loadModule();
 	}
 	

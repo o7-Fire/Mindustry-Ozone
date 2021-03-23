@@ -21,9 +21,9 @@ import Atom.Utility.Digest;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Experimental.Evasion.Identification;
+import Ozone.Internal.AbstractModule;
 import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Interface;
-import Ozone.Internal.Module;
 import Ozone.Manifest;
 import Ozone.UI.*;
 import Shared.SharedBoot;
@@ -45,13 +45,74 @@ import mindustry.ui.Styles;
 import mindustry.ui.fragments.MenuFragment;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static mindustry.Vars.ui;
 
-public class UIPatch implements Module {
+public class UIPatch extends AbstractModule {
 	public static Dialog.DialogStyle ozoneStyle;
+	
+	{
+		dependsOn.add(Translation.class);
+		dependsOn.add(VarsPatch.class);
+	}
+	
+	private void onResize() {
+		if (VarsPatch.menu != null) {
+			if (Vars.testMobile) try {
+				Reflect.getMethod(MenuFragment.class, "buildMobile", ui.menufrag).invoke(ui.menufrag);
+			}catch (Throwable ignored) {}
+			if (Vars.mobile || Vars.testMobile) {
+				if (Core.graphics.isPortrait()) VarsPatch.menu.row();
+				VarsPatch.menu.add(new MobileButton(Icon.info, Translation.get("Ozone"), () -> Manifest.modsMenu.show()));
+			}else {
+				if (!SharedBoot.isCore()) {
+					VarsPatch.menu.button(Translation.get("Update"), Icon.refresh, Updater::showUpdateDialog).growX().update(t -> {
+						if (Updater.releaseMap != null)
+							t.setText("Update" + Utility.repeatThisString("!", Random.getInt(5)));
+					}).bottom();
+				}
+				VarsPatch.menu.button(Translation.get("Ozone"), Icon.file, Manifest.modsMenu::show).growX().bottom();
+			}
+		}
+	}
+	
+	void h(Table gameTable) {
+		for (Field f : Manifest.getSettings()) {
+			String name = f.getDeclaringClass().getName() + "." + f.getName();
+			gameTable.left();
+			try {
+				f.setAccessible(true);
+				Class<?> type = f.getType();
+				if (type.equals(boolean.class)) {
+					gameTable.check(Translation.get(name), (Boolean) f.get(null), b -> {
+						try {
+							f.set(null, b);
+						}catch (IllegalAccessException e) {
+							throw new RuntimeException(e);
+						}
+					}).left();
+					gameTable.row();
+					continue;
+				}
+				gameTable.label(() -> Translation.get(name) + ": ").left().growX().row();
+				gameTable.field(f.get(null).toString(), s -> {
+					try {
+						Object o = Reflect.parseStringToPrimitive(s, f.getType());
+						if (o != null) f.set(null, o);
+					}catch (NumberFormatException t) {
+						Vars.ui.showException("Failed to parse", t);//100% user fault
+					}catch (Throwable t) {
+						Vars.ui.showException(t);
+						Sentry.captureException(t);
+					}
+				}).growX().left().row();
+			}catch (Throwable t) {
+				Sentry.captureException(t);
+				Log.err(t);
+				Log.err("Failed to load settings");
+			}
+		}
+	}
 	
 	@Override
 	public void init() throws Throwable {
@@ -71,13 +132,13 @@ public class UIPatch implements Module {
 		Manifest.worldInformation = new WorldInformation();
 		Manifest.playSettings = new OzonePlaySettings();
 		Manifest.menu = new OzoneMenu(Translation.get("ozone.hud"), ozoneStyle);
-		Manifest.moduleFrag = new ModuleFrag();
 		Manifest.envInf = new EnvironmentInformation();
 		Manifest.logView = new LogView();
 		Manifest.uiDebug = new UILayout();
 		Manifest.experiment = new ExperimentDialog();
 		ModsMenu.add(new VirtualControllerDialog());
 		if (SharedBoot.debug) {
+			ModsMenu.add(new ModuleFrag());
 			ModsMenu.add(new CommandsListDebug());
 		}
 		Manifest.modsMenu = new ModsMenu();
@@ -140,66 +201,4 @@ public class UIPatch implements Module {
 		onResize();
 	}
 	
-	private void onResize() {
-		if (VarsPatch.menu != null) {
-			if (Vars.testMobile) try {
-				Reflect.getMethod(MenuFragment.class, "buildMobile", ui.menufrag).invoke(ui.menufrag);
-			}catch (Throwable ignored) {}
-			if (Vars.mobile || Vars.testMobile) {
-				if (Core.graphics.isPortrait()) VarsPatch.menu.row();
-				VarsPatch.menu.add(new MobileButton(Icon.info, Translation.get("Ozone"), () -> Manifest.modsMenu.show()));
-			}else {
-				if (!SharedBoot.isCore()) {
-					VarsPatch.menu.button(Translation.get("Update"), Icon.refresh, Updater::showUpdateDialog).growX().update(t -> {
-						if (Updater.releaseMap != null)
-							t.setText("Update" + Utility.repeatThisString("!", Random.getInt(5)));
-					}).bottom();
-				}
-				VarsPatch.menu.button(Translation.get("Ozone"), Icon.file, Manifest.modsMenu::show).growX().bottom();
-			}
-		}
-	}
-	
-	void h(Table gameTable) {
-		for (Field f : Manifest.getSettings()) {
-			String name = f.getDeclaringClass().getName() + "." + f.getName();
-			gameTable.left();
-			try {
-				f.setAccessible(true);
-				Class<?> type = f.getType();
-				if (type.equals(boolean.class)) {
-					gameTable.check(Translation.get(name), (Boolean) f.get(null), b -> {
-						try {
-							f.set(null, b);
-						}catch (IllegalAccessException e) {
-							throw new RuntimeException(e);
-						}
-					}).left();
-					gameTable.row();
-					continue;
-				}
-				gameTable.label(() -> Translation.get(name) + ": ").left().growX().row();
-				gameTable.field(f.get(null).toString(), s -> {
-					try {
-						Object o = Reflect.parseStringToPrimitive(s, f.getType());
-						if (o != null) f.set(null, o);
-					}catch (NumberFormatException t) {
-						Vars.ui.showException("Failed to parse", t);//100% user fault
-					}catch (Throwable t) {
-						Vars.ui.showException(t);
-						Sentry.captureException(t);
-					}
-				}).growX().left().row();
-			}catch (Throwable t) {
-				Sentry.captureException(t);
-				Log.err(t);
-				Log.err("Failed to load settings");
-			}
-		}
-	}
-	
-	@Override
-	public ArrayList<Class<? extends Module>> dependOnModule() {
-		return new ArrayList<>(Arrays.asList(Translation.class, VarsPatch.class));
-	}
 }

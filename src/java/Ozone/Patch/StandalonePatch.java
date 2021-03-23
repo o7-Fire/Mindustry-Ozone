@@ -16,11 +16,11 @@
 
 package Ozone.Patch;
 
-import Ozone.Internal.Module;
+import Ozone.Internal.AbstractModule;
 import Shared.SharedBoot;
 import arc.util.Log;
 
-public class StandalonePatch implements Module {
+public class StandalonePatch extends AbstractModule {
 	
 	@Override
 	public void init() throws Throwable {

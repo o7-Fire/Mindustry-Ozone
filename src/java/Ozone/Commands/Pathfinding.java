@@ -34,7 +34,7 @@ package Ozone.Commands;
 import Atom.Utility.Meth;
 import Atom.Utility.Random;
 import Ozone.Commands.Task.Move;
-import Ozone.Internal.Module;
+import Ozone.Internal.AbstractModule;
 import Ozone.Patch.Hack;
 import arc.Events;
 import arc.graphics.Color;
@@ -57,7 +57,7 @@ import mindustry.world.Tile;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-public class Pathfinding implements Module {
+public class Pathfinding extends AbstractModule {
 	//TODO don't be stupid
 	public static ArrayList<PathfindingOverlay> render = new ArrayList<>();
 	

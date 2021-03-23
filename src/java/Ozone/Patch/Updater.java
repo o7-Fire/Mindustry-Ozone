@@ -20,9 +20,9 @@ import Atom.Net.Request;
 import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
 import Atom.Utility.Utility;
+import Ozone.Internal.AbstractModule;
 import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Interface;
-import Ozone.Internal.Module;
 import Ozone.Propertied;
 import Shared.SharedBoot;
 import Shared.WarningReport;
@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static mindustry.Vars.ui;
 
-public class Updater implements Module {
+public class Updater extends AbstractModule {
 	
 	public final static AtomicBoolean newRelease = new AtomicBoolean(false);
 	private static volatile boolean init;

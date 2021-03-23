@@ -74,7 +74,7 @@ import static Ozone.Patch.Translation.getRandomHexColor;
 import static mindustry.Vars.player;
 import static mindustry.Vars.ui;
 
-public class Interface implements Module {
+public class Interface extends AbstractModule {
 	public static final ObjectMap<String, String> bundle = new ObjectMap<>();
 	public static Map<Integer, ArrayList<Building>> buildingCache = Collections.synchronizedMap(new WeakHashMap<>());
 	private static long lastToast = 0;

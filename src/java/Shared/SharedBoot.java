@@ -55,7 +55,7 @@ public class SharedBoot {
 	
 	public static void finishStartup() {
 		timeFinish = SharedBoot.timeStart.elapsed();
-		new WarningReport().setProblem("Startup in " + timeFinish.convert(TimeUnit.MICROSECONDS).toString()).setWhyItsAProblem("Successfully startup without crash").setLevel(WarningReport.Level.info).report();
+		new WarningReport().setProblem("Startup in " + timeFinish.convert(TimeUnit.MILLISECONDS).toString()).setWhyItsAProblem("Successfully startup without crash").setLevel(WarningReport.Level.info).report();
 		
 	}
 	

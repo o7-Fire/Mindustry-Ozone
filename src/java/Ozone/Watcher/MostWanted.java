@@ -18,9 +18,10 @@ package Ozone.Watcher;
 
 import Atom.Reflect.FieldTool;
 import Atom.Utility.Random;
+import Ozone.Internal.AbstractModule;
 import Ozone.Internal.InformationCenter;
-import Ozone.Internal.Module;
 import Ozone.Internal.Repo;
+import Shared.SharedBoot;
 import Shared.WarningReport;
 import arc.Core;
 import arc.util.Strings;
@@ -36,7 +37,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class MostWanted implements Module {
+public class MostWanted extends AbstractModule {
 	public static final ArrayList<String> mostWanted = new ArrayList<>();
 	public static final HashSet<Integer> reported = new HashSet<>();
 	public static StringDistance provider = new Sift4();
@@ -51,8 +52,8 @@ public class MostWanted implements Module {
 					mostWanted.add(s.toUpperCase());
 			});
 			
-			
-			new WarningReport().setProblem("Loaded: " + ss.size() + " most wanted player").setWhyItsAProblem("Top most wanted criminals").setLevel(WarningReport.Level.info).report();
+			if (SharedBoot.debug)
+				new WarningReport().setProblem("Loaded: " + ss.size() + " most wanted player").setWhyItsAProblem("Top most wanted criminals").setLevel(WarningReport.Level.info).report();
 		}catch (IOException e) {
 		
 		}

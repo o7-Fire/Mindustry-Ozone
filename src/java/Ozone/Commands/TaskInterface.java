@@ -32,7 +32,7 @@
 package Ozone.Commands;
 
 import Ozone.Commands.Task.Task;
-import Ozone.Internal.Module;
+import Ozone.Internal.AbstractModule;
 import Shared.SharedBoot;
 import arc.math.geom.Position;
 import arc.math.geom.Vec2;
@@ -47,7 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class TaskInterface implements Module {
+public class TaskInterface extends AbstractModule {
 	public static final HashMap<Integer, Queue<Task>> taskQueue = new HashMap<>();
 	
 	

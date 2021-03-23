@@ -19,7 +19,7 @@ package Ozone.Settings;
 import Atom.Reflect.Reflect;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
-import Ozone.Internal.Module;
+import Ozone.Internal.AbstractModule;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
 import arc.Events;
@@ -27,14 +27,12 @@ import arc.util.Log;
 import io.sentry.Sentry;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import static Ozone.Settings.SettingsManifest.saveMap;
 import static Ozone.Settings.SettingsManifest.settingsFile;
 
-public class BaseSettings implements Module {
+public class BaseSettings extends AbstractModule {
 	
 	public static boolean colorPatch = false, debugMode = false, logicCodeScanner = false;
 	public static boolean worldLog = false, blockDebug = false, commandsToast = true;
@@ -74,16 +72,10 @@ public class BaseSettings implements Module {
 		});
 	}
 	
-	@Override
-	public List<Class<? extends Module>> dependOnModule() throws IOException {
-		ArrayList<Class<? extends Module>> arrayList = new ArrayList<>();
-		
-		try {
-			arrayList.addAll(Reflect.getExtendedClass("Ozone", BaseSettings.class));
-		}catch (Throwable ignored) {}
-		return arrayList;
-		
+	{
+		dependsOn.addAll(Reflect.getExtendedClass("Ozone", BaseSettings.class));
 	}
+	
 	
 	public static void save() {
 		try {

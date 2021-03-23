@@ -68,7 +68,6 @@ public class ModsMenu extends ScrollableDialog {
 	
 	void generic() {
 		ad(Manifest.envInf);
-		ad(Manifest.moduleFrag);
 		ad(Manifest.uiDebug);
 		ad(Manifest.experiment);
 		ad(Manifest.logView);

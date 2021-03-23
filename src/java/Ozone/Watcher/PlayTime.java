@@ -20,8 +20,8 @@ import Atom.Utility.Pool;
 import Ozone.Commands.Pathfinding;
 import Ozone.Commands.Task.Task;
 import Ozone.Commands.TaskInterface;
+import Ozone.Internal.AbstractModule;
 import Ozone.Internal.Interface;
-import Ozone.Internal.Module;
 import Ozone.Internal.TilesOverlay;
 import Ozone.UI.OzonePlaySettings;
 import arc.Core;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 //TODO figure out what todo
-public class PlayTime implements Module {
+public class PlayTime extends AbstractModule {
 	public static ArrayList<Tile> markedTiles = new ArrayList<>();
 	public static boolean markTile;
 	private static TilesOverlay tilesOverlay = new TilesOverlay(markedTiles);

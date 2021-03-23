@@ -19,8 +19,8 @@ package Ozone.Watcher;
 import Atom.Reflect.UnThread;
 import Atom.Utility.Digest;
 import Atom.Utility.Pool;
+import Ozone.Internal.AbstractModule;
 import Ozone.Internal.Interface;
-import Ozone.Internal.Module;
 import Ozone.Internal.Repo;
 import Ozone.Settings.BaseSettings;
 import mindustry.Vars;
@@ -30,7 +30,7 @@ import mindustry.world.blocks.logic.LogicBlock;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class LogicCodeEScanner implements Module {
+public class LogicCodeEScanner extends AbstractModule {
 	public static LogicCodeEScanner INSTANCE;
 	protected Thread daemon = null;
 	public static HashMap<String, String> database = new HashMap<>();

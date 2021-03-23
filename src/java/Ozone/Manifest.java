@@ -18,7 +18,7 @@ package Ozone;
 
 import Atom.Struct.UnstableConsumer;
 import Ozone.Internal.Interface;
-import Ozone.Internal.Module;
+import Ozone.Internal.ModuleInterfaced;
 import Ozone.Settings.SettingsManifest;
 import Ozone.UI.*;
 import Shared.OzoneMods;
@@ -54,15 +54,14 @@ public class Manifest {
 	public static EnvironmentInformation envInf;
 	public static LogView logView;
 	
-	public static ModuleFrag moduleFrag;
 	public static ArrayList<Class<?>> settings = new ArrayList<>();//for GUI purpose
 	
 	public static int currentPort = Vars.port;
 	public static OzoneMods ozone;
-	public static final HashMap<Class<? extends Module>, Module> module = new HashMap<>();
+	public static final HashMap<Class<? extends ModuleInterfaced>, ModuleInterfaced> module = new HashMap<>();
 	
-	public static void invokeAllModule(UnstableConsumer<Module> me) {
-		for (Map.Entry<Class<? extends Module>, Module> m : Manifest.module.entrySet()) {
+	public static void invokeAllModule(UnstableConsumer<ModuleInterfaced> me) {
+		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> m : Manifest.module.entrySet()) {
 			try {
 				me.accept(m.getValue());
 			}catch (Throwable throwable) {
@@ -72,7 +71,7 @@ public class Manifest {
 		}
 	}
 	
-	public static <T extends Module> T getModule(Class<? extends Module> clazz) {
+	public static <T extends ModuleInterfaced> T getModule(Class<? extends ModuleInterfaced> clazz) {
 		try {
 			return (T) module.get(clazz);
 		}catch (Throwable ignored) {}

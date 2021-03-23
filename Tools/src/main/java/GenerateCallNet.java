@@ -41,7 +41,7 @@ public class GenerateCallNet {
 	
 	public static void main(String[] args) throws Throwable {
 		DownloadPatch.repo.addRepo(new URL("https://jitpack.io/com/github/Anuken/Mindustry/core/" + Propertied.getMindustryVersion() + "/core-" + Propertied.getMindustryVersion() + "-sources.jar"));
-		File b = new File("src/main/java/");
+		File b = new File("src/java/");
 		File target = new File(b, "Ozone/Net/Callable.java");
 		File gen = new File(b, "Ozone/Gen/Callable.java");
 		CompilationUnit base = StaticJavaParser.parse(target), callCU = StaticJavaParser.parse(Encoder.readString(DownloadPatch.repo.getResourceAsStream(Call.class.getName().replace('.', '/') + ".java")));

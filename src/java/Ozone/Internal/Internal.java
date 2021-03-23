@@ -30,7 +30,7 @@
 
 package Ozone.Internal;
 
-public class Internal implements Module {
+public class Internal extends AbstractModule {
 	@Override
 	public String getName() {
 		return "Ozone-Internal";

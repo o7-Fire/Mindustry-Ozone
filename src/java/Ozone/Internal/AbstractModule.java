@@ -30,44 +30,7 @@
 
 package Ozone.Internal;
 
-import Atom.Utility.Random;
-import arc.Events;
-import arc.graphics.Color;
-import arc.graphics.g2d.Lines;
-import arc.math.geom.Vec2;
-import mindustry.game.EventType;
+public abstract class AbstractModule implements ModuleInterfaced {
+	
 
-import java.util.ArrayList;
-
-public class Overlay extends AbstractModule {
-	public static ArrayList<Overlay> overlay = new ArrayList<>();
-	private static float f = 2f;
-	public Color color = Color.valueOf(Random.getRandomHexColor());
-	protected ArrayList<Vec2> overlayCoordinate = new ArrayList<>();
-	
-	public Overlay() {}
-	
-	public Overlay(ArrayList<Vec2> vec2s) {
-		overlayCoordinate.addAll(vec2s);
-		
-	}
-	
-	public void reset() {
-		overlay.clear();
-	}
-	
-	public void init() {
-		Events.run(EventType.Trigger.draw, Overlay::draw);
-	}
-	
-	private static void draw() {
-		if (overlay.isEmpty()) return;
-		for (Overlay ov : overlay) {
-			for (Vec2 v : ov.overlayCoordinate) {
-				
-				Lines.stroke(f, ov.color);
-				Lines.line(v.x, v.y, v.x + f, v.y + f);
-			}
-		}
-	}
 }

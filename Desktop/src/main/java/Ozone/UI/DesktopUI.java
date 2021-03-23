@@ -20,18 +20,16 @@ import Ozone.Desktop.Bootstrap.Dependency;
 import Ozone.Desktop.Bootstrap.OzoneLoader;
 import Ozone.Desktop.UI.BotControllerDialog;
 import Ozone.Desktop.UI.DebugMenuDialog;
-import Ozone.Internal.Module;
+import Ozone.Internal.AbstractModule;
+import Ozone.Patch.UIPatch;
 import Shared.SharedBoot;
 import mindustry.core.Version;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 
 import static Ozone.Desktop.Manifest.*;
 
-public class DesktopUI implements Module {
+public class DesktopUI extends AbstractModule {
 	@Override
 	public void init() throws Throwable {
 		if (SharedBoot.test) return;
@@ -47,10 +45,8 @@ public class DesktopUI implements Module {
 		dep();
 	}
 	
-	
-	@Override
-	public List<Class<? extends Module>> dependOnModule() throws IOException {
-		return Arrays.asList(Ozone.Patch.UIPatch.class);
+	static {
+		dependsOn.add(UIPatch.class);
 	}
 	
 	void dep() {

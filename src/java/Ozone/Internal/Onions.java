@@ -32,12 +32,9 @@
 package Ozone.Internal;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
-public class Onions implements Module {
+public class Onions extends AbstractModule {
 	public static HashMap<String, String> map = null;
 	
 	@Override
@@ -50,8 +47,9 @@ public class Onions implements Module {
 		}
 	}
 	
-	@Override
-	public List<Class<? extends Module>> dependOnModule() throws IOException {
-		return new ArrayList<>(Arrays.asList(Repo.class));
+	static {
+		dependsOn.add(RepoCached.class);
+		
 	}
+	
 }

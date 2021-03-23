@@ -18,7 +18,9 @@ package Ozone.Patch;
 
 import Atom.Reflect.FieldTool;
 import Atom.Reflect.Reflect;
-import Ozone.Internal.Module;
+import Ozone.Gen.Callable;
+import Ozone.Internal.AbstractModule;
+import Ozone.Internal.InformationCenter;
 import Ozone.Internal.RepoCached;
 import Ozone.Patch.Mindustry.DesktopInputPatched;
 import Ozone.Patch.Mindustry.MobileInputPatched;
@@ -38,10 +40,8 @@ import mindustry.input.MobileInput;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-public class VarsPatch implements Module {
+public class VarsPatch extends AbstractModule {
 	public static Table menu;
 	
 	@Override
@@ -67,6 +67,15 @@ public class VarsPatch implements Module {
 		}catch (Throwable t) {
 			new WarningReport().setProblem("Failed to patch final field LoadRenderer : " + t.getMessage()).setWhyItsAProblem("No loading screen color hack").setHowToFix("try use java 8").setLevel(WarningReport.Level.warn).report();
 		}
+	}
+	
+	{
+		dependsOn.add(RepoCached.class);
+	}
+	
+	@Override
+	public void postInit() throws Throwable {
+	
 	}
 	
 	@Override
@@ -96,19 +105,13 @@ public class VarsPatch implements Module {
 		try {
 			menu = Reflect.getField(Vars.ui.menufrag.getClass(), "container", Vars.ui.menufrag);
 		}catch (Throwable ignored) {}
-		if (Vars.net != null) Vars.net = new NetPatched(Vars.net);
+		if (Vars.net != null) {
+			Vars.net = new NetPatched(Vars.net);
+			InformationCenter.callable = new Callable(Vars.net);
+		}
 		Log.infoTag("Ozone", "Patching Complete");
 		
 		
 	}
 	
-	@Override
-	public void postInit() throws Throwable {
-	
-	}
-	
-	@Override
-	public ArrayList<Class<? extends Module>> dependOnModule() {
-		return new ArrayList<>(Arrays.asList(RepoCached.class));
-	}
 }

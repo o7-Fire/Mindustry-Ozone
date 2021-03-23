@@ -29,7 +29,7 @@ public class TranslationDesktop extends Translation {
 	public static void register() {
 		deskUI.put("EnvironmentInformation", "Environment Information");
 		deskUI.put("DebugMenuDialog", "Debug Menu");
-		deskUI.put("ModuleFrag", "Module List");
+		deskUI.put("ModuleFrag", "AbstractModule List");
 		commands.put("javac", "run single line of java code");
 		commands.put("library", "manage runtime library");
 		commands.put("debug", TranslationDesktop.class.getClassLoader().toString());

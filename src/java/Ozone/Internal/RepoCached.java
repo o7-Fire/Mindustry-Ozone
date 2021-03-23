@@ -37,12 +37,9 @@ import arc.graphics.Pixmap;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
-public class RepoCached extends Repo implements Module {
+public class RepoCached extends Repo {
     public static HashMap<String, Pixmap> pixmapCache = new HashMap<>();
     
     public URL getResource(String s) {
@@ -59,11 +56,6 @@ public class RepoCached extends Repo implements Module {
         Repo rc = Manifest.getModule(Repo.class);
         assert rc != null;
         repos.addAll(rc.getRepos());
-    }
-    
-    @Override
-    public List<Class<? extends Module>> dependOnModule() throws IOException {
-        return new ArrayList<>(Arrays.asList(Repo.class));
     }
     
     @Override
