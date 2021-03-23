@@ -51,7 +51,7 @@ public class Main {
 		Log.debug(s);
 	}
 	
-	public static <T> Collection<Class<? extends T>> getExtended(String packag, Class<T> type) {
+	public static <T> Collection<Class<? extends T>> getExtendedClass(String packag, Class<T> type) {
 		Collection<Class<? extends T>> raw = null;
 		try {
 			if (SharedBoot.hardDebug) throw new RuntimeException("eat pant");
@@ -78,7 +78,7 @@ public class Main {
 	}
 	
 	public static Collection<Class<? extends ModuleInterfaced>> getModule() {
-		return getExtended(Main.class.getPackage().getName(), ModuleInterfaced.class);
+		return getExtendedClass(Main.class.getPackage().getName(), ModuleInterfaced.class);
 	}
 	
 	public static void earlyInit() {

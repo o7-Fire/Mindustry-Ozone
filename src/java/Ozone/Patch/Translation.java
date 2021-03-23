@@ -22,6 +22,7 @@ import Ozone.Commands.CommandsCenter;
 import Ozone.Internal.AbstractModule;
 import Ozone.Internal.Interface;
 import Ozone.Internal.ModuleInterfaced;
+import Ozone.Main;
 import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
 import arc.struct.ObjectMap;
@@ -118,7 +119,7 @@ public class Translation extends AbstractModule {
 	}
 	
 	{
-		dependsOn.addAll(Reflect.getExtendedClass("Ozone", Translation.class));
+		dependsOn.addAll(Main.getExtendedClass("Ozone", Translation.class));
 	}
 	
 	public static String add(String text) {

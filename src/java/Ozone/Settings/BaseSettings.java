@@ -16,10 +16,10 @@
 
 package Ozone.Settings;
 
-import Atom.Reflect.Reflect;
 import Ozone.Event.EventExtended;
 import Ozone.Event.Internal;
 import Ozone.Internal.AbstractModule;
+import Ozone.Main;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
 import arc.Events;
@@ -73,7 +73,7 @@ public class BaseSettings extends AbstractModule {
 	}
 	
 	{
-		dependsOn.addAll(Reflect.getExtendedClass("Ozone", BaseSettings.class));
+		dependsOn.addAll(Main.getExtendedClass("Ozone", BaseSettings.class));
 	}
 	
 	

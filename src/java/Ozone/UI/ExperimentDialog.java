@@ -31,7 +31,7 @@ public class ExperimentDialog extends ScrollableDialog {
 	@Override
 	protected void setup() {
 		try {
-			for (Class<? extends Experimental> c : Main.getExtended("Ozone", Experimental.class)) {
+			for (Class<? extends Experimental> c : Main.getExtendedClass("Ozone", Experimental.class)) {
 				table.button(c.getSimpleName(), () -> {
 					try {
 						c.getDeclaredConstructor().newInstance().run();

@@ -637,7 +637,7 @@ public class CommandsCenter extends AbstractModule {
 	
 	public static void register() {
 		//Register Ozone.Commands.Class
-		for (Class<? extends CommandsClass> c : Main.getExtended(CommandsClass.class.getPackage().getName(), CommandsClass.class)) {
+		for (Class<? extends CommandsClass> c : Main.getExtendedClass(CommandsClass.class.getPackage().getName(), CommandsClass.class)) {
 			try {
 				CommandsClass cc = c.getDeclaredConstructor().newInstance();
 				String name = cc.name.toLowerCase();
