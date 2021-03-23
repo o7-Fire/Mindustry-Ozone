@@ -1,5 +1,31 @@
+import org.reflections.Configuration
+import org.reflections.Reflections
+import org.reflections.serializers.JsonSerializer
+
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url 'https://jitpack.io' }
+        jcenter()
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies{
+        classpath "com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"
+        classpath 'org.reflections:reflections:0.9.12'
+        classpath group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'java-library'
 sourceCompatibility = "11"
@@ -87,6 +113,27 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
+    doLast{
+        def collection = configurations.runtimeClasspath + configurations.compileClasspath +  new File(rootDir, "build/classes/java/main").toURI().toURL()
+        URL[] urls = collection.collect {
+            println "Collecting classes using Reflections from " + it
+            it.toURI().toURL()
+        }
+
+
+        // collect all classes
+        ClassLoader classLoader = new URLClassLoader(urls, ClassLoader.systemClassLoader)
+        Configuration config = ConfigurationBuilder.build()
+                .addClassLoader(classLoader)
+                .setUrls(urls)
+        Reflections reflections = new Reflections(config)
+
+        def resDir = new File(rootDir, "/src/main/resources/")
+        // save as JSON file into the assets folder
+        // (a) generate file for current debug or release build
+        println(reflections.save(new File(resDir,"reflections/Ozone-Desktop-reflections.json").getAbsolutePath(),
+                new JsonSerializer()).getAbsolutePath())
+    }
 }
 
 

@@ -1,6 +1,8 @@
 if(!(JavaVersion.current().ordinal() < JavaVersion.VERSION_11.ordinal())){
     include 'Desktop'
 
+}else{
+    throw new RuntimeException("Use java 11> retard")
 }
 if(!(JavaVersion.current().ordinal() < JavaVersion.VERSION_14.ordinal())) {
     include 'Tools'

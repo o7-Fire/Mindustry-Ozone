@@ -54,24 +54,24 @@ public class Main {
 	public static <T> Collection<Class<? extends T>> getExtended(String packag, Class<T> type) {
 		Collection<Class<? extends T>> raw = null;
 		try {
-			raw = Reflect.getExtendedClass(packag, type, Main.class.getClassLoader());
-		}catch (Throwable e) {
-			if (!Atom.Manifest.internalRepo.resourceExists("reflections/core-reflections.json"))
-				throw new RuntimeException(e);
-			else {
-				try {
-					InputStream is = Atom.Manifest.internalRepo.getResourceAsStream("reflections/core-reflections.json");
-					raw = Reflect.getExtendedClassFromJson(Encoder.readString(is), type);
-				}catch (Throwable t) {
-					throw new RuntimeException(t);
-				}
+			if (SharedBoot.hardDebug) throw new RuntimeException("eat pant");
+			String reflect = "reflections/" + SharedBoot.type + "-reflections.json";
+			if (Atom.Manifest.internalRepo.resourceExists(reflect)) {
+				InputStream is = Atom.Manifest.internalRepo.getResourceAsStream(reflect);
+				raw = Reflect.getExtendedClassFromJson(Encoder.readString(is), type);
 			}
+		}catch (VirtualMachineError e) {
+			throw new RuntimeException("Eat shit", e);
+		}catch (Throwable e) {
+			raw = Reflect.getExtendedClass(packag, type, Main.class.getClassLoader());
 		}
 		try {
 			ArrayList<Class<? extends T>> real = new ArrayList<>();
 			for (Class<? extends T> c : raw)
 				real.add((Class<? extends T>) Main.class.getClassLoader().loadClass(c.getName()));
 			return real;
+		}catch (VirtualMachineError e) {
+			throw new RuntimeException("Eat shit", e);
 		}catch (Throwable t) {
 			throw new RuntimeException(t);
 		}

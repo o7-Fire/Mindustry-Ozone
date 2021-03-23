@@ -151,3 +151,4 @@ out/production/resources/
 OzoneSettings.properties
 Manifest/out/production/resources/Manifest.properties
 /src/resources/reflections/core-reflections.json
+Desktop/src/main/resources/reflections
