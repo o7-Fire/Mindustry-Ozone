@@ -20,13 +20,13 @@ import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Ozone.Manifest;
 import Ozone.Settings.BaseSettings;
+import Shared.WarningHandler;
 import arc.Core;
 import arc.graphics.Color;
 import arc.scene.style.Drawable;
 import arc.scene.ui.Label;
 import arc.scene.ui.ScrollPane;
 import arc.scene.ui.layout.Table;
-import io.sentry.Sentry;
 import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
 
@@ -81,7 +81,7 @@ public abstract class ScrollableDialog extends OzoneDialog {
 			throw new RuntimeException(v);
 		}catch (Throwable t) {
 			table.add(t.toString()).growX().growY().color(Color.red);
-			Sentry.captureException(t);
+			WarningHandler.handleMindustry(t);
 		}
 		for (Runnable r : onInit)
 			r.run();
@@ -120,9 +120,8 @@ public abstract class ScrollableDialog extends OzoneDialog {
 		Pool.submit(() -> {
 			try {
 				ad(Object, callable.call());
-			}catch (Throwable e) {
-				e.printStackTrace();
-				Sentry.captureException(e);
+			}catch (Throwable t) {
+				WarningHandler.handleProgrammerFault(t);
 			}
 		});
 	}

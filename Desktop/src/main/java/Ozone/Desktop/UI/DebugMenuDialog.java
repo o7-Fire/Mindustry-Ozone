@@ -19,7 +19,7 @@ package Ozone.Desktop.UI;
 import Atom.Utility.Pool;
 import Ozone.Test.Test;
 import Ozone.UI.OzoneBaseDialog;
-import io.sentry.Sentry;
+import Shared.WarningHandler;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 
@@ -89,9 +89,7 @@ public class DebugMenuDialog extends Ozone.UI.OzoneBaseDialog {
 			try {
 				test = h.getDeclaredConstructor().newInstance();
 			}catch (Throwable te) {
-				t = te;
-				t.printStackTrace();
-				Sentry.captureException(te);
+				WarningHandler.handleMindustry(te);
 			}
 			setup();
 		}
@@ -114,8 +112,7 @@ public class DebugMenuDialog extends Ozone.UI.OzoneBaseDialog {
 							showResult(results);
 						}catch (Throwable throwable) {
 							Vars.ui.loadfrag.hide();
-							Sentry.captureException(throwable);
-							throwable.printStackTrace();
+							WarningHandler.handleMindustry(throwable);
 							Vars.ui.showException(throwable);
 						}
 					});

@@ -18,8 +18,7 @@ package Ozone.UI;
 
 import Ozone.Experimental.Experimental;
 import Ozone.Main;
-import arc.util.Log;
-import io.sentry.Sentry;
+import Shared.WarningHandler;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 
@@ -37,8 +36,7 @@ public class ExperimentDialog extends ScrollableDialog {
 						c.getDeclaredConstructor().newInstance().run();
 					}catch (Throwable t) {
 						Vars.ui.showException(t);
-						Log.err(t);
-						Sentry.captureException(t);
+						WarningHandler.handleMindustry(t);
 					}
 				}).growX().row();
 				

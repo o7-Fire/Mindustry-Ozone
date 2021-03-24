@@ -82,7 +82,7 @@ public class OzoneLoader extends URLClassLoader {
 					if (url.getProtocol().startsWith("http") && url.getFile().endsWith(".jar")) try {
 						return (cache(url));
 					}catch (Throwable e) {
-						Sentry.captureException(e);
+						WarningHandler.handleProgrammerFault(e);
 					}
 					return (url);
 				}).get());
@@ -103,7 +103,7 @@ public class OzoneLoader extends URLClassLoader {
 				if (u.getProtocol().startsWith("http") && u.getFile().endsWith(".jar")) try {
 					return (cache(u));
 				}catch (Throwable e) {
-					Sentry.captureException(e);
+					WarningHandler.handleProgrammerFault(e);
 				}
 				return (u);
 			}));
@@ -133,8 +133,8 @@ public class OzoneLoader extends URLClassLoader {
 					});
 					d.run();
 				}catch (Throwable et) {
-					Sentry.captureException(et.initCause(t));
-					et.printStackTrace();
+					et.initCause(t);
+					WarningHandler.handleProgrammerFault(et);
 				}
 			}
 		}
@@ -142,7 +142,7 @@ public class OzoneLoader extends URLClassLoader {
 			try {
 				url = temp.toURI().toURL();
 			}catch (MalformedURLException e) {
-				Sentry.captureException(e);
+				WarningHandler.handleProgrammerFault(e);
 			}
 		}
 		return url;

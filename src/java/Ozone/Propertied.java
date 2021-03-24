@@ -20,7 +20,6 @@ import Atom.Utility.Encoder;
 import Shared.WarningHandler;
 import Shared.WarningReport;
 import arc.util.Log;
-import io.sentry.Sentry;
 import mindustry.core.Version;
 
 import java.io.IOException;
@@ -56,7 +55,7 @@ public class Propertied {
 		}catch (Throwable g) {
 			temp = new HashMap<>();
 			try { Log.err(g); }catch (Throwable ignored) {}
-			Sentry.captureException(g);
+			WarningHandler.handleMindustry(g);
 		}
 		return temp;
 	}

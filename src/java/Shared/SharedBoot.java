@@ -115,8 +115,7 @@ public class SharedBoot {
 			for (Map.Entry<String, String> e : Propertied.Manifest.entrySet())
 				scope.setTag(e.getKey(), e.getValue());
 		}catch (Throwable t) {
-			t.printStackTrace();
-			Sentry.captureException(t);
+			WarningHandler.handleProgrammerFault(t);
 		}
 	}
 }

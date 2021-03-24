@@ -22,10 +22,10 @@ import Ozone.Internal.InformationCenter;
 import Ozone.Internal.ModuleInterfaced;
 import Ozone.Manifest;
 import Shared.SharedBoot;
+import Shared.WarningHandler;
 import arc.Core;
 import arc.Events;
 import arc.util.Log;
-import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.game.EventType;
@@ -45,10 +45,9 @@ public class EventHooker extends AbstractModule {
 		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> m : Manifest.module.entrySet()) {
 			try {
 				m.getValue().reset();
-			}catch (Throwable throwable) {
-				Log.err(throwable);
-				Sentry.captureException(throwable);
-				Vars.ui.showException(throwable);
+			}catch (Throwable t) {
+				WarningHandler.handleMindustry(t);
+				Vars.ui.showException(t);
 			}
 		}
 		garbageCollector();

@@ -4,6 +4,7 @@ import Atom.Reflect.FieldTool;
 import Ozone.Commands.CommandsCenter;
 import Ozone.Internal.Interface;
 import Ozone.UI.ScrollableDialog;
+import Shared.WarningHandler;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
@@ -20,7 +21,6 @@ import arc.util.Interval;
 import arc.util.Scaling;
 import arc.util.Strings;
 import arc.util.Structs;
-import io.sentry.Sentry;
 import mindustry.gen.*;
 import mindustry.graphics.Pal;
 import mindustry.net.NetConnection;
@@ -257,14 +257,12 @@ public class PlayerListFragment extends Fragment {
 							try {
 								f.setBoolean(null, s);
 							}catch (IllegalAccessException e) {
-								e.printStackTrace();
-								Sentry.captureException(e);
+								WarningHandler.handleMindustry(e);
 							}
 						});
 						f.setBoolean(null, Core.settings.getBool(f.getName(), f.getBoolean(null)));
 					}catch (IllegalAccessException e) {
-						e.printStackTrace();
-						Sentry.captureException(e);
+						WarningHandler.handleMindustry(e);
 					}
 				}
 			cont.add(table);

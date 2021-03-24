@@ -22,9 +22,9 @@ import Ozone.Internal.AbstractModule;
 import Ozone.Main;
 import Ozone.Manifest;
 import Ozone.Patch.Translation;
+import Shared.WarningHandler;
 import arc.Events;
 import arc.util.Log;
-import io.sentry.Sentry;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,9 +41,8 @@ public class BaseSettings extends AbstractModule {
 	static {
 		try {
 			SettingsManifest.readSettings(BaseSettings.class);
-		}catch (Throwable et) {
-			Sentry.captureException(et);
-			Log.err(et);
+		}catch (Throwable t) {
+			WarningHandler.handleMindustry(t);
 		}
 		HashMap<String, String> t = new HashMap<>();
 		t.put("colorPatch", "Enable Colorized Text");

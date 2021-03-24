@@ -22,14 +22,13 @@ import Ozone.Internal.ModuleInterfaced;
 import Ozone.Settings.SettingsManifest;
 import Ozone.UI.*;
 import Shared.OzoneMods;
+import Shared.WarningHandler;
 import arc.Core;
 import arc.Events;
 import arc.math.Interp;
 import arc.scene.actions.Actions;
 import arc.scene.event.Touchable;
 import arc.scene.ui.layout.Table;
-import arc.util.Log;
-import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.ui.Styles;
@@ -64,9 +63,8 @@ public class Manifest {
 		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> m : Manifest.module.entrySet()) {
 			try {
 				me.accept(m.getValue());
-			}catch (Throwable throwable) {
-				Log.err(throwable);
-				Sentry.captureException(throwable);
+			}catch (Throwable t) {
+				WarningHandler.handleMindustry(t);
 			}
 		}
 	}
@@ -84,16 +82,14 @@ public class Manifest {
 			try {
 				c.getDeclaredMethod("save").invoke(null);
 			}catch (Throwable t) {
-				t.printStackTrace();
-				Sentry.captureException(t);
+				WarningHandler.handleMindustry(t);
 			}
 		}
 		try {
 			SettingsManifest.saveMap();
 			Interface.toast("Saved");
 		}catch (Throwable e) {
-			e.printStackTrace();
-			Sentry.captureException(e);
+			WarningHandler.handleMindustry(e);
 			Vars.ui.showException(e);
 		}
 	}

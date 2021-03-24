@@ -18,7 +18,6 @@ package Ozone.UI;
 
 import Ozone.Desktop.Bootstrap.Dependency;
 import Ozone.Desktop.Bootstrap.OzoneLoader;
-import Ozone.Desktop.UI.BotControllerDialog;
 import Ozone.Desktop.UI.DebugMenuDialog;
 import Ozone.Internal.AbstractModule;
 import Ozone.Patch.UIPatch;
@@ -27,15 +26,14 @@ import mindustry.core.Version;
 
 import java.net.URL;
 
-import static Ozone.Desktop.Manifest.*;
+import static Ozone.Desktop.Manifest.dbgMenu;
+import static Ozone.Desktop.Manifest.envInf;
 
 public class DesktopUI extends AbstractModule {
 	@Override
 	public void init() throws Throwable {
 		if (SharedBoot.test) return;
-		botControllerDialog = new BotControllerDialog();
 		dbgMenu = new DebugMenuDialog();
-		ModsMenu.add(botControllerDialog);
 		ModsMenu.add(dbgMenu);
 		envInf.onInit(this::envInfShown);
 	}

@@ -27,6 +27,7 @@ import Ozone.Internal.Interface;
 import Ozone.Manifest;
 import Ozone.UI.*;
 import Shared.SharedBoot;
+import Shared.WarningHandler;
 import arc.Core;
 import arc.Events;
 import arc.scene.ui.Dialog;
@@ -102,13 +103,11 @@ public class UIPatch extends AbstractModule {
 					}catch (NumberFormatException t) {
 						Vars.ui.showException("Failed to parse", t);//100% user fault
 					}catch (Throwable t) {
-						Vars.ui.showException(t);
-						Sentry.captureException(t);
+						WarningHandler.handleMindustry(t);
 					}
 				}).growX().left().row();
 			}catch (Throwable t) {
-				Sentry.captureException(t);
-				Log.err(t);
+				WarningHandler.handleMindustry(t);
 				Log.err("Failed to load settings");
 			}
 		}
@@ -156,7 +155,8 @@ public class UIPatch extends AbstractModule {
 					Vars.ui.showInfo("Successful");
 				}catch (Throwable t) {
 					Vars.ui.showException(t);
-					Sentry.captureException(t);
+					WarningHandler.handleProgrammerFault(t);
+					
 				}
 			}).growX();
 		}).center();

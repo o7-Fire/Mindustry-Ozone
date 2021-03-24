@@ -36,12 +36,12 @@ import Atom.Utility.Pool;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 import Ozone.Patch.Translation;
+import Shared.WarningHandler;
 import arc.Core;
 import arc.graphics.Color;
 import arc.math.Rand;
 import arc.struct.Seq;
 import arc.util.serialization.Base64Coder;
-import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.Version;
 import mindustry.gen.Groups;
@@ -55,6 +55,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static mindustry.Vars.maxNameLength;
 
+@SuppressWarnings("Unchecked")
 public class Identification {
 	public static HashMap<String, Object> getValue() throws NoSuchFieldException, IllegalAccessException {
 		Field f = Core.settings.getClass().getDeclaredField("values");
@@ -105,8 +106,7 @@ public class Identification {
 			try {
 				changeID();
 			}catch (Throwable t) {
-				t.printStackTrace();
-				Sentry.captureException(t);
+				WarningHandler.handleMindustry(t);
 				Vars.ui.showException(t);
 			}
 			onfinished.run();

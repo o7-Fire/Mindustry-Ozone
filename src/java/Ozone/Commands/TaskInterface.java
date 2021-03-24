@@ -34,6 +34,7 @@ package Ozone.Commands;
 import Ozone.Commands.Task.Task;
 import Ozone.Internal.AbstractModule;
 import Shared.SharedBoot;
+import Shared.WarningHandler;
 import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.struct.Queue;
@@ -60,8 +61,15 @@ public class TaskInterface extends AbstractModule {
 		for (Map.Entry<Integer, Queue<Task>> q : taskQueue.entrySet()) {
 			Queue<Task> queue = q.getValue();
 			if (queue.isEmpty()) continue;
-			if (!queue.first().isCompleted()) queue.first().update();
-			else queue.removeFirst().onCompleted();
+			try {
+				if (!queue.first().isCompleted()) {
+					queue.first().update();
+					continue;
+				}
+			}catch (Exception t) {
+				WarningHandler.handleMindustry(t);
+			}
+			queue.removeFirst().onCompleted();
 		}
 	}
 	

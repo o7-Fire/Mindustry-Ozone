@@ -76,11 +76,8 @@ public class OzoneMods extends Mod {
 	}
 	
 	public static void catchs(Throwable t) {
-		if (t instanceof OutOfMemoryError) throw new RuntimeException(t);//no fuck you
-		if (SharedBoot.debug) t.printStackTrace();
-		Sentry.captureException(t);
+		WarningHandler.handleMindustry(t);
 		while (t.getCause() != null) t = t.getCause();
-		Log.err(t);
 		Throwable finalT = t;
 		Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showException(finalT));
 		if (t instanceof RuntimeException) {

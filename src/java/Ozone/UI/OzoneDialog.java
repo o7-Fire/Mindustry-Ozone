@@ -16,6 +16,7 @@
 
 package Ozone.UI;
 
+import Shared.WarningHandler;
 import arc.Core;
 import arc.graphics.Color;
 import arc.scene.Action;
@@ -27,7 +28,6 @@ import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Collapser;
 import arc.util.Align;
 import arc.util.Strings;
-import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.ui.Styles;
@@ -81,7 +81,7 @@ public abstract class OzoneDialog extends BaseDialog {
 	
 	protected Dialog catchE(Throwable t) {
 		try {
-			Sentry.captureException(t);
+			WarningHandler.handleMindustry(t);
 			hide();
 			Vars.ui.loadfrag.hide();
 		}catch (Throwable ignored) {}

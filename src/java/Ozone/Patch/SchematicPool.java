@@ -24,9 +24,8 @@ import Ozone.Internal.Repo;
 import Ozone.Internal.RepoCached;
 import Ozone.Manifest;
 import Shared.SharedBoot;
+import Shared.WarningHandler;
 import Shared.WarningReport;
-import arc.util.Log;
-import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.game.Schematic;
 import mindustry.game.Schematics;
@@ -83,9 +82,8 @@ public class SchematicPool extends AbstractModule {
 				}catch (Throwable ignored) {}
 			}
 			new WarningReport("Loaded: " + i + " remote schematics").setWhyItsAProblem("Its from volas cdn").setLevel(WarningReport.Level.info).report();
-		}catch (Throwable e) {
-			Log.err(e);
-			Sentry.captureException(e);
+		}catch (Throwable t) {
+			WarningHandler.handleMindustry(t);
 		}
 	}
 	

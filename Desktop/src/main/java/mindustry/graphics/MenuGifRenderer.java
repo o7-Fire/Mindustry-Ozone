@@ -19,6 +19,7 @@ package mindustry.graphics;
 import Atom.Utility.Cache;
 import Ozone.Internal.Repo;
 import Ozone.Settings.SettingsDesktop;
+import Shared.WarningHandler;
 import arc.Core;
 import arc.files.Fi;
 import arc.graphics.Texture;
@@ -29,7 +30,6 @@ import arc.struct.Seq;
 import arc.util.Disposable;
 import arc.util.Log;
 import arc.util.Time;
-import io.sentry.Sentry;
 import mindustry.Vars;
 
 import java.io.File;
@@ -53,8 +53,8 @@ public class MenuGifRenderer implements Disposable {
 			Repo r = new Repo();
 			r.init();
 			url.addAll(r.readString("Desktop/gif.txt").split("\n"));
-		}catch (Throwable i) {
-			Sentry.captureException(i);
+		}catch (Throwable t) {
+			WarningHandler.handleProgrammerFault(t);
 		}
 		menu.mkdirs();
 		if (!menu.child("readme.txt").exists())

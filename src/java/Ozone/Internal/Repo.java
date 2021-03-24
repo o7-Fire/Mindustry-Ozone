@@ -34,9 +34,9 @@ package Ozone.Internal;
 import Atom.File.RepoInternal;
 import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
+import Shared.WarningHandler;
 import arc.graphics.Pixmap;
 import arc.util.Log;
-import io.sentry.Sentry;
 
 import java.io.IOException;
 import java.net.URL;
@@ -67,7 +67,7 @@ public class Repo extends Atom.File.Repo implements ModuleInterfaced {
 			for (String s : readString("src/repos.txt").split("\n"))
 				if (!s.startsWith("#")) addRepo(new URL(s));
 		}catch (Throwable t) {
-			Sentry.captureException(t);//sentry go brrrrrrr
+			WarningHandler.handleMindustry(t);
 		}
 		addRepo(new URL("https://o7inc.ddns.net/ozone"));
 		INSTANCE = this;

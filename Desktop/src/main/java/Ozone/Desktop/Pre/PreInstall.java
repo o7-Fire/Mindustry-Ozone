@@ -21,7 +21,7 @@ import Ozone.Desktop.Swing.Main;
 import Premain.MindustryEntryPoint;
 import Shared.InfoBox;
 import Shared.SharedBoot;
-import io.sentry.Sentry;
+import Shared.WarningHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -74,7 +74,7 @@ public class PreInstall {
 					}catch (Throwable ignored) { }
 					t.printStackTrace();
 					if (t.getCause() != null) t = t.getCause();
-					Sentry.captureException(t);
+					WarningHandler.handleProgrammerFault(t);
 					InfoBox.errorBox(t.toString(), "Ozone Environment");
 				}
 			}).start();

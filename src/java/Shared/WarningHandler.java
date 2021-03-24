@@ -31,9 +31,11 @@
 
 package Shared;
 
+import Atom.Reflect.Reflect;
 import Ozone.Manifest;
 import arc.util.Log;
 import io.sentry.Sentry;
+import mindustry.Vars;
 
 import java.util.ArrayList;
 
@@ -42,6 +44,61 @@ public class WarningHandler {
 	
 	public static boolean isLoaded() {//safest class
 		return System.getProperty("Mindustry.Ozone.Loaded") != null;
+	}
+	
+	
+	//what the fuck are you trying to handle error or making error reporting app
+	public static void handleMindustry(Throwable t) {
+		String s = "Ozone-Handler";
+		try { s = Reflect.getCallerClassStackTrace().toString(); }catch (Throwable ignored) {}
+		handleMindustry(t, s);
+	}
+	
+	public static void handleMindustryUserFault(Throwable t) {
+		String s = "YourFault.jar";
+		if (t instanceof RuntimeException) {
+			while (t.getCause() != null) t = t.getCause();
+			t = new Throwable(t);//idiot outcry
+		}
+		s = t.getClass().getSimpleName();
+		handleOzone(t);
+		handleStealthMindustry(t, s);
+		try {
+			Vars.ui.showException(t);
+		}catch (Throwable ignored) {}
+	}
+	
+	public static void handleJava(Throwable t) {
+		if (t instanceof VirtualMachineError) throw new RuntimeException(t);
+	}
+	
+	public static void handleOzone(Throwable t) {
+		handleJava(t);
+		if (t instanceof RuntimeException) if (SharedBoot.test) throw (RuntimeException) t;
+	}
+	
+	public static void handleProgrammerFault(Throwable t) {
+		try {
+			Sentry.captureException(t);
+		}catch (Throwable ignored) {}
+		try {
+			if (SharedBoot.debug) t.printStackTrace();
+		}catch (Throwable ignored) {}
+		;
+	}
+	
+	public static void handleStealthMindustry(Throwable t, String s) {
+		try {
+			Log.errTag(s, t.toString());
+		}catch (Throwable ignored) {}
+		;
+	}
+	
+	public static void handleMindustry(Throwable t, String s) {
+		handleOzone(t);
+		handleProgrammerFault(t);
+		handleStealthMindustry(t, s);
+		
 	}
 	
 	public static void handle(WarningReport wr) {
@@ -68,7 +125,7 @@ public class WarningHandler {
 	public static void handle(Throwable t, boolean silent) {
 		//Pool.daemon(()->{
 		if (SharedBoot.debug) t.printStackTrace();
-		try { Sentry.captureException(t); }catch (Throwable ignored) {}
+		WarningHandler.handleMindustry(t);
 		if (!silent) {
 			try { Log.err(t);}catch (Throwable ignored) {}
 		}

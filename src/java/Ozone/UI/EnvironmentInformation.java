@@ -24,12 +24,11 @@ import Ozone.Propertied;
 import Ozone.Settings.SettingsManifest;
 import Ozone.Watcher.LogicCodeEScanner;
 import Ozone.Watcher.MostWanted;
+import Shared.WarningHandler;
 import arc.Core;
 import arc.audio.Sound;
 import arc.scene.style.TextureRegionDrawable;
 import arc.struct.ObjectMap;
-import arc.util.Log;
-import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.gen.Sounds;
@@ -100,9 +99,7 @@ public class EnvironmentInformation extends ScrollableDialog {
 				});
 			}
 		}catch (Throwable t) {
-			Log.err(t);
-			Sentry.captureException(t);
-			t.printStackTrace();
+			WarningHandler.handleMindustry(t);
 		}
 		/*
 		try {

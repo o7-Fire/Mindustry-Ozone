@@ -25,10 +25,10 @@ import Ozone.Internal.InformationCenter;
 import Ozone.Internal.Interface;
 import Ozone.Propertied;
 import Shared.SharedBoot;
+import Shared.WarningHandler;
 import Shared.WarningReport;
 import arc.Core;
 import arc.util.Log;
-import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.core.Version;
 
@@ -65,9 +65,9 @@ public class Updater extends AbstractModule {
 			}else
 				new WarningReport().setProblem("Latest Release Is Already Installed or Unavailable").setWhyItsAProblem("nope ?");
 			
-		}catch (Throwable e) {
-			Sentry.captureException(e);
-			new WarningReport(e).setLevel(WarningReport.Level.warn).report();
+		}catch (Throwable t) {
+			WarningHandler.handleMindustry(t);
+			new WarningReport(t).setLevel(WarningReport.Level.warn).report();
 		}
 		
 		
@@ -100,7 +100,8 @@ public class Updater extends AbstractModule {
 		}catch (Throwable t) {
 			Vars.ui.loadfrag.hide();
 			Vars.ui.showException(t);
-			Sentry.captureException(t);
+			WarningHandler.handleMindustry(t);
+			
 		}
 	}
 	
@@ -114,8 +115,9 @@ public class Updater extends AbstractModule {
 			long a = Long.parseLong(sa), b = Long.parseLong(sb);
 			if (a == b) return false;
 			if (a > b) return false;
-		}catch (NumberFormatException asshole) {
-			Sentry.captureException(asshole);
+		}catch (NumberFormatException t) {
+			WarningHandler.handleProgrammerFault(t);
+			
 			return false;
 		}
 		//Compatibility
@@ -127,8 +129,8 @@ public class Updater extends AbstractModule {
 			if (s.contains(".")) s = s.substring(0, s.indexOf('.'));
 			int b = Integer.parseInt(s);
 			if (b != a) return false;
-		}catch (NumberFormatException asshole) {
-			Sentry.captureException(asshole);
+		}catch (NumberFormatException t) {
+			WarningHandler.handleProgrammerFault(t);
 			return false;
 		}
 		return true;
@@ -185,9 +187,9 @@ public class Updater extends AbstractModule {
 				u = new URL("jar:" + u.toExternalForm() + "!/Manifest.properties");
 			}
 			return u;
-		}catch (MalformedURLException malformedURLException) {
-			Sentry.captureException(malformedURLException);
-			throw new RuntimeException(malformedURLException);
+		}catch (MalformedURLException t) {
+			WarningHandler.handleProgrammerFault(t);
+			throw new RuntimeException(t);
 		}
 	}
 	

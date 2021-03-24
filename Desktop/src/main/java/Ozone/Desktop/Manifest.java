@@ -16,17 +16,14 @@
 
 package Ozone.Desktop;
 
-import Main.OxygenMindustry;
-import Ozone.Desktop.UI.BotControllerDialog;
 import Ozone.Desktop.UI.DebugMenuDialog;
 
 
 public class Manifest extends Ozone.Manifest {
-	public static BotControllerDialog botControllerDialog;
 	public static DebugMenuDialog dbgMenu;
 	
 	public static boolean isBot() {
-		return OxygenMindustry.bot;
+		return false;
 	}
 	
 }

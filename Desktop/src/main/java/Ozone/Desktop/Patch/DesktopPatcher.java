@@ -17,9 +17,8 @@
 package Ozone.Desktop.Patch;
 
 import Atom.Reflect.Reflect;
+import Shared.WarningHandler;
 import arc.net.Client;
-import arc.util.Log;
-import io.sentry.Sentry;
 import mindustry.Vars;
 import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
@@ -41,8 +40,7 @@ public class DesktopPatcher {
 			Client c = Reflect.getField(arc.getClass(), "client", arc);
 			return c.getRemoteAddressTCP().getHostName() + ":" + c.getRemoteAddressTCP().getPort();
 		}catch (Throwable t) {
-			Sentry.captureException(t);
-			Log.err(t);
+			WarningHandler.handleMindustry(t);
 			return "Null";
 		}
 	}

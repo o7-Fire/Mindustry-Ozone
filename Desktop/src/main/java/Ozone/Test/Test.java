@@ -18,6 +18,7 @@ package Ozone.Test;
 
 import Atom.Utility.Log;
 import Atom.Utility.Pool;
+import Shared.WarningHandler;
 import Shared.WarningReport;
 import io.sentry.ITransaction;
 import io.sentry.Sentry;
@@ -62,7 +63,7 @@ public class Test {
 		}catch (Throwable e) {
 			t = e;
 			e.printStackTrace();
-			Sentry.captureException(e);
+			WarningHandler.handleProgrammerFault(e);
 			if (transaction != null) {
 				transaction.setThrowable(e);
 				transaction.setStatus(SpanStatus.INTERNAL_ERROR);

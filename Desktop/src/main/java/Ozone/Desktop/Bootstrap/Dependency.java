@@ -17,7 +17,7 @@
 package Ozone.Desktop.Bootstrap;
 
 import Ozone.Propertied;
-import io.sentry.Sentry;
+import Shared.WarningHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,8 +48,7 @@ public class Dependency implements Serializable {
 			parseDependency();
 			load();
 		}catch (Throwable t) {
-			t.printStackTrace();
-			Sentry.captureException(t);
+			WarningHandler.handleProgrammerFault(t);
 			throw new RuntimeException("Failed to parse dependencies", t);
 		}
 	}
