@@ -59,6 +59,7 @@ import mindustry.core.GameState;
 import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.*;
+import mindustry.net.ValidateException;
 import mindustry.type.Item;
 import mindustry.ui.Styles;
 import mindustry.world.Block;
@@ -212,7 +213,9 @@ public class Interface extends AbstractModule {
 	}
 	
 	public static void dropItem() {
-		Call.dropItem(Mathf.random(120f));
+		try {
+			Call.dropItem(Mathf.random(120f));
+		}catch (ValidateException ignored) {}
 	}
 	
 	public static Player searchPlayer(String s) {
@@ -233,7 +236,11 @@ public class Interface extends AbstractModule {
 		int amount = Math.min(1, tile.getMaximumAccepted(player.unit().item()));
 		if (amount > 0) {
 			int accepted = tile.acceptStack(player.unit().item(), Vars.player.unit().stack.amount, player.unit());
-			Call.transferItemTo(player.unit(), player.unit().item(), accepted, player.unit().x, player.unit().y, tile);
+			try {
+				Call.transferItemTo(player.unit(), player.unit().item(), accepted, player.unit().x, player.unit().y, tile);
+			}catch (ValidateException e) {
+				return false;
+			}
 			return true;
 		}
 		return false;
@@ -244,7 +251,11 @@ public class Interface extends AbstractModule {
 			return false;
 		int amount = Math.min(1, player.unit().maxAccepted(item));
 		if (amount > 0) {
-			Call.requestItem(player, tile, item, amount);
+			try {
+				Call.requestItem(player, tile, item, amount);
+			}catch (ValidateException e) {
+				return false;
+			}
 			return true;
 		}
 		return false;
