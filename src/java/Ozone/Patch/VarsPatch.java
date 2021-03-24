@@ -46,6 +46,7 @@ public class VarsPatch extends AbstractModule {
 	
 	@Override
 	public void earlyInit() throws Throwable {
+		if (BaseSettings.debugMode) SharedBoot.debug = true;
 		SettingsManifest.changeFile(new File(Vars.dataDirectory.file(), SettingsManifest.settingsFile.getName()));
 		if (SharedBoot.debug) {
 			Log.level = Log.LogLevel.debug;

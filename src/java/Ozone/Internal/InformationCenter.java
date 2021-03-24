@@ -32,6 +32,7 @@ package Ozone.Internal;
 
 import Atom.Reflect.Reflect;
 import Ozone.Gen.Callable;
+import Shared.SharedBoot;
 import arc.net.Client;
 import arc.struct.Seq;
 import mindustry.Vars;
@@ -42,8 +43,12 @@ import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
 import mindustry.net.Packets;
 import org.jetbrains.annotations.Nullable;
+import org.reflections.Reflections;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -202,5 +207,23 @@ public class InformationCenter {
 	
 	public static String getPacketNameClientSend(Packets.InvokePacket packet) {
 		return getPacketNameClientSend(packet.type);
+	}
+	
+	public static Reflections reflections;
+	
+	public static Reflections getReflection() {
+		if (reflections == null) {
+			String reflect = "reflections/" + SharedBoot.type + "-reflections.json";
+			try {
+				if (Atom.Manifest.internalRepo.resourceExists(reflect)) {
+					InputStream is = null;
+					is = Atom.Manifest.internalRepo.getResourceAsStream(reflect);
+					reflections = Reflect.getReflection(is, InformationCenter.class.getClassLoader());
+				}else throw new FileNotFoundException();
+			}catch (IOException e) {
+				reflections = new Reflections();
+			}
+		}
+		return reflections;
 	}
 }

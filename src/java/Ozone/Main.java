@@ -17,9 +17,9 @@
 package Ozone;
 
 import Atom.Reflect.Reflect;
-import Atom.Utility.Encoder;
 import Atom.Utility.Pool;
 import Ozone.Internal.AbstractModule;
+import Ozone.Internal.InformationCenter;
 import Ozone.Internal.ModuleInterfaced;
 import Shared.SharedBoot;
 import Shared.WarningHandler;
@@ -30,7 +30,7 @@ import io.sentry.Sentry;
 import mindustry.game.EventType;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -54,21 +54,18 @@ public class Main {
 	public static <T> Collection<Class<? extends T>> getExtendedClass(String packag, Class<T> type) {
 		Collection<Class<? extends T>> raw = null;
 		try {
-			if (SharedBoot.hardDebug) throw new RuntimeException("eat pant");
-			String reflect = "reflections/" + SharedBoot.type + "-reflections.json";
-			if (Atom.Manifest.internalRepo.resourceExists(reflect)) {
-				InputStream is = Atom.Manifest.internalRepo.getResourceAsStream(reflect);
-				raw = Reflect.getExtendedClassFromJson(Encoder.readString(is), type);
-			}else {
-				throw new RuntimeException("eat shit");
-			}
+			//if (SharedBoot.hardDebug) throw new RuntimeException("eat pant");
+			return InformationCenter.getReflection().getSubTypesOf(type);
 		}catch (VirtualMachineError e) {
 			throw new RuntimeException("Eat shit", e);
 		}catch (Throwable e) {
-			raw = Reflect.getExtendedClass(packag, type, Main.class.getClassLoader());
+			try {
+				raw = Reflect.getExtendedClass(packag, type, Main.class.getClassLoader());
+			}catch (Throwable ignored) {}
 		}
 		try {
 			ArrayList<Class<? extends T>> real = new ArrayList<>();
+			if (raw == null) return real;
 			for (Class<? extends T> c : raw)
 				real.add((Class<? extends T>) Main.class.getClassLoader().loadClass(c.getName()));
 			return real;
@@ -86,7 +83,14 @@ public class Main {
 	public static void earlyInit() {
 		Log.infoTag("Ozone", "Hail o7");
 		Log.debug("Registering module\n");
+		try {
+			Atom.Manifest.internalRepo.addRepo(InformationCenter.getCurrentJar());
+		}catch (MalformedURLException e) {
+		
+		}
 		register();
+		if (Manifest.module.size() < 5)
+			throw new RuntimeException("Ozone Register Only register: " + Manifest.module.size());
 		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> s : Manifest.module.entrySet()) {
 			try {
 				update("Early Init: " + s.getValue().getName());
@@ -123,9 +127,7 @@ public class Main {
 				mod.setRegister();
 				Manifest.module.put(m, mod);
 			}catch (Throwable e) {
-				if (SharedBoot.debug) e.printStackTrace();
 				WarningHandler.handle(e);
-				if (SharedBoot.test) throw new RuntimeException(e);
 			}
 		}
 	}

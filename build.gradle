@@ -1,3 +1,4 @@
+import Atom.Utility.Encoder
 import org.reflections.Configuration
 import org.reflections.Reflections
 import org.reflections.serializers.JsonSerializer
