@@ -31,6 +31,7 @@
 package Ozone.Internal;
 
 import Atom.Reflect.Reflect;
+import Atom.Utility.Encoder;
 import Ozone.Gen.Callable;
 import Shared.SharedBoot;
 import arc.net.Client;
@@ -209,11 +210,29 @@ public class InformationCenter {
 		return getPacketNameClientSend(packet.type);
 	}
 	
-	public static Reflections reflections;
+	public static Reflections reflections = null;
+	protected static String jsonReflect;
+	private static boolean youtried;
+	
+	public static String reflectJson() throws IOException {
+		if (jsonReflect != null) return jsonReflect;
+		if (Atom.Manifest.internalRepo.resourceExists(reflectJsonFile())) {
+			InputStream is = null;
+			is = Atom.Manifest.internalRepo.getResourceAsStream(reflectJsonFile());
+			jsonReflect = Encoder.readString(is);
+		}
+		if (jsonReflect == null) throw new NullPointerException("No json: " + reflectJsonFile());
+		return jsonReflect;
+	}
+	
+	public static String reflectJsonFile() {
+		return "reflections/" + SharedBoot.type + "-reflections.json";
+	}
 	
 	public static Reflections getReflection() {
-		if (reflections == null) {
-			String reflect = "reflections/" + SharedBoot.type + "-reflections.json";
+		if (!youtried) {
+			youtried = true;
+			String reflect = reflectJsonFile();
 			try {
 				if (Atom.Manifest.internalRepo.resourceExists(reflect)) {
 					InputStream is = null;

@@ -11,7 +11,7 @@ RAM: 2GB of free RAM
 
 Wiki:https://github.com/o7-Fire/Mindustry-Ozone/wiki
 
-Changelog: Fix ozone not loading mystriously, fix Call invoke packet related thing"
+Changelog: ok why this dont load on android"
 minGameVersion: 123
 hidden: true
-version: 0.22.0:0.18.5
+version: 0.23.0:0.19.0

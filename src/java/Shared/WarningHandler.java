@@ -78,6 +78,7 @@ public class WarningHandler {
 	}
 	
 	public static void handleProgrammerFault(Throwable t) {
+		handleJava(t);
 		try {
 			Sentry.captureException(t);
 		}catch (Throwable ignored) {}
