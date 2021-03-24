@@ -6,6 +6,13 @@ on: [push]
 jobs:
   Build-Test-Release:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
+        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python' ]
+        # Learn more:
+        # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
 
     steps:
      # Check out current repository
@@ -36,7 +43,11 @@ jobs:
       with:
         path: ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
-      
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}  
     - name: Build mod jar
       run: ./gradlew deploy -Pversion="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
 
@@ -61,7 +72,10 @@ jobs:
       with:
         name: Ozone-Manifest
         path: src/resources/Manifest.properties
-
+        
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+      
     - name: Ozone Test
       run: java -DozoneTest=true -jar Desktop/build/libs/Ozone-Desktop.jar
       # Remove old release drafts by using the curl request for the available releases with draft flag
