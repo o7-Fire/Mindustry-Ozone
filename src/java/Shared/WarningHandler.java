@@ -67,7 +67,7 @@ public class WarningHandler {
 	
 	public static void handle(Throwable t, boolean silent) {
 		//Pool.daemon(()->{
-		if (SharedBoot.hardDebug) t.printStackTrace();
+		if (SharedBoot.debug) t.printStackTrace();
 		try { Sentry.captureException(t); }catch (Throwable ignored) {}
 		if (!silent) {
 			try { Log.err(t);}catch (Throwable ignored) {}
@@ -75,6 +75,7 @@ public class WarningHandler {
 		try {
 			listOfProblem.add(new WarningReport(t).setLevel(silent ? WarningReport.Level.warn : WarningReport.Level.err));
 		}catch (Throwable ignored) {}
+		if (t instanceof RuntimeException) if (SharedBoot.test) throw (RuntimeException) t;
 		//}).start();
 		
 	}

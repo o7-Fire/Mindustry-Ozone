@@ -11,7 +11,7 @@ RAM: 2GB of free RAM
 
 Wiki:https://github.com/o7-Fire/Mindustry-Ozone/wiki
 
-Changelog: Nothing in particular"
+Changelog: Fix ozone not loading mystriously, fix Call invoke packet related thing"
 minGameVersion: 123
 hidden: true
 version: 0.22.0:0.18.5
