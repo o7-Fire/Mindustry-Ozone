@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static Ozone.Internal.InformationCenter.reflectJsonFile;
+import static Ozone.Internal.InformationCenter.reflectJson;
 
 public class Main {
 	private static boolean init = false;
@@ -54,28 +54,25 @@ public class Main {
 	
 	public static <T> Collection<Class<? extends T>> getExtendedClass(String packag, Class<T> type) {
 		Collection<Class<? extends T>> raw = null;
-		ArrayList<Throwable> cause = new ArrayList<>();
+		
 		try {
 			if (SharedBoot.isCore()) {
-				String reflect = reflectJsonFile();
+				String reflect = reflectJson();
 				raw = (Reflect.getExtendedClassFromJson(reflect, type));
 			}
 		}catch (Throwable t) {
-			cause.add(t);
 			WarningHandler.handleProgrammerFault(t);
 		}
 		if (raw == null) try {
 			//if (SharedBoot.hardDebug) throw new RuntimeException("eat pant");
 			if (InformationCenter.getReflection() != null) raw = InformationCenter.getReflection().getSubTypesOf(type);
 		}catch (Throwable e) {
-			cause.add(e);
 			WarningHandler.handleProgrammerFault(e);
 			
 		}
 		if (raw == null) try {
 			raw = Reflect.getExtendedClass(packag, type, Main.class.getClassLoader());
 		}catch (Throwable e) {
-			cause.add(e);
 			WarningHandler.handleProgrammerFault(e);
 		}
 		try {

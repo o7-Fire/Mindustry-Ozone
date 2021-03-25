@@ -45,6 +45,9 @@ import mindustry.net.Net;
 import mindustry.net.Packets;
 import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.serializers.JsonSerializer;
+import org.reflections.util.ConfigurationBuilder;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -237,7 +240,12 @@ public class InformationCenter {
 				if (Atom.Manifest.internalRepo.resourceExists(reflect)) {
 					InputStream is;
 					is = Atom.Manifest.internalRepo.getResourceAsStream(reflect);
-					reflections = Reflect.getReflection(is, InformationCenter.class.getClassLoader());
+					ConfigurationBuilder config = ConfigurationBuilder.build().setSerializer(new JsonSerializer());
+					config.setClassLoaders(new ClassLoader[]{InformationCenter.class.getClassLoader()});
+					config.setScanners(new SubTypesScanner());
+					Reflections reflections = new Reflections(config);
+					reflections.collect(is);
+					
 				}else throw new FileNotFoundException();
 			}catch (Throwable ignored) {}
 		}
