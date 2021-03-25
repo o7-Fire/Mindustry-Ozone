@@ -67,6 +67,7 @@ public class Main {
 	}
 	
 	public static Collection<Class<? extends ModuleInterfaced>> getModule() {
+		if (!SharedBoot.isCore()) return getExtendedClass(Main.class.getPackage().getName(), ModuleInterfaced.class);
 		try {
 			return getClass(InformationCenter.moduleList().values());
 		}catch (IOException e) {

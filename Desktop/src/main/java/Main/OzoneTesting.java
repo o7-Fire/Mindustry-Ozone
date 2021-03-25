@@ -41,7 +41,6 @@ public class OzoneTesting {
 	protected static OzoneMods ozone;
 	
 	static {
-		SharedBoot.type = "Ozone-Desktop";
 		LoggerMode.loadLogger();
 		SharedBoot.finishStartup();
 		Log.info("Preparing Test");
@@ -92,7 +91,7 @@ public class OzoneTesting {
 			Vars.init();
 		}catch (Throwable ignored) {}
 		Vars.dataDirectory = new Fi(FileUtility.getTempDir());
-		
+		SharedBoot.type = "Ozone-Desktop";
 	}
 	
 	public static void main(String[] args) {
