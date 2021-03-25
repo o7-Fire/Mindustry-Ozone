@@ -143,7 +143,8 @@ public class Main {
 		if (init) return;
 		init = true;
 		System.setProperty("Mindustry.Ozone.Loaded", Version.core + ":" + Version.desktop);
-		if (Manifest.module.size() < 16)
+		if (true)
+			//if (Manifest.module.size() < 16)
 			throw new IllegalStateException("Ozone Module Only register: " + Manifest.module.size() + " Modules");
 		update("Finished Registering \n");
 		update("Initializing \n");

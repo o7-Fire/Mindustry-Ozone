@@ -40,7 +40,7 @@ public class OzoneMods extends Mod {
 					Log.info("Ozone Standalone");
 					OzoneBootstrap.init();
 				}catch (Throwable t) {
-					catchs(t);
+					catchs(t, true);
 				}
 			}
 			@NotNull ITransaction s = null;
@@ -53,7 +53,7 @@ public class OzoneMods extends Mod {
 					s.setThrowable(t);
 					s.setStatus(SpanStatus.INTERNAL_ERROR);
 				}
-				catchs(t);
+				catchs(t, true);
 			}
 		}
 	}
@@ -71,11 +71,15 @@ public class OzoneMods extends Mod {
 				s.setThrowable(t);
 				s.setStatus(SpanStatus.INTERNAL_ERROR);
 			}
-			catchs(t);
+			catchs(t, true);
 		}
 	}
 	
 	public static void catchs(Throwable t) {
+		catchs(t, false);
+	}
+	
+	public static void catchs(Throwable t, boolean allowToCrash) {
 		WarningHandler.handleMindustry(t);
 		while (t.getCause() != null) t = t.getCause();
 		Throwable finalT = t;
@@ -83,7 +87,7 @@ public class OzoneMods extends Mod {
 		if (t.getClass() == RuntimeException.class) {
 			throw (RuntimeException) t;//epic
 		}
-		throw new RuntimeException(t);
+		if (allowToCrash) throw new RuntimeException(t);
 	}
 	
 	@Override
