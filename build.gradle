@@ -254,6 +254,7 @@ tasks.withType(JavaCompile) {
         HashMap<String, String> map = new HashMap<>();
         for(Class c : Reflect.getExtendedClass("Ozone", source , classLoader))
             map.put(String.valueOf(i++), c.getName())
+        refl.getParentFile().mkdirs()
         refl.delete()
         Files.write(refl.toPath(), Encoder.property(map).getBytes())
     }

@@ -153,3 +153,4 @@ Manifest/out/production/resources/Manifest.properties
 /src/resources/reflections/core-reflections.json
 Desktop/src/main/resources/reflections
 *-reflections.json
+*-reflections.properties

@@ -39,7 +39,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 
-public class RepoCached extends Repo implements ModuleInterfaced {
+public class RepoCached extends Repo {
     public static HashMap<String, Pixmap> pixmapCache = new HashMap<>();
     
     public URL getResource(String s) {
