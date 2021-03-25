@@ -80,7 +80,7 @@ public class OzoneMods extends Mod {
 		while (t.getCause() != null) t = t.getCause();
 		Throwable finalT = t;
 		Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showException(finalT));
-		if (t instanceof RuntimeException) {
+		if (t.getClass() == RuntimeException.class) {
 			throw (RuntimeException) t;//epic
 		}
 		throw new RuntimeException(t);

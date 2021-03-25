@@ -98,8 +98,7 @@ public class Main {
 			WarningHandler.handleMindustry(t);
 		}
 		register();
-		if (Manifest.module.size() < 16)
-			throw new RuntimeException("Ozone Register Only register: " + Manifest.module.size());
+
 		for (Map.Entry<Class<? extends ModuleInterfaced>, ModuleInterfaced> s : Manifest.module.entrySet()) {
 			try {
 				update("Early Init: " + s.getValue().getName());
@@ -142,6 +141,8 @@ public class Main {
 		if (init) return;
 		init = true;
 		System.setProperty("Mindustry.Ozone.Loaded", Version.core + ":" + Version.desktop);
+		if (Manifest.module.size() < 16)
+			throw new IllegalStateException("Ozone Module Only register: " + Manifest.module.size() + " Modules");
 		update("Finished Registering \n");
 		update("Initializing \n");
 		loadModule();

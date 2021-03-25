@@ -133,7 +133,7 @@ public class WarningHandler {
 		try {
 			listOfProblem.add(new WarningReport(t).setLevel(silent ? WarningReport.Level.warn : WarningReport.Level.err));
 		}catch (Throwable ignored) {}
-		if (t instanceof RuntimeException) if (SharedBoot.test) throw (RuntimeException) t;
+		if (t.getClass() == RuntimeException.class) if (SharedBoot.test) throw (RuntimeException) t;
 		//}).start();
 		
 	}
