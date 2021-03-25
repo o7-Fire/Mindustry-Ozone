@@ -83,22 +83,24 @@ public class WarningHandler {
 			Sentry.captureException(t);
 		}catch (Throwable ignored) {}
 		try {
-			if (SharedBoot.debug) t.printStackTrace();
+			if (SharedBoot.debug) {
+				t.printStackTrace();
+				handleStealthMindustry(t, Reflect.getCallerClassStackTrace().toString());
+			}
 		}catch (Throwable ignored) {}
-		;
+		
 	}
 	
 	public static void handleStealthMindustry(Throwable t, String s) {
 		try {
 			Log.errTag(s, t.toString());
 		}catch (Throwable ignored) {}
-		;
+		
 	}
 	
 	public static void handleMindustry(Throwable t, String s) {
 		handleOzone(t);
 		handleProgrammerFault(t);
-		handleStealthMindustry(t, s);
 		
 	}
 	
