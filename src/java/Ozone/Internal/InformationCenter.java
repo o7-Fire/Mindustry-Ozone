@@ -36,7 +36,6 @@ import Ozone.Gen.Callable;
 import Shared.SharedBoot;
 import arc.net.Client;
 import arc.struct.Seq;
-import arc.util.OS;
 import mindustry.Vars;
 import mindustry.gen.Call;
 import mindustry.gen.RemoteReadClient;
@@ -45,17 +44,12 @@ import mindustry.net.ArcNetProvider;
 import mindustry.net.Net;
 import mindustry.net.Packets;
 import org.jetbrains.annotations.Nullable;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.serializers.JsonSerializer;
-import org.reflections.util.ConfigurationBuilder;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class InformationCenter {
@@ -214,47 +208,20 @@ public class InformationCenter {
 		return getPacketNameClientSend(packet.type);
 	}
 	
-	public static Reflections reflections = null;
-	protected static String jsonReflect;
-	private static boolean youtried, youtried2;
 	
-	public static String reflectJson() throws IOException {
-		if (jsonReflect != null) return jsonReflect;
-		if (youtried2) throw new NullPointerException("No json: " + reflectJsonFile());
+	public static HashMap<String, String> modules = null;
+	private static boolean youtried2;
+	
+	public static HashMap<String, String> moduleList() throws IOException {
+		if (!SharedBoot.isCore()) throw new RuntimeException("Bro wtf");
+		if (modules != null) return modules;
+		if (youtried2) throw new NullPointerException("No : " + reflectFile());
 		youtried2 = true;
-		if (OS.isAndroid) {
-			jsonReflect = Encoder.readString(InformationCenter.class.getClassLoader().getResource(InformationCenter.reflectJsonFile()).openStream());
-		}
-		if (jsonReflect == null) if (Atom.Manifest.internalRepo.resourceExists(reflectJsonFile())) {
-			InputStream is = null;
-			is = Atom.Manifest.internalRepo.getResourceAsStream(reflectJsonFile());
-			jsonReflect = Encoder.readString(is);
-		}
-		if (jsonReflect == null) throw new NullPointerException("No json: " + reflectJsonFile());
-		return jsonReflect;
+		return modules = Encoder.parseProperty(InformationCenter.class.getClassLoader().getResourceAsStream(reflectFile()));
 	}
 	
-	public static String reflectJsonFile() {
-		return "reflections/" + SharedBoot.type + "-reflections.json";
+	public static String reflectFile() {
+		return "reflections/" + SharedBoot.type + "-reflections.properties";
 	}
 	
-	public static Reflections getReflection() {
-		if (!youtried) {
-			youtried = true;
-			String reflect = reflectJsonFile();
-			try {
-				if (Atom.Manifest.internalRepo.resourceExists(reflect)) {
-					InputStream is;
-					is = Atom.Manifest.internalRepo.getResourceAsStream(reflect);
-					ConfigurationBuilder config = ConfigurationBuilder.build().setSerializer(new JsonSerializer());
-					config.setClassLoaders(new ClassLoader[]{InformationCenter.class.getClassLoader()});
-					config.setScanners(new SubTypesScanner());
-					Reflections reflections = new Reflections(config);
-					reflections.collect(is);
-					
-				}else throw new FileNotFoundException();
-			}catch (Throwable ignored) {}
-		}
-		return reflections;
-	}
 }

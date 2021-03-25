@@ -1,8 +1,5 @@
+import Atom.Reflect.Reflect
 import Atom.Utility.Encoder
-import org.reflections.Configuration
-import org.reflections.Reflections
-import org.reflections.serializers.JsonSerializer
-import org.reflections.util.ConfigurationBuilder
 
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
@@ -24,7 +21,6 @@ buildscript {
 
     dependencies{
         classpath "com.github.o7-Fire.Atomic-Library:Atomic:$atomHash"
-        classpath 'org.reflections:reflections:0.9.12'
         classpath group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
     }
 }
@@ -248,17 +244,18 @@ tasks.withType(JavaCompile) {
 
 
         // collect all classes
+
         ClassLoader classLoader = new URLClassLoader(urls, ClassLoader.systemClassLoader)
-        Configuration config = ConfigurationBuilder.build()
-                .addClassLoader(classLoader)
-                .setUrls(urls)
-        Reflections reflections = new Reflections(config)
+        Class source = classLoader.loadClass("Ozone.Internal.ModuleInterfaced");
 
         def resDir = new File(rootDir, "/src/resources/")
-        // save as JSON file into the assets folder
-        // (a) generate file for current debug or release build
-        println(reflections.save(new File(resDir,"reflections/Ozone-Core-reflections.json").getAbsolutePath(),
-                new JsonSerializer()).getAbsolutePath())
+        File refl = new File(resDir,"reflections/Ozone-Core-reflections.properties")
+        int i = 1;
+        HashMap<String, String> map = new HashMap<>();
+        for(Class c : Reflect.getExtendedClass("Ozone", source , classLoader))
+            map.put(String.valueOf(i++), c.getName())
+        refl.delete()
+        Files.write(refl.toPath(), Encoder.property(map).getBytes())
     }
 }
 
