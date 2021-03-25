@@ -71,7 +71,7 @@ public class BaseSettings extends AbstractModule {
 		});
 	}
 	
-	{
+	static {
 		dependsOn.addAll(Main.getExtendedClass("Ozone", BaseSettings.class));
 	}
 	

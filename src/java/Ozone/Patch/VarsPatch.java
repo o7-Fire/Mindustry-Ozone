@@ -26,7 +26,6 @@ import Ozone.Patch.Mindustry.DesktopInputPatched;
 import Ozone.Patch.Mindustry.MobileInputPatched;
 import Ozone.Patch.Mindustry.NetPatched;
 import Ozone.Settings.BaseSettings;
-import Ozone.Settings.SettingsManifest;
 import Shared.SharedBoot;
 import Shared.WarningReport;
 import arc.graphics.Color;
@@ -38,7 +37,6 @@ import mindustry.graphics.Pal;
 import mindustry.input.DesktopInput;
 import mindustry.input.MobileInput;
 
-import java.io.File;
 import java.lang.reflect.Field;
 
 public class VarsPatch extends AbstractModule {
@@ -47,7 +45,7 @@ public class VarsPatch extends AbstractModule {
 	@Override
 	public void earlyInit() throws Throwable {
 		if (BaseSettings.debugMode) SharedBoot.debug = true;
-		SettingsManifest.changeFile(new File(Vars.dataDirectory.file(), SettingsManifest.settingsFile.getName()));
+		
 		if (SharedBoot.debug) {
 			Log.level = Log.LogLevel.debug;
 			BaseSettings.debugMode = true;

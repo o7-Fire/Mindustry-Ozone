@@ -19,6 +19,8 @@ package Shared;
 import Ozone.Bootstrap.OzoneBootstrap;
 import Ozone.Main;
 import Ozone.Manifest;
+import Ozone.Settings.BaseSettings;
+import Ozone.Settings.SettingsManifest;
 import arc.Events;
 import arc.files.Fi;
 import arc.util.Log;
@@ -30,11 +32,19 @@ import mindustry.game.EventType;
 import mindustry.mod.Mod;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+
 public class OzoneMods extends Mod {
 	static {
 		if (SharedBoot.hardDebug) Log.debug("Static Ctor");
 		if (!WarningHandler.isLoaded()) {
 			if (SharedBoot.isCore()) {
+				try {
+					SettingsManifest.changeFile(new File(Vars.dataDirectory.file(), SettingsManifest.settingsFile.getName()));
+				}catch (Throwable ignored) {}
+				try {
+					if (BaseSettings.debugMode) SharedBoot.debug = true;
+				}catch (Throwable ignored) {}
 				try {
 					LoggerMode.loadLogger();
 					Log.info("Ozone Standalone");
