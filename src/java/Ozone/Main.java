@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -126,7 +127,7 @@ public class Main {
 	}
 	
 	public static void register() {
-		for (Class<? extends ModuleInterfaced> m : getModule()) {
+		for (Class<? extends ModuleInterfaced> m : new HashSet<>(getModule())) {
 			try {
 				if (m == AbstractModule.class) continue;
 				update("Registering: " + m.getName());
