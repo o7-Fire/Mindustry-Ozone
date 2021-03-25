@@ -52,11 +52,11 @@ jobs:
       - name: Build Clean
         run: ./gradlew clean deploy -Pversion="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
 
-      - name: Build mod jar
-        run: ./gradlew deploy -Pversion="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
-
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
+
+      - name: Build mod jar
+        run: ./gradlew deploy -Pversion="$GITHUB_SHA" -PgBranch="${GITHUB_REF##*/}" -PgRepoOwner="$GITHUB_ACTOR" -PgRepo="$GITHUB_REPOSITORY" -Pbuilder="Github-CI" -PbuilderID="$GITHUB_RUN_ID"
 
       - name: Upload built desktop jar file
         uses: actions/upload-artifact@v2
