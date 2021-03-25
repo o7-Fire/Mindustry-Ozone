@@ -1,9 +1,6 @@
-import org.reflections.Configuration
-import org.reflections.Reflections
-import org.reflections.serializers.JsonSerializer
-import org.reflections.util.ConfigurationBuilder
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
+
 buildscript {
     repositories {
         mavenLocal()
@@ -113,8 +110,9 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
+    /*
     doLast{
-        def collection = configurations.runtimeClasspath + configurations.compileClasspath +  new File(rootDir, "build/classes/java/main").toURI().toURL()
+        def collection = configurations.runtimeClasspath + configurations.compileClasspath +  new File(rootDir, "Desktop/build/classes/java/main").toURI().toURL()
         URL[] urls = collection.collect {
             println "Collecting classes using Reflections from " + it
             it.toURI().toURL()
@@ -128,12 +126,14 @@ tasks.withType(JavaCompile) {
                 .setUrls(urls)
         Reflections reflections = new Reflections(config)
 
-        def resDir = new File(rootDir, "/src/main/resources/")
+        def resDir = new File(rootDir, "Desktop/src/main/resources/")
         // save as JSON file into the assets folder
         // (a) generate file for current debug or release build
         println(reflections.save(new File(resDir,"reflections/Ozone-Desktop-reflections.json").getAbsolutePath(),
                 new JsonSerializer()).getAbsolutePath())
     }
+
+     */
 }
 
 

@@ -235,13 +235,11 @@ public class InformationCenter {
 			String reflect = reflectJsonFile();
 			try {
 				if (Atom.Manifest.internalRepo.resourceExists(reflect)) {
-					InputStream is = null;
+					InputStream is;
 					is = Atom.Manifest.internalRepo.getResourceAsStream(reflect);
 					reflections = Reflect.getReflection(is, InformationCenter.class.getClassLoader());
 				}else throw new FileNotFoundException();
-			}catch (IOException e) {
-				reflections = new Reflections();
-			}
+			}catch (Throwable ignored) {}
 		}
 		return reflections;
 	}

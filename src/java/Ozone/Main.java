@@ -55,22 +55,24 @@ public class Main {
 	public static <T> Collection<Class<? extends T>> getExtendedClass(String packag, Class<T> type) {
 		Collection<Class<? extends T>> raw = null;
 		try {
-			String reflect = reflectJsonFile();
-			
-			raw = (Reflect.getExtendedClassFromJson(reflect, type));
+			if (SharedBoot.isCore()) {
+				String reflect = reflectJsonFile();
+				raw = (Reflect.getExtendedClassFromJson(reflect, type));
+			}
 		}catch (Throwable t) {
 			WarningHandler.handleProgrammerFault(t);
 		}
-		try {
+		if (raw == null) try {
 			//if (SharedBoot.hardDebug) throw new RuntimeException("eat pant");
-			raw = InformationCenter.getReflection().getSubTypesOf(type);
+			if (InformationCenter.getReflection() != null) raw = InformationCenter.getReflection().getSubTypesOf(type);
 		}catch (Throwable e) {
 			WarningHandler.handleProgrammerFault(e);
-			try {
-				raw = Reflect.getExtendedClass(packag, type, Main.class.getClassLoader());
-			}catch (Throwable ignored) {
 			
-			}
+		}
+		if (raw == null) try {
+			raw = Reflect.getExtendedClass(packag, type, Main.class.getClassLoader());
+		}catch (Throwable e) {
+			WarningHandler.handleProgrammerFault(e);
 		}
 		try {
 			ArrayList<Class<? extends T>> real = new ArrayList<>();
