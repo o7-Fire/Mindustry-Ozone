@@ -99,7 +99,7 @@ public class WarningHandler {
 		try {
 			if (SharedBoot.debug) {
 				t.printStackTrace();
-				handleStealthMindustry(t, Reflect.getCallerClassStackTrace().toString());
+				handleStealthMindustry(t, "Ozone-Debug");
 			}
 		}catch (Throwable ignored) {}
 		

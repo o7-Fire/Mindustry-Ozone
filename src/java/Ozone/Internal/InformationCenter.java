@@ -36,6 +36,7 @@ import Ozone.Gen.Callable;
 import Shared.SharedBoot;
 import arc.net.Client;
 import arc.struct.Seq;
+import arc.util.OS;
 import mindustry.Vars;
 import mindustry.gen.Call;
 import mindustry.gen.RemoteReadClient;
@@ -215,11 +216,16 @@ public class InformationCenter {
 	
 	public static Reflections reflections = null;
 	protected static String jsonReflect;
-	private static boolean youtried;
+	private static boolean youtried, youtried2;
 	
 	public static String reflectJson() throws IOException {
 		if (jsonReflect != null) return jsonReflect;
-		if (Atom.Manifest.internalRepo.resourceExists(reflectJsonFile())) {
+		if (youtried2) throw new NullPointerException("No json: " + reflectJsonFile());
+		youtried2 = true;
+		if (OS.isAndroid) {
+			jsonReflect = Encoder.readString(InformationCenter.class.getClassLoader().getResource(InformationCenter.reflectJsonFile()).openStream());
+		}
+		if (jsonReflect == null) if (Atom.Manifest.internalRepo.resourceExists(reflectJsonFile())) {
 			InputStream is = null;
 			is = Atom.Manifest.internalRepo.getResourceAsStream(reflectJsonFile());
 			jsonReflect = Encoder.readString(is);
