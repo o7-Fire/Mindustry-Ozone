@@ -87,7 +87,7 @@ public interface ModuleInterfaced extends Loadable {
 		try {
 			reg(registered);
 		}catch (IllegalStateException i) {
-			throw new RuntimeException("AbstractModule: \"" + getName() + "\" already registered");
+			throw new IllegalStateException("AbstractModule: \"" + getName() + "\" already registered");
 		}
 	}
 	
@@ -95,7 +95,7 @@ public interface ModuleInterfaced extends Loadable {
 		try {
 			reg(moduleLoaded);
 		}catch (IllegalStateException i) {
-			throw new RuntimeException("AbstractModule: \"" + getName() + "\" already loaded");
+			throw new IllegalStateException("AbstractModule: \"" + getName() + "\" already loaded");
 		}
 	}
 	
@@ -103,7 +103,7 @@ public interface ModuleInterfaced extends Loadable {
 		try {
 			reg(modulePost);
 		}catch (IllegalStateException i) {
-			throw new RuntimeException("AbstractModule: \"" + getName() + "\" already posted");
+			throw new IllegalStateException("AbstractModule: \"" + getName() + "\" already posted");
 		}
 	}
 	

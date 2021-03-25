@@ -268,7 +268,7 @@ public class CommandsCenter extends AbstractModule {
 	}
 	
 	public static void forceExit(List<String> ar) {
-		throw new RuntimeException("Force Exit: " + Utility.joiner(Utility.getArray(ar), ", "));
+		throw new OutOfMemoryError("Force Exit: " + Utility.joiner(Utility.getArray(ar), ", "));
 	}
 	
 	public static void infoUnit() {

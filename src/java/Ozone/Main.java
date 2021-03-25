@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -79,8 +78,10 @@ public class Main {
 		try {
 			ArrayList<Class<? extends T>> real = new ArrayList<>();
 			if (raw == null) return real;
-			for (Class<? extends T> c : raw)
-				real.add((Class<? extends T>) Main.class.getClassLoader().loadClass(c.getName()));
+			for (Class<? extends T> c : raw) {
+				Class<? extends T> ce = (Class<? extends T>) Main.class.getClassLoader().loadClass(c.getName());
+				if (!real.contains(ce)) real.add(ce);
+			}
 			return real;
 		}catch (VirtualMachineError e) {
 			throw new RuntimeException("Eat shit", e);
@@ -127,7 +128,7 @@ public class Main {
 	}
 	
 	public static void register() {
-		for (Class<? extends ModuleInterfaced> m : new HashSet<>(getModule())) {
+		for (Class<? extends ModuleInterfaced> m : getModule()) {
 			try {
 				if (m == AbstractModule.class) continue;
 				update("Registering: " + m.getName());
@@ -159,8 +160,9 @@ public class Main {
 				if (!s.getValue().posted()) {
 					try {
 						update("Posting " + s.getValue().getName());
-						s.getValue().postInit();
 						s.getValue().setPosted();
+						s.getValue().postInit();
+						
 					}catch (Throwable t) {
 						WarningHandler.handleMindustry(t);
 						new WarningReport(t).setProblem("Error while posting module " + s.getKey().getName() + ": " + t.toString()).report();
@@ -193,8 +195,8 @@ public class Main {
 		}
 		if (module.canLoad() || dep) {
 			update("Initializing " + module.getName());
-			module.init();
 			module.setLoaded();
+			module.init();
 			return true;
 		}
 		return false;
