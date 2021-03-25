@@ -92,6 +92,7 @@ public class OzoneMods extends Mod {
 	public static void catchs(Throwable t, boolean allowToCrash) {
 		WarningHandler.handleMindustry(t);
 		while (t.getCause() != null) t = t.getCause();
+		Log.err(t);
 		Throwable finalT = t;
 		Events.on(EventType.ClientLoadEvent.class, s -> Vars.ui.showException(finalT));
 		if (t.getClass() == RuntimeException.class) {
