@@ -41,6 +41,7 @@ public class OzoneTesting {
 	protected static OzoneMods ozone;
 	
 	static {
+		SharedBoot.type = "Ozone-Desktop";
 		LoggerMode.loadLogger();
 		SharedBoot.finishStartup();
 		Log.info("Preparing Test");
