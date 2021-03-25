@@ -38,9 +38,12 @@ import io.sentry.Sentry;
 import mindustry.Vars;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.function.Consumer;
 
 public class WarningHandler {
 	public static ArrayList<WarningReport> listOfProblem = new ArrayList<>();
+	public static HashSet<String> handled = new HashSet<>();
 	
 	public static boolean isLoaded() {//safest class
 		return System.getProperty("Mindustry.Ozone.Loaded") != null;
@@ -48,6 +51,13 @@ public class WarningHandler {
 	
 	
 	//what the fuck are you trying to handle error or making error reporting app
+	public static void handleOnce(Consumer<Throwable> c, Throwable t) {
+		String s = t.toString();
+		if (handled.contains(s)) return;
+		handled.add(s);
+		c.accept(t);
+	}
+	
 	public static void handleMindustry(Throwable t) {
 		String s = "Ozone-Handler";
 		try { s = Reflect.getCallerClassStackTrace().toString(); }catch (Throwable ignored) {}
@@ -75,6 +85,10 @@ public class WarningHandler {
 	public static void handleOzone(Throwable t) {
 		handleJava(t);
 		if (t instanceof RuntimeException) if (SharedBoot.test) throw (RuntimeException) t;
+	}
+	
+	public static void handleProgrammerFaultOnce(Throwable t) {
+	
 	}
 	
 	public static void handleProgrammerFault(Throwable t) {

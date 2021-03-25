@@ -173,9 +173,8 @@ public class Main {
 				try {
 					s.getValue().loadAsync();
 				}catch (Throwable t) {
-					WarningHandler.handleMindustry(t);
+					WarningHandler.handleOnce(WarningHandler::handleMindustry, t);//fancy isn't it
 					new WarningReport(t).setProblem("Error while loading async module " + s.getKey().getName() + ": " + t.toString()).report();
-					if (SharedBoot.test) throw new RuntimeException(t);
 				}
 			});
 			if (SharedBoot.test) f.get();
