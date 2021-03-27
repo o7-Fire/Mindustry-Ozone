@@ -69,6 +69,8 @@ allprojects {
                 sdkJar = new File(getLatestFolder(new File(sdkRoot, "platforms/")), "android.jar").getAbsolutePath()
             }catch(Throwable){}
         }
+        sdkD8 = sdkRoot + "nope"
+        sdkJar = sdkRoot + "nope"
         if(new File(sdkJar).exists())
             println(sdkJar)
         else
@@ -77,6 +79,7 @@ allprojects {
             println(sdkD8)
         else
             sdkD8 = new File(sdkRoot, "nope").getAbsolutePath()
+
         modsBuilder = "javac"
         if (project.hasProperty("builder"))
             modsBuilder = builder
